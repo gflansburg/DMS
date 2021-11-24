@@ -122,7 +122,6 @@
     text-align: center;
     color: #ffffff;
     text-shadow: 0px 0px 0px rgba(000,000,000,0), 0px 0px 0px rgba(255,255,255,0);
-    height: 35px;
 }
 
 .dms input[type="button"]:hover, .dms input[type="submit"]:hover, .dms input[type="submit"].secondarybutton:hover, 
@@ -155,7 +154,6 @@
     text-align: center;
     color: #ffffff;
     text-shadow: 0px 0px 0px rgba(000,000,000,0), 0px 0px 0px rgba(255,255,255,0);
-    height: 35px;
 }
 
 .dms input[type="submit"].primaryButton:hover, .dms button.primaryButton:hover, .dms a.primaryButton:hover {

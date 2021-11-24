@@ -806,6 +806,8 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                lblInstructions.Visible = ShowInstructions;
+                lblInstructions.Text = Instructions;
                 history.Value = "0";
                 hidFileVersionId.Value = "0";
                 letterFilter.ForeColor = gvPackets.HeaderStyle.BackColor = gvHistory.HeaderStyle.BackColor = gvFiles.HeaderStyle.BackColor = gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);

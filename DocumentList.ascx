@@ -513,19 +513,17 @@
     <asp:Panel ID="pnlGrid" runat="server" style="display: none">
         <h3><%=LocalizeString("BasicSettings")%></h3>
         <div class="searchBox" id="searchBox" runat="server">
-            <div style="width: 180px; float: left;">
+            <div style="width: 180px; float: left; display: inline-block">
                 <strong><asp:Label ID="lblCategory" runat="server" Text="Label"></asp:Label></strong><br clear="none"/> 
                 <asp:DropDownList ID="ddCategory" runat="server" DataTextField="CategoryName" DataValueField="CategoryId" AutoPostBack="true" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged"></asp:DropDownList>
             </div>
-            <div style="margin-left: 10px; float: right; text-align: left; padding-right: 30px;">
+            <div style="margin-left: 10px; text-align: left; padding-right: 30px; display: inline-block">
     	        <strong>Enter search term(s): </strong><br clear="none" />
-                <div style="float: left; width: 700px;">
-                    <asp:TextBox ID="tbKeywords" Width="100%" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
-                    <br />To view all documents, click "Go!" without typing a keyword.
+                <div style="width: 800px;">
+                    <asp:TextBox ID="tbKeywords" Width="660px" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
+					<asp:LinkButton ID="btnSearch" Width="100px" runat="server" Text="Go!" OnClick="btnSearch_Click" CssClass="dnnPrimaryAction" />
                 </div>
-                <div style="float: right; width: 100px; margin-left: 10px;">
-                    <asp:LinkButton ID="btnSearch" Width="100px" Height="35px" runat="server" Text="Go!" OnClick="btnSearch_Click" CssClass="dnnPrimaryAction" />
-                </div>
+                <asp:Label ID="lblInstructions" runat="server" Text='To view all documents, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>
             </div>
             <br clear="all"/>
        	    <br />

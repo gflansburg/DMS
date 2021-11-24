@@ -41,7 +41,7 @@
                                 <asp:TextBox ID="tbKeywords" Width="100%" runat="server" style="margin-bottom: 3px" autofocus placeholder="Search Terms ..."></asp:TextBox>
                             </td>
                             <td width="100" align="right" valign="top">
-                                <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" />
+                                <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" style="margin-left: 20px;" />
                             </td>
                         </tr>
                     </table>
