@@ -1,0 +1,2179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7D61A32C-0F21-453F-A981-BD8E5A3A5304}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gafware.Modules.DMS</RootNamespace>
+    <AssemblyName>Gafware.DMS</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetNuke, Version=7.4.1.280, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Abstractions, Version=9.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.DependencyInjection, Version=9.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Ghostscript.NET, Version=1.2.3.0, Culture=neutral, PublicKeyToken=f85051de34525b59, processorArchitecture=MSIL">
+      <HintPath>packages\Ghostscript.NET.1.2.3\lib\net40\Ghostscript.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Id3.Net, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ID3.0.6.0\lib\net40\Id3.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Doc, Version=7.2.8.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Doc.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.3.7.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.Office.4.3.1\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=5.2.17.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Presentation, Version=4.2.6.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.Office.4.3.1\lib\net40\Spire.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.XLS, Version=9.2.16.19040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.Office.4.3.1\lib\net40\Spire.XLS.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Reporting, Version=15.1.21.616, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Progress\Telerik Reporting R2 2021\Bin\Telerik.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.ReportViewer.WebForms, Version=15.1.21.616, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Progress\Telerik Reporting R2 2021\Bin\Telerik.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\DMSPortalSettings.cs" />
+    <Compile Include="Components\ThumbnailMode.cs" />
+    <Compile Include="Components\ThumbnailResize.cs" />
+    <Compile Include="Components\UserController.cs" />
+    <Compile Include="Components\DocumentView.cs" />
+    <Compile Include="Components\FileVersion.cs" />
+    <Compile Include="Components\FileType.cs" />
+    <Compile Include="Components\DMSFile.cs" />
+    <Compile Include="Components\PacketController.cs" />
+    <Compile Include="Components\DocumentController.cs" />
+    <Compile Include="Components\Packet.cs" />
+    <Compile Include="Components\PacketDocument.cs" />
+    <Compile Include="Components\PacketTag.cs" />
+    <Compile Include="Components\NoResultSearch.cs" />
+    <Compile Include="Components\SearchResult.cs" />
+    <Compile Include="Components\SearchTerm.cs" />
+    <Compile Include="Components\Repository.cs" />
+    <Compile Include="Components\Tag.cs" />
+    <Compile Include="Components\Status.cs" />
+    <Compile Include="Components\DocumentTag.cs" />
+    <Compile Include="Components\DocumentCategory.cs" />
+    <Compile Include="Components\Category.cs" />
+    <Compile Include="Components\Document.cs" />
+    <Compile Include="Components\FeatureController.cs" />
+    <Compile Include="CryptographyUtil.cs" />
+    <Compile Include="Data\DataProvider.cs" />
+    <Compile Include="DateTimeParser.cs" />
+    <Compile Include="DMSJob.cs" />
+    <Compile Include="DMSModuleBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DMSModuleSettingsBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DMSUploadReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DMSUploadReport.Designer.cs">
+      <DependentUpon>DMSUploadReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetIcon.ashx.cs">
+      <DependentUpon>GetIcon.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="GetFile.ashx.cs">
+      <DependentUpon>GetFile.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="GridViewExtended.cs" />
+    <Compile Include="BulkImport.ascx.cs">
+      <DependentUpon>BulkImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BulkImport.ascx.designer.cs">
+      <DependentUpon>BulkImport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="LinkCreator.ascx.cs">
+      <DependentUpon>LinkCreator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LinkCreator.ascx.designer.cs">
+      <DependentUpon>LinkCreator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GetDocuments.ascx.cs">
+      <DependentUpon>GetDocuments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetDocuments.ascx.designer.cs">
+      <DependentUpon>GetDocuments.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TagList.ascx.cs">
+      <DependentUpon>TagList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TagList.ascx.designer.cs">
+      <DependentUpon>TagList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PacketList.ascx.cs">
+      <DependentUpon>PacketList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PacketList.ascx.designer.cs">
+      <DependentUpon>PacketList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ThumbDB\FileObject.cs" />
+    <Compile Include="ThumbDB\FileObjectCollection.cs" />
+    <Compile Include="ThumbDB\IBaseStorageWrapper.cs" />
+    <Compile Include="ThumbDB\Interop.cs" />
+    <Compile Include="ThumbDB\IStorageWrapper.cs" />
+    <Compile Include="ThumbDB\ITStorageWrapper.cs" />
+    <Compile Include="ThumbDB\ThumbDB.cs" />
+    <Compile Include="UploadReport.ascx.cs">
+      <DependentUpon>UploadReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadReport.ascx.designer.cs">
+      <DependentUpon>UploadReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentSearchResults.ascx.cs">
+      <DependentUpon>DocumentSearchResults.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DocumentSearchResults.ascx.designer.cs">
+      <DependentUpon>DocumentSearchResults.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Generic.cs" />
+    <Compile Include="LetterFilter.ascx.cs">
+      <DependentUpon>LetterFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LetterFilter.ascx.designer.cs">
+      <DependentUpon>LetterFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleSecurity.cs" />
+    <Compile Include="PacketView.ascx.cs">
+      <DependentUpon>PacketView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PacketView.ascx.designer.cs">
+      <DependentUpon>PacketView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="PacketSettings.ascx.cs">
+      <DependentUpon>PacketSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PacketSettings.ascx.designer.cs">
+      <DependentUpon>PacketSettings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
+    <Compile Include="SearchTerms.ashx.cs">
+      <DependentUpon>SearchTerms.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DMSController.asmx.cs">
+      <DependentUpon>DMSController.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Settings.ascx.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Settings.ascx.designer.cs">
+      <DependentUpon>Settings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentList.ascx.cs">
+      <DependentUpon>DocumentList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentList.ascx.designer.cs">
+      <DependentUpon>DocumentList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Preview.ascx.cs">
+      <DependentUpon>Preview.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Preview.ascx.designer.cs">
+      <DependentUpon>Preview.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="View.ascx.cs">
+      <DependentUpon>View.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View.ascx.designer.cs">
+      <DependentUpon>View.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewMode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\Documentation.css" />
+    <Content Include="Documentation\Documentation.html" />
+    <Content Include="Images\category-header-008000.png" />
+    <Content Include="Images\category-header-00FFFF.png" />
+    <Content Include="Images\category-header-2170CD.png" />
+    <Content Include="Images\category-header-808080.png" />
+    <Content Include="Images\category-header-990000.png" />
+    <Content Include="Images\category-header-C8C800.png" />
+    <Content Include="Images\category-header-FF00FF.png" />
+    <Content Include="Images\category-header-FF8000.png" />
+    <Content Include="Images\dms.png" />
+    <Content Include="Images\formbg.jpg" />
+    <Content Include="Images\icons\classic\3g2.svg" />
+    <Content Include="Images\icons\classic\3ga.svg" />
+    <Content Include="Images\icons\classic\3gp.svg" />
+    <Content Include="Images\icons\classic\7z.svg" />
+    <Content Include="Images\icons\classic\aa.svg" />
+    <Content Include="Images\icons\classic\aac.svg" />
+    <Content Include="Images\icons\classic\ac.svg" />
+    <Content Include="Images\icons\classic\accdb.svg" />
+    <Content Include="Images\icons\classic\accdt.svg" />
+    <Content Include="Images\icons\classic\ace.svg" />
+    <Content Include="Images\icons\classic\adn.svg" />
+    <Content Include="Images\icons\classic\ai.svg" />
+    <Content Include="Images\icons\classic\aif.svg" />
+    <Content Include="Images\icons\classic\aifc.svg" />
+    <Content Include="Images\icons\classic\aiff.svg" />
+    <Content Include="Images\icons\classic\ait.svg" />
+    <Content Include="Images\icons\classic\amr.svg" />
+    <Content Include="Images\icons\classic\ani.svg" />
+    <Content Include="Images\icons\classic\apk.svg" />
+    <Content Include="Images\icons\classic\app.svg" />
+    <Content Include="Images\icons\classic\applescript.svg" />
+    <Content Include="Images\icons\classic\asax.svg" />
+    <Content Include="Images\icons\classic\asc.svg" />
+    <Content Include="Images\icons\classic\ascx.svg" />
+    <Content Include="Images\icons\classic\asf.svg" />
+    <Content Include="Images\icons\classic\ash.svg" />
+    <Content Include="Images\icons\classic\ashx.svg" />
+    <Content Include="Images\icons\classic\asm.svg" />
+    <Content Include="Images\icons\classic\asmx.svg" />
+    <Content Include="Images\icons\classic\asp.svg" />
+    <Content Include="Images\icons\classic\aspx.svg" />
+    <Content Include="Images\icons\classic\asx.svg" />
+    <Content Include="Images\icons\classic\au.svg" />
+    <Content Include="Images\icons\classic\aup.svg" />
+    <Content Include="Images\icons\classic\avi.svg" />
+    <Content Include="Images\icons\classic\axd.svg" />
+    <Content Include="Images\icons\classic\aze.svg" />
+    <Content Include="Images\icons\classic\bak.svg" />
+    <Content Include="Images\icons\classic\bash.svg" />
+    <Content Include="Images\icons\classic\bat.svg" />
+    <Content Include="Images\icons\classic\bin.svg" />
+    <Content Include="Images\icons\classic\blank.svg" />
+    <Content Include="Images\icons\classic\bmp.svg" />
+    <Content Include="Images\icons\classic\bowerrc.svg" />
+    <Content Include="Images\icons\classic\bpg.svg" />
+    <Content Include="Images\icons\classic\browser.svg" />
+    <Content Include="Images\icons\classic\bz2.svg" />
+    <Content Include="Images\icons\classic\bzempty.svg" />
+    <Content Include="Images\icons\classic\c.svg" />
+    <Content Include="Images\icons\classic\cab.svg" />
+    <Content Include="Images\icons\classic\cad.svg" />
+    <Content Include="Images\icons\classic\caf.svg" />
+    <Content Include="Images\icons\classic\cal.svg" />
+    <Content Include="Images\icons\classic\catalog.json" />
+    <Content Include="Images\icons\classic\cd.svg" />
+    <Content Include="Images\icons\classic\cdda.svg" />
+    <Content Include="Images\icons\classic\cer.svg" />
+    <Content Include="Images\icons\classic\cfg.svg" />
+    <Content Include="Images\icons\classic\cfm.svg" />
+    <Content Include="Images\icons\classic\cfml.svg" />
+    <Content Include="Images\icons\classic\cgi.svg" />
+    <Content Include="Images\icons\classic\chm.svg" />
+    <Content Include="Images\icons\classic\class.svg" />
+    <Content Include="Images\icons\classic\cmd.svg" />
+    <Content Include="Images\icons\classic\code-workspace.svg" />
+    <Content Include="Images\icons\classic\codekit.svg" />
+    <Content Include="Images\icons\classic\coffee.svg" />
+    <Content Include="Images\icons\classic\coffeelintignore.svg" />
+    <Content Include="Images\icons\classic\com.svg" />
+    <Content Include="Images\icons\classic\compile.svg" />
+    <Content Include="Images\icons\classic\conf.svg" />
+    <Content Include="Images\icons\classic\config.svg" />
+    <Content Include="Images\icons\classic\cpp.svg" />
+    <Content Include="Images\icons\classic\cptx.svg" />
+    <Content Include="Images\icons\classic\cr2.svg" />
+    <Content Include="Images\icons\classic\crdownload.svg" />
+    <Content Include="Images\icons\classic\crt.svg" />
+    <Content Include="Images\icons\classic\crypt.svg" />
+    <Content Include="Images\icons\classic\cs.svg" />
+    <Content Include="Images\icons\classic\csh.svg" />
+    <Content Include="Images\icons\classic\cson.svg" />
+    <Content Include="Images\icons\classic\csproj.svg" />
+    <Content Include="Images\icons\classic\css.svg" />
+    <Content Include="Images\icons\classic\csv.svg" />
+    <Content Include="Images\icons\classic\cue.svg" />
+    <Content Include="Images\icons\classic\cur.svg" />
+    <Content Include="Images\icons\classic\dart.svg" />
+    <Content Include="Images\icons\classic\dat.svg" />
+    <Content Include="Images\icons\classic\data.svg" />
+    <Content Include="Images\icons\classic\db.svg" />
+    <Content Include="Images\icons\classic\dbf.svg" />
+    <Content Include="Images\icons\classic\deb.svg" />
+    <Content Include="Images\icons\classic\default.svg" />
+    <Content Include="Images\icons\classic\dgn.svg" />
+    <Content Include="Images\icons\classic\dist.svg" />
+    <Content Include="Images\icons\classic\diz.svg" />
+    <Content Include="Images\icons\classic\dll.svg" />
+    <Content Include="Images\icons\classic\dmg.svg" />
+    <Content Include="Images\icons\classic\dng.svg" />
+    <Content Include="Images\icons\classic\doc.svg" />
+    <Content Include="Images\icons\classic\docb.svg" />
+    <Content Include="Images\icons\classic\docm.svg" />
+    <Content Include="Images\icons\classic\docx.svg" />
+    <Content Include="Images\icons\classic\dot.svg" />
+    <Content Include="Images\icons\classic\dotm.svg" />
+    <Content Include="Images\icons\classic\dotx.svg" />
+    <Content Include="Images\icons\classic\download.svg" />
+    <Content Include="Images\icons\classic\dpj.svg" />
+    <Content Include="Images\icons\classic\dsn.svg" />
+    <Content Include="Images\icons\classic\ds_store.svg" />
+    <Content Include="Images\icons\classic\dtd.svg" />
+    <Content Include="Images\icons\classic\dwg.svg" />
+    <Content Include="Images\icons\classic\dxf.svg" />
+    <Content Include="Images\icons\classic\editorconfig.svg" />
+    <Content Include="Images\icons\classic\el.svg" />
+    <Content Include="Images\icons\classic\elf.svg" />
+    <Content Include="Images\icons\classic\eml.svg" />
+    <Content Include="Images\icons\classic\enc.svg" />
+    <Content Include="Images\icons\classic\eot.svg" />
+    <Content Include="Images\icons\classic\eps.svg" />
+    <Content Include="Images\icons\classic\epub.svg" />
+    <Content Include="Images\icons\classic\eslintignore.svg" />
+    <Content Include="Images\icons\classic\exe.svg" />
+    <Content Include="Images\icons\classic\f4v.svg" />
+    <Content Include="Images\icons\classic\fax.svg" />
+    <Content Include="Images\icons\classic\fb2.svg" />
+    <Content Include="Images\icons\classic\fla.svg" />
+    <Content Include="Images\icons\classic\flac.svg" />
+    <Content Include="Images\icons\classic\flv.svg" />
+    <Content Include="Images\icons\classic\fnt.svg" />
+    <Content Include="Images\icons\classic\folder.svg" />
+    <Content Include="Images\icons\classic\fon.svg" />
+    <Content Include="Images\icons\classic\gadget.svg" />
+    <Content Include="Images\icons\classic\gdp.svg" />
+    <Content Include="Images\icons\classic\gem.svg" />
+    <Content Include="Images\icons\classic\gif.svg" />
+    <Content Include="Images\icons\classic\gitattributes.svg" />
+    <Content Include="Images\icons\classic\gitignore.svg" />
+    <Content Include="Images\icons\classic\go.svg" />
+    <Content Include="Images\icons\classic\gpg.svg" />
+    <Content Include="Images\icons\classic\gpl.svg" />
+    <Content Include="Images\icons\classic\gradle.svg" />
+    <Content Include="Images\icons\classic\gz.svg" />
+    <Content Include="Images\icons\classic\h.svg" />
+    <Content Include="Images\icons\classic\handlebars.svg" />
+    <Content Include="Images\icons\classic\hbs.svg" />
+    <Content Include="Images\icons\classic\heic.svg" />
+    <Content Include="Images\icons\classic\hlp.svg" />
+    <Content Include="Images\icons\classic\hs.svg" />
+    <Content Include="Images\icons\classic\hsl.svg" />
+    <Content Include="Images\icons\classic\htm.svg" />
+    <Content Include="Images\icons\classic\html.svg" />
+    <Content Include="Images\icons\classic\ibooks.svg" />
+    <Content Include="Images\icons\classic\icns.svg" />
+    <Content Include="Images\icons\classic\ico.svg" />
+    <Content Include="Images\icons\classic\ics.svg" />
+    <Content Include="Images\icons\classic\idx.svg" />
+    <Content Include="Images\icons\classic\iff.svg" />
+    <Content Include="Images\icons\classic\ifo.svg" />
+    <Content Include="Images\icons\classic\image.svg" />
+    <Content Include="Images\icons\classic\img.svg" />
+    <Content Include="Images\icons\classic\iml.svg" />
+    <Content Include="Images\icons\classic\in.svg" />
+    <Content Include="Images\icons\classic\inc.svg" />
+    <Content Include="Images\icons\classic\indd.svg" />
+    <Content Include="Images\icons\classic\inf.svg" />
+    <Content Include="Images\icons\classic\info.svg" />
+    <Content Include="Images\icons\classic\ini.svg" />
+    <Content Include="Images\icons\classic\inv.svg" />
+    <Content Include="Images\icons\classic\iso.svg" />
+    <Content Include="Images\icons\classic\j2.svg" />
+    <Content Include="Images\icons\classic\jar.svg" />
+    <Content Include="Images\icons\classic\java.svg" />
+    <Content Include="Images\icons\classic\jpe.svg" />
+    <Content Include="Images\icons\classic\jpeg.svg" />
+    <Content Include="Images\icons\classic\jpg.svg" />
+    <Content Include="Images\icons\classic\js.svg" />
+    <Content Include="Images\icons\classic\json.svg" />
+    <Content Include="Images\icons\classic\jsp.svg" />
+    <Content Include="Images\icons\classic\jsx.svg" />
+    <Content Include="Images\icons\classic\key.svg" />
+    <Content Include="Images\icons\classic\kf8.svg" />
+    <Content Include="Images\icons\classic\kmk.svg" />
+    <Content Include="Images\icons\classic\ksh.svg" />
+    <Content Include="Images\icons\classic\kt.svg" />
+    <Content Include="Images\icons\classic\kts.svg" />
+    <Content Include="Images\icons\classic\kup.svg" />
+    <Content Include="Images\icons\classic\less.svg" />
+    <Content Include="Images\icons\classic\lex.svg" />
+    <Content Include="Images\icons\classic\licx.svg" />
+    <Content Include="Images\icons\classic\lisp.svg" />
+    <Content Include="Images\icons\classic\lit.svg" />
+    <Content Include="Images\icons\classic\lnk.svg" />
+    <Content Include="Images\icons\classic\lock.svg" />
+    <Content Include="Images\icons\classic\log.svg" />
+    <Content Include="Images\icons\classic\lua.svg" />
+    <Content Include="Images\icons\classic\m.svg" />
+    <Content Include="Images\icons\classic\m2v.svg" />
+    <Content Include="Images\icons\classic\m3u.svg" />
+    <Content Include="Images\icons\classic\m3u8.svg" />
+    <Content Include="Images\icons\classic\m4.svg" />
+    <Content Include="Images\icons\classic\m4a.svg" />
+    <Content Include="Images\icons\classic\m4r.svg" />
+    <Content Include="Images\icons\classic\m4v.svg" />
+    <Content Include="Images\icons\classic\map.svg" />
+    <Content Include="Images\icons\classic\master.svg" />
+    <Content Include="Images\icons\classic\mc.svg" />
+    <Content Include="Images\icons\classic\md.svg" />
+    <Content Include="Images\icons\classic\mdb.svg" />
+    <Content Include="Images\icons\classic\mdf.svg" />
+    <Content Include="Images\icons\classic\me.svg" />
+    <Content Include="Images\icons\classic\mi.svg" />
+    <Content Include="Images\icons\classic\mid.svg" />
+    <Content Include="Images\icons\classic\midi.svg" />
+    <Content Include="Images\icons\classic\mk.svg" />
+    <Content Include="Images\icons\classic\mkv.svg" />
+    <Content Include="Images\icons\classic\mm.svg" />
+    <Content Include="Images\icons\classic\mng.svg" />
+    <Content Include="Images\icons\classic\mo.svg" />
+    <Content Include="Images\icons\classic\mobi.svg" />
+    <Content Include="Images\icons\classic\mod.svg" />
+    <Content Include="Images\icons\classic\mov.svg" />
+    <Content Include="Images\icons\classic\mp2.svg" />
+    <Content Include="Images\icons\classic\mp3.svg" />
+    <Content Include="Images\icons\classic\mp4.svg" />
+    <Content Include="Images\icons\classic\mpa.svg" />
+    <Content Include="Images\icons\classic\mpd.svg" />
+    <Content Include="Images\icons\classic\mpe.svg" />
+    <Content Include="Images\icons\classic\mpeg.svg" />
+    <Content Include="Images\icons\classic\mpg.svg" />
+    <Content Include="Images\icons\classic\mpga.svg" />
+    <Content Include="Images\icons\classic\mpp.svg" />
+    <Content Include="Images\icons\classic\mpt.svg" />
+    <Content Include="Images\icons\classic\msg.svg" />
+    <Content Include="Images\icons\classic\msi.svg" />
+    <Content Include="Images\icons\classic\msu.svg" />
+    <Content Include="Images\icons\classic\nef.svg" />
+    <Content Include="Images\icons\classic\nes.svg" />
+    <Content Include="Images\icons\classic\nfo.svg" />
+    <Content Include="Images\icons\classic\nix.svg" />
+    <Content Include="Images\icons\classic\npmignore.svg" />
+    <Content Include="Images\icons\classic\ocx.svg" />
+    <Content Include="Images\icons\classic\odb.svg" />
+    <Content Include="Images\icons\classic\ods.svg" />
+    <Content Include="Images\icons\classic\odt.svg" />
+    <Content Include="Images\icons\classic\ogg.svg" />
+    <Content Include="Images\icons\classic\ogv.svg" />
+    <Content Include="Images\icons\classic\ost.svg" />
+    <Content Include="Images\icons\classic\otf.svg" />
+    <Content Include="Images\icons\classic\ott.svg" />
+    <Content Include="Images\icons\classic\ova.svg" />
+    <Content Include="Images\icons\classic\ovf.svg" />
+    <Content Include="Images\icons\classic\p12.svg" />
+    <Content Include="Images\icons\classic\p7b.svg" />
+    <Content Include="Images\icons\classic\pages.svg" />
+    <Content Include="Images\icons\classic\part.svg" />
+    <Content Include="Images\icons\classic\pcd.svg" />
+    <Content Include="Images\icons\classic\pdb.svg" />
+    <Content Include="Images\icons\classic\pdf.svg" />
+    <Content Include="Images\icons\classic\pem.svg" />
+    <Content Include="Images\icons\classic\pfx.svg" />
+    <Content Include="Images\icons\classic\pgp.svg" />
+    <Content Include="Images\icons\classic\ph.svg" />
+    <Content Include="Images\icons\classic\phar.svg" />
+    <Content Include="Images\icons\classic\php.svg" />
+    <Content Include="Images\icons\classic\pid.svg" />
+    <Content Include="Images\icons\classic\pkg.svg" />
+    <Content Include="Images\icons\classic\pl.svg" />
+    <Content Include="Images\icons\classic\plist.svg" />
+    <Content Include="Images\icons\classic\pm.svg" />
+    <Content Include="Images\icons\classic\png.svg" />
+    <Content Include="Images\icons\classic\po.svg" />
+    <Content Include="Images\icons\classic\pom.svg" />
+    <Content Include="Images\icons\classic\pot.svg" />
+    <Content Include="Images\icons\classic\potx.svg" />
+    <Content Include="Images\icons\classic\pps.svg" />
+    <Content Include="Images\icons\classic\ppsx.svg" />
+    <Content Include="Images\icons\classic\ppt.svg" />
+    <Content Include="Images\icons\classic\pptm.svg" />
+    <Content Include="Images\icons\classic\pptx.svg" />
+    <Content Include="Images\icons\classic\prop.svg" />
+    <Content Include="Images\icons\classic\ps.svg" />
+    <Content Include="Images\icons\classic\ps1.svg" />
+    <Content Include="Images\icons\classic\psd.svg" />
+    <Content Include="Images\icons\classic\psp.svg" />
+    <Content Include="Images\icons\classic\pst.svg" />
+    <Content Include="Images\icons\classic\pub.svg" />
+    <Content Include="Images\icons\classic\py.svg" />
+    <Content Include="Images\icons\classic\pyc.svg" />
+    <Content Include="Images\icons\classic\qt.svg" />
+    <Content Include="Images\icons\classic\ra.svg" />
+    <Content Include="Images\icons\classic\ram.svg" />
+    <Content Include="Images\icons\classic\rar.svg" />
+    <Content Include="Images\icons\classic\raw.svg" />
+    <Content Include="Images\icons\classic\rb.svg" />
+    <Content Include="Images\icons\classic\rdf.svg" />
+    <Content Include="Images\icons\classic\rdl.svg" />
+    <Content Include="Images\icons\classic\reg.svg" />
+    <Content Include="Images\icons\classic\resx.svg" />
+    <Content Include="Images\icons\classic\retry.svg" />
+    <Content Include="Images\icons\classic\rm.svg" />
+    <Content Include="Images\icons\classic\rom.svg" />
+    <Content Include="Images\icons\classic\rpm.svg" />
+    <Content Include="Images\icons\classic\rpt.svg" />
+    <Content Include="Images\icons\classic\rsa.svg" />
+    <Content Include="Images\icons\classic\rss.svg" />
+    <Content Include="Images\icons\classic\rst.svg" />
+    <Content Include="Images\icons\classic\rtf.svg" />
+    <Content Include="Images\icons\classic\ru.svg" />
+    <Content Include="Images\icons\classic\rub.svg" />
+    <Content Include="Images\icons\classic\sass.svg" />
+    <Content Include="Images\icons\classic\scss.svg" />
+    <Content Include="Images\icons\classic\sdf.svg" />
+    <Content Include="Images\icons\classic\sed.svg" />
+    <Content Include="Images\icons\classic\sh.svg" />
+    <Content Include="Images\icons\classic\sit.svg" />
+    <Content Include="Images\icons\classic\sitemap.svg" />
+    <Content Include="Images\icons\classic\skin.svg" />
+    <Content Include="Images\icons\classic\sldm.svg" />
+    <Content Include="Images\icons\classic\sldx.svg" />
+    <Content Include="Images\icons\classic\sln.svg" />
+    <Content Include="Images\icons\classic\sol.svg" />
+    <Content Include="Images\icons\classic\sphinx.svg" />
+    <Content Include="Images\icons\classic\sql.svg" />
+    <Content Include="Images\icons\classic\sqlite.svg" />
+    <Content Include="Images\icons\classic\step.svg" />
+    <Content Include="Images\icons\classic\stl.svg" />
+    <Content Include="Images\icons\classic\svg.svg" />
+    <Content Include="Images\icons\classic\swd.svg" />
+    <Content Include="Images\icons\classic\swf.svg" />
+    <Content Include="Images\icons\classic\swift.svg" />
+    <Content Include="Images\icons\classic\swp.svg" />
+    <Content Include="Images\icons\classic\sys.svg" />
+    <Content Include="Images\icons\classic\tar.svg" />
+    <Content Include="Images\icons\classic\tax.svg" />
+    <Content Include="Images\icons\classic\tcsh.svg" />
+    <Content Include="Images\icons\classic\tex.svg" />
+    <Content Include="Images\icons\classic\tfignore.svg" />
+    <Content Include="Images\icons\classic\tga.svg" />
+    <Content Include="Images\icons\classic\tgz.svg" />
+    <Content Include="Images\icons\classic\tif.svg" />
+    <Content Include="Images\icons\classic\tiff.svg" />
+    <Content Include="Images\icons\classic\tmp.svg" />
+    <Content Include="Images\icons\classic\tmx.svg" />
+    <Content Include="Images\icons\classic\torrent.svg" />
+    <Content Include="Images\icons\classic\tpl.svg" />
+    <Content Include="Images\icons\classic\ts.svg" />
+    <Content Include="Images\icons\classic\tsv.svg" />
+    <Content Include="Images\icons\classic\ttf.svg" />
+    <Content Include="Images\icons\classic\twig.svg" />
+    <Content Include="Images\icons\classic\txt.svg" />
+    <Content Include="Images\icons\classic\udf.svg" />
+    <Content Include="Images\icons\classic\vb.svg" />
+    <Content Include="Images\icons\classic\vbproj.svg" />
+    <Content Include="Images\icons\classic\vbs.svg" />
+    <Content Include="Images\icons\classic\vcd.svg" />
+    <Content Include="Images\icons\classic\vcf.svg" />
+    <Content Include="Images\icons\classic\vcs.svg" />
+    <Content Include="Images\icons\classic\vdi.svg" />
+    <Content Include="Images\icons\classic\vdx.svg" />
+    <Content Include="Images\icons\classic\vmdk.svg" />
+    <Content Include="Images\icons\classic\vob.svg" />
+    <Content Include="Images\icons\classic\vox.svg" />
+    <Content Include="Images\icons\classic\vscodeignore.svg" />
+    <Content Include="Images\icons\classic\vsd.svg" />
+    <Content Include="Images\icons\classic\vss.svg" />
+    <Content Include="Images\icons\classic\vst.svg" />
+    <Content Include="Images\icons\classic\vsx.svg" />
+    <Content Include="Images\icons\classic\vtx.svg" />
+    <Content Include="Images\icons\classic\war.svg" />
+    <Content Include="Images\icons\classic\wav.svg" />
+    <Content Include="Images\icons\classic\wbk.svg" />
+    <Content Include="Images\icons\classic\webinfo.svg" />
+    <Content Include="Images\icons\classic\webm.svg" />
+    <Content Include="Images\icons\classic\webp.svg" />
+    <Content Include="Images\icons\classic\wma.svg" />
+    <Content Include="Images\icons\classic\wmf.svg" />
+    <Content Include="Images\icons\classic\wmv.svg" />
+    <Content Include="Images\icons\classic\woff.svg" />
+    <Content Include="Images\icons\classic\woff2.svg" />
+    <Content Include="Images\icons\classic\wps.svg" />
+    <Content Include="Images\icons\classic\wsf.svg" />
+    <Content Include="Images\icons\classic\xaml.svg" />
+    <Content Include="Images\icons\classic\xcf.svg" />
+    <Content Include="Images\icons\classic\xfl.svg" />
+    <Content Include="Images\icons\classic\xlm.svg" />
+    <Content Include="Images\icons\classic\xls.svg" />
+    <Content Include="Images\icons\classic\xlsm.svg" />
+    <Content Include="Images\icons\classic\xlsx.svg" />
+    <Content Include="Images\icons\classic\xlt.svg" />
+    <Content Include="Images\icons\classic\xltm.svg" />
+    <Content Include="Images\icons\classic\xltx.svg" />
+    <Content Include="Images\icons\classic\xml.svg" />
+    <Content Include="Images\icons\classic\xpi.svg" />
+    <Content Include="Images\icons\classic\xps.svg" />
+    <Content Include="Images\icons\classic\xrb.svg" />
+    <Content Include="Images\icons\classic\xsd.svg" />
+    <Content Include="Images\icons\classic\xsl.svg" />
+    <Content Include="Images\icons\classic\xspf.svg" />
+    <Content Include="Images\icons\classic\xz.svg" />
+    <Content Include="Images\icons\classic\yaml.svg" />
+    <Content Include="Images\icons\classic\yml.svg" />
+    <Content Include="Images\icons\classic\z.svg" />
+    <Content Include="Images\icons\classic\zip.svg" />
+    <Content Include="Images\icons\classic\zsh.svg" />
+    <Content Include="Images\icons\DeleteIcon1.gif" />
+    <Content Include="Images\icons\DeleteIcon1_16px.gif" />
+    <Content Include="Images\icons\DeleteIcon2.gif" />
+    <Content Include="Images\icons\DeleteIcon2_16px.gif" />
+    <Content Include="Images\icons\EditIcon1.gif" />
+    <Content Include="Images\icons\EditIcon1_16px.gif" />
+    <Content Include="Images\icons\EditIcon2.gif" />
+    <Content Include="Images\icons\EditIcon2_16px.gif" />
+    <Content Include="Images\icons\extra\catalog.json" />
+    <Content Include="Images\icons\extra\folder-archive.svg" />
+    <Content Include="Images\icons\extra\folder-classic-open.svg" />
+    <Content Include="Images\icons\extra\folder-classic.svg" />
+    <Content Include="Images\icons\extra\folder-favorite.svg" />
+    <Content Include="Images\icons\extra\folder-flat.svg" />
+    <Content Include="Images\icons\extra\folder-git.svg" />
+    <Content Include="Images\icons\extra\folder-hidden-open.svg" />
+    <Content Include="Images\icons\extra\folder-hidden.svg" />
+    <Content Include="Images\icons\extra\folder-idea.svg" />
+    <Content Include="Images\icons\extra\folder-image.svg" />
+    <Content Include="Images\icons\extra\folder-lock.svg" />
+    <Content Include="Images\icons\extra\folder-music.svg" />
+    <Content Include="Images\icons\extra\folder-neon-open.svg" />
+    <Content Include="Images\icons\extra\folder-neon.svg" />
+    <Content Include="Images\icons\extra\folder-network-open.svg" />
+    <Content Include="Images\icons\extra\folder-network.svg" />
+    <Content Include="Images\icons\extra\folder-open.svg" />
+    <Content Include="Images\icons\extra\folder-photo.svg" />
+    <Content Include="Images\icons\extra\folder-plain-open.svg" />
+    <Content Include="Images\icons\extra\folder-plain.svg" />
+    <Content Include="Images\icons\extra\folder-svn.svg" />
+    <Content Include="Images\icons\extra\folder-trash.svg" />
+    <Content Include="Images\icons\extra\folder-tree.svg" />
+    <Content Include="Images\icons\extra\folder-video.svg" />
+    <Content Include="Images\icons\extra\folder.svg" />
+    <Content Include="Images\icons\high-contrast\3g2.svg" />
+    <Content Include="Images\icons\high-contrast\3ga.svg" />
+    <Content Include="Images\icons\high-contrast\3gp.svg" />
+    <Content Include="Images\icons\high-contrast\7z.svg" />
+    <Content Include="Images\icons\high-contrast\aa.svg" />
+    <Content Include="Images\icons\high-contrast\aac.svg" />
+    <Content Include="Images\icons\high-contrast\ac.svg" />
+    <Content Include="Images\icons\high-contrast\accdb.svg" />
+    <Content Include="Images\icons\high-contrast\accdt.svg" />
+    <Content Include="Images\icons\high-contrast\ace.svg" />
+    <Content Include="Images\icons\high-contrast\adn.svg" />
+    <Content Include="Images\icons\high-contrast\ai.svg" />
+    <Content Include="Images\icons\high-contrast\aif.svg" />
+    <Content Include="Images\icons\high-contrast\aifc.svg" />
+    <Content Include="Images\icons\high-contrast\aiff.svg" />
+    <Content Include="Images\icons\high-contrast\ait.svg" />
+    <Content Include="Images\icons\high-contrast\amr.svg" />
+    <Content Include="Images\icons\high-contrast\ani.svg" />
+    <Content Include="Images\icons\high-contrast\apk.svg" />
+    <Content Include="Images\icons\high-contrast\app.svg" />
+    <Content Include="Images\icons\high-contrast\applescript.svg" />
+    <Content Include="Images\icons\high-contrast\asax.svg" />
+    <Content Include="Images\icons\high-contrast\asc.svg" />
+    <Content Include="Images\icons\high-contrast\ascx.svg" />
+    <Content Include="Images\icons\high-contrast\asf.svg" />
+    <Content Include="Images\icons\high-contrast\ash.svg" />
+    <Content Include="Images\icons\high-contrast\ashx.svg" />
+    <Content Include="Images\icons\high-contrast\asm.svg" />
+    <Content Include="Images\icons\high-contrast\asmx.svg" />
+    <Content Include="Images\icons\high-contrast\asp.svg" />
+    <Content Include="Images\icons\high-contrast\aspx.svg" />
+    <Content Include="Images\icons\high-contrast\asx.svg" />
+    <Content Include="Images\icons\high-contrast\au.svg" />
+    <Content Include="Images\icons\high-contrast\aup.svg" />
+    <Content Include="Images\icons\high-contrast\avi.svg" />
+    <Content Include="Images\icons\high-contrast\axd.svg" />
+    <Content Include="Images\icons\high-contrast\aze.svg" />
+    <Content Include="Images\icons\high-contrast\bak.svg" />
+    <Content Include="Images\icons\high-contrast\bash.svg" />
+    <Content Include="Images\icons\high-contrast\bat.svg" />
+    <Content Include="Images\icons\high-contrast\bin.svg" />
+    <Content Include="Images\icons\high-contrast\blank.svg" />
+    <Content Include="Images\icons\high-contrast\bmp.svg" />
+    <Content Include="Images\icons\high-contrast\bowerrc.svg" />
+    <Content Include="Images\icons\high-contrast\bpg.svg" />
+    <Content Include="Images\icons\high-contrast\browser.svg" />
+    <Content Include="Images\icons\high-contrast\bz2.svg" />
+    <Content Include="Images\icons\high-contrast\bzempty.svg" />
+    <Content Include="Images\icons\high-contrast\c.svg" />
+    <Content Include="Images\icons\high-contrast\cab.svg" />
+    <Content Include="Images\icons\high-contrast\cad.svg" />
+    <Content Include="Images\icons\high-contrast\caf.svg" />
+    <Content Include="Images\icons\high-contrast\cal.svg" />
+    <Content Include="Images\icons\high-contrast\catalog.json" />
+    <Content Include="Images\icons\high-contrast\cd.svg" />
+    <Content Include="Images\icons\high-contrast\cdda.svg" />
+    <Content Include="Images\icons\high-contrast\cer.svg" />
+    <Content Include="Images\icons\high-contrast\cfg.svg" />
+    <Content Include="Images\icons\high-contrast\cfm.svg" />
+    <Content Include="Images\icons\high-contrast\cfml.svg" />
+    <Content Include="Images\icons\high-contrast\cgi.svg" />
+    <Content Include="Images\icons\high-contrast\chm.svg" />
+    <Content Include="Images\icons\high-contrast\class.svg" />
+    <Content Include="Images\icons\high-contrast\cmd.svg" />
+    <Content Include="Images\icons\high-contrast\code-workspace.svg" />
+    <Content Include="Images\icons\high-contrast\codekit.svg" />
+    <Content Include="Images\icons\high-contrast\codekit3.svg" />
+    <Content Include="Images\icons\high-contrast\coffee.svg" />
+    <Content Include="Images\icons\high-contrast\coffeelintignore.svg" />
+    <Content Include="Images\icons\high-contrast\com.svg" />
+    <Content Include="Images\icons\high-contrast\compile.svg" />
+    <Content Include="Images\icons\high-contrast\conf.svg" />
+    <Content Include="Images\icons\high-contrast\config.svg" />
+    <Content Include="Images\icons\high-contrast\cpp.svg" />
+    <Content Include="Images\icons\high-contrast\cptx.svg" />
+    <Content Include="Images\icons\high-contrast\cr2.svg" />
+    <Content Include="Images\icons\high-contrast\crdownload.svg" />
+    <Content Include="Images\icons\high-contrast\crt.svg" />
+    <Content Include="Images\icons\high-contrast\crypt.svg" />
+    <Content Include="Images\icons\high-contrast\cs.svg" />
+    <Content Include="Images\icons\high-contrast\csh.svg" />
+    <Content Include="Images\icons\high-contrast\cson.svg" />
+    <Content Include="Images\icons\high-contrast\csproj.svg" />
+    <Content Include="Images\icons\high-contrast\css.svg" />
+    <Content Include="Images\icons\high-contrast\csv.svg" />
+    <Content Include="Images\icons\high-contrast\cue.svg" />
+    <Content Include="Images\icons\high-contrast\cur.svg" />
+    <Content Include="Images\icons\high-contrast\dart.svg" />
+    <Content Include="Images\icons\high-contrast\dat.svg" />
+    <Content Include="Images\icons\high-contrast\data.svg" />
+    <Content Include="Images\icons\high-contrast\db.svg" />
+    <Content Include="Images\icons\high-contrast\dbf.svg" />
+    <Content Include="Images\icons\high-contrast\deb.svg" />
+    <Content Include="Images\icons\high-contrast\default.svg" />
+    <Content Include="Images\icons\high-contrast\dgn.svg" />
+    <Content Include="Images\icons\high-contrast\dist.svg" />
+    <Content Include="Images\icons\high-contrast\diz.svg" />
+    <Content Include="Images\icons\high-contrast\dll.svg" />
+    <Content Include="Images\icons\high-contrast\dmg.svg" />
+    <Content Include="Images\icons\high-contrast\dng.svg" />
+    <Content Include="Images\icons\high-contrast\doc.svg" />
+    <Content Include="Images\icons\high-contrast\docb.svg" />
+    <Content Include="Images\icons\high-contrast\docm.svg" />
+    <Content Include="Images\icons\high-contrast\docx.svg" />
+    <Content Include="Images\icons\high-contrast\dot.svg" />
+    <Content Include="Images\icons\high-contrast\dotm.svg" />
+    <Content Include="Images\icons\high-contrast\dotx.svg" />
+    <Content Include="Images\icons\high-contrast\download.svg" />
+    <Content Include="Images\icons\high-contrast\dpj.svg" />
+    <Content Include="Images\icons\high-contrast\dsn.svg" />
+    <Content Include="Images\icons\high-contrast\dst.svg" />
+    <Content Include="Images\icons\high-contrast\ds_store.svg" />
+    <Content Include="Images\icons\high-contrast\dtd.svg" />
+    <Content Include="Images\icons\high-contrast\dwg.svg" />
+    <Content Include="Images\icons\high-contrast\dxf.svg" />
+    <Content Include="Images\icons\high-contrast\editorconfig.svg" />
+    <Content Include="Images\icons\high-contrast\el.svg" />
+    <Content Include="Images\icons\high-contrast\elf.svg" />
+    <Content Include="Images\icons\high-contrast\eml.svg" />
+    <Content Include="Images\icons\high-contrast\enc.svg" />
+    <Content Include="Images\icons\high-contrast\eot.svg" />
+    <Content Include="Images\icons\high-contrast\eps.svg" />
+    <Content Include="Images\icons\high-contrast\epub.svg" />
+    <Content Include="Images\icons\high-contrast\eslintignore.svg" />
+    <Content Include="Images\icons\high-contrast\exe.svg" />
+    <Content Include="Images\icons\high-contrast\f4v.svg" />
+    <Content Include="Images\icons\high-contrast\fax.svg" />
+    <Content Include="Images\icons\high-contrast\fb2.svg" />
+    <Content Include="Images\icons\high-contrast\fla.svg" />
+    <Content Include="Images\icons\high-contrast\flac.svg" />
+    <Content Include="Images\icons\high-contrast\flv.svg" />
+    <Content Include="Images\icons\high-contrast\fnt.svg" />
+    <Content Include="Images\icons\high-contrast\fon.svg" />
+    <Content Include="Images\icons\high-contrast\gadget.svg" />
+    <Content Include="Images\icons\high-contrast\gdp.svg" />
+    <Content Include="Images\icons\high-contrast\gem.svg" />
+    <Content Include="Images\icons\high-contrast\gif.svg" />
+    <Content Include="Images\icons\high-contrast\gitattributes.svg" />
+    <Content Include="Images\icons\high-contrast\gitignore.svg" />
+    <Content Include="Images\icons\high-contrast\go.svg" />
+    <Content Include="Images\icons\high-contrast\gpg.svg" />
+    <Content Include="Images\icons\high-contrast\gpl.svg" />
+    <Content Include="Images\icons\high-contrast\gradle.svg" />
+    <Content Include="Images\icons\high-contrast\gz.svg" />
+    <Content Include="Images\icons\high-contrast\h.svg" />
+    <Content Include="Images\icons\high-contrast\handlebars.svg" />
+    <Content Include="Images\icons\high-contrast\hbs.svg" />
+    <Content Include="Images\icons\high-contrast\heic.svg" />
+    <Content Include="Images\icons\high-contrast\hlp.svg" />
+    <Content Include="Images\icons\high-contrast\hs.svg" />
+    <Content Include="Images\icons\high-contrast\hsl.svg" />
+    <Content Include="Images\icons\high-contrast\htm.svg" />
+    <Content Include="Images\icons\high-contrast\html.svg" />
+    <Content Include="Images\icons\high-contrast\ibooks.svg" />
+    <Content Include="Images\icons\high-contrast\icma.svg" />
+    <Content Include="Images\icons\high-contrast\icml.svg" />
+    <Content Include="Images\icons\high-contrast\icns.svg" />
+    <Content Include="Images\icons\high-contrast\ico.svg" />
+    <Content Include="Images\icons\high-contrast\ics.svg" />
+    <Content Include="Images\icons\high-contrast\idx.svg" />
+    <Content Include="Images\icons\high-contrast\iff.svg" />
+    <Content Include="Images\icons\high-contrast\ifo.svg" />
+    <Content Include="Images\icons\high-contrast\image.svg" />
+    <Content Include="Images\icons\high-contrast\img.svg" />
+    <Content Include="Images\icons\high-contrast\iml.svg" />
+    <Content Include="Images\icons\high-contrast\in.svg" />
+    <Content Include="Images\icons\high-contrast\inc.svg" />
+    <Content Include="Images\icons\high-contrast\indd.svg" />
+    <Content Include="Images\icons\high-contrast\inf.svg" />
+    <Content Include="Images\icons\high-contrast\info.svg" />
+    <Content Include="Images\icons\high-contrast\ini.svg" />
+    <Content Include="Images\icons\high-contrast\inv.svg" />
+    <Content Include="Images\icons\high-contrast\iso.svg" />
+    <Content Include="Images\icons\high-contrast\j2.svg" />
+    <Content Include="Images\icons\high-contrast\jar.svg" />
+    <Content Include="Images\icons\high-contrast\java.svg" />
+    <Content Include="Images\icons\high-contrast\jpe.svg" />
+    <Content Include="Images\icons\high-contrast\jpeg.svg" />
+    <Content Include="Images\icons\high-contrast\jpg.svg" />
+    <Content Include="Images\icons\high-contrast\js.svg" />
+    <Content Include="Images\icons\high-contrast\json.svg" />
+    <Content Include="Images\icons\high-contrast\jsp.svg" />
+    <Content Include="Images\icons\high-contrast\jsx.svg" />
+    <Content Include="Images\icons\high-contrast\key.svg" />
+    <Content Include="Images\icons\high-contrast\kf8.svg" />
+    <Content Include="Images\icons\high-contrast\kit.svg" />
+    <Content Include="Images\icons\high-contrast\kmk.svg" />
+    <Content Include="Images\icons\high-contrast\ksh.svg" />
+    <Content Include="Images\icons\high-contrast\kt.svg" />
+    <Content Include="Images\icons\high-contrast\kts.svg" />
+    <Content Include="Images\icons\high-contrast\kup.svg" />
+    <Content Include="Images\icons\high-contrast\less.svg" />
+    <Content Include="Images\icons\high-contrast\lex.svg" />
+    <Content Include="Images\icons\high-contrast\licx.svg" />
+    <Content Include="Images\icons\high-contrast\lisp.svg" />
+    <Content Include="Images\icons\high-contrast\list.svg" />
+    <Content Include="Images\icons\high-contrast\lit.svg" />
+    <Content Include="Images\icons\high-contrast\lnk.svg" />
+    <Content Include="Images\icons\high-contrast\lock.svg" />
+    <Content Include="Images\icons\high-contrast\log.svg" />
+    <Content Include="Images\icons\high-contrast\lua.svg" />
+    <Content Include="Images\icons\high-contrast\m.svg" />
+    <Content Include="Images\icons\high-contrast\m2v.svg" />
+    <Content Include="Images\icons\high-contrast\m3u.svg" />
+    <Content Include="Images\icons\high-contrast\m3u8.svg" />
+    <Content Include="Images\icons\high-contrast\m4.svg" />
+    <Content Include="Images\icons\high-contrast\m4a.svg" />
+    <Content Include="Images\icons\high-contrast\m4r.svg" />
+    <Content Include="Images\icons\high-contrast\m4v.svg" />
+    <Content Include="Images\icons\high-contrast\map.svg" />
+    <Content Include="Images\icons\high-contrast\master.svg" />
+    <Content Include="Images\icons\high-contrast\mc.svg" />
+    <Content Include="Images\icons\high-contrast\md.svg" />
+    <Content Include="Images\icons\high-contrast\mdb.svg" />
+    <Content Include="Images\icons\high-contrast\mdf.svg" />
+    <Content Include="Images\icons\high-contrast\me.svg" />
+    <Content Include="Images\icons\high-contrast\mi.svg" />
+    <Content Include="Images\icons\high-contrast\mid.svg" />
+    <Content Include="Images\icons\high-contrast\midi.svg" />
+    <Content Include="Images\icons\high-contrast\mk.svg" />
+    <Content Include="Images\icons\high-contrast\mkv.svg" />
+    <Content Include="Images\icons\high-contrast\mm.svg" />
+    <Content Include="Images\icons\high-contrast\mng.svg" />
+    <Content Include="Images\icons\high-contrast\mo.svg" />
+    <Content Include="Images\icons\high-contrast\mobi.svg" />
+    <Content Include="Images\icons\high-contrast\mod.svg" />
+    <Content Include="Images\icons\high-contrast\mov.svg" />
+    <Content Include="Images\icons\high-contrast\mp2.svg" />
+    <Content Include="Images\icons\high-contrast\mp3.svg" />
+    <Content Include="Images\icons\high-contrast\mp4.svg" />
+    <Content Include="Images\icons\high-contrast\mpa.svg" />
+    <Content Include="Images\icons\high-contrast\mpd.svg" />
+    <Content Include="Images\icons\high-contrast\mpe.svg" />
+    <Content Include="Images\icons\high-contrast\mpeg.svg" />
+    <Content Include="Images\icons\high-contrast\mpg.svg" />
+    <Content Include="Images\icons\high-contrast\mpga.svg" />
+    <Content Include="Images\icons\high-contrast\mpp.svg" />
+    <Content Include="Images\icons\high-contrast\mpt.svg" />
+    <Content Include="Images\icons\high-contrast\msg.svg" />
+    <Content Include="Images\icons\high-contrast\msi.svg" />
+    <Content Include="Images\icons\high-contrast\msu.svg" />
+    <Content Include="Images\icons\high-contrast\nef.svg" />
+    <Content Include="Images\icons\high-contrast\nes.svg" />
+    <Content Include="Images\icons\high-contrast\nfo.svg" />
+    <Content Include="Images\icons\high-contrast\nix.svg" />
+    <Content Include="Images\icons\high-contrast\npmignore.svg" />
+    <Content Include="Images\icons\high-contrast\ocx.svg" />
+    <Content Include="Images\icons\high-contrast\odb.svg" />
+    <Content Include="Images\icons\high-contrast\ods.svg" />
+    <Content Include="Images\icons\high-contrast\odt.svg" />
+    <Content Include="Images\icons\high-contrast\ogg.svg" />
+    <Content Include="Images\icons\high-contrast\ogv.svg" />
+    <Content Include="Images\icons\high-contrast\one.svg" />
+    <Content Include="Images\icons\high-contrast\ost.svg" />
+    <Content Include="Images\icons\high-contrast\otf.svg" />
+    <Content Include="Images\icons\high-contrast\ott.svg" />
+    <Content Include="Images\icons\high-contrast\ova.svg" />
+    <Content Include="Images\icons\high-contrast\ovf.svg" />
+    <Content Include="Images\icons\high-contrast\p12.svg" />
+    <Content Include="Images\icons\high-contrast\p7b.svg" />
+    <Content Include="Images\icons\high-contrast\pages.svg" />
+    <Content Include="Images\icons\high-contrast\part.svg" />
+    <Content Include="Images\icons\high-contrast\partial.svg" />
+    <Content Include="Images\icons\high-contrast\pbix.svg" />
+    <Content Include="Images\icons\high-contrast\pcd.svg" />
+    <Content Include="Images\icons\high-contrast\pdb.svg" />
+    <Content Include="Images\icons\high-contrast\pdf.svg" />
+    <Content Include="Images\icons\high-contrast\pem.svg" />
+    <Content Include="Images\icons\high-contrast\pfx.svg" />
+    <Content Include="Images\icons\high-contrast\pgp.svg" />
+    <Content Include="Images\icons\high-contrast\ph.svg" />
+    <Content Include="Images\icons\high-contrast\phar.svg" />
+    <Content Include="Images\icons\high-contrast\php.svg" />
+    <Content Include="Images\icons\high-contrast\pid.svg" />
+    <Content Include="Images\icons\high-contrast\pkg.svg" />
+    <Content Include="Images\icons\high-contrast\pl.svg" />
+    <Content Include="Images\icons\high-contrast\plist.svg" />
+    <Content Include="Images\icons\high-contrast\pm.svg" />
+    <Content Include="Images\icons\high-contrast\png.svg" />
+    <Content Include="Images\icons\high-contrast\po.svg" />
+    <Content Include="Images\icons\high-contrast\pom.svg" />
+    <Content Include="Images\icons\high-contrast\pot.svg" />
+    <Content Include="Images\icons\high-contrast\potx.svg" />
+    <Content Include="Images\icons\high-contrast\ppk.svg" />
+    <Content Include="Images\icons\high-contrast\pps.svg" />
+    <Content Include="Images\icons\high-contrast\ppsx.svg" />
+    <Content Include="Images\icons\high-contrast\ppt.svg" />
+    <Content Include="Images\icons\high-contrast\pptm.svg" />
+    <Content Include="Images\icons\high-contrast\pptx.svg" />
+    <Content Include="Images\icons\high-contrast\prop.svg" />
+    <Content Include="Images\icons\high-contrast\ps.svg" />
+    <Content Include="Images\icons\high-contrast\ps1.svg" />
+    <Content Include="Images\icons\high-contrast\psd.svg" />
+    <Content Include="Images\icons\high-contrast\psp.svg" />
+    <Content Include="Images\icons\high-contrast\pst.svg" />
+    <Content Include="Images\icons\high-contrast\pub.svg" />
+    <Content Include="Images\icons\high-contrast\py.svg" />
+    <Content Include="Images\icons\high-contrast\pyc.svg" />
+    <Content Include="Images\icons\high-contrast\qt.svg" />
+    <Content Include="Images\icons\high-contrast\ra.svg" />
+    <Content Include="Images\icons\high-contrast\ram.svg" />
+    <Content Include="Images\icons\high-contrast\rar.svg" />
+    <Content Include="Images\icons\high-contrast\raw.svg" />
+    <Content Include="Images\icons\high-contrast\rb.svg" />
+    <Content Include="Images\icons\high-contrast\rdf.svg" />
+    <Content Include="Images\icons\high-contrast\rdl.svg" />
+    <Content Include="Images\icons\high-contrast\reg.svg" />
+    <Content Include="Images\icons\high-contrast\resx.svg" />
+    <Content Include="Images\icons\high-contrast\retry.svg" />
+    <Content Include="Images\icons\high-contrast\rm.svg" />
+    <Content Include="Images\icons\high-contrast\rom.svg" />
+    <Content Include="Images\icons\high-contrast\rpm.svg" />
+    <Content Include="Images\icons\high-contrast\rpt.svg" />
+    <Content Include="Images\icons\high-contrast\rsa.svg" />
+    <Content Include="Images\icons\high-contrast\rss.svg" />
+    <Content Include="Images\icons\high-contrast\rst.svg" />
+    <Content Include="Images\icons\high-contrast\rtf.svg" />
+    <Content Include="Images\icons\high-contrast\ru.svg" />
+    <Content Include="Images\icons\high-contrast\rub.svg" />
+    <Content Include="Images\icons\high-contrast\sass.svg" />
+    <Content Include="Images\icons\high-contrast\save.svg" />
+    <Content Include="Images\icons\high-contrast\scss.svg" />
+    <Content Include="Images\icons\high-contrast\sdf.svg" />
+    <Content Include="Images\icons\high-contrast\sed.svg" />
+    <Content Include="Images\icons\high-contrast\sesx.svg" />
+    <Content Include="Images\icons\high-contrast\sh.svg" />
+    <Content Include="Images\icons\high-contrast\sit.svg" />
+    <Content Include="Images\icons\high-contrast\sitemap.svg" />
+    <Content Include="Images\icons\high-contrast\sketch.svg" />
+    <Content Include="Images\icons\high-contrast\skin.svg" />
+    <Content Include="Images\icons\high-contrast\sldm.svg" />
+    <Content Include="Images\icons\high-contrast\sldx.svg" />
+    <Content Include="Images\icons\high-contrast\sln.svg" />
+    <Content Include="Images\icons\high-contrast\sol.svg" />
+    <Content Include="Images\icons\high-contrast\sphinx.svg" />
+    <Content Include="Images\icons\high-contrast\sql.svg" />
+    <Content Include="Images\icons\high-contrast\sqlite.svg" />
+    <Content Include="Images\icons\high-contrast\srt.svg" />
+    <Content Include="Images\icons\high-contrast\step.svg" />
+    <Content Include="Images\icons\high-contrast\stl.svg" />
+    <Content Include="Images\icons\high-contrast\sub.svg" />
+    <Content Include="Images\icons\high-contrast\svg.svg" />
+    <Content Include="Images\icons\high-contrast\swd.svg" />
+    <Content Include="Images\icons\high-contrast\swf.svg" />
+    <Content Include="Images\icons\high-contrast\swift.svg" />
+    <Content Include="Images\icons\high-contrast\swp.svg" />
+    <Content Include="Images\icons\high-contrast\sys.svg" />
+    <Content Include="Images\icons\high-contrast\tar.svg" />
+    <Content Include="Images\icons\high-contrast\tax.svg" />
+    <Content Include="Images\icons\high-contrast\tcsh.svg" />
+    <Content Include="Images\icons\high-contrast\tex.svg" />
+    <Content Include="Images\icons\high-contrast\tfignore.svg" />
+    <Content Include="Images\icons\high-contrast\tga.svg" />
+    <Content Include="Images\icons\high-contrast\tgz.svg" />
+    <Content Include="Images\icons\high-contrast\tif.svg" />
+    <Content Include="Images\icons\high-contrast\tiff.svg" />
+    <Content Include="Images\icons\high-contrast\tmp.svg" />
+    <Content Include="Images\icons\high-contrast\tmx.svg" />
+    <Content Include="Images\icons\high-contrast\torrent.svg" />
+    <Content Include="Images\icons\high-contrast\tpl.svg" />
+    <Content Include="Images\icons\high-contrast\ts.svg" />
+    <Content Include="Images\icons\high-contrast\tsv.svg" />
+    <Content Include="Images\icons\high-contrast\tsx.svg" />
+    <Content Include="Images\icons\high-contrast\ttf.svg" />
+    <Content Include="Images\icons\high-contrast\twig.svg" />
+    <Content Include="Images\icons\high-contrast\txt.svg" />
+    <Content Include="Images\icons\high-contrast\udf.svg" />
+    <Content Include="Images\icons\high-contrast\vb.svg" />
+    <Content Include="Images\icons\high-contrast\vbproj.svg" />
+    <Content Include="Images\icons\high-contrast\vbs.svg" />
+    <Content Include="Images\icons\high-contrast\vcd.svg" />
+    <Content Include="Images\icons\high-contrast\vcf.svg" />
+    <Content Include="Images\icons\high-contrast\vcs.svg" />
+    <Content Include="Images\icons\high-contrast\vdi.svg" />
+    <Content Include="Images\icons\high-contrast\vdx.svg" />
+    <Content Include="Images\icons\high-contrast\vmdk.svg" />
+    <Content Include="Images\icons\high-contrast\vob.svg" />
+    <Content Include="Images\icons\high-contrast\vox.svg" />
+    <Content Include="Images\icons\high-contrast\vscodeignore.svg" />
+    <Content Include="Images\icons\high-contrast\vsd.svg" />
+    <Content Include="Images\icons\high-contrast\vss.svg" />
+    <Content Include="Images\icons\high-contrast\vst.svg" />
+    <Content Include="Images\icons\high-contrast\vsx.svg" />
+    <Content Include="Images\icons\high-contrast\vtx.svg" />
+    <Content Include="Images\icons\high-contrast\war.svg" />
+    <Content Include="Images\icons\high-contrast\wav.svg" />
+    <Content Include="Images\icons\high-contrast\wbk.svg" />
+    <Content Include="Images\icons\high-contrast\webinfo.svg" />
+    <Content Include="Images\icons\high-contrast\webm.svg" />
+    <Content Include="Images\icons\high-contrast\webp.svg" />
+    <Content Include="Images\icons\high-contrast\wma.svg" />
+    <Content Include="Images\icons\high-contrast\wmf.svg" />
+    <Content Include="Images\icons\high-contrast\wmv.svg" />
+    <Content Include="Images\icons\high-contrast\woff.svg" />
+    <Content Include="Images\icons\high-contrast\woff2.svg" />
+    <Content Include="Images\icons\high-contrast\wpd.svg" />
+    <Content Include="Images\icons\high-contrast\wps.svg" />
+    <Content Include="Images\icons\high-contrast\wsf.svg" />
+    <Content Include="Images\icons\high-contrast\xaml.svg" />
+    <Content Include="Images\icons\high-contrast\xcf.svg" />
+    <Content Include="Images\icons\high-contrast\xcodeproj.svg" />
+    <Content Include="Images\icons\high-contrast\xfl.svg" />
+    <Content Include="Images\icons\high-contrast\xlb.svg" />
+    <Content Include="Images\icons\high-contrast\xlc.svg" />
+    <Content Include="Images\icons\high-contrast\xlm.svg" />
+    <Content Include="Images\icons\high-contrast\xls.svg" />
+    <Content Include="Images\icons\high-contrast\xlsb.svg" />
+    <Content Include="Images\icons\high-contrast\xlsm.svg" />
+    <Content Include="Images\icons\high-contrast\xlsx.svg" />
+    <Content Include="Images\icons\high-contrast\xlt.svg" />
+    <Content Include="Images\icons\high-contrast\xltm.svg" />
+    <Content Include="Images\icons\high-contrast\xltx.svg" />
+    <Content Include="Images\icons\high-contrast\xml.svg" />
+    <Content Include="Images\icons\high-contrast\xpi.svg" />
+    <Content Include="Images\icons\high-contrast\xps.svg" />
+    <Content Include="Images\icons\high-contrast\xrb.svg" />
+    <Content Include="Images\icons\high-contrast\xsd.svg" />
+    <Content Include="Images\icons\high-contrast\xsl.svg" />
+    <Content Include="Images\icons\high-contrast\xspf.svg" />
+    <Content Include="Images\icons\high-contrast\xz.svg" />
+    <Content Include="Images\icons\high-contrast\yaml.svg" />
+    <Content Include="Images\icons\high-contrast\yml.svg" />
+    <Content Include="Images\icons\high-contrast\z.svg" />
+    <Content Include="Images\icons\high-contrast\zip.svg" />
+    <Content Include="Images\icons\high-contrast\zsh.svg" />
+    <Content Include="Images\icons\HistoryIcon1.gif" />
+    <Content Include="Images\icons\HistoryIcon2.gif" />
+    <Content Include="Images\icons\info_white.gif" />
+    <Content Include="Images\icons\NewIcon1.gif" />
+    <Content Include="Images\icons\NewIcon1_16px.gif" />
+    <Content Include="Images\icons\NewIcon2.gif" />
+    <Content Include="Images\icons\NewIcon2_16px.gif" />
+    <Content Include="Images\icons\save.gif" />
+    <Content Include="Images\icons\save.over.gif" />
+    <Content Include="Images\icons\square\3g2.svg" />
+    <Content Include="Images\icons\square\3ga.svg" />
+    <Content Include="Images\icons\square\3gp.svg" />
+    <Content Include="Images\icons\square\7z.svg" />
+    <Content Include="Images\icons\square\aa.svg" />
+    <Content Include="Images\icons\square\aac.svg" />
+    <Content Include="Images\icons\square\ac.svg" />
+    <Content Include="Images\icons\square\accdb.svg" />
+    <Content Include="Images\icons\square\accdt.svg" />
+    <Content Include="Images\icons\square\ace.svg" />
+    <Content Include="Images\icons\square\adn.svg" />
+    <Content Include="Images\icons\square\ai.svg" />
+    <Content Include="Images\icons\square\aif.svg" />
+    <Content Include="Images\icons\square\aifc.svg" />
+    <Content Include="Images\icons\square\aiff.svg" />
+    <Content Include="Images\icons\square\ait.svg" />
+    <Content Include="Images\icons\square\amr.svg" />
+    <Content Include="Images\icons\square\ani.svg" />
+    <Content Include="Images\icons\square\apk.svg" />
+    <Content Include="Images\icons\square\app.svg" />
+    <Content Include="Images\icons\square\applescript.svg" />
+    <Content Include="Images\icons\square\asax.svg" />
+    <Content Include="Images\icons\square\asc.svg" />
+    <Content Include="Images\icons\square\ascx.svg" />
+    <Content Include="Images\icons\square\asf.svg" />
+    <Content Include="Images\icons\square\ash.svg" />
+    <Content Include="Images\icons\square\ashx.svg" />
+    <Content Include="Images\icons\square\asm.svg" />
+    <Content Include="Images\icons\square\asmx.svg" />
+    <Content Include="Images\icons\square\asp.svg" />
+    <Content Include="Images\icons\square\aspx.svg" />
+    <Content Include="Images\icons\square\asx.svg" />
+    <Content Include="Images\icons\square\au.svg" />
+    <Content Include="Images\icons\square\aup.svg" />
+    <Content Include="Images\icons\square\avi.svg" />
+    <Content Include="Images\icons\square\axd.svg" />
+    <Content Include="Images\icons\square\aze.svg" />
+    <Content Include="Images\icons\square\bak.svg" />
+    <Content Include="Images\icons\square\bash.svg" />
+    <Content Include="Images\icons\square\bat.svg" />
+    <Content Include="Images\icons\square\bin.svg" />
+    <Content Include="Images\icons\square\blank.svg" />
+    <Content Include="Images\icons\square\bmp.svg" />
+    <Content Include="Images\icons\square\bowerrc.svg" />
+    <Content Include="Images\icons\square\bpg.svg" />
+    <Content Include="Images\icons\square\browser.svg" />
+    <Content Include="Images\icons\square\bz2.svg" />
+    <Content Include="Images\icons\square\bzempty.svg" />
+    <Content Include="Images\icons\square\c.svg" />
+    <Content Include="Images\icons\square\cab.svg" />
+    <Content Include="Images\icons\square\cad.svg" />
+    <Content Include="Images\icons\square\caf.svg" />
+    <Content Include="Images\icons\square\cal.svg" />
+    <Content Include="Images\icons\square\catalog.json" />
+    <Content Include="Images\icons\square\cd.svg" />
+    <Content Include="Images\icons\square\cdda.svg" />
+    <Content Include="Images\icons\square\cer.svg" />
+    <Content Include="Images\icons\square\cfg.svg" />
+    <Content Include="Images\icons\square\cfm.svg" />
+    <Content Include="Images\icons\square\cfml.svg" />
+    <Content Include="Images\icons\square\cgi.svg" />
+    <Content Include="Images\icons\square\chm.svg" />
+    <Content Include="Images\icons\square\class.svg" />
+    <Content Include="Images\icons\square\cmd.svg" />
+    <Content Include="Images\icons\square\code-workspace.svg" />
+    <Content Include="Images\icons\square\codekit.svg" />
+    <Content Include="Images\icons\square\coffee.svg" />
+    <Content Include="Images\icons\square\coffeelintignore.svg" />
+    <Content Include="Images\icons\square\com.svg" />
+    <Content Include="Images\icons\square\compile.svg" />
+    <Content Include="Images\icons\square\conf.svg" />
+    <Content Include="Images\icons\square\config.svg" />
+    <Content Include="Images\icons\square\cpp.svg" />
+    <Content Include="Images\icons\square\cptx.svg" />
+    <Content Include="Images\icons\square\cr2.svg" />
+    <Content Include="Images\icons\square\crdownload.svg" />
+    <Content Include="Images\icons\square\crt.svg" />
+    <Content Include="Images\icons\square\crypt.svg" />
+    <Content Include="Images\icons\square\cs.svg" />
+    <Content Include="Images\icons\square\csh.svg" />
+    <Content Include="Images\icons\square\cson.svg" />
+    <Content Include="Images\icons\square\csproj.svg" />
+    <Content Include="Images\icons\square\css.svg" />
+    <Content Include="Images\icons\square\csv.svg" />
+    <Content Include="Images\icons\square\cue.svg" />
+    <Content Include="Images\icons\square\cur.svg" />
+    <Content Include="Images\icons\square\dart.svg" />
+    <Content Include="Images\icons\square\dat.svg" />
+    <Content Include="Images\icons\square\data.svg" />
+    <Content Include="Images\icons\square\db.svg" />
+    <Content Include="Images\icons\square\dbf.svg" />
+    <Content Include="Images\icons\square\deb.svg" />
+    <Content Include="Images\icons\square\default.svg" />
+    <Content Include="Images\icons\square\dgn.svg" />
+    <Content Include="Images\icons\square\dist.svg" />
+    <Content Include="Images\icons\square\diz.svg" />
+    <Content Include="Images\icons\square\dll.svg" />
+    <Content Include="Images\icons\square\dmg.svg" />
+    <Content Include="Images\icons\square\dng.svg" />
+    <Content Include="Images\icons\square\doc.svg" />
+    <Content Include="Images\icons\square\docb.svg" />
+    <Content Include="Images\icons\square\docm.svg" />
+    <Content Include="Images\icons\square\docx.svg" />
+    <Content Include="Images\icons\square\dot.svg" />
+    <Content Include="Images\icons\square\dotm.svg" />
+    <Content Include="Images\icons\square\dotx.svg" />
+    <Content Include="Images\icons\square\download.svg" />
+    <Content Include="Images\icons\square\dpj.svg" />
+    <Content Include="Images\icons\square\dsn.svg" />
+    <Content Include="Images\icons\square\ds_store.svg" />
+    <Content Include="Images\icons\square\dtd.svg" />
+    <Content Include="Images\icons\square\dwg.svg" />
+    <Content Include="Images\icons\square\dxf.svg" />
+    <Content Include="Images\icons\square\editorconfig.svg" />
+    <Content Include="Images\icons\square\el.svg" />
+    <Content Include="Images\icons\square\elf.svg" />
+    <Content Include="Images\icons\square\eml.svg" />
+    <Content Include="Images\icons\square\enc.svg" />
+    <Content Include="Images\icons\square\eot.svg" />
+    <Content Include="Images\icons\square\eps.svg" />
+    <Content Include="Images\icons\square\epub.svg" />
+    <Content Include="Images\icons\square\eslintignore.svg" />
+    <Content Include="Images\icons\square\exe.svg" />
+    <Content Include="Images\icons\square\f4v.svg" />
+    <Content Include="Images\icons\square\fax.svg" />
+    <Content Include="Images\icons\square\fb2.svg" />
+    <Content Include="Images\icons\square\fla.svg" />
+    <Content Include="Images\icons\square\flac.svg" />
+    <Content Include="Images\icons\square\flv.svg" />
+    <Content Include="Images\icons\square\fnt.svg" />
+    <Content Include="Images\icons\square\folder.svg" />
+    <Content Include="Images\icons\square\fon.svg" />
+    <Content Include="Images\icons\square\gadget.svg" />
+    <Content Include="Images\icons\square\gdp.svg" />
+    <Content Include="Images\icons\square\gem.svg" />
+    <Content Include="Images\icons\square\gif.svg" />
+    <Content Include="Images\icons\square\gitattributes.svg" />
+    <Content Include="Images\icons\square\gitignore.svg" />
+    <Content Include="Images\icons\square\go.svg" />
+    <Content Include="Images\icons\square\gpg.svg" />
+    <Content Include="Images\icons\square\gpl.svg" />
+    <Content Include="Images\icons\square\gradle.svg" />
+    <Content Include="Images\icons\square\gz.svg" />
+    <Content Include="Images\icons\square\h.svg" />
+    <Content Include="Images\icons\square\handlebars.svg" />
+    <Content Include="Images\icons\square\hbs.svg" />
+    <Content Include="Images\icons\square\heic.svg" />
+    <Content Include="Images\icons\square\hlp.svg" />
+    <Content Include="Images\icons\square\hs.svg" />
+    <Content Include="Images\icons\square\hsl.svg" />
+    <Content Include="Images\icons\square\htm.svg" />
+    <Content Include="Images\icons\square\html.svg" />
+    <Content Include="Images\icons\square\ibooks.svg" />
+    <Content Include="Images\icons\square\icns.svg" />
+    <Content Include="Images\icons\square\ico.svg" />
+    <Content Include="Images\icons\square\ics.svg" />
+    <Content Include="Images\icons\square\idx.svg" />
+    <Content Include="Images\icons\square\iff.svg" />
+    <Content Include="Images\icons\square\ifo.svg" />
+    <Content Include="Images\icons\square\image.svg" />
+    <Content Include="Images\icons\square\img.svg" />
+    <Content Include="Images\icons\square\iml.svg" />
+    <Content Include="Images\icons\square\in.svg" />
+    <Content Include="Images\icons\square\inc.svg" />
+    <Content Include="Images\icons\square\indd.svg" />
+    <Content Include="Images\icons\square\inf.svg" />
+    <Content Include="Images\icons\square\info.svg" />
+    <Content Include="Images\icons\square\ini.svg" />
+    <Content Include="Images\icons\square\inv.svg" />
+    <Content Include="Images\icons\square\iso.svg" />
+    <Content Include="Images\icons\square\j2.svg" />
+    <Content Include="Images\icons\square\jar.svg" />
+    <Content Include="Images\icons\square\java.svg" />
+    <Content Include="Images\icons\square\jpe.svg" />
+    <Content Include="Images\icons\square\jpeg.svg" />
+    <Content Include="Images\icons\square\jpg.svg" />
+    <Content Include="Images\icons\square\js.svg" />
+    <Content Include="Images\icons\square\json.svg" />
+    <Content Include="Images\icons\square\jsp.svg" />
+    <Content Include="Images\icons\square\jsx.svg" />
+    <Content Include="Images\icons\square\key.svg" />
+    <Content Include="Images\icons\square\kf8.svg" />
+    <Content Include="Images\icons\square\kmk.svg" />
+    <Content Include="Images\icons\square\ksh.svg" />
+    <Content Include="Images\icons\square\kt.svg" />
+    <Content Include="Images\icons\square\kts.svg" />
+    <Content Include="Images\icons\square\kup.svg" />
+    <Content Include="Images\icons\square\less.svg" />
+    <Content Include="Images\icons\square\lex.svg" />
+    <Content Include="Images\icons\square\licx.svg" />
+    <Content Include="Images\icons\square\lisp.svg" />
+    <Content Include="Images\icons\square\lit.svg" />
+    <Content Include="Images\icons\square\lnk.svg" />
+    <Content Include="Images\icons\square\lock.svg" />
+    <Content Include="Images\icons\square\log.svg" />
+    <Content Include="Images\icons\square\lua.svg" />
+    <Content Include="Images\icons\square\m.svg" />
+    <Content Include="Images\icons\square\m2v.svg" />
+    <Content Include="Images\icons\square\m3u.svg" />
+    <Content Include="Images\icons\square\m3u8.svg" />
+    <Content Include="Images\icons\square\m4.svg" />
+    <Content Include="Images\icons\square\m4a.svg" />
+    <Content Include="Images\icons\square\m4r.svg" />
+    <Content Include="Images\icons\square\m4v.svg" />
+    <Content Include="Images\icons\square\map.svg" />
+    <Content Include="Images\icons\square\master.svg" />
+    <Content Include="Images\icons\square\mc.svg" />
+    <Content Include="Images\icons\square\md.svg" />
+    <Content Include="Images\icons\square\mdb.svg" />
+    <Content Include="Images\icons\square\mdf.svg" />
+    <Content Include="Images\icons\square\me.svg" />
+    <Content Include="Images\icons\square\mi.svg" />
+    <Content Include="Images\icons\square\mid.svg" />
+    <Content Include="Images\icons\square\midi.svg" />
+    <Content Include="Images\icons\square\mk.svg" />
+    <Content Include="Images\icons\square\mkv.svg" />
+    <Content Include="Images\icons\square\mm.svg" />
+    <Content Include="Images\icons\square\mng.svg" />
+    <Content Include="Images\icons\square\mo.svg" />
+    <Content Include="Images\icons\square\mobi.svg" />
+    <Content Include="Images\icons\square\mod.svg" />
+    <Content Include="Images\icons\square\mov.svg" />
+    <Content Include="Images\icons\square\mp2.svg" />
+    <Content Include="Images\icons\square\mp3.svg" />
+    <Content Include="Images\icons\square\mp4.svg" />
+    <Content Include="Images\icons\square\mpa.svg" />
+    <Content Include="Images\icons\square\mpd.svg" />
+    <Content Include="Images\icons\square\mpe.svg" />
+    <Content Include="Images\icons\square\mpeg.svg" />
+    <Content Include="Images\icons\square\mpg.svg" />
+    <Content Include="Images\icons\square\mpga.svg" />
+    <Content Include="Images\icons\square\mpp.svg" />
+    <Content Include="Images\icons\square\mpt.svg" />
+    <Content Include="Images\icons\square\msg.svg" />
+    <Content Include="Images\icons\square\msi.svg" />
+    <Content Include="Images\icons\square\msu.svg" />
+    <Content Include="Images\icons\square\nef.svg" />
+    <Content Include="Images\icons\square\nes.svg" />
+    <Content Include="Images\icons\square\nfo.svg" />
+    <Content Include="Images\icons\square\nix.svg" />
+    <Content Include="Images\icons\square\npmignore.svg" />
+    <Content Include="Images\icons\square\ocx.svg" />
+    <Content Include="Images\icons\square\odb.svg" />
+    <Content Include="Images\icons\square\ods.svg" />
+    <Content Include="Images\icons\square\odt.svg" />
+    <Content Include="Images\icons\square\ogg.svg" />
+    <Content Include="Images\icons\square\ogv.svg" />
+    <Content Include="Images\icons\square\ost.svg" />
+    <Content Include="Images\icons\square\otf.svg" />
+    <Content Include="Images\icons\square\ott.svg" />
+    <Content Include="Images\icons\square\ova.svg" />
+    <Content Include="Images\icons\square\ovf.svg" />
+    <Content Include="Images\icons\square\p12.svg" />
+    <Content Include="Images\icons\square\p7b.svg" />
+    <Content Include="Images\icons\square\pages.svg" />
+    <Content Include="Images\icons\square\part.svg" />
+    <Content Include="Images\icons\square\partial.svg" />
+    <Content Include="Images\icons\square\pcd.svg" />
+    <Content Include="Images\icons\square\pdb.svg" />
+    <Content Include="Images\icons\square\pdf.svg" />
+    <Content Include="Images\icons\square\pem.svg" />
+    <Content Include="Images\icons\square\pfx.svg" />
+    <Content Include="Images\icons\square\pgp.svg" />
+    <Content Include="Images\icons\square\ph.svg" />
+    <Content Include="Images\icons\square\phar.svg" />
+    <Content Include="Images\icons\square\php.svg" />
+    <Content Include="Images\icons\square\pid.svg" />
+    <Content Include="Images\icons\square\pkg.svg" />
+    <Content Include="Images\icons\square\pl.svg" />
+    <Content Include="Images\icons\square\plist.svg" />
+    <Content Include="Images\icons\square\pm.svg" />
+    <Content Include="Images\icons\square\png.svg" />
+    <Content Include="Images\icons\square\po.svg" />
+    <Content Include="Images\icons\square\pom.svg" />
+    <Content Include="Images\icons\square\pot.svg" />
+    <Content Include="Images\icons\square\potx.svg" />
+    <Content Include="Images\icons\square\pps.svg" />
+    <Content Include="Images\icons\square\ppsx.svg" />
+    <Content Include="Images\icons\square\ppt.svg" />
+    <Content Include="Images\icons\square\pptm.svg" />
+    <Content Include="Images\icons\square\pptx.svg" />
+    <Content Include="Images\icons\square\prop.svg" />
+    <Content Include="Images\icons\square\ps.svg" />
+    <Content Include="Images\icons\square\ps1.svg" />
+    <Content Include="Images\icons\square\psd.svg" />
+    <Content Include="Images\icons\square\psp.svg" />
+    <Content Include="Images\icons\square\pst.svg" />
+    <Content Include="Images\icons\square\pub.svg" />
+    <Content Include="Images\icons\square\py.svg" />
+    <Content Include="Images\icons\square\pyc.svg" />
+    <Content Include="Images\icons\square\qt.svg" />
+    <Content Include="Images\icons\square\ra.svg" />
+    <Content Include="Images\icons\square\ram.svg" />
+    <Content Include="Images\icons\square\rar.svg" />
+    <Content Include="Images\icons\square\raw.svg" />
+    <Content Include="Images\icons\square\rb.svg" />
+    <Content Include="Images\icons\square\rdf.svg" />
+    <Content Include="Images\icons\square\rdl.svg" />
+    <Content Include="Images\icons\square\reg.svg" />
+    <Content Include="Images\icons\square\resx.svg" />
+    <Content Include="Images\icons\square\retry.svg" />
+    <Content Include="Images\icons\square\rm.svg" />
+    <Content Include="Images\icons\square\rom.svg" />
+    <Content Include="Images\icons\square\rpm.svg" />
+    <Content Include="Images\icons\square\rpt.svg" />
+    <Content Include="Images\icons\square\rsa.svg" />
+    <Content Include="Images\icons\square\rss.svg" />
+    <Content Include="Images\icons\square\rst.svg" />
+    <Content Include="Images\icons\square\rtf.svg" />
+    <Content Include="Images\icons\square\ru.svg" />
+    <Content Include="Images\icons\square\rub.svg" />
+    <Content Include="Images\icons\square\sass.svg" />
+    <Content Include="Images\icons\square\scss.svg" />
+    <Content Include="Images\icons\square\sdf.svg" />
+    <Content Include="Images\icons\square\sed.svg" />
+    <Content Include="Images\icons\square\sh.svg" />
+    <Content Include="Images\icons\square\sit.svg" />
+    <Content Include="Images\icons\square\sitemap.svg" />
+    <Content Include="Images\icons\square\skin.svg" />
+    <Content Include="Images\icons\square\sldm.svg" />
+    <Content Include="Images\icons\square\sldx.svg" />
+    <Content Include="Images\icons\square\sln.svg" />
+    <Content Include="Images\icons\square\sol.svg" />
+    <Content Include="Images\icons\square\sphinx.svg" />
+    <Content Include="Images\icons\square\sql.svg" />
+    <Content Include="Images\icons\square\sqlite.svg" />
+    <Content Include="Images\icons\square\step.svg" />
+    <Content Include="Images\icons\square\stl.svg" />
+    <Content Include="Images\icons\square\svg.svg" />
+    <Content Include="Images\icons\square\swd.svg" />
+    <Content Include="Images\icons\square\swf.svg" />
+    <Content Include="Images\icons\square\swift.svg" />
+    <Content Include="Images\icons\square\swp.svg" />
+    <Content Include="Images\icons\square\sys.svg" />
+    <Content Include="Images\icons\square\tar.svg" />
+    <Content Include="Images\icons\square\tax.svg" />
+    <Content Include="Images\icons\square\tcsh.svg" />
+    <Content Include="Images\icons\square\tex.svg" />
+    <Content Include="Images\icons\square\tfignore.svg" />
+    <Content Include="Images\icons\square\tga.svg" />
+    <Content Include="Images\icons\square\tgz.svg" />
+    <Content Include="Images\icons\square\tif.svg" />
+    <Content Include="Images\icons\square\tiff.svg" />
+    <Content Include="Images\icons\square\tmp.svg" />
+    <Content Include="Images\icons\square\tmx.svg" />
+    <Content Include="Images\icons\square\torrent.svg" />
+    <Content Include="Images\icons\square\tpl.svg" />
+    <Content Include="Images\icons\square\ts.svg" />
+    <Content Include="Images\icons\square\tsv.svg" />
+    <Content Include="Images\icons\square\ttf.svg" />
+    <Content Include="Images\icons\square\twig.svg" />
+    <Content Include="Images\icons\square\txt.svg" />
+    <Content Include="Images\icons\square\udf.svg" />
+    <Content Include="Images\icons\square\vb.svg" />
+    <Content Include="Images\icons\square\vbproj.svg" />
+    <Content Include="Images\icons\square\vbs.svg" />
+    <Content Include="Images\icons\square\vcd.svg" />
+    <Content Include="Images\icons\square\vcf.svg" />
+    <Content Include="Images\icons\square\vcs.svg" />
+    <Content Include="Images\icons\square\vdi.svg" />
+    <Content Include="Images\icons\square\vdx.svg" />
+    <Content Include="Images\icons\square\vmdk.svg" />
+    <Content Include="Images\icons\square\vob.svg" />
+    <Content Include="Images\icons\square\vox.svg" />
+    <Content Include="Images\icons\square\vscodeignore.svg" />
+    <Content Include="Images\icons\square\vsd.svg" />
+    <Content Include="Images\icons\square\vss.svg" />
+    <Content Include="Images\icons\square\vst.svg" />
+    <Content Include="Images\icons\square\vsx.svg" />
+    <Content Include="Images\icons\square\vtx.svg" />
+    <Content Include="Images\icons\square\war.svg" />
+    <Content Include="Images\icons\square\wav.svg" />
+    <Content Include="Images\icons\square\wbk.svg" />
+    <Content Include="Images\icons\square\webinfo.svg" />
+    <Content Include="Images\icons\square\webm.svg" />
+    <Content Include="Images\icons\square\webp.svg" />
+    <Content Include="Images\icons\square\wma.svg" />
+    <Content Include="Images\icons\square\wmf.svg" />
+    <Content Include="Images\icons\square\wmv.svg" />
+    <Content Include="Images\icons\square\woff.svg" />
+    <Content Include="Images\icons\square\woff2.svg" />
+    <Content Include="Images\icons\square\wps.svg" />
+    <Content Include="Images\icons\square\wsf.svg" />
+    <Content Include="Images\icons\square\xaml.svg" />
+    <Content Include="Images\icons\square\xcf.svg" />
+    <Content Include="Images\icons\square\xfl.svg" />
+    <Content Include="Images\icons\square\xlm.svg" />
+    <Content Include="Images\icons\square\xls.svg" />
+    <Content Include="Images\icons\square\xlsm.svg" />
+    <Content Include="Images\icons\square\xlsx.svg" />
+    <Content Include="Images\icons\square\xlt.svg" />
+    <Content Include="Images\icons\square\xltm.svg" />
+    <Content Include="Images\icons\square\xltx.svg" />
+    <Content Include="Images\icons\square\xml.svg" />
+    <Content Include="Images\icons\square\xpi.svg" />
+    <Content Include="Images\icons\square\xps.svg" />
+    <Content Include="Images\icons\square\xrb.svg" />
+    <Content Include="Images\icons\square\xsd.svg" />
+    <Content Include="Images\icons\square\xsl.svg" />
+    <Content Include="Images\icons\square\xspf.svg" />
+    <Content Include="Images\icons\square\xz.svg" />
+    <Content Include="Images\icons\square\yaml.svg" />
+    <Content Include="Images\icons\square\yml.svg" />
+    <Content Include="Images\icons\square\z.svg" />
+    <Content Include="Images\icons\square\zip.svg" />
+    <Content Include="Images\icons\square\zsh.svg" />
+    <Content Include="Images\icons\ViewIcon1.gif" />
+    <Content Include="Images\icons\ViewIcon2.gif" />
+    <Content Include="Images\icons\vivid\3g2.svg" />
+    <Content Include="Images\icons\vivid\3ga.svg" />
+    <Content Include="Images\icons\vivid\3gp.svg" />
+    <Content Include="Images\icons\vivid\7z.svg" />
+    <Content Include="Images\icons\vivid\aa.svg" />
+    <Content Include="Images\icons\vivid\aac.svg" />
+    <Content Include="Images\icons\vivid\ac.svg" />
+    <Content Include="Images\icons\vivid\accdb.svg" />
+    <Content Include="Images\icons\vivid\accdt.svg" />
+    <Content Include="Images\icons\vivid\ace.svg" />
+    <Content Include="Images\icons\vivid\adn.svg" />
+    <Content Include="Images\icons\vivid\ai.svg" />
+    <Content Include="Images\icons\vivid\aif.svg" />
+    <Content Include="Images\icons\vivid\aifc.svg" />
+    <Content Include="Images\icons\vivid\aiff.svg" />
+    <Content Include="Images\icons\vivid\ait.svg" />
+    <Content Include="Images\icons\vivid\amr.svg" />
+    <Content Include="Images\icons\vivid\ani.svg" />
+    <Content Include="Images\icons\vivid\apk.svg" />
+    <Content Include="Images\icons\vivid\app.svg" />
+    <Content Include="Images\icons\vivid\applescript.svg" />
+    <Content Include="Images\icons\vivid\asax.svg" />
+    <Content Include="Images\icons\vivid\asc.svg" />
+    <Content Include="Images\icons\vivid\ascx.svg" />
+    <Content Include="Images\icons\vivid\asf.svg" />
+    <Content Include="Images\icons\vivid\ash.svg" />
+    <Content Include="Images\icons\vivid\ashx.svg" />
+    <Content Include="Images\icons\vivid\asm.svg" />
+    <Content Include="Images\icons\vivid\asmx.svg" />
+    <Content Include="Images\icons\vivid\asp.svg" />
+    <Content Include="Images\icons\vivid\aspx.svg" />
+    <Content Include="Images\icons\vivid\asx.svg" />
+    <Content Include="Images\icons\vivid\au.svg" />
+    <Content Include="Images\icons\vivid\aup.svg" />
+    <Content Include="Images\icons\vivid\avi.svg" />
+    <Content Include="Images\icons\vivid\axd.svg" />
+    <Content Include="Images\icons\vivid\aze.svg" />
+    <Content Include="Images\icons\vivid\bak.svg" />
+    <Content Include="Images\icons\vivid\bash.svg" />
+    <Content Include="Images\icons\vivid\bat.svg" />
+    <Content Include="Images\icons\vivid\bin.svg" />
+    <Content Include="Images\icons\vivid\blank.svg" />
+    <Content Include="Images\icons\vivid\bmp.svg" />
+    <Content Include="Images\icons\vivid\bowerrc.svg" />
+    <Content Include="Images\icons\vivid\bpg.svg" />
+    <Content Include="Images\icons\vivid\browser.svg" />
+    <Content Include="Images\icons\vivid\bz2.svg" />
+    <Content Include="Images\icons\vivid\bzempty.svg" />
+    <Content Include="Images\icons\vivid\c.svg" />
+    <Content Include="Images\icons\vivid\cab.svg" />
+    <Content Include="Images\icons\vivid\cad.svg" />
+    <Content Include="Images\icons\vivid\caf.svg" />
+    <Content Include="Images\icons\vivid\cal.svg" />
+    <Content Include="Images\icons\vivid\catalog.json" />
+    <Content Include="Images\icons\vivid\cd.svg" />
+    <Content Include="Images\icons\vivid\cdda.svg" />
+    <Content Include="Images\icons\vivid\cer.svg" />
+    <Content Include="Images\icons\vivid\cfg.svg" />
+    <Content Include="Images\icons\vivid\cfm.svg" />
+    <Content Include="Images\icons\vivid\cfml.svg" />
+    <Content Include="Images\icons\vivid\cgi.svg" />
+    <Content Include="Images\icons\vivid\chm.svg" />
+    <Content Include="Images\icons\vivid\class.svg" />
+    <Content Include="Images\icons\vivid\cmd.svg" />
+    <Content Include="Images\icons\vivid\code-workspace.svg" />
+    <Content Include="Images\icons\vivid\codekit.svg" />
+    <Content Include="Images\icons\vivid\coffee.svg" />
+    <Content Include="Images\icons\vivid\coffeelintignore.svg" />
+    <Content Include="Images\icons\vivid\com.svg" />
+    <Content Include="Images\icons\vivid\compile.svg" />
+    <Content Include="Images\icons\vivid\conf.svg" />
+    <Content Include="Images\icons\vivid\config.svg" />
+    <Content Include="Images\icons\vivid\cpp.svg" />
+    <Content Include="Images\icons\vivid\cptx.svg" />
+    <Content Include="Images\icons\vivid\cr2.svg" />
+    <Content Include="Images\icons\vivid\crdownload.svg" />
+    <Content Include="Images\icons\vivid\crt.svg" />
+    <Content Include="Images\icons\vivid\crypt.svg" />
+    <Content Include="Images\icons\vivid\cs.svg" />
+    <Content Include="Images\icons\vivid\csh.svg" />
+    <Content Include="Images\icons\vivid\cson.svg" />
+    <Content Include="Images\icons\vivid\csproj.svg" />
+    <Content Include="Images\icons\vivid\css.svg" />
+    <Content Include="Images\icons\vivid\csv.svg" />
+    <Content Include="Images\icons\vivid\cue.svg" />
+    <Content Include="Images\icons\vivid\cur.svg" />
+    <Content Include="Images\icons\vivid\dart.svg" />
+    <Content Include="Images\icons\vivid\dat.svg" />
+    <Content Include="Images\icons\vivid\data.svg" />
+    <Content Include="Images\icons\vivid\db.svg" />
+    <Content Include="Images\icons\vivid\dbf.svg" />
+    <Content Include="Images\icons\vivid\deb.svg" />
+    <Content Include="Images\icons\vivid\default.svg" />
+    <Content Include="Images\icons\vivid\dgn.svg" />
+    <Content Include="Images\icons\vivid\dist.svg" />
+    <Content Include="Images\icons\vivid\diz.svg" />
+    <Content Include="Images\icons\vivid\dll.svg" />
+    <Content Include="Images\icons\vivid\dmg.svg" />
+    <Content Include="Images\icons\vivid\dng.svg" />
+    <Content Include="Images\icons\vivid\doc.svg" />
+    <Content Include="Images\icons\vivid\docb.svg" />
+    <Content Include="Images\icons\vivid\docm.svg" />
+    <Content Include="Images\icons\vivid\docx.svg" />
+    <Content Include="Images\icons\vivid\dot.svg" />
+    <Content Include="Images\icons\vivid\dotm.svg" />
+    <Content Include="Images\icons\vivid\dotx.svg" />
+    <Content Include="Images\icons\vivid\download.svg" />
+    <Content Include="Images\icons\vivid\dpj.svg" />
+    <Content Include="Images\icons\vivid\dsn.svg" />
+    <Content Include="Images\icons\vivid\ds_store.svg" />
+    <Content Include="Images\icons\vivid\dtd.svg" />
+    <Content Include="Images\icons\vivid\dwg.svg" />
+    <Content Include="Images\icons\vivid\dxf.svg" />
+    <Content Include="Images\icons\vivid\editorconfig.svg" />
+    <Content Include="Images\icons\vivid\el.svg" />
+    <Content Include="Images\icons\vivid\elf.svg" />
+    <Content Include="Images\icons\vivid\eml.svg" />
+    <Content Include="Images\icons\vivid\enc.svg" />
+    <Content Include="Images\icons\vivid\eot.svg" />
+    <Content Include="Images\icons\vivid\eps.svg" />
+    <Content Include="Images\icons\vivid\epub.svg" />
+    <Content Include="Images\icons\vivid\eslintignore.svg" />
+    <Content Include="Images\icons\vivid\exe.svg" />
+    <Content Include="Images\icons\vivid\f4v.svg" />
+    <Content Include="Images\icons\vivid\fax.svg" />
+    <Content Include="Images\icons\vivid\fb2.svg" />
+    <Content Include="Images\icons\vivid\fla.svg" />
+    <Content Include="Images\icons\vivid\flac.svg" />
+    <Content Include="Images\icons\vivid\flv.svg" />
+    <Content Include="Images\icons\vivid\fnt.svg" />
+    <Content Include="Images\icons\vivid\folder.svg" />
+    <Content Include="Images\icons\vivid\fon.svg" />
+    <Content Include="Images\icons\vivid\gadget.svg" />
+    <Content Include="Images\icons\vivid\gdp.svg" />
+    <Content Include="Images\icons\vivid\gem.svg" />
+    <Content Include="Images\icons\vivid\gif.svg" />
+    <Content Include="Images\icons\vivid\gitattributes.svg" />
+    <Content Include="Images\icons\vivid\gitignore.svg" />
+    <Content Include="Images\icons\vivid\go.svg" />
+    <Content Include="Images\icons\vivid\gpg.svg" />
+    <Content Include="Images\icons\vivid\gpl.svg" />
+    <Content Include="Images\icons\vivid\gradle.svg" />
+    <Content Include="Images\icons\vivid\gz.svg" />
+    <Content Include="Images\icons\vivid\h.svg" />
+    <Content Include="Images\icons\vivid\handlebars.svg" />
+    <Content Include="Images\icons\vivid\hbs.svg" />
+    <Content Include="Images\icons\vivid\heic.svg" />
+    <Content Include="Images\icons\vivid\hlp.svg" />
+    <Content Include="Images\icons\vivid\hs.svg" />
+    <Content Include="Images\icons\vivid\hsl.svg" />
+    <Content Include="Images\icons\vivid\htm.svg" />
+    <Content Include="Images\icons\vivid\html.svg" />
+    <Content Include="Images\icons\vivid\ibooks.svg" />
+    <Content Include="Images\icons\vivid\icns.svg" />
+    <Content Include="Images\icons\vivid\ico.svg" />
+    <Content Include="Images\icons\vivid\ics.svg" />
+    <Content Include="Images\icons\vivid\idx.svg" />
+    <Content Include="Images\icons\vivid\iff.svg" />
+    <Content Include="Images\icons\vivid\ifo.svg" />
+    <Content Include="Images\icons\vivid\image.svg" />
+    <Content Include="Images\icons\vivid\img.svg" />
+    <Content Include="Images\icons\vivid\iml.svg" />
+    <Content Include="Images\icons\vivid\in.svg" />
+    <Content Include="Images\icons\vivid\inc.svg" />
+    <Content Include="Images\icons\vivid\indd.svg" />
+    <Content Include="Images\icons\vivid\inf.svg" />
+    <Content Include="Images\icons\vivid\info.svg" />
+    <Content Include="Images\icons\vivid\ini.svg" />
+    <Content Include="Images\icons\vivid\inv.svg" />
+    <Content Include="Images\icons\vivid\iso.svg" />
+    <Content Include="Images\icons\vivid\j2.svg" />
+    <Content Include="Images\icons\vivid\jar.svg" />
+    <Content Include="Images\icons\vivid\java.svg" />
+    <Content Include="Images\icons\vivid\jpe.svg" />
+    <Content Include="Images\icons\vivid\jpeg.svg" />
+    <Content Include="Images\icons\vivid\jpg.svg" />
+    <Content Include="Images\icons\vivid\js.svg" />
+    <Content Include="Images\icons\vivid\json.svg" />
+    <Content Include="Images\icons\vivid\jsp.svg" />
+    <Content Include="Images\icons\vivid\jsx.svg" />
+    <Content Include="Images\icons\vivid\key.svg" />
+    <Content Include="Images\icons\vivid\kf8.svg" />
+    <Content Include="Images\icons\vivid\kmk.svg" />
+    <Content Include="Images\icons\vivid\ksh.svg" />
+    <Content Include="Images\icons\vivid\kt.svg" />
+    <Content Include="Images\icons\vivid\kts.svg" />
+    <Content Include="Images\icons\vivid\kup.svg" />
+    <Content Include="Images\icons\vivid\less.svg" />
+    <Content Include="Images\icons\vivid\lex.svg" />
+    <Content Include="Images\icons\vivid\licx.svg" />
+    <Content Include="Images\icons\vivid\lisp.svg" />
+    <Content Include="Images\icons\vivid\lit.svg" />
+    <Content Include="Images\icons\vivid\lnk.svg" />
+    <Content Include="Images\icons\vivid\lock.svg" />
+    <Content Include="Images\icons\vivid\log.svg" />
+    <Content Include="Images\icons\vivid\lua.svg" />
+    <Content Include="Images\icons\vivid\m.svg" />
+    <Content Include="Images\icons\vivid\m2v.svg" />
+    <Content Include="Images\icons\vivid\m3u.svg" />
+    <Content Include="Images\icons\vivid\m3u8.svg" />
+    <Content Include="Images\icons\vivid\m4.svg" />
+    <Content Include="Images\icons\vivid\m4a.svg" />
+    <Content Include="Images\icons\vivid\m4r.svg" />
+    <Content Include="Images\icons\vivid\m4v.svg" />
+    <Content Include="Images\icons\vivid\map.svg" />
+    <Content Include="Images\icons\vivid\master.svg" />
+    <Content Include="Images\icons\vivid\mc.svg" />
+    <Content Include="Images\icons\vivid\md.svg" />
+    <Content Include="Images\icons\vivid\mdb.svg" />
+    <Content Include="Images\icons\vivid\mdf.svg" />
+    <Content Include="Images\icons\vivid\me.svg" />
+    <Content Include="Images\icons\vivid\mi.svg" />
+    <Content Include="Images\icons\vivid\mid.svg" />
+    <Content Include="Images\icons\vivid\midi.svg" />
+    <Content Include="Images\icons\vivid\mk.svg" />
+    <Content Include="Images\icons\vivid\mkv.svg" />
+    <Content Include="Images\icons\vivid\mm.svg" />
+    <Content Include="Images\icons\vivid\mng.svg" />
+    <Content Include="Images\icons\vivid\mo.svg" />
+    <Content Include="Images\icons\vivid\mobi.svg" />
+    <Content Include="Images\icons\vivid\mod.svg" />
+    <Content Include="Images\icons\vivid\mov.svg" />
+    <Content Include="Images\icons\vivid\mp2.svg" />
+    <Content Include="Images\icons\vivid\mp3.svg" />
+    <Content Include="Images\icons\vivid\mp4.svg" />
+    <Content Include="Images\icons\vivid\mpa.svg" />
+    <Content Include="Images\icons\vivid\mpd.svg" />
+    <Content Include="Images\icons\vivid\mpe.svg" />
+    <Content Include="Images\icons\vivid\mpeg.svg" />
+    <Content Include="Images\icons\vivid\mpg.svg" />
+    <Content Include="Images\icons\vivid\mpga.svg" />
+    <Content Include="Images\icons\vivid\mpp.svg" />
+    <Content Include="Images\icons\vivid\mpt.svg" />
+    <Content Include="Images\icons\vivid\msg.svg" />
+    <Content Include="Images\icons\vivid\msi.svg" />
+    <Content Include="Images\icons\vivid\msu.svg" />
+    <Content Include="Images\icons\vivid\nef.svg" />
+    <Content Include="Images\icons\vivid\nes.svg" />
+    <Content Include="Images\icons\vivid\nfo.svg" />
+    <Content Include="Images\icons\vivid\nix.svg" />
+    <Content Include="Images\icons\vivid\npmignore.svg" />
+    <Content Include="Images\icons\vivid\ocx.svg" />
+    <Content Include="Images\icons\vivid\odb.svg" />
+    <Content Include="Images\icons\vivid\ods.svg" />
+    <Content Include="Images\icons\vivid\odt.svg" />
+    <Content Include="Images\icons\vivid\ogg.svg" />
+    <Content Include="Images\icons\vivid\ogv.svg" />
+    <Content Include="Images\icons\vivid\ost.svg" />
+    <Content Include="Images\icons\vivid\otf.svg" />
+    <Content Include="Images\icons\vivid\ott.svg" />
+    <Content Include="Images\icons\vivid\ova.svg" />
+    <Content Include="Images\icons\vivid\ovf.svg" />
+    <Content Include="Images\icons\vivid\p12.svg" />
+    <Content Include="Images\icons\vivid\p7b.svg" />
+    <Content Include="Images\icons\vivid\pages.svg" />
+    <Content Include="Images\icons\vivid\part.svg" />
+    <Content Include="Images\icons\vivid\pcd.svg" />
+    <Content Include="Images\icons\vivid\pdb.svg" />
+    <Content Include="Images\icons\vivid\pdf.svg" />
+    <Content Include="Images\icons\vivid\pem.svg" />
+    <Content Include="Images\icons\vivid\pfx.svg" />
+    <Content Include="Images\icons\vivid\pgp.svg" />
+    <Content Include="Images\icons\vivid\ph.svg" />
+    <Content Include="Images\icons\vivid\phar.svg" />
+    <Content Include="Images\icons\vivid\php.svg" />
+    <Content Include="Images\icons\vivid\pid.svg" />
+    <Content Include="Images\icons\vivid\pkg.svg" />
+    <Content Include="Images\icons\vivid\pl.svg" />
+    <Content Include="Images\icons\vivid\plist.svg" />
+    <Content Include="Images\icons\vivid\pm.svg" />
+    <Content Include="Images\icons\vivid\png.svg" />
+    <Content Include="Images\icons\vivid\po.svg" />
+    <Content Include="Images\icons\vivid\pom.svg" />
+    <Content Include="Images\icons\vivid\pot.svg" />
+    <Content Include="Images\icons\vivid\potx.svg" />
+    <Content Include="Images\icons\vivid\pps.svg" />
+    <Content Include="Images\icons\vivid\ppsx.svg" />
+    <Content Include="Images\icons\vivid\ppt.svg" />
+    <Content Include="Images\icons\vivid\pptm.svg" />
+    <Content Include="Images\icons\vivid\pptx.svg" />
+    <Content Include="Images\icons\vivid\prop.svg" />
+    <Content Include="Images\icons\vivid\ps.svg" />
+    <Content Include="Images\icons\vivid\ps1.svg" />
+    <Content Include="Images\icons\vivid\psd.svg" />
+    <Content Include="Images\icons\vivid\psp.svg" />
+    <Content Include="Images\icons\vivid\pst.svg" />
+    <Content Include="Images\icons\vivid\pub.svg" />
+    <Content Include="Images\icons\vivid\py.svg" />
+    <Content Include="Images\icons\vivid\pyc.svg" />
+    <Content Include="Images\icons\vivid\qt.svg" />
+    <Content Include="Images\icons\vivid\ra.svg" />
+    <Content Include="Images\icons\vivid\ram.svg" />
+    <Content Include="Images\icons\vivid\rar.svg" />
+    <Content Include="Images\icons\vivid\raw.svg" />
+    <Content Include="Images\icons\vivid\rb.svg" />
+    <Content Include="Images\icons\vivid\rdf.svg" />
+    <Content Include="Images\icons\vivid\rdl.svg" />
+    <Content Include="Images\icons\vivid\reg.svg" />
+    <Content Include="Images\icons\vivid\resx.svg" />
+    <Content Include="Images\icons\vivid\retry.svg" />
+    <Content Include="Images\icons\vivid\rm.svg" />
+    <Content Include="Images\icons\vivid\rom.svg" />
+    <Content Include="Images\icons\vivid\rpm.svg" />
+    <Content Include="Images\icons\vivid\rpt.svg" />
+    <Content Include="Images\icons\vivid\rsa.svg" />
+    <Content Include="Images\icons\vivid\rss.svg" />
+    <Content Include="Images\icons\vivid\rst.svg" />
+    <Content Include="Images\icons\vivid\rtf.svg" />
+    <Content Include="Images\icons\vivid\ru.svg" />
+    <Content Include="Images\icons\vivid\rub.svg" />
+    <Content Include="Images\icons\vivid\sass.svg" />
+    <Content Include="Images\icons\vivid\scss.svg" />
+    <Content Include="Images\icons\vivid\sdf.svg" />
+    <Content Include="Images\icons\vivid\sed.svg" />
+    <Content Include="Images\icons\vivid\sh.svg" />
+    <Content Include="Images\icons\vivid\sit.svg" />
+    <Content Include="Images\icons\vivid\sitemap.svg" />
+    <Content Include="Images\icons\vivid\skin.svg" />
+    <Content Include="Images\icons\vivid\sldm.svg" />
+    <Content Include="Images\icons\vivid\sldx.svg" />
+    <Content Include="Images\icons\vivid\sln.svg" />
+    <Content Include="Images\icons\vivid\sol.svg" />
+    <Content Include="Images\icons\vivid\sphinx.svg" />
+    <Content Include="Images\icons\vivid\sql.svg" />
+    <Content Include="Images\icons\vivid\sqlite.svg" />
+    <Content Include="Images\icons\vivid\step.svg" />
+    <Content Include="Images\icons\vivid\stl.svg" />
+    <Content Include="Images\icons\vivid\svg.svg" />
+    <Content Include="Images\icons\vivid\swd.svg" />
+    <Content Include="Images\icons\vivid\swf.svg" />
+    <Content Include="Images\icons\vivid\swift.svg" />
+    <Content Include="Images\icons\vivid\swp.svg" />
+    <Content Include="Images\icons\vivid\sys.svg" />
+    <Content Include="Images\icons\vivid\tar.svg" />
+    <Content Include="Images\icons\vivid\tax.svg" />
+    <Content Include="Images\icons\vivid\tcsh.svg" />
+    <Content Include="Images\icons\vivid\tex.svg" />
+    <Content Include="Images\icons\vivid\tfignore.svg" />
+    <Content Include="Images\icons\vivid\tga.svg" />
+    <Content Include="Images\icons\vivid\tgz.svg" />
+    <Content Include="Images\icons\vivid\tif.svg" />
+    <Content Include="Images\icons\vivid\tiff.svg" />
+    <Content Include="Images\icons\vivid\tmp.svg" />
+    <Content Include="Images\icons\vivid\tmx.svg" />
+    <Content Include="Images\icons\vivid\torrent.svg" />
+    <Content Include="Images\icons\vivid\tpl.svg" />
+    <Content Include="Images\icons\vivid\ts.svg" />
+    <Content Include="Images\icons\vivid\tsv.svg" />
+    <Content Include="Images\icons\vivid\ttf.svg" />
+    <Content Include="Images\icons\vivid\twig.svg" />
+    <Content Include="Images\icons\vivid\txt.svg" />
+    <Content Include="Images\icons\vivid\udf.svg" />
+    <Content Include="Images\icons\vivid\vb.svg" />
+    <Content Include="Images\icons\vivid\vbproj.svg" />
+    <Content Include="Images\icons\vivid\vbs.svg" />
+    <Content Include="Images\icons\vivid\vcd.svg" />
+    <Content Include="Images\icons\vivid\vcf.svg" />
+    <Content Include="Images\icons\vivid\vcs.svg" />
+    <Content Include="Images\icons\vivid\vdi.svg" />
+    <Content Include="Images\icons\vivid\vdx.svg" />
+    <Content Include="Images\icons\vivid\vmdk.svg" />
+    <Content Include="Images\icons\vivid\vob.svg" />
+    <Content Include="Images\icons\vivid\vox.svg" />
+    <Content Include="Images\icons\vivid\vscodeignore.svg" />
+    <Content Include="Images\icons\vivid\vsd.svg" />
+    <Content Include="Images\icons\vivid\vss.svg" />
+    <Content Include="Images\icons\vivid\vst.svg" />
+    <Content Include="Images\icons\vivid\vsx.svg" />
+    <Content Include="Images\icons\vivid\vtx.svg" />
+    <Content Include="Images\icons\vivid\war.svg" />
+    <Content Include="Images\icons\vivid\wav.svg" />
+    <Content Include="Images\icons\vivid\wbk.svg" />
+    <Content Include="Images\icons\vivid\webinfo.svg" />
+    <Content Include="Images\icons\vivid\webm.svg" />
+    <Content Include="Images\icons\vivid\webp.svg" />
+    <Content Include="Images\icons\vivid\wma.svg" />
+    <Content Include="Images\icons\vivid\wmf.svg" />
+    <Content Include="Images\icons\vivid\wmv.svg" />
+    <Content Include="Images\icons\vivid\woff.svg" />
+    <Content Include="Images\icons\vivid\woff2.svg" />
+    <Content Include="Images\icons\vivid\wps.svg" />
+    <Content Include="Images\icons\vivid\wsf.svg" />
+    <Content Include="Images\icons\vivid\xaml.svg" />
+    <Content Include="Images\icons\vivid\xcf.svg" />
+    <Content Include="Images\icons\vivid\xfl.svg" />
+    <Content Include="Images\icons\vivid\xlm.svg" />
+    <Content Include="Images\icons\vivid\xls.svg" />
+    <Content Include="Images\icons\vivid\xlsm.svg" />
+    <Content Include="Images\icons\vivid\xlsx.svg" />
+    <Content Include="Images\icons\vivid\xlt.svg" />
+    <Content Include="Images\icons\vivid\xltm.svg" />
+    <Content Include="Images\icons\vivid\xltx.svg" />
+    <Content Include="Images\icons\vivid\xml.svg" />
+    <Content Include="Images\icons\vivid\xpi.svg" />
+    <Content Include="Images\icons\vivid\xps.svg" />
+    <Content Include="Images\icons\vivid\xrb.svg" />
+    <Content Include="Images\icons\vivid\xsd.svg" />
+    <Content Include="Images\icons\vivid\xsl.svg" />
+    <Content Include="Images\icons\vivid\xspf.svg" />
+    <Content Include="Images\icons\vivid\xz.svg" />
+    <Content Include="Images\icons\vivid\yaml.svg" />
+    <Content Include="Images\icons\vivid\yml.svg" />
+    <Content Include="Images\icons\vivid\z.svg" />
+    <Content Include="Images\icons\vivid\zip.svg" />
+    <Content Include="Images\icons\vivid\zsh.svg" />
+    <Content Include="Images\icons\warning.gif" />
+    <Content Include="Images\icons\_blank.png" />
+    <Content Include="Images\icons\_page.png" />
+    <Content Include="Images\loading.gif" />
+    <Content Include="Images\packet.png" />
+    <Content Include="Images\pdftemplate_landscape.png" />
+    <Content Include="Images\pdftemplate_portrait.png" />
+    <Content Include="Images\results-background-008000.jpg" />
+    <Content Include="Images\results-background-00FFFF.jpg" />
+    <Content Include="Images\results-background-2170CD.jpg" />
+    <Content Include="Images\results-background-808080.jpg" />
+    <Content Include="Images\results-background-990000.jpg" />
+    <Content Include="Images\results-background-C8C800.jpg" />
+    <Content Include="Images\results-background-FF00FF.jpg" />
+    <Content Include="Images\results-background-FF8000.jpg" />
+    <Content Include="Images\row-anchor.png" />
+    <Content Include="Images\sortneutral.png" />
+    <Content Include="Images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Images\ui-icons_222222_256x240.png" />
+    <Content Include="BulkImport.ascx" />
+    <Content Include="LinkCreator.ascx" />
+    <Content Include="GetDocuments.ascx" />
+    <Content Include="Scripts\jquery.auto-complete.css" />
+    <Content Include="Scripts\jquery.auto-complete.js" />
+    <Content Include="Scripts\jquery.blockUI.js" />
+    <Content Include="Scripts\jquery.highlightFade.js" />
+    <Content Include="Scripts\jquery.tablednd_0_5.js" />
+    <Content Include="Scripts\sortElements.js" />
+    <Content Include="TagList.ascx" />
+    <Content Include="PacketList.ascx" />
+    <Content Include="UploadReport.ascx" />
+    <Content Include="DocumentSearchResults.ascx" />
+    <Content Include="LetterFilter.ascx" />
+    <Content Include="License.txt" />
+    <Content Include="module.css" />
+    <Content Include="PacketView.ascx" />
+    <Content Include="PacketSettings.ascx" />
+    <Content Include="ReleaseNotes.txt" />
+    <Content Include="Scripts\add_bookmark.jquery.js" />
+    <Content Include="DMSController.asmx" />
+    <Content Include="Scripts\jquery.custom-file-input.js" />
+    <Content Include="Settings.ascx" />
+    <Content Include="DocumentList.ascx" />
+    <Content Include="Preview.ascx" />
+    <Content Include="View.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DMS.dnn">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BuildScripts\ModulePackage.targets" />
+    <Content Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\View.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Settings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="web.config" />
+    <Content Include="SearchTerms.ashx" />
+    <Content Include="GetFile.ashx" />
+    <Content Include="GetIcon.ashx" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\PacketView.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\PacketSettings.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\DocumentList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\UploadReport.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\LinkCreator.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Preview.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\TagList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\PacketList.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\BulkImport.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <EmbeddedResource Include="DMSUploadReport.resx">
+      <DependentUpon>DMSUploadReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Acrobat">
+      <Guid>{E64169B3-3592-47D2-816E-602C5C13F328}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>
+          </DevelopmentServerVPath>
+          <IISUrl>http://dnndev.me/desktopmodules/Gafware/DMS</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://dnndev.me</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>DMS</DNNFileName>
+    <PackageName>DMS</PackageName>
+    <MSBuildCommunityTasksPath>$(SolutionDir)\packages\MSBuildTasks.1.4.0.61\tools</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="BuildScripts\ModulePackage.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="PackageModule">
+  </Target>
+</Project>

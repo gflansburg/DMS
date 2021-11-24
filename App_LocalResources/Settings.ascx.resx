@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>Document Management System Settings</value>
+  </data>
+  <data name="Categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="CategoryName.Text" xml:space="preserve">
+    <value>Category Heading</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Document Management System Settings</value>
+  </data>
+  <data name="lblRole.Help" xml:space="preserve">
+    <value>Role of DMS Users</value>
+  </data>
+  <data name="lblRole.Text" xml:space="preserve">
+    <value>DMS User Role</value>
+  </data>
+  <data name="CancelEdit.Text" xml:space="preserve">
+    <value>Cancel Edit</value>
+  </data>
+  <data name="EditCategory.Text" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="SaveCategory.Text" xml:space="preserve">
+    <value>Save Category</value>
+  </data>
+  <data name="DocumentTypes.Text" xml:space="preserve">
+    <value>Document Types</value>
+  </data>
+  <data name="lblFileNotifications.Help" xml:space="preserve">
+    <value>Role of users for new file notification</value>
+  </data>
+  <data name="lblFileNotifications.Text" xml:space="preserve">
+    <value>Notifications Role</value>
+  </data>
+  <data name="lblFileNotificationSubject.Help" xml:space="preserve">
+    <value>The subject of the file notification message that is sent to the new file notification group users.</value>
+  </data>
+  <data name="lblFileNotificationSubject.Text" xml:space="preserve">
+    <value>File Notification Email Subject</value>
+  </data>
+  <data name="lblReplyEmail.Help" xml:space="preserve">
+    <value>The body of the file notification message that is sent to the new file notification group users.</value>
+  </data>
+  <data name="lblReplyEmail.Text" xml:space="preserve">
+    <value>File Notification Email Body</value>
+  </data>
+  <data name="lblConnectionString.Help" xml:space="preserve">
+    <value>SQL connection string to a shared database server</value>
+  </data>
+  <data name="lblConnectionString.Text" xml:space="preserve">
+    <value>Connection String</value>
+  </data>
+  <data name="lblSharedServer.Help" xml:space="preserve">
+    <value>Are you connecting to a shared database across DNN portals?</value>
+  </data>
+  <data name="lblSharedServer.Text" xml:space="preserve">
+    <value>Shared Database</value>
+  </data>
+  <data name="lblCategory.Help" xml:space="preserve">
+    <value>Display name for creating groups (i.e. Category, Type, Location, etc.)</value>
+  </data>
+  <data name="lblCategory.Text" xml:space="preserve">
+    <value>Category Name</value>
+  </data>
+  <data name="lblSaveLocalFile.Help" xml:space="preserve">
+    <value>Save a copy of the file to the local file system. Useful when allowing Google to crawl and index the files for Google search.</value>
+  </data>
+  <data name="lblSaveLocalFile.Text" xml:space="preserve">
+    <value>Save Local File</value>
+  </data>
+  <data name="lblCancelSettings.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="lblUpdateSettings.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="lblInstructions.Text" xml:space="preserve">
+    <value>Instructions</value>
+  </data>
+  <data name="lblShowInstructions.Text" xml:space="preserve">
+    <value>Show Search Instructions</value>
+  </data>
+  <data name="lblShowTips.Text" xml:space="preserve">
+    <value>Show Search Tips</value>
+  </data>
+  <data name="lblTheme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="lblThumbnailSize.Text" xml:space="preserve">
+    <value>Thumbnail Size</value>
+  </data>
+  <data name="lblThumbnailType.Text" xml:space="preserve">
+    <value>Thumbnail Theme</value>
+  </data>
+  <data name="lblPortalWideRepository.Help" xml:space="preserve">
+    <value>Is this repository for this page only or for the entire portal?</value>
+  </data>
+  <data name="lblPortalWideRepository.Text" xml:space="preserve">
+    <value>Portal Wide Repository</value>
+  </data>
+</root>

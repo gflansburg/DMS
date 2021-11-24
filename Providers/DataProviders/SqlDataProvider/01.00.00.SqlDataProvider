@@ -1,0 +1,2863 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings](
+		[PortalID] [int] NOT NULL,
+		[PortalWideRepository] [bit] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_PortalSettings] PRIMARY KEY CLUSTERED 
+	(
+		[PortalID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PortalSettings_PortalWideRepository]  DEFAULT ((0)) FOR [PortalWideRepository]
+END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings]) = 0
+BEGIN
+	DECLARE @PortalID int
+	DECLARE db_cursor CURSOR FOR
+	SELECT [PortalID] FROM {databaseOwner}[{objectQualifier}vw_Portals]
+	OPEN db_cursor
+	FETCH NEXT FROM db_cursor INTO @PortalID
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings](PortalID, PortalWideRepository) VALUES(@PortalID, 1)
+		FETCH NEXT FROM db_cursor INTO @PortalID
+	END
+	CLOSE db_cursor
+	DEALLOCATE db_cursor
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Repository]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository](
+		[RepositoryID] [int] IDENTITY(1,1) NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+		[UserRoleID] [int] NOT NULL,
+		[FileNotificationsRoleID] [int] NOT NULL,
+		[NewFileSubject] [nvarchar](255) NOT NULL,
+		[NewFileBody] [nvarchar](max) NOT NULL,
+		[CategoryName] [nvarchar](255) NULL,
+		[SaveLocalFile] [bit] NOT NULL,
+		[ShowTips] [bit] NOT NULL,
+		[ShowInstructions] [bit] NOT NULL,
+		[Instructions] [nvarchar](255) NOT NULL,
+		[Theme] [nvarchar](50) NOT NULL,
+		[ThumbnailType] [nvarchar](50) NOT NULL,
+		[ThumbnailSize] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Repository] PRIMARY KEY CLUSTERED 
+	(
+		[RepositoryID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_SaveLocalFile]  DEFAULT ((0)) FOR [SaveLocalFile]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_ShowTips]  DEFAULT ((1)) FOR [ShowTips]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_ShowInstructions]  DEFAULT ((1)) FOR [ShowInstructions]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_Instructions]  DEFAULT ('To view all documents, click "Go!" without typing a keyword.') FOR [Instructions]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_Theme]  DEFAULT ('red') FOR [Theme]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_ThumbnailType]  DEFAULT ('classic') FOR [ThumbnailType]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_ThumbnailSize]  DEFAULT ((128)) FOR [ThumbnailSize]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CategoryName]  DEFAULT ('Category') FOR [CategoryName]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](
+		[FileTypeID] [int] IDENTITY(1,1) NOT NULL,
+		[FileTypeName] [nvarchar](100) NOT NULL,
+		[FileTypeShortName] [nvarchar](10) NOT NULL,
+		[FileTypeExt] [nvarchar](255) NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_FileTypes] PRIMARY KEY CLUSTERED 
+	(
+		[FileTypeID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileTypes_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory](
+		[DocumentCategoryID] [int] IDENTITY(1,1) NOT NULL,
+		[DocumentID] [int] NOT NULL,
+		[CategoryID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_DocumentCategory] PRIMARY KEY CLUSTERED 
+	(
+		[DocumentCategoryID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion](
+		[FileVersionID] [int] IDENTITY(1,1) NOT NULL,
+		[FileID] [int] NOT NULL,
+		[Contents] [varbinary](max) NULL,
+		[Version] [int] NOT NULL,
+		[DateUploaded] [datetime] NOT NULL,
+		[UploaderID] [int] NOT NULL,
+		[WebpageURL] [varchar](255) NULL,
+		[IPAddress] [varchar](16) NOT NULL,
+		[Filesize] [int] NOT NULL,
+		[Thumbnail] [varbinary](MAX) NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_FileVersion] PRIMARY KEY CLUSTERED 
+	(
+		[FileVersionID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_Version]  DEFAULT ((1000000)) FOR [Version]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_DateUploaded]  DEFAULT (getdate()) FOR [DateUploaded]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_Filesize]  DEFAULT ((0)) FOR [Filesize]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms](
+		[SearchTermID] [int] IDENTITY(1,1) NOT NULL,
+		[Term] [nvarchar](255) NOT NULL,
+		[Frequency] [int] NOT NULL,
+		[DateAdded] [datetime] NOT NULL,
+		[LastDate] [datetime] NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_SearchTerms] PRIMARY KEY CLUSTERED 
+	(
+		[SearchTermID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchTerms_Frequency]  DEFAULT ((1)) FOR [Frequency]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchTerms_DateAdded]  DEFAULT (getdate()) FOR [DateAdded]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchTerms_LastDate]  DEFAULT (getdate()) FOR [LastDate]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchTerms_PortalID]  DEFAULT ((0)) FOR [PortalID]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchTerms_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults](
+		[SearchID] [int] IDENTITY(1,1) NOT NULL,
+		[SearchTerms] [nvarchar](255) NOT NULL,
+		[SearchDate] [datetime] NOT NULL,
+		[ResultCount] [int] NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_SearchResults] PRIMARY KEY CLUSTERED 
+	(
+		[SearchID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 20) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchResults_ResultCount]  DEFAULT ((0)) FOR [ResultCount]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchResults_SearchDate]  DEFAULT (getdate()) FOR [SearchDate]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchResults_PortalID]  DEFAULT ((0)) FOR [PortalID]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_SearchResults_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches](
+		[SearchID] [int] IDENTITY(1,1) NOT NULL,
+		[SearchTerms] [nvarchar](255) NOT NULL,
+		[SearchDate] [datetime] NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_NoResultSearches] PRIMARY KEY CLUSTERED 
+	(
+		[SearchID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 20) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_NoResultSearches_SearchDate]  DEFAULT (getdate()) FOR [SearchDate]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_NoResultSearches_PortalID]  DEFAULT ((0)) FOR [PortalID]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_NoResultSearches_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Category]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Category](
+		[CategoryID] [int] IDENTITY(1,1) NOT NULL,
+		[Category] [nvarchar](50) NULL,
+		[RoleId] [int] NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Category] PRIMARY KEY CLUSTERED 
+	(
+		[CategoryID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Category_RoleId]  DEFAULT ((0)) FOR [RoleId]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Category_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Document]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document](
+		[DocumentID] [int] IDENTITY(1,1) NOT NULL,
+		[CreatorID] [int] NULL,
+		[DocumentName] [nvarchar](255) NULL,
+		[ShortDescription] [nvarchar](1250) NULL,
+		[DocumentDetails] [nvarchar](4000) NULL,
+		[AdminComments] [nvarchar](2500) NULL,
+		[ManagerToolkit] [nvarchar](3) NULL,
+		[ActivationDate] [datetime] NULL,
+		[ExpirationDate] [datetime] NULL,
+		[DateCreated] [datetime] NULL,
+		[DateLastModified] [datetime] NULL,
+		[IPAddress] [nvarchar](16) NULL,
+		[IsSearchable] [nvarchar](3) NULL,
+		[UseCategoryRoles] [bit] NOT NULL,
+		[SecurityRoleID] [int] NOT NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Document] PRIMARY KEY CLUSTERED 
+	(
+		[DocumentID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 20) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_PortalID]  DEFAULT ((0)) FOR [PortalID]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_UseCategoryRoles]  DEFAULT ((1)) FOR [UseCategoryRoles]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_SecurityRoleID]  DEFAULT ((-1)) FOR [SecurityRoleID]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag](
+		[DocumentTagID] [int] IDENTITY(1,1) NOT NULL,
+		[DocumentID] [int] NOT NULL,
+		[TagID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_DocumentTag] PRIMARY KEY CLUSTERED 
+	(
+		[DocumentTagID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_File]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_File](
+		[FileID] [int] IDENTITY(1,1) NOT NULL,
+		[StatusID] [int] NULL,
+		[DocumentID] [int] NULL,
+		[UploadDirectory] [nvarchar](255) NULL,
+		[FileType] [nvarchar](10) NULL,
+		[FileName] [nvarchar](255) NULL,
+		[MimeType] [nvarchar](100) NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_File] PRIMARY KEY CLUSTERED 
+	(
+		[FileID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Packet]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet](
+		[PacketID] [int] IDENTITY(1,1) NOT NULL,
+		[UserID] [int] NOT NULL,
+		[Name] [nvarchar](50) NOT NULL,
+		[ShowDescription] [bit] NOT NULL,
+		[ShowPacketDescription] [bit] NOT NULL,
+		[Description] [nvarchar](2000) NULL,
+		[AdminComments] [nvarchar](2000) NULL,
+		[CustomHeader] [nvarchar](100) NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Packet] PRIMARY KEY CLUSTERED 
+	(
+		[PacketID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_PortalID]  DEFAULT ((0)) FOR [PortalID]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc](
+		[PacketDocID] [int] IDENTITY(1,1) NOT NULL,
+		[PacketID] [int] NOT NULL,
+		[DocumentID] [int] NOT NULL,
+		[FileID] [int] NOT NULL,
+		[SortOrder] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_PacketDoc] PRIMARY KEY CLUSTERED 
+	(
+		[PacketDocID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PacketDoc_SortOrder]  DEFAULT ((0)) FOR [SortOrder]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag](
+		[PacketTagID] [int] IDENTITY(1,1) NOT NULL,
+		[PacketID] [int] NOT NULL,
+		[TagID] [int] NOT NULL,
+		[SortOrder] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_PacketTag] PRIMARY KEY CLUSTERED 
+	(
+		[PacketTagID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PacketTag_SortOrder]  DEFAULT ((0)) FOR [SortOrder]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Status]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Status](
+		[StatusID] [int] IDENTITY(1,1) NOT NULL,
+		[StatusName] [nvarchar](20) NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Status] PRIMARY KEY CLUSTERED 
+	(
+		[StatusID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+END
+GO
+
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Tag]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag](
+		[TagID] [int] IDENTITY(1,1) NOT NULL,
+		[TagName] [nvarchar](50) NULL,
+		[IsPrivate] [nvarchar](3) NULL,
+		[Weight] [int] NULL,
+		[PortalID] [int] NOT NULL,
+		[TabModuleID] [int] NOT NULL,
+	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Tag] PRIMARY KEY CLUSTERED 
+	(
+		[TagID] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Tag_Weight]  DEFAULT ((0)) FOR [Weight]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Tag_PortalID]  DEFAULT ((0)) FOR [PortalID]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Tag_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+END
+GO
+
+IF (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Status]) = 0
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Status](StatusName) VALUES('Active')
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Status](StatusName) VALUES('Inactive')
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Split]') and OBJECTPROPERTY(id, N'IsTableFunction') = 1)
+BEGIN
+	DROP FUNCTION {databaseOwner}[{objectQualifier}Gafware_DMS_Split]
+END
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Gafware_DMS_Split](@String varchar(4000), @Delimiter char(1))       
+RETURNS @temptable TABLE (items varchar(4000))       
+AS       
+BEGIN       
+    DECLARE @idx int       
+    DECLARE @slice varchar(4000)       
+          
+    SELECT @idx = 1
+        IF LEN(@String) < 1 or @String IS NULL RETURN
+
+    WHILE @idx != 0
+    BEGIN       
+        SET @idx = CHARINDEX(@Delimiter,@String)       
+        IF @idx != 0       
+            SET @slice = LEFT(@String,@idx - 1)       
+        ELSE       
+            SET @slice = @String       
+              
+        IF(len(@slice)>0)  
+            INSERT INTO @temptable(Items) VALUES(@slice)       
+      
+        SET @String = RIGHT(@String, LEN(@String) - @idx)       
+        IF LEN(@String) = 0 BREAK       
+    END   
+	RETURN       
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_ChangeDocumentOwnership]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangeDocumentOwnership]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangeDocumentOwnership]
+	-- Add the parameters for the stored procedure here
+	@CurrentOwnerID int,
+	@NewOwnerID int,
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
+	SET	CreatorID = @NewOwnerID
+	WHERE CreatorID = @CurrentOwnerID AND PortalID = @PortalID
+	
+	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
+	SET {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion].UploaderID = @NewOwnerID
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] fv
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_File] f ON f.FileID = fv.FileID
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON d.DocumentID = f.DocumentID
+	WHERE fv.UploaderID = @CurrentOwnerID AND d.PortalID = @PortalID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_ChangePacketOwnership]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangePacketOwnership]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangePacketOwnership]
+	-- Add the parameters for the stored procedure here
+	@CurrentOwnerID int,
+	@NewOwnerID int,
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet]
+	SET	UserID = @NewOwnerID
+	WHERE UserID = @CurrentOwnerID AND PortalID = @PortalID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteCategory]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteCategory]
+	-- Add the parameters for the stored procedure here
+	@CategoryID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] WHERE CategoryID = @CategoryID
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Category] WHERE CategoryID = @CategoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentTag]
+	@DocumentTagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] WHERE DocumentTagID = @DocumentTagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentCategory]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentCategory]
+	-- Add the parameters for the stored procedure here
+	@DocumentCategoryID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] WHERE DocumentCategoryID = @DocumentCategoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocument]
+	-- Add the parameters for the stored procedure here
+	@DocumentID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+    DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] WHERE DocumentID = @DocumentID
+    DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] WHERE DocumentID = @DocumentID
+    DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] WHERE DocumentID = @DocumentID
+    DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileID IN (SELECT FileID FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE DocumentID = @DocumentID)
+    DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE DocumentID = @DocumentID
+    DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] WHERE DocumentID = @DocumentID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFile]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFile]
+	-- Add the parameters for the stored procedure here
+	@FileID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileID = @FileID
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE FileID = @FileID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacket]
+	@PacketID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] WHERE PacketID = @PacketID
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] WHERE PacketID = @PacketID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketDocument]
+	@PacketDocID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] WHERE PacketDocID = @PacketDocID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketTag]
+	@PacketTagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] WHERE PacketTagID = @PacketTagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteStatus]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteStatus]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteStatus]
+	-- Add the parameters for the stored procedure here
+	@StatusID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Status] WHERE StatusID = @StatusID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteTag]
+	-- Add the parameters for the stored procedure here
+	@TagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] WHERE TagID = @TagID
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE TagID = @TagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FindSearchTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_FindSearchTags]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_FindSearchTags]
+	-- Add the parameters for the stored procedure here
+	@Term nvarchar(50),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT *, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag].TagID = {databaseOwner}[{objectQualifier}Gafware_DMS_Tag].TagID) AS DocumentCount 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end AND ISNULL(IsPrivate, 'No') = 'No' AND TagName LIKE '%' + @Term + '%' ORDER BY [Weight] DESC
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveAndPendingDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveAndPendingDocuments]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveAndPendingDocuments]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
+	WHERE (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0
+	AND (ExpirationDate IS NULL OR GETDATE() <= ExpirationDate)
+	AND PortalID = @PortalID
+	AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+	ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveDocuments]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveDocuments]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
+	WHERE (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0
+	AND (ActivationDate IS NULL OR GETDATE() >= ActivationDate)
+	AND (ExpirationDate IS NULL OR GETDATE() <= ExpirationDate)
+	AND PortalID = @PortalID
+	AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+	ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategories]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategories]
+	-- Add the parameters for the stored procedure here
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Category] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY CategoryID 
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocuments]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocuments]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForPacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForPacket]
+	-- Add the parameters for the stored procedure here
+	@PacketID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] WHERE PacketID = @PacketID ORDER BY SortOrder
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForTag]
+	@TagID int,
+	@PortalWideRepository bit
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT DISTINCT d.* 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] dt ON dt.DocumentID = d.DocumentID
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t ON t.TagID = dt.TagID
+	WHERE dt.TagID = @TagID AND d.PortalID = t.PortalID AND t.TabModuleID = case when @PortalWideRepository = 1 then d.TabModuleID else t.TabModuleID end
+	ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForUser]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForUser]
+	@UserID int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] WHERE CreatorID = @UserID AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersions]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersions]
+	@FileID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+    FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+    INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] fv ON fv.FileID = f.FileID
+	WHERE f.[FileID] = @FileID
+	ORDER BY fv.[Version] DESC
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFiles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFiles]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFiles]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+      ,f.[MimeType]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+  FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+  INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON f.DocumentID = d.DocumentID
+  CROSS APPLY
+  (
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
+	WHERE   v.FileID = f.FileID
+	ORDER BY v.[Version] DESC
+  ) fv
+  WHERE d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then d.TabModuleID else @TabModuleID end
+  ORDER BY f.[FileID]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForDocument]
+	-- Add the parameters for the stored procedure here
+	@DocumentID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+	  ,f.[MimeType]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+  FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+  CROSS APPLY
+  (
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
+	WHERE   v.FileID = f.FileID
+	ORDER BY v.[Version] DESC
+  ) fv
+  WHERE f.[DocumentID] = @DocumentID
+  ORDER BY f.[FileID]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForUser]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForUser]
+	-- Add the parameters for the stored procedure here
+	@UserID int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+	  ,f.[MimeType]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+  FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+  INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON f.DocumentID = d.DocumentID
+  CROSS APPLY
+  (
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
+	WHERE   v.FileID = f.FileID
+	ORDER BY v.[Version] DESC
+  ) fv
+  WHERE fv.[UploaderID] = @UserID AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then d.TabModuleID else @TabModuleID end
+  ORDER BY f.[FileID]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketDocuments]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketDocuments]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT d.* FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] d
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] p ON p.PacketID = d.PacketID
+	WHERE p.PortalID = @PortalID AND p.TabModuleID = case when @TabModuleID = 0 then p.TabModuleID else @TabModuleID end
+	ORDER BY PacketDocID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPackets]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPackets]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPackets]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY [Name]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsContainingDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsContainingDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsContainingDocument]
+	@DocumentID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT DISTINCT p.* FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] p
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] d ON d.PacketID = p.PacketID
+	WHERE d.DocumentID = @DocumentID
+	ORDER BY p.PacketID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsForUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsForUser]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsForUser]
+	@UserID int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT p.* FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] p
+	INNER JOIN {databaseOwner}[{objectQualifier}Users] AS Users ON Users.UserID = @UserID
+	WHERE (p.UserID = @UserID OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, (SELECT RoleID FROM dbo.Roles WHERE RoleName = 'Administrators' AND PortalID = @PortalID)) = 1) 
+	AND p.PortalID = @PortalID AND p.TabModuleID = case when @TabModuleID = 0 then p.TabModuleID else @TabModuleID end
+	ORDER BY p.PacketID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicDocuments]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicDocuments]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
+	WHERE (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0
+	AND ISNULL(IsSearchable, 'Yes') = 'Yes'
+	AND (ActivationDate IS NULL OR GETDATE() >= ActivationDate)
+	AND (ExpirationDate IS NULL OR GETDATE() <= ExpirationDate)
+	AND PortalID = @PortalID
+	AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+	ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicTags]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicTags]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT t.*, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] d WHERE d.TagID = t.TagID) AS DocumentCount
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t 
+	WHERE ISNULL(t.IsPrivate, 'No') = 'No' AND t.PortalID = @PortalID AND t.TabModuleID = case when @TabModuleID = 0 then t.TabModuleID else @TabModuleID end
+	ORDER BY t.TagName, t.[Weight]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllStatuses]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllStatuses]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllStatuses]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Status] ORDER BY StatusID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTags]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTags]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT t.*, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] d WHERE d.TagID = t.TagID) AS DocumentCount
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t 
+	WHERE t.PortalID = @PortalID AND t.TabModuleID = case when @TabModuleID = 0 then t.TabModuleID else @TabModuleID end
+	ORDER BY t.TagName, t.[Weight]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForDocument]
+	@DocumentID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT dt.DocumentTagID, dt.DocumentID, t.* 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] dt
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t ON t.TagID = dt.TagID
+	WHERE DocumentID = @DocumentID
+	ORDER BY t.TagName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategoriesForDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategoriesForDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategoriesForDocument]
+	@DocumentID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT dc.DocumentCategoryID, dc.DocumentID, c.* 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] dc
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] c ON c.CategoryID = dc.CategoryID
+	WHERE DocumentID = @DocumentID
+	ORDER BY c.Category
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForPacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForPacket]
+	@PacketID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] WHERE PacketID = @PacketID ORDER BY SortOrder
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetCategory]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetCategory]
+	@CategoryID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Category] WHERE CategoryID = @CategoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocument]
+	@DocumentID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] WHERE DocumentID = @DocumentID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentByName]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentByName]
+	@DocumentName nvarchar(255),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] WHERE DocumentName = @DocumentName AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentList]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentList]
+	-- Add the parameters for the stored procedure here
+	@CategoryID int,
+	@Keywords nvarchar(255),
+	@UserID int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+    DECLARE @sql nvarchar(max)
+	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[ShortDescription],Doc.[DocumentDetails]' +
+				',Doc.[AdminComments],Doc.[ManagerToolkit],Doc.[ActivationDate],Doc.[ExpirationDate]' +
+				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress]' +
+				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], ' +
+				'ISNULL(Doc.[IsSearchable], ''Yes'') AS [IsSearchable],Doc.[PortalID],Doc.[TabModuleID] ' +
+				'FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] AS Doc ' + 
+				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] AS DocTag ON DocTag.DocumentID = Doc.DocumentID ' +
+				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] AS Tag ON Tag.TagID = DocTag.TagID ' +
+				'INNER JOIN {databaseOwner}[{objectQualifier}Users] AS Users ON Users.UserID = ' + CAST(@UserID as nvarchar(10)) + ' '
+	IF(@CategoryID IS NOT NULL AND @CategoryID > 0)
+	BEGIN
+		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCam ON DocCam.[DocumentID] = Doc.[DocumentID] AND DocCam.[CategoryID] = ' + CAST(@CategoryID as nvarchar(10)) + ' '
+	END
+	SET @sql = @sql + 'WHERE (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) +  ', (SELECT RoleID FROM dbo.Roles WHERE RoleName = ''Administrators'' AND PortalID = ' + CAST(@PortalID as nvarchar(10)) +  ')) = 1) AND Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end + ' '
+	--SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
+	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
+	BEGIN
+		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
+		BEGIN
+			DECLARE @SearchTermID int
+			DECLARE @start bit
+			SET @start = 0
+			SET @sql = @sql + 'AND ('
+			DECLARE @Keyword nvarchar(4000)
+			DECLARE db_cursor CURSOR FOR
+			SELECT items FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Split](@Keywords, ' ')
+			OPEN db_cursor
+			FETCH NEXT FROM db_cursor INTO @Keyword
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				IF(@start = 1)
+				BEGIN
+					SET @sql = @sql + ' AND '
+				END
+				ELSE
+				BEGIN
+					SET @start = 1
+				END
+				SET @sql = @sql + '(Tag.TagName LIKE ''%' + REPLACE(@Keyword, '''', '''''') + '%'' OR Doc.DocumentName LIKE ''%' + REPLACE(@Keyword, '''', '''''') + '%'')'
+				SET @SearchTermID = (SELECT SearchTermID FROM {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] WHERE Term = @Keyword AND PortalID = @PortalID AND TabModuleID = @TabModuleID)
+				IF (@SearchTermID IS NULL)
+				BEGIN
+					INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] (Term, Frequency, DateAdded, LastDate, PortalID, TabModuleID) VALUES (@Keyword, 1, GETDATE(), GETDATE(), @PortalID, @TabModuleID)
+				END
+				ELSE
+				BEGIN
+					UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] SET Frequency = Frequency + 1, LastDate = GETDATE() WHERE SearchTermID = @SearchTermID
+				END
+				FETCH NEXT FROM db_cursor INTO @Keyword
+			END
+			CLOSE db_cursor
+			DEALLOCATE db_cursor
+			SET @sql = @sql + ') '
+		END
+	END
+	SET @sql = @sql + 'ORDER BY Doc.DocumentName'
+	PRINT @sql
+	CREATE TABLE #x(
+	[DocumentID] [int] NOT NULL,
+	[CreatorID] [int] NULL,
+	[DocumentName] [nvarchar](255) NULL,
+	[ShortDescription] [nvarchar](1250) NULL,
+	[DocumentDetails] [nvarchar](4000) NULL,
+	[AdminComments] [nvarchar](2500) NULL,
+	[ManagerToolkit] [nvarchar](3) NULL,
+	[ActivationDate] [datetime] NULL,
+	[ExpirationDate] [datetime] NULL,
+	[DateCreated] [datetime] NULL,
+	[DateLastModified] [datetime] NULL,
+	[IPAddress] [nvarchar](16) NULL,
+	[UseCategoryRoles] [bit] NOT NULL,
+	[SecurityRoleID] [int] NOT NULL,
+	[IsSearchable] [nvarchar](3) NULL,
+	[PortalID] [int] NOT NULL,
+	[TabModuleID] [int] NOT NULL)
+	INSERT #x
+	EXECUTE(@sql)
+	DECLARE @count int
+	SET @count = (SELECT COUNT(*) FROM #x)
+	IF (@count = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches] (SearchTerms, SearchDate, PortalID, TabModuleID) VALUES (@Keywords, GETDATE(), @PortalID, @TabModuleID)
+	END
+	ELSE
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults] (SearchTerms, SearchDate, ResultCount, PortalID, TabModuleID) VALUES (@Keywords, GETDATE(), @count, @PortalID, @TabModuleID)
+	END
+	SELECT * FROM #x
+	DROP TABLE #x    
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentTag]
+	@DocumentTagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT dt.DocumentTagID, dt.DocumentID, t.* 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] dt
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t ON t.TagID = dt.TagID
+	WHERE DocumentTagID = @DocumentTagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentCategory]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentCategory]
+	@DocumentCategoryID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT dc.DocumentCategoryID, dc.DocumentID, c.* 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] dc
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] c ON c.CategoryID = dc.CategoryID
+	WHERE DocumentCategoryID = @DocumentCategoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFile]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFile]
+	@FileID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+	  ,f.[MimeType]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+    FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+    CROSS APPLY
+    (
+	  SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	  FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
+	  WHERE   v.FileID = f.FileID
+	  ORDER BY v.[Version] DESC
+    ) fv
+	WHERE f.[FileID] = @FileID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileContents]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileContents]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileContents]
+	@FileVersionID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT Contents FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileVersionID = @FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetThumbnail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetThumbnail]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetThumbnail]
+	@FileVersionID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT Thumbnail FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileVersionID = @FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacket]
+	@PacketID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] WHERE PacketID = @PacketID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketByName]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketByName]
+	@PacketName nvarchar(50),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] WHERE [Name] = @PacketName AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]
+	@PacketDocID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] WHERE PacketDocID = @PacketDocID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketTag]
+	@PacketTagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] WHERE PacketTagID = @PacketTagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetSearchTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetSearchTags]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetSearchTags]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT TagName FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE ISNULL(IsPrivate, 'No') = 'No' AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY [Weight] DESC
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetStatus]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetStatus]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetStatus]
+	@StatusID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Status] WHERE StatusID = @StatusID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetTag]
+	@TagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT t.*, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] d WHERE d.TagID = t.TagID) AS DocumentCount
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t 
+	WHERE t.TagID = @TagID
+	ORDER BY t.TagName, t.[Weight]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetTagByTagName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetTagByTagName]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetTagByTagName]
+	@TagName nvarchar(50),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT t.*, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] d WHERE d.TagID = t.TagID) AS DocumentCount
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t 
+	WHERE t.TagName = @TagName AND t.PortalID = @PortalID AND t.TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+	ORDER BY t.TagName, t.[Weight]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetUploadReport]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetUploadReport]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetUploadReport] 
+	@StartDate smalldatetime,
+	@EndDate smalldatetime,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+SELECT d.[DocumentName]
+      ,d.[DocumentDetails]
+      ,d.[AdminComments]
+      ,d.[ManagerToolkit]
+      ,d.[ActivationDate]
+      ,d.[ExpirationDate]
+      ,d.[DateCreated]
+      ,d.[DateLastModified]
+      ,d.[IsSearchable]
+	  ,d.[CreatorID]
+      ,fv.[UploaderID]
+	  ,f.[FileType]
+      ,f.[FileName]
+      ,fv.[WebpageURL]
+      ,fv.[DateUploaded]
+      ,s.StatusName AS FileStatus
+	  ,u.DisplayName AS Uploader
+	  ,c.DisplayName AS Creator
+	  ,d.DocumentID
+  FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+  CROSS APPLY
+  (
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
+	WHERE   v.FileID = f.FileID
+	ORDER BY v.[Version] DESC
+  ) fv
+  INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON d.DocumentID = f.DocumentID
+  INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Status] s ON s.StatusID = f.StatusID
+  INNER JOIN {databaseOwner}[{objectQualifier}Users] c ON c.UserID = d.CreatorID
+  INNER JOIN {databaseOwner}[{objectQualifier}Users] u ON u.UserID = fv.UploaderID
+  WHERE fv.DateUploaded BETWEEN @StartDate AND @EndDate AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+  ORDER BY d.DocumentName, fv.DateUploaded DESC
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_MovePacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_MovePacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_MovePacket]
+	-- Add the parameters for the stored procedure here
+	@DocumentID int,
+	@TagID int,
+	@NewSortOrder int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+    DECLARE @PacketID int
+    DECLARE @OldSortOrder int
+    IF (@DocumentID > 0)
+    BEGIN
+		SET @OldSortOrder = (SELECT SortOrder FROM Gafware_DMS_PacketDoc WHERE PacketDocID = @DocumentID)
+		SET @PacketID = (SELECT PacketID FROM Gafware_DMS_PacketDoc WHERE PacketDocID = @DocumentID)
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] SET SortOrder = @NewSortOrder WHERE PacketDocID = @DocumentID
+	END
+	ELSE
+	BEGIN
+		SET @OldSortOrder = (SELECT SortOrder FROM Gafware_DMS_PacketTag WHERE PacketTagID = @TagID)
+		SET @PacketID = (SELECT PacketID FROM Gafware_DMS_PacketTag WHERE PacketTagID = @TagID)
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] SET SortOrder = @NewSortOrder WHERE PacketTagID = @TagID
+	END
+	IF(@NewSortOrder < @OldSortOrder)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] SET SortOrder = SortOrder + 1 WHERE PacketDocID <> @DocumentID AND PacketID = @PacketID AND SortOrder >= @NewSortOrder AND SortOrder < @OldSortOrder
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] SET SortOrder = SortOrder + 1 WHERE PacketTagID <> @TagID AND PacketID = @PacketID AND SortOrder >= @NewSortOrder AND SortOrder < @OldSortOrder
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] SET SortOrder = SortOrder - 1 WHERE PacketDocID <> @DocumentID AND PacketID = @PacketID AND SortOrder <= @NewSortOrder AND SortOrder > @OldSortOrder
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] SET SortOrder = SortOrder - 1 WHERE PacketTagID <> @TagID AND PacketID = @PacketID AND SortOrder <= @NewSortOrder AND SortOrder > @OldSortOrder
+	END
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveCategory]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveCategory]
+	@CategoryID int,
+	@Name nvarchar(50),
+	@RoleID int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF(@CategoryID IS NOT NULL AND @CategoryID > 0)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Category]
+		SET	[Category] = @Name, RoleID = @RoleID, PortalID = @PortalID, TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
+		WHERE CategoryID = @CategoryID
+	END
+	ELSE
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ([Category], RoleID, PortalID, TabModuleID) VALUES (@Name, @RoleID, @PortalID, @TabModuleID)
+		SET @CategoryID = @@IDENTITY
+	END
+	SELECT @CategoryID AS CategoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]
+	@DocumentID int,
+	@CreatorID int,
+	@DocumentName nvarchar(255),
+	@ShortDescription nvarchar(1250),
+	@DocumentDetails nvarchar(4000),
+	@AdminComments nvarchar(2500),
+	@ManagerToolkit nvarchar(3),
+	@ActivationDate datetime,
+	@ExpirationDate datetime,
+	@IPAddress nvarchar(16),
+	@IsSearchable nvarchar(3),
+	@UseCategoryRoles bit,
+	@SecurityRoleID int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@DocumentID IS NULL OR @DocumentID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Document] (CreatorID, DocumentName, ShortDescription, DocumentDetails, AdminComments, ManagerToolkit, ActivationDate,
+		ExpirationDate, IPAddress, IsSearchable, UseCategoryRoles, SecurityRoleID, PortalID, TabModuleID, DateCreated, DateLastModified)
+		VALUES (@CreatorID, @DocumentName, @ShortDescription, @DocumentDetails, @AdminComments, @ManagerToolkit, @ActivationDate, @ExpirationDate,
+		@IPAddress, @IsSearchable, @UseCategoryRoles, @SecurityRoleID, @PortalID, @TabModuleID, GETDATE(), GETDATE())
+		SET @DocumentID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
+		SET	CreatorID = @CreatorID,
+			DocumentName = @DocumentName,
+			ShortDescription = @ShortDescription,
+			DocumentDetails = @DocumentDetails,
+			AdminComments = @AdminComments,
+			ManagerToolkit = @ManagerToolkit,
+			ActivationDate = @ActivationDate,
+			ExpirationDate = @ExpirationDate,
+			IPAddress = @IPAddress,
+			IsSearchable = @IsSearchable,
+			UseCategoryRoles = @UseCategoryRoles,
+			SecurityRoleID = @SecurityRoleID,
+			PortalID = @PortalID,
+			TabModuleID = @TabModuleID,
+			DateLastModified = GETDATE()
+		WHERE DocumentID = @DocumentID
+	END
+	SELECT @DocumentID AS DocumentID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentTag]
+	@DocumentTagID int,
+	@DocumentID int,
+	@TagID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@DocumentTagID IS NULL OR @DocumentTagID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] (DocumentID, TagID) VALUES (@DocumentID, @TagID)
+		SET @DocumentTagID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag]
+		SET	DocumentID = @DocumentID,
+			TagID = @TagID
+		WHERE DocumentTagID = @DocumentTagID
+	END
+	SELECT @DocumentTagID AS DocumentTagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentCategory]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentCategory]
+	@DocumentCategoryID int,
+	@DocumentID int,
+	@CategoryID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@DocumentCategoryID IS NULL OR @DocumentCategoryID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] (DocumentID, CategoryID) VALUES (@DocumentID, @CategoryID)
+		SET @DocumentCategoryID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory]
+		SET	DocumentID = @DocumentID,
+			CategoryID = @CategoryID
+		WHERE DocumentCategoryID = @DocumentCategoryID
+	END
+	SELECT @DocumentCategoryID AS DocumentCategoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFile]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFile]
+	@FileID int,
+	@StatusID int,
+	@DocumentID int,
+	@UploadDirectory nvarchar(255),
+	@FileType nvarchar(10),
+	@FileName nvarchar(255),
+	@MimeType nvarchar(100)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@FileID IS NULL OR @FileID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_File] (StatusID, DocumentID, UploadDirectory, FileType, [FileName], MimeType)
+		VALUES (@StatusID, @DocumentID, @UploadDirectory, @FileType, @FileName, @MimeType)
+		SET @FileID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_File]
+		SET	StatusID = @StatusID,
+			DocumentID = @DocumentID,
+			UploadDirectory = @UploadDirectory,
+			FileType = @FileType,
+			[FileName] = @FileName,
+			MimeType = @MimeType
+		WHERE FileID = @FileID
+	END
+	SELECT @FileID AS FileID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileContents]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileContents]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileContents]
+	@FileVersionID int,
+	@Contents varbinary(MAX),
+	@Append bit
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@Append = 0)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
+		SET Contents = 0x WHERE FileVersionID = @FileVersionID
+	END
+	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
+	SET Contents = Contents + @Contents WHERE FileVersionID = @FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveThumbnail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveThumbnail]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveThumbnail]
+	@FileVersionID int,
+	@Thumbnail varbinary(MAX)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
+	SET Thumbnail = @Thumbnail WHERE FileVersionID = @FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacket]
+	@PacketID int,
+	@UserID int,
+	@Name nvarchar(50),
+	@ShowDescription bit,
+	@ShowPacketDescription bit,
+	@Description nvarchar(2000),
+	@AdminComments nvarchar(2000),
+	@CustomHeader nvarchar(100),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@PacketID IS NULL OR @PacketID = 0)
+	BEGIN
+	    INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] (UserID, [Name], ShowDescription, ShowPacketDescription, [Description], AdminComments, CustomHeader, PortalID, TabModuleID)
+	    VALUES (@UserID, @Name, @ShowDescription, @ShowPacketDescription, @Description, @AdminComments, @CustomHeader, @PortalID, @TabModuleID)
+	    SET @PacketID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+	    UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet]
+	    SET UserID = @UserID,
+			[Name] = @Name,
+	        ShowDescription = @ShowDescription,
+	        ShowPacketDescription = @ShowPacketDescription,
+	        [Description] = @Description,
+	        AdminComments = @AdminComments,
+	        CustomHeader = @CustomHeader,
+			PortalID = @PortalID,
+			TabModuleID = @TabModuleID
+	    WHERE PacketID = @PacketID
+	END
+	SELECT @PacketID AS PacketID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketDocument]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketDocument]
+	@PacketDocID int,
+	@PacketID int,
+	@DocumentID int,
+	@FileID int,
+	@SortOrder int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@PacketDocID IS NULL OR @PacketDocID = 0)
+	BEGIN
+	    INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] (PacketID, DocumentID, FileID, SortOrder) VALUES (@PacketID, @DocumentID, @FileID, @SortOrder)
+	    SET @PacketDocID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+	    UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc]
+	    SET PacketID = @PacketID,
+			DocumentID = @DocumentID,
+	        FileID = @FileID,
+	        SortOrder = @SortOrder
+	    WHERE PacketDocID = @PacketDocID
+	END
+	SELECT @PacketDocID AS PacketDocID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketTag]
+	@PacketTagID int,
+	@PacketID int,
+	@TagID int,
+	@SortOrder int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@PacketTagID IS NULL OR @PacketTagID = 0)
+	BEGIN
+	    INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] (PacketID, TagID, SortOrder) VALUES (@PacketID, @TagID, @SortOrder)
+	    SET @PacketTagID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+	    UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag]
+	    SET PacketID = @PacketID,
+			TagID = @TagID,
+			SortOrder = @SortOrder
+	    WHERE PacketTagID = @PacketTagID
+	END
+	SELECT @PacketTagID AS PacketTagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveStatus]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveStatus]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveStatus]
+	@StatusID int,
+	@StatusName nvarchar(100)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF(@StatusID IS NOT NULL AND @StatusID > 0)
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Status]
+		SET	[StatusName] = @StatusName
+		WHERE StatusID = @StatusID
+	END
+	ELSE
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Status] ([StatusName]) VALUES (@StatusName)
+		SET @StatusID = @@IDENTITY
+	END
+	SELECT @StatusID AS StatusID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveTag]
+	@TagID int,
+	@TagName nvarchar(50),
+	@IsPrivate nvarchar(3),
+	@Weight int,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@TagID IS NULL OR @TagID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] (TagName, IsPrivate, [Weight], PortalID, TabModuleID) VALUES (@TagName, @IsPrivate, @Weight, @PortalID, @TabModuleID)
+		SET @TagID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag]
+		SET	TagName = @TagName,
+			IsPrivate = @IsPrivate,
+			[Weight] = @Weight,
+			PortalID = @PortalID,
+			TabModuleID = @TabModuleID
+		WHERE TagID = @TagID
+	END
+	SELECT @TagID AS TagID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SearchDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchDocuments]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchDocuments]
+	@CategoryID int,
+	@Keywords nvarchar(255),
+	@Private bit,
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	--DECLARE @CategoryID int
+	--DECLARE @Keywords nvarchar(255)
+	--DECLARE @Private bit
+	--SET @CategoryID = 0
+	--SET @Keywords = N'hipaa';
+	--SET @Private = 0
+	
+    -- Insert statements for procedure here
+    DECLARE @sql nvarchar(max)
+	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[ShortDescription],Doc.[DocumentDetails]' +
+				',Doc.[AdminComments],Doc.[ManagerToolkit],Doc.[ActivationDate],Doc.[ExpirationDate]' +
+				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress],Doc.[PortalID],Doc.[TabModuleID]' +
+				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], ' +
+				'ISNULL(Doc.[IsSearchable], ''Yes'') AS [IsSearchable] ' +
+				'FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] AS Doc ' + 
+				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] AS DocTag ON DocTag.DocumentID = Doc.DocumentID ' +
+				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] AS Tag ON Tag.TagID = DocTag.TagID '
+	IF(@CategoryID IS NOT NULL AND @CategoryID > 0)
+	BEGIN
+		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCam ON DocCam.[DocumentID] = Doc.[DocumentID] AND DocCam.[CategoryID] = ' + CAST(@CategoryID as nvarchar(10)) + ' '
+	END
+	SET @sql = @sql + 'WHERE Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end +  ' AND (Doc.ActivationDate IS NULL OR getdate() >= Doc.ActivationDate) AND (Doc.ExpirationDate IS NULL OR getdate() <= Doc.ExpirationDate) '
+	IF (@Private = 0)
+	BEGIN
+		SET @sql = @sql + 'AND (Doc.IsSearchable = ''Yes'' OR Doc.IsSearchable IS NULL) '
+	END
+	SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
+	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
+	BEGIN
+		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
+		BEGIN
+			DECLARE @SearchTermID int
+			DECLARE @start bit
+			SET @start = 0
+			SET @sql = @sql + 'AND ('
+			DECLARE @Keyword nvarchar(4000)
+			DECLARE db_cursor CURSOR FOR
+			SELECT items FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Split](@Keywords, ' ')
+			OPEN db_cursor
+			FETCH NEXT FROM db_cursor INTO @Keyword
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				IF(@start = 1)
+				BEGIN
+					SET @sql = @sql + ' AND '
+				END
+				ELSE
+				BEGIN
+					SET @start = 1
+				END
+				SET @sql = @sql + '(Tag.TagName LIKE ''%' + REPLACE(@Keyword, '''', '''''') + '%'' OR Doc.DocumentName LIKE ''%' + REPLACE(@Keyword, '''', '''''') + '%'')'
+				SET @SearchTermID = (SELECT SearchTermID FROM {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] WHERE Term = @Keyword AND PortalID = @PortalID AND TabModuleID = @TabModuleID)
+				IF (@SearchTermID IS NULL)
+				BEGIN
+					INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] (Term, Frequency, DateAdded, LastDate, PortalID, TabModuleID) VALUES (@Keyword, 1, GETDATE(), GETDATE(), @PortalID, @TabModuleID)
+				END
+				ELSE
+				BEGIN
+					UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms] SET Frequency = Frequency + 1, LastDate = GETDATE() WHERE SearchTermID = @SearchTermID
+				END
+				FETCH NEXT FROM db_cursor INTO @Keyword
+			END
+			CLOSE db_cursor
+			DEALLOCATE db_cursor
+			SET @sql = @sql + ') '
+		END
+	END
+	SET @sql = @sql + 'ORDER BY Doc.DocumentName'
+	PRINT @sql
+	CREATE TABLE #x(
+	[DocumentID] [int] NOT NULL,
+	[CreatorID] [int] NULL,
+	[DocumentName] [nvarchar](255) NULL,
+	[ShortDescription] [nvarchar](1250) NULL,
+	[DocumentDetails] [nvarchar](4000) NULL,
+	[AdminComments] [nvarchar](2500) NULL,
+	[ManagerToolkit] [nvarchar](3) NULL,
+	[ActivationDate] [datetime] NULL,
+	[ExpirationDate] [datetime] NULL,
+	[DateCreated] [datetime] NULL,
+	[DateLastModified] [datetime] NULL,
+	[IPAddress] [nvarchar](16) NULL,
+	[PortalID] [int] NOT NULL,
+	[TabModuleID] [int] NOT NULL,
+	[UseCategoryRoles] [bit] NOT NULL,
+	[SecurityRoleID] [int] NOT NULL,
+	[IsSearchable] [nvarchar](3) NULL)
+	INSERT #x
+	EXECUTE(@sql)
+	DECLARE @count int
+	SET @count = (SELECT COUNT(*) FROM #x)
+	IF (@count = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches] (SearchTerms, SearchDate, PortalID, TabModuleID) VALUES (@Keywords, GETDATE(), @PortalID, @TabModuleID)
+	END
+	ELSE
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults] (SearchTerms, SearchDate, ResultCount, PortalID, TabModuleID) VALUES (@Keywords, GETDATE(), @count, @PortalID, @TabModuleID)
+	END
+	SELECT * FROM #x
+	DROP TABLE #x
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetUsers]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetUsers]
+	-- Add the parameters for the stored procedure here
+	@RoleId int,
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}vw_Users] 
+	WHERE (IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](UserId, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalID)) = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](UserId, @RoleId) = 1) AND IsDeleted = 0
+	ORDER BY DisplayName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFileTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFileTypes]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFileTypes]
+	-- Add the parameters for the stored procedure here
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes] WHERE PortalID = @PortalID AND TabModuleID = @TabModuleID ORDER BY FileTypeName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileType]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileType]
+	-- Add the parameters for the stored procedure here
+	@FileTypeID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes] WHERE FileTypeID = @FileTypeID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileType]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileType]
+	-- Add the parameters for the stored procedure here
+	@FileTypeID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes] WHERE FileTypeID = @FileTypeID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileType]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileType]
+	-- Add the parameters for the stored procedure here
+	@FileTypeID int,
+	@FileTypeName nvarchar(100),
+	@FileTypeShortName nvarchar(10),
+	@FileTypeExt nvarchar(255),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@FileTypeID IS NULL OR @FileTypeID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes] (FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES (@FileTypeName, @FileTypeShortName, @FileTypeExt, @PortalID, @TabModuleID)
+		SELECT @@IDENTITY AS FileTypeID
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes]
+		SET	FileTypeName = @FileTypeName,
+			FileTypeShortName = @FileTypeShortName,
+			FileTypeExt = @FileTypeExt,
+			PortalID = @PortalID,
+			TabModuleID = @TabModuleID
+		WHERE FileTypeID = @FileTypeID
+	END
+	SELECT @FileTypeID AS FileTypeID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileVersion]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileVersion]
+	@FileVersionID int,
+	@FileID int,
+	@Version int,
+	@DateUploaded datetime,
+	@UploaderID int,
+	@WebpageURL nvarchar(255),
+	@IPAddress nvarchar(16),
+	@Filesize int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@FileVersionID IS NULL OR @FileVersionID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] (FileID, [Version], DateUploaded, UploaderID, WebpageURL, IPAddress, Filesize)
+		VALUES (@FileID, @Version, @DateUploaded, @UploaderID, @WebpageURL, @IPAddress, @Filesize)
+		SET @FileVersionID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
+		SET	FileID = @FileID,
+			[Version] = @Version,
+			DateUploaded = @DateUploaded,
+			UploaderID = @UploaderID,
+			WebpageURL = @WebpageURL,
+			IPAddress = @IPAddress,
+			Filesize = @Filesize
+		WHERE FileVersionID = @FileVersionID
+	END
+	SELECT @FileVersionID AS FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileVersion]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileVersion]
+	@FileVersionID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileVersionID = @FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersion]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersion]
+	@FileVersionID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileVersionID = @FileVersionID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileTypeByExt]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileTypeByExt]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileTypeByExt]
+	@FileTypeExt nvarchar(10),
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes] WHERE PortalID = @PortalID AND TabModuleID = @TabModuleID AND @FileTypeExt IN (SELECT Items FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Split](FileTypeExt, ','))
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileNotificationRecipients]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileNotificationRecipients]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileNotificationRecipients]
+	-- Add the parameters for the stored procedure here
+	@RoleId int,
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}vw_Users] 
+	WHERE {databaseOwner}[{objectQualifier}UserIsInRole](UserId, @RoleId) = 1 AND PortalID = @PortalID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPortalSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPortalSettings]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPortalSettings]
+	-- Add the parameters for the stored procedure here
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] WHERE PortalID = @PortalID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePortalSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePortalSettings]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePortalSettings]
+	@PortalID int,
+	@PortalWideRepository bit
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DECLARE @temp int
+	SET @temp = (SELECT PortalID FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID)
+
+	IF (@temp IS NULL)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] (PortalID, PortalWideRepository)
+		VALUES (@PortalID, @PortalWideRepository)
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings]
+		SET	PortalWideRepository = @PortalWideRepository
+		WHERE PortalID = @PortalID
+	END
+	SELECT @PortalID AS PortalID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetRepository]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetRepository]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetRepository]
+	-- Add the parameters for the stored procedure here
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID AND TabModuleID = @TabModuleID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]
+	@RepositoryID int,
+	@PortalID int,
+	@TabModuleID int,
+	@UserRoleID int,
+	@FileNotificationsRoleID int,
+	@NewFileSubject nvarchar(255),
+	@NewFileBody nvarchar(MAX),
+	@CategoryName nvarchar(255),
+	@SaveLocalFile bit,
+	@ShowTips bit,
+	@ShowInstructions bit,
+	@Instructions nvarchar(255),
+	@Theme nvarchar(50),
+	@ThumbnailType nvarchar(50),
+	@ThumbnailSize int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	IF (@RepositoryID IS NULL OR @RepositoryID = 0)
+	BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize)
+		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize)
+		SET @RepositoryID = @@IDENTITY
+	END
+	ELSE
+	BEGIN
+		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository]
+		SET	UserRoleID = @UserRoleID,
+			FileNotificationsRoleID = @FileNotificationsRoleID,
+			NewFileSubject = @NewFileSubject,
+			NewFileBody = @NewFileBody,
+			CategoryName = @CategoryName,
+			SaveLocalFile = @SaveLocalFile,
+			ShowTips = @ShowTips,
+			ShowInstructions = @ShowInstructions,
+			Instructions = @Instructions,
+			Theme = @Theme,
+			ThumbnailType = @ThumbnailType,
+			ThumbnailSize = @ThumbnailSize
+		WHERE RepositoryID = @RepositoryID
+	END
+	SELECT @RepositoryID AS RepositoryID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_AddDefaultFileExtensions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_AddDefaultFileExtensions]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_AddDefaultFileExtensions]
+	@PortalID int,
+	@TabModuleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Word Documents', 'Word', 'doc,docx', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Excel Spreadsheets', 'Excel', 'xls,xlsx,xlsm', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Powerpoint Presentations', 'Powerpoint', 'ppt,pptx', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Adobe PDFs', 'PDF', 'pdf', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Images', 'Image', 'jpg,jpe,jpeg,png,gif,bmp', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Videos', 'Video', 'mp4,mov,avi,wmv', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Music', 'Music', 'mp3,wma', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Text Files', 'Text', 'txt', @PortalID, @TabModuleID)
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileByName]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileByName]
+	@PortalID int,
+	@TabModuleID int,
+	@FileName nvarchar(255)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+	  ,f.[MimeType]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+    FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+    CROSS APPLY
+    (
+	  SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	  FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
+	  WHERE   v.FileID = f.FileID
+	  ORDER BY v.[Version] DESC
+    ) fv
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON d.DocumentID = f.DocumentID
+	WHERE f.[FileName] LIKE @FileName + '%' AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then d.TabModuleID else @TabModuleID end
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

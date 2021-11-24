@@ -1,0 +1,314 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DMS" type="Module" version="01.00.00">
+      <friendlyName>Document Management System</friendlyName>
+      <description>Document Management System Module</description>
+      <iconFile>Images/dms.png</iconFile>
+      <owner>
+        <name>Glenn Flansburg</name>
+        <organization>Gafware</organization>
+        <url>https://www.gafware.com</url>
+        <email>support@gafware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.02</dependency>
+      </dependencies>
+      
+      <components>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\Gafware\DMS</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+          </scripts>
+        </component>
+
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/Gafware/DMS</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DMS</moduleName>
+            <foldername>Gafware/DMS</foldername>
+            <businessControllerClass>Gafware.Modules.DMS.Components.FeatureController</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Upgradeable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Document Management</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Gafware/DMS/View.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>EditSettings</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Document Management System Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                    <supportsPopUps>False</supportsPopUps>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Document Management System Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                    <supportsPopUps>False</supportsPopUps>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>DocumentList</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/DocumentList.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>1</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>PacketList</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/PacketList.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>2</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>TagList</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/TagList.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>LinkCreator</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/LinkCreator.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>3</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>BulkImport</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/BulkImport.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>3</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>UploadReport</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/UploadReport.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>4</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>GetDocuments</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/GetDocuments.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>5</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Preview</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/Preview.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>5</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Gafware.Modules.DMS.Components.FeatureController</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>01.00.00</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>Gafware.DMS.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Telerik.Reporting.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Telerik.ReportViewer.WebForms.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Spire.Doc.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Spire.License.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Spire.Pdf.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Spire.Presentation.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Spire.XLS.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Ghostscript.NET.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Id3.Net.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>JetBrains.Annotations.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.WindowsAPICodePack.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.WindowsAPICodePack.Shell.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+
+    <package name="DocPacket" type="Module" version="01.00.00">
+      <friendlyName>Document Packet</friendlyName>
+      <description>Document Management System Packet Module</description>
+      <iconFile>DesktopModules/Gafware/DMS/Images/packet.png</iconFile>
+      <owner>
+        <name>Glenn Flansburg</name>
+        <organization>Gafware</organization>
+        <url>https://www.gafware.com</url>
+        <email>support@gafware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.02</dependency>
+      </dependencies>
+      <component type="ResourceFile">
+        <resourceFiles>
+          <basePath>DesktopModules/Gafware/DMS</basePath>
+          <resourceFile>
+            <name>Resources.zip</name>
+          </resourceFile>
+        </resourceFiles>
+      </component>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DocPacket</moduleName>
+            <foldername>Gafware/DMS</foldername>
+            <businessControllerClass>Gafware.Modules.DMS.Components.FeatureController</businessControllerClass>
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Document Packet</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Gafware/DMS/PacketView.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/PacketSettings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Document Packet Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+      </components>
+    </package>    
+  </packages>
+</dotnetnuke>

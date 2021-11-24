@@ -1,0 +1,616 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Repository]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository]
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings]
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchTerms]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchResults]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_NoResultSearches]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Category]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Category]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Document]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_File]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_File]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Packet]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Status]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Status]
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Tag]') AND type in (N'U'))
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Split]') and OBJECTPROPERTY(id, N'IsTableFunction') = 1)
+BEGIN
+	DROP FUNCTION {databaseOwner}[{objectQualifier}Gafware_DMS_Split]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_ChangeDocumentOwnership]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangeDocumentOwnership]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_ChangePacketOwnership]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangePacketOwnership]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFile]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacket]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeletePacketTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteStatus]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteStatus]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FindSearchTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_FindSearchTags]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveAndPendingDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveAndPendingDocuments]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllActiveDocuments]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategories]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocuments]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForPacket]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForUser]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFiles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFiles]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFilesForUser]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketDocuments]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPackets]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPackets]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsContainingDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsContainingDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsForUser]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPacketsForUser]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicDocuments]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicTags]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllStatuses]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllStatuses]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTags]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllTagsForPacket]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentByName]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentList]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFile]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileContents]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileContents]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetThumbnail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetThumbnail]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacket]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketByName]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetSearchTags]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetSearchTags]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetStatus]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetStatus]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetTagByTagName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetTagByTagName]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetUploadReport]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetUploadReport]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_MovePacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_MovePacket]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFile]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFile]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileContents]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileContents]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveThumbnail]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveThumbnail]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacket]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacketTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveStatus]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveStatus]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveTag]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SearchDocuments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchDocuments]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocumentCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategoriesForDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllCategoriesForDocument]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocumentCategory]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetUsers]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFileTypes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllFileTypes]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileType]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileType]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersions]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileVersion]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_DeleteFileVersion]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersion]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileVersion]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileTypeByExt]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileTypeByExt]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileNotificationRecipients]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileNotificationRecipients]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPortalSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPortalSettings]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SavePortalSettings]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePortalSettings]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetRepository]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetRepository]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_AddDefaultFileExtensions]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_AddDefaultFileExtensions]
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetFileByName]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetFileByName]
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
