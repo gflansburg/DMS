@@ -512,6 +512,9 @@
     </asp:Panel>
     <asp:Panel ID="pnlGrid" runat="server" style="display: none">
         <h3><%=LocalizeString("BasicSettings")%></h3>
+        <asp:HiddenField ID="hidFilesDeleted" runat="server" Value="0" />
+        <asp:HiddenField ID="hidFileDeleteStatus" runat="server" Value="Idle" />
+        <asp:HiddenField ID="hidProcessName" runat="server" Value="" />
         <div class="searchBox" id="searchBox" runat="server">
             <div style="width: 180px; float: left; display: inline-block">
                 <strong><asp:Label ID="lblCategory" runat="server" Text="Label"></asp:Label></strong><br clear="none"/> 
@@ -607,4 +610,16 @@
             </div>
         </div>
     </div>
+    <asp:LinkButton ID="lnkFinish" runat="server" OnClick="lnkFinish_Click" style="display: none;"></asp:LinkButton>
+    <telerik:RadWindow runat="server" Width="400px" Height="160px" VisibleStatusbar="false" ShowContentDuringLoad="false" ID="deleteAllWindow" Modal="true" Behaviors="None" Title="Deleteing Documents" ToolTip="Deleteing Documents" Animation="FlyIn" EnableShadow="True" AnimationDuration="200" Skin="Office2010Blue">
+        <ContentTemplate>
+            <div align="center" style="margin-top: 20px;">
+                Deleting...<span id="progress">0%</span>
+                <br /><br />
+                <div style="width: 190px; height: 30px; background-color: #ddd; text-align: left;">
+                    <div style="width: 1%; height: 30px;" id="progressBar" runat="server"></div>
+                </div>
+            </div>
+        </ContentTemplate>
+    </telerik:RadWindow>
 </div>

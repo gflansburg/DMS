@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteAllThread.cs" />
     <Compile Include="BulkImportThread.cs" />
     <Compile Include="Components\DMSPortalSettings.cs" />
     <Compile Include="Components\ThumbnailMode.cs" />

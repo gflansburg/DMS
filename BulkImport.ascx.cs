@@ -133,7 +133,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    dataType: \"json\",");
                 sb.AppendLine("    data: { processName: processName },");
                 sb.AppendLine("    success: function (result) {");
-                sb.AppendLine("      $('#" + hidFilesImported.ClientID + "').val(result.FilesImported)");
+                sb.AppendLine("      $('#" + hidFilesImported.ClientID + "').val(result.FilesProcessed)");
                 sb.AppendLine("      $('#progress').text(result.Progress + '%');");
                 sb.AppendLine("      $('#" + progressBar.ClientID + "').width($('#progress').text());");
                 sb.AppendLine("      if (parseInt(result.Progress, 10) < 100) {");

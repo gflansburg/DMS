@@ -146,6 +146,32 @@ namespace Gafware.Modules.DMS.Components
                 section.Handlers.Add(new HttpHandlerAction("Telerik.ReportViewer.axd", "Telerik.ReportViewer.WebForms.HttpHandler, Telerik.ReportViewer.WebForms, Version=15.1.21.616, Culture=neutral, PublicKeyToken=a9d7983dfcc261be", "*"));
                 config.Save();
             }
+            found = false;
+            ProtocolsSection protocolsSection = (ProtocolsSection)config.GetSection("system.web/webServices/protocols");
+            foreach(ProtocolElement element in protocolsSection.Protocols)
+            {
+                if(element.Name.Equals("HttpGet"))
+                {
+                    found = true;
+                }
+            }
+            if(!found)
+            {
+                protocolsSection.Protocols.Add(new ProtocolElement("HttpGet"));
+                config.Save();
+            }
+            foreach (ProtocolElement element in protocolsSection.Protocols)
+            {
+                if (element.Name.Equals("HttpPost"))
+                {
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                protocolsSection.Protocols.Add(new ProtocolElement("HttpPost"));
+                config.Save();
+            }
             return Version;
         }
 

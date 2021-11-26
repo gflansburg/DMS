@@ -194,6 +194,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    ignore_onbeforeunload = true;");
                 sb.AppendLine("  });");
                 sb.AppendLine("  $('.documentView').click(function(e) {");
+                sb.AppendLine("    showBlockingScreen();");
                 sb.AppendLine("    e.preventDefault();");
                 sb.AppendLine("    var id = $(this).attr('data-id');");
                 sb.AppendLine("    $.ajax({");
@@ -202,6 +203,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("      dataType: \"json\",");
                 sb.AppendLine("      data: { tagId: id },");
                 sb.AppendLine("      success: function(data) {");
+                sb.AppendLine("        hideBlockingScreen();");
                 sb.AppendLine("        $('#" + gvDocuments.ClientID + "').empty();");
                 sb.AppendLine("        if (data.length > 0) {");
                 sb.Append("          $('#" + gvDocuments.ClientID + "').append(\"<tr align='left' valign='top' style='color: White; background-color:#" + Theme + ";font-size:10pt;font-weight:normal;text-decoration:none;'><th align='center' scope='col' style='white-space:nowrap;text-align:center;'><span>ID</span></th><th scope='col' style='white-space:nowrap;'><span>Document Name</span></th>");
@@ -249,7 +251,8 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("        else {");
                 sb.AppendLine("          msg = 'Uncaught Error.\\n' + jqXHR.responseText;");
                 sb.AppendLine("        }");
-                sb.AppendLine("        alert(msg);");
+                sb.AppendLine("        hideBlockingScreen();");
+                sb.AppendLine("        $(\"<div title='Document List'><div style='padding: 10px; text-align: center;'>\" + msg + \"</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
                 sb.AppendLine("      }");
                 sb.AppendLine("    });");
                 sb.AppendLine("  });");

@@ -93,10 +93,7 @@ namespace Gafware.Modules.DMS
             SearchPatterns = searchPatterns.ToString().Split('|');
             FileCount = GetFileCount(FilePath);
             ImportFiles(FilePath);
-            if (Finished != null)
-            {
-                Finished(this, EventArgs.Empty);
-            }
+            Finished?.Invoke(this, EventArgs.Empty);
         }
 
         private int GetFileCount(string filePath)
@@ -170,8 +167,9 @@ namespace Gafware.Modules.DMS
             {
                 if (!SubFolderIsDocumentName)
                 {
-                    DMSFile tempFile = Components.DocumentController.GetFileByName(PortalId, PortalWideRepository ? 0 : TabModuleId, (!String.IsNullOrEmpty(parent) && level >= FirstLevel && PrependSubFolderName ? parent.Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " "));
-                    if (tempFile == null || tempFile.MimeType.Equals(MimeMapping.GetMimeMapping(file), StringComparison.OrdinalIgnoreCase))
+                    string documentName = (level >= FirstLevel && PrependSubFolderName ? (!String.IsNullOrEmpty(parent) ? parent.Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileName(filePath).Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ");
+                    doc = Components.DocumentController.GetDocumentByName(documentName, PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    if (doc == null)
                     {
                         doc = new Document();
                         doc.Categories = new List<DocumentCategory>();
@@ -183,13 +181,13 @@ namespace Gafware.Modules.DMS
                         doc.ActivationDate = ActivationDate;
                         doc.AdminComments = string.Empty;
                         doc.CreatedByUserID = OwnerId;
-                        doc.DocumentDetails = (level >= FirstLevel && PrependSubFolderName ? (!String.IsNullOrEmpty(parent) ? parent.Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileName(filePath).Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ");
+                        doc.DocumentDetails = documentName;
                         doc.ExpirationDate = ExpirationDate;
                         doc.IsSearchable = (Searchable ? "Yes" : "No");
                         doc.UseCategorySecurityRoles = UseCategorySecurityRoles;
                         doc.SecurityRoleId = SecurityRoleId;
                         //doc.ManagerToolkit = "No";
-                        doc.DocumentName = (level >= FirstLevel && PrependSubFolderName ? (!String.IsNullOrEmpty(parent) ? parent.Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileName(filePath).Replace("_", " ") + Seperator : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ");
+                        doc.DocumentName = documentName;
                         doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
                         Components.DocumentController.SaveDocument(doc);
                         foreach (int categoryId in Categories)
@@ -207,10 +205,6 @@ namespace Gafware.Modules.DMS
                         {
                             AddTag(doc, tagName);
                         }
-                    }
-                    else
-                    {
-                        doc = Components.DocumentController.GetDocument(tempFile.DocumentId);
                     }
                 }
                 using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))

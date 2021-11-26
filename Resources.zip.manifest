@@ -6798,6 +6798,10 @@
     </file>
     <file>
       <path>Images/</path>
+      <name>import.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
       <name>loading.gif</name>
     </file>
     <file>
@@ -6921,6 +6925,14 @@
       <name>View.ascx.resx</name>
     </file>
     <file>
+      <path>Documentation/</path>
+      <name>Documentation.css</name>
+    </file>
+    <file>
+      <path>Documentation/</path>
+      <name>Documentation.html</name>
+    </file>
+    <file>
       <path>Scripts/</path>
       <name>add_bookmark.jquery.js</name>
     </file>
@@ -6951,14 +6963,6 @@
     <file>
       <path>Scripts/</path>
       <name>sortElements.js</name>
-    </file>
-    <file>
-      <path>Documentation/</path>
-      <name>Documentation.css</name>
-    </file>
-    <file>
-      <path>Documentation/</path>
-      <name>Documentation.html</name>
     </file>
     <file>
       <path>AjaxControls/</path>

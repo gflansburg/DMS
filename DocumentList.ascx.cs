@@ -704,6 +704,36 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("function MyEndRequest(sender, args) {");
                 sb.AppendLine("  initDocumentListJavascript();");
                 sb.AppendLine("  hideBlockingScreen();");
+                sb.AppendLine("  if ($('#" + hidFileDeleteStatus.ClientID + "').val() === 'Started') {");
+                sb.AppendLine("    $('#" + hidFileDeleteStatus.ClientID + "').val('Running');");
+                sb.AppendLine("    $('#" + hidFilesDeleted.ClientID + "').val('0')");
+                sb.AppendLine("    $('#progress').text('0%');");
+                sb.AppendLine("    $('#" + progressBar.ClientID + "').width($('#progress').text());");
+                sb.AppendLine("    doPolling($('#" + hidProcessName.ClientID + "').val());");
+                sb.AppendLine("  } else if ($('#" + hidFileDeleteStatus.ClientID + "').val() === 'Finished') {");
+                sb.AppendLine("    $(\"<div title='Bulk Import'><div style='padding: 10px; text-align: center;'>\" + $('#" + hidFilesDeleted.ClientID + "').val() + \" Document(s) Deleted.</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
+                sb.AppendLine("    $('#" + hidFileDeleteStatus.ClientID + "').val('Idle');");
+                sb.AppendLine("  }");
+                sb.AppendLine("}");
+                sb.AppendLine("function doPolling(processName) {");
+                sb.AppendLine("  $.ajax({");
+                sb.AppendLine("    url: \"" + ControlPath + "DMSController.asmx/GetDeleteAllProgress\",");
+                sb.AppendLine("    type: \"POST\",");
+                sb.AppendLine("    dataType: \"json\",");
+                sb.AppendLine("    data: { processName: processName },");
+                sb.AppendLine("    success: function (result) {");
+                sb.AppendLine("      $('#" + hidFilesDeleted.ClientID + "').val(result.FilesProcessed)");
+                sb.AppendLine("      $('#progress').text(result.Progress + '%');");
+                sb.AppendLine("      $('#" + progressBar.ClientID + "').width($('#progress').text());");
+                sb.AppendLine("      if (parseInt(result.Progress, 10) < 100) {");
+                sb.AppendLine("        setTimeout(function() { doPolling(processName); }, 250);");
+                sb.AppendLine("      } else {");
+                sb.AppendLine("        var window = $find('" + deleteAllWindow.ClientID + "');");
+                sb.AppendLine("        window.close();");
+                sb.AppendLine("         " + Page.ClientScript.GetPostBackEventReference(lnkFinish, String.Empty) + ";");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
                 sb.AppendLine("}");
                 sb.AppendLine("function initDocumentListJavascript() {");
                 sb.AppendLine("  $('a[href^=mailto]').on('click', function() {");
@@ -806,6 +836,9 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                deleteAllWindow.IconUrl = ControlPath + "Images/icons/DeleteIcon1_16px.gif";
+                deleteAllWindow.VisibleOnPageLoad = false;
+                hidFileDeleteStatus.Value = "Idle";
                 lblInstructions.Visible = ShowInstructions;
                 lblInstructions.Text = Instructions;
                 history.Value = "0";
@@ -2081,22 +2114,17 @@ namespace Gafware.Modules.DMS
             if(Session["gv"] != null)
             {
                 System.Data.DataView dataView = (System.Data.DataView)Session["gv"];
-                foreach(System.Data.DataRowView row in dataView)
-                {
-                    Components.Document doc = Components.DocumentController.GetDocument((int)row["DocumentID"]);
-                    if (doc != null)
-                    {
-                        DotNetNuke.Entities.Portals.PortalSettings portal = DotNetNuke.Entities.Portals.PortalSettings.Current;
-                        string uploadDirectory = String.Format("{0}Files\\{1}", portal.HomeDirectoryMapPath, Generic.CreateSafeFolderName(doc.DocumentName));
-                        if (System.IO.Directory.Exists(uploadDirectory))
-                        {
-                            System.IO.Directory.Delete(uploadDirectory, true);
-                        }
-                        Components.DocumentController.DeleteDocument(doc.DocumentId);
-                    }
-                }
-                CreateDataTable(true);
+                hidProcessName.Value = DMSController.DeleteAll(dataView, PortalId, TabModuleId, PortalWideRepository);
+                deleteAllWindow.VisibleOnPageLoad = true;
+                hidFileDeleteStatus.Value = "Started";
             }
+        }
+
+        protected void lnkFinish_Click(object sender, EventArgs e)
+        {
+            deleteAllWindow.VisibleOnPageLoad = false;
+            hidFileDeleteStatus.Value = "Finished";
+            CreateDataTable(true);
         }
     }
 }
