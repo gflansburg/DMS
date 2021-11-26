@@ -88,7 +88,7 @@
                 </PagerTemplate>		            
                 <RowStyle VerticalAlign="Top" Font-Names="Arial" Font-Size="Small" BackColor="#F7F7F7" />
                 <FooterStyle Font-Names="Arial" Font-Size="X-Small" BackColor="White" />
-                <HeaderStyle BackColor="#666666" HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False" Font-Size="Small" Font-Names="Arial" ForeColor="White" Font-Bold="False" Font-Underline="false" />
+                <HeaderStyle BackColor="#666666" HorizontalAlign="Left" VerticalAlign="Middle" Wrap="False" Font-Size="Small" Font-Names="Arial" ForeColor="White" Font-Bold="False" Font-Underline="false" />
                 <AlternatingRowStyle BackColor="#E0E0E0" />
                 <Columns>
                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="100px"> 

@@ -538,7 +538,7 @@
             <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
             <asp:LinkButton runat="server" id="newDocumentCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="newDocumentCommandButton_Click"><asp:label runat="server" resourcekey="newDocumentCommandButton" /></asp:LinkButton>
             <asp:LinkButton runat="server" id="delAllCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="delAllCommandButton_Click" OnClientClick="return confirm('Are you sure you wish to delete all the documents in this repository?');"><asp:label runat="server" resourcekey="delAllCommandButton" /></asp:LinkButton>
-            <input type="button" id="changeOwnershipCommandButton" runat="server" value="Change Ownership" class="secondaryButton dmsButton" resourcekey="changeOwnershipCommandButton" />
+            <input type="button" id="changeOwnershipCommandButton" runat="server" value="Change Ownership" class="secondaryButton dmsButton" resourcekey="changeOwnershipCommandButton" style="min-height:39px; position: relative; top: 1px;" />
         </div>
         <div style="clear: both"></div>
         <asp:GridView ID="gv" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 

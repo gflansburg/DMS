@@ -51,7 +51,7 @@ namespace Gafware.Modules.DMS
                             context.Response.AppendHeader("expires", "0");
                             context.Response.AppendHeader("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
                             context.Response.AppendHeader("content-control", "no-cache, no-store, must-revalidate, max-age=0");
-                            context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", doc.DocumentName + file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
+                            context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", Generic.CreateSafeFolderName(doc.DocumentName), file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
                             if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
                             {
                                 context.Response.BinaryWrite(file.FileVersion.Contents);
@@ -66,7 +66,7 @@ namespace Gafware.Modules.DMS
                                 context.Response.AppendHeader("expires", "0");
                                 context.Response.AppendHeader("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
                                 context.Response.AppendHeader("content-control", "no-cache, no-store, must-revalidate, max-age=0");
-                                context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", doc.DocumentName + file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
+                                context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", Generic.CreateSafeFolderName(doc.DocumentName), file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
                                 context.Response.Write("<html><head><title>Unauthorized</title></head><body><h1>Unauthorized</h1></body></html>");
                             }
                             else
@@ -97,7 +97,7 @@ namespace Gafware.Modules.DMS
                                 context.Response.AppendHeader("expires", "0");
                                 context.Response.AppendHeader("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
                                 context.Response.AppendHeader("content-control", "no-cache, no-store, must-revalidate, max-age=0");
-                                context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", doc.DocumentName + file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
+                                context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", Generic.CreateSafeFolderName(doc.DocumentName), file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
                                 if (fileVersion.Contents != null && fileVersion.Contents.Length > 0)
                                 {
                                     context.Response.BinaryWrite(fileVersion.Contents);
@@ -112,7 +112,7 @@ namespace Gafware.Modules.DMS
                                     context.Response.AppendHeader("expires", "0");
                                     context.Response.AppendHeader("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
                                     context.Response.AppendHeader("content-control", "no-cache, no-store, must-revalidate, max-age=0");
-                                    context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", doc.DocumentName + file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
+                                    context.Response.AppendHeader("content-disposition", "inline;filename=\"" + string.Format("{0}.{1}", Generic.CreateSafeFolderName(doc.DocumentName), file.FileType) + "\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
                                     context.Response.Write("<html><head><title>Unauthorized</title></head><body><h1>Unauthorized</h1></body></html>");
                                 }
                                 else

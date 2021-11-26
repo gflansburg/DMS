@@ -49,13 +49,9 @@ namespace Gafware.Modules.DMS
     public partial class BulkImport : DMSModuleBase, IActionable
     {
         private readonly INavigationManager _navigationManager;
-
-        private int FilesImported { get; set; }
-
         public BulkImport()
         {
             _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-            FilesImported = 0;
         }
 
         protected void Page_PreRender(object sender, EventArgs e)
@@ -119,6 +115,36 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("});");
                 sb.AppendLine("function MyEndRequest(sender, args) {");
                 sb.AppendLine("  hideBlockingScreen();");
+                sb.AppendLine("  if ($('#" + hidFileImportStatus.ClientID + "').val() === 'Started') {");
+                sb.AppendLine("    $('#" + hidFileImportStatus.ClientID + "').val('Running');");
+                sb.AppendLine("    $('#" + hidFilesImported.ClientID + "').val('0')");
+                sb.AppendLine("    $('#progress').text('0%');");
+                sb.AppendLine("    $('#" + progressBar.ClientID + "').width($('#progress').text());");
+                sb.AppendLine("    doPolling($('#" + hidProcessName.ClientID + "').val());");
+                sb.AppendLine("  } else if ($('#" + hidFileImportStatus.ClientID + "').val() === 'Finished') {");
+                sb.AppendLine("    $(\"<div title='Bulk Import'><div style='padding: 10px; text-align: center;'>\" + $('#" + hidFilesImported.ClientID + "').val() + \" Document(s) Imported.</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
+                sb.AppendLine("    $('#" + hidFileImportStatus.ClientID + "').val('Idle');");
+                sb.AppendLine("  }");
+                sb.AppendLine("}");
+                sb.AppendLine("function doPolling(processName) {");
+                sb.AppendLine("  $.ajax({");
+                sb.AppendLine("    url: \"" + ControlPath + "DMSController.asmx/GetImportFilesProgress\",");
+                sb.AppendLine("    type: \"POST\",");
+                sb.AppendLine("    dataType: \"json\",");
+                sb.AppendLine("    data: { processName: processName },");
+                sb.AppendLine("    success: function (result) {");
+                sb.AppendLine("      $('#" + hidFilesImported.ClientID + "').val(result.FilesImported)");
+                sb.AppendLine("      $('#progress').text(result.Progress + '%');");
+                sb.AppendLine("      $('#" + progressBar.ClientID + "').width($('#progress').text());");
+                sb.AppendLine("      if (parseInt(result.Progress, 10) < 100) {");
+                sb.AppendLine("        setTimeout(function() { doPolling(processName); }, 250);");
+                sb.AppendLine("      } else {");
+                sb.AppendLine("        var window = $find('" + bulkInsertWindow.ClientID + "');");
+                sb.AppendLine("        window.close();");
+                sb.AppendLine("         " + Page.ClientScript.GetPostBackEventReference(lnkFinish, String.Empty) + ";");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
                 sb.AppendLine("}");
                 sb.AppendLine("function MM_swapImgRestore() { //v3.0");
                 sb.AppendLine("    var i, x, a = document.MM_sr; for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;");
@@ -148,9 +174,6 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("$(document).ready(function() {");
                 sb.AppendLine("  var prm = Sys.WebForms.PageRequestManager.getInstance();");
                 sb.AppendLine("  prm.add_endRequest(MyEndRequest);");
-                sb.AppendLine("  if (eval($('#" + hidFileImportComplete.ClientID + "').val()) === true) {");
-                sb.AppendLine("    alert($('#" + hidFilesImported.ClientID + "').val() + ' Document(s) Imported.');");
-                sb.AppendLine("  }");
                 sb.AppendLine("});");
                 literal.InnerHtml = sb.ToString();
                 this.Page.Header.Controls.Add(literal);
@@ -161,6 +184,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                bulkInsertWindow.IconUrl = ControlPath + "Images/import.png";
+                bulkInsertWindow.VisibleOnPageLoad = false;
+                hidFileImportStatus.Value = "Idle";
+                progressBar.Style["background-color"] = "#" + Theme;
                 if (!IsPostBack)
                 {
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
@@ -227,9 +254,6 @@ namespace Gafware.Modules.DMS
         {
             ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
             scriptManager.AsyncPostBackTimeout = 3600;
-            FilesImported = 0;
-            hidFilesImported.Value = "0";
-            hidFileImportComplete.Value = "false";
             valFilePath.ErrorMessage = "<br />Invalid Folder";
             valFilePath.IsValid = System.IO.Directory.Exists(tbFilePath.Text);
             if (Page.IsValid)
@@ -252,14 +276,30 @@ namespace Gafware.Modules.DMS
                         }
                         first = false;
                     }
-                    ImportFiles(tbFilePath.Text, searchPatterns.ToString().Split('|'), 0);
-                    btnReset_Click(sender, e);
-                    hidFileImportComplete.Value = "true";
-                    hidFilesImported.Value = FilesImported.ToString();
+                    List<int> categories = new List<int>();
+                    foreach (RepeaterItem item in rptCategory.Items)
+                    {
+                        HiddenField hidCategoryId = (HiddenField)item.FindControl("hidCategoryId");
+                        if (hidCategoryId != null)
+                        {
+                            CheckBox cbCategory = (CheckBox)item.FindControl("cbCategory");
+                            if (cbCategory != null)
+                            {
+                                int categoryId = Convert.ToInt32(hidCategoryId.Value);
+                                if (cbCategory.Checked)
+                                {
+                                    categories.Add(categoryId);
+                                }
+                            }
+                        }
+                    }
+                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, dtActivation.SelectedDate, dtExpiration.SelectedDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), PortalId, TabModuleId, PortalWideRepository);
+                    bulkInsertWindow.VisibleOnPageLoad = true;
+                    hidFileImportStatus.Value = "Started";
                 }
                 catch (Exception ex)
                 {
-                    valFilePath.ErrorMessage = "<br />" + ex.Message + (FilesImported > 0 ? string.Format(" However, {0} document" + (FilesImported > 1 ? "s were" : " was") + " imported.", FilesImported) : string.Empty);
+                    valFilePath.ErrorMessage = "<br />" + ex.Message;
                     valFilePath.IsValid = false;
                 }
             }
@@ -289,175 +329,6 @@ namespace Gafware.Modules.DMS
             pnlSeperator.Visible = pnlLevel.Visible = false;
         }
 
-        private void ImportFiles(string filePath, string[] searchPatterns, int level, string parent = "", string tagName = "")
-        {
-            string[] folders = System.IO.Directory.GetDirectories(filePath);
-            string[] files =  searchPatterns.SelectMany(filter => System.IO.Directory.GetFiles(filePath, filter)).ToArray();
-            if (string.IsNullOrEmpty(tagName) && level >= Convert.ToInt32(lstLevel.SelectedValue) && cbSubFolderIsTag.Checked)
-            {
-                tagName = System.IO.Path.GetFileName(filePath).Replace("_", " ");
-            }
-            foreach (string folder in folders)
-            {
-                ImportFiles(folder, searchPatterns, level + 1, (level >= Convert.ToInt32(lstLevel.SelectedValue) && (cbSubFolderIsTag.Checked || cbPrependSubFolderName.Checked) ? (!string.IsNullOrEmpty(parent) ? parent + lstSeperator.SelectedValue : string.Empty) + System.IO.Path.GetFileName(filePath) : string.Empty), tagName);
-            }
-            Document doc = new Document();
-            if (cbSubFolderIsDocumentName.Checked && files.Length > 0)
-            {
-                string documentName = (level >= Convert.ToInt32(lstLevel.SelectedValue) && cbPrependSubFolderName.Checked ? (!String.IsNullOrEmpty(parent) ? parent.Replace("_", " ") + lstSeperator.SelectedValue : string.Empty) : string.Empty) + System.IO.Path.GetFileName(filePath).Replace("_", " ");
-                doc = Components.DocumentController.GetDocumentByName(documentName, PortalId, PortalWideRepository ? 0 : TabModuleId);
-                if (doc == null)
-                {
-                    doc.Categories = new List<DocumentCategory>();
-                    doc.Files = new List<Components.DMSFile>();
-                    doc.Tags = new List<DocumentTag>();
-                    doc.CategoriesRaw = new List<Category>();
-                    doc.PortalId = PortalId;
-                    doc.TabModuleId = TabModuleId;
-                    doc.ActivationDate = dtActivation.SelectedDate;
-                    doc.AdminComments = string.Empty;
-                    doc.CreatedByUserID = Convert.ToInt32(ddOwner.SelectedValue);
-                    doc.DocumentDetails = documentName;
-                    doc.ExpirationDate = dtExpiration.SelectedDate;
-                    doc.IsSearchable = (cbIsSearchable.Checked ? "Yes" : "No");
-                    doc.UseCategorySecurityRoles = cbUseCategorySecurityRoles.Checked;
-                    doc.SecurityRoleId = Convert.ToInt32(ddlSecurityRole.SelectedValue);
-                    //doc.ManagerToolkit = "No";
-                    doc.DocumentName = documentName;
-                    doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
-                    Components.DocumentController.SaveDocument(doc);
-                }
-                foreach (RepeaterItem item in rptCategory.Items)
-                {
-                    HiddenField hidCategoryId = (HiddenField)item.FindControl("hidCategoryId");
-                    if (hidCategoryId != null)
-                    {
-                        CheckBox cbCategory = (CheckBox)item.FindControl("cbCategory");
-                        if (cbCategory != null)
-                        {
-                            int categoryId = Convert.ToInt32(hidCategoryId.Value);
-                            if (cbCategory.Checked)
-                            {
-                                if (!doc.Categories.Exists(c => c.CategoryId == categoryId))
-                                {
-                                    Components.DocumentCategory category = new Components.DocumentCategory();
-                                    category.CategoryId = categoryId;
-                                    category.DocumentId = doc.DocumentId;
-                                    Components.DocumentController.SaveDocumentCategory(category);
-                                    doc.Categories.Add(category);
-                                }
-                            }
-                        }
-                    }
-                }
-                if(cbSubFolderIsTag.Checked)
-                {
-                    AddTag(doc, tagName);
-                }
-            }
-            foreach (string file in files)
-            {
-                if (!cbSubFolderIsDocumentName.Checked)
-                {
-                    DMSFile tempFile = Components.DocumentController.GetFileByName(PortalId, PortalWideRepository ? 0 : TabModuleId, (!String.IsNullOrEmpty(parent) && level >= Convert.ToInt32(lstLevel.SelectedValue) && cbPrependSubFolderName.Checked ? parent.Replace("_", " ") + lstSeperator.SelectedValue : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " "));
-                    if (tempFile == null || tempFile.MimeType.Equals(MimeMapping.GetMimeMapping(file), StringComparison.OrdinalIgnoreCase))
-                    {
-                        doc = new Document();
-                        doc.Categories = new List<DocumentCategory>();
-                        doc.Files = new List<Components.DMSFile>();
-                        doc.Tags = new List<DocumentTag>();
-                        doc.CategoriesRaw = new List<Category>();
-                        doc.PortalId = PortalId;
-                        doc.TabModuleId = TabModuleId;
-                        doc.ActivationDate = dtActivation.SelectedDate;
-                        doc.AdminComments = string.Empty;
-                        doc.CreatedByUserID = Convert.ToInt32(ddOwner.SelectedValue);
-                        doc.DocumentDetails = (level >= Convert.ToInt32(lstLevel.SelectedValue) && cbPrependSubFolderName.Checked ? (!String.IsNullOrEmpty(parent) ? parent.Replace("_", " ") + lstSeperator.SelectedValue : string.Empty) + System.IO.Path.GetFileName(filePath).Replace("_", " ") + lstSeperator.SelectedValue : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ");
-                        doc.ExpirationDate = dtExpiration.SelectedDate;
-                        doc.IsSearchable = (cbIsSearchable.Checked ? "Yes" : "No");
-                        doc.UseCategorySecurityRoles = cbUseCategorySecurityRoles.Checked;
-                        doc.SecurityRoleId = Convert.ToInt32(ddlSecurityRole.SelectedValue);
-                        //doc.ManagerToolkit = "No";
-                        doc.DocumentName = (level >= Convert.ToInt32(lstLevel.SelectedValue) && cbPrependSubFolderName.Checked ? (!String.IsNullOrEmpty(parent) ? parent.Replace("_", " ") + lstSeperator.SelectedValue : string.Empty) + System.IO.Path.GetFileName(filePath).Replace("_", " ") + lstSeperator.SelectedValue : string.Empty) + System.IO.Path.GetFileNameWithoutExtension(file).Replace("_", " ");
-                        doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
-                        Components.DocumentController.SaveDocument(doc);
-                        foreach (RepeaterItem item in rptCategory.Items)
-                        {
-                            HiddenField hidCategoryId = (HiddenField)item.FindControl("hidCategoryId");
-                            if (hidCategoryId != null)
-                            {
-                                CheckBox cbCategory = (CheckBox)item.FindControl("cbCategory");
-                                if (cbCategory != null)
-                                {
-                                    int categoryId = Convert.ToInt32(hidCategoryId.Value);
-                                    if (cbCategory.Checked)
-                                    {
-                                        if (!doc.Categories.Exists(c => c.CategoryId == categoryId))
-                                        {
-                                            Components.DocumentCategory category = new Components.DocumentCategory();
-                                            category.CategoryId = categoryId;
-                                            category.DocumentId = doc.DocumentId;
-                                            Components.DocumentController.SaveDocumentCategory(category);
-                                            doc.Categories.Add(category);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (cbSubFolderIsTag.Checked)
-                        {
-                            AddTag(doc, tagName);
-                        }
-                    }
-                    else
-                    {
-                        doc = Components.DocumentController.GetDocument(tempFile.DocumentId);
-                    }
-                }
-                using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
-                {
-                    if (stream.Length > 0)
-                    {
-                        Components.DMSFile dmsFile = doc.Files.Find(p => p.Filename.Equals(System.IO.Path.GetFileName(file).Replace(" ", "_"), StringComparison.OrdinalIgnoreCase));
-                        if (dmsFile == null)
-                        {
-                            dmsFile = new Components.DMSFile();
-                            dmsFile.DocumentId = doc.DocumentId;
-                            dmsFile.FileType = Components.DMSFile.GetFileType(System.IO.Path.GetExtension(file), PortalId, PortalWideRepository ? 0 : TabModuleId);
-                            dmsFile.StatusId = 1;
-                            dmsFile.Filename = System.IO.Path.GetFileName(file).Replace(" ", "_");
-                            dmsFile.UploadDirectory = string.Format("Files/{0}", Generic.CreateSafeFolderName(doc.DocumentName));
-                            dmsFile.MimeType = MimeMapping.GetMimeMapping(file);
-                            Components.DocumentController.SaveFile(dmsFile);
-                            dmsFile.FileVersion = new Components.FileVersion();
-                            dmsFile.FileVersion.FileId = dmsFile.FileId;
-                            dmsFile.FileVersion.Version = 1000000;
-                            dmsFile.CreatedOnDate = DateTime.Now;
-                            doc.Files.Add(dmsFile);
-                        }
-                        else
-                        {
-                            dmsFile.FileVersion = dmsFile.FileVersion;
-                            dmsFile.FileVersion.FileVersionId = 0;
-                            dmsFile.FileVersion.Version++;
-                        }
-                        dmsFile.FileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
-                        dmsFile.FileVersion.CreatedByUserID = UserId;
-                        dmsFile.FileVersion.CreatedOnDate = DateTime.Now;
-                        dmsFile.FileVersion.Filesize = (int)stream.Length;
-                        Components.DocumentController.SaveFileVersion(dmsFile.FileVersion);
-                        dmsFile.FileVersionId = dmsFile.FileVersion.FileVersionId;
-                        Components.DocumentController.SaveFile(dmsFile);
-                        dmsFile.FileVersion.SaveContents(stream);
-                        dmsFile.FileVersion.Contents = null;
-                        Generic.CreateThumbnail(Request, ControlPath, dmsFile);
-                        dmsFile.FileVersion.Thumbnail = null;
-                        FilesImported++;
-                    }
-                }
-            }
-        }
-
         protected void rptCategory_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -468,28 +339,6 @@ namespace Gafware.Modules.DMS
                     cbCategory.Checked = true;
                 }
             }
-        }
-
-        private void AddTag(Document doc, string tagName)
-        {
-            Components.DocumentTag docTag = new Components.DocumentTag();
-            docTag.DocumentId = doc.DocumentId;
-            docTag.Tag = Components.DocumentController.GetTagByTagName(tagName, PortalId, PortalWideRepository ? 0 : TabModuleId);
-            if (docTag.Tag == null || docTag.Tag.TagId == 0)
-            {
-                docTag.Tag = new Components.Tag();
-                docTag.Tag.TagName = tagName;
-                docTag.Tag.IsPrivate = "No";
-                docTag.Tag.PortalId = PortalId;
-                docTag.Tag.TabModuleId = TabModuleId;
-                Components.DocumentController.SaveTag(docTag.Tag);
-                docTag.TagId = docTag.Tag.TagId;
-            }
-            else
-            {
-                docTag.TagId = docTag.Tag.TagId;
-            }
-            Components.DocumentController.SaveDocumentTag(docTag);
         }
 
         protected void cbUseCategorySecurityRoles_CheckedChanged(object sender, EventArgs e)
@@ -521,6 +370,13 @@ namespace Gafware.Modules.DMS
         protected void cbSubFolderIsTag_CheckedChanged(object sender, EventArgs e)
         {
             pnlLevel.Visible = cbPrependSubFolderName.Checked || cbSubFolderIsTag.Checked;
+        }
+
+        protected void lnkFinish_Click(object sender, EventArgs e)
+        {
+            bulkInsertWindow.VisibleOnPageLoad = false;
+            btnReset_Click(sender, e);
+            hidFileImportStatus.Value = "Finished";
         }
     }
 }

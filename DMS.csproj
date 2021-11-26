@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkImportThread.cs" />
     <Compile Include="Components\DMSPortalSettings.cs" />
     <Compile Include="Components\ThumbnailMode.cs" />
     <Compile Include="Components\ThumbnailResize.cs" />
@@ -204,6 +205,12 @@
     </Compile>
     <Compile Include="GetDocuments.ascx.designer.cs">
       <DependentUpon>GetDocuments.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AjaxControls\ModalUpdateProgress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxControls\ProgressBar.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="TagList.ascx.cs">
       <DependentUpon>TagList.ascx</DependentUpon>
@@ -305,6 +312,12 @@
   <ItemGroup>
     <Content Include="Documentation\Documentation.css" />
     <Content Include="Documentation\Documentation.html" />
+    <Content Include="gsdll32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gsdll64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\category-header-008000.png" />
     <Content Include="Images\category-header-00FFFF.png" />
     <Content Include="Images\category-header-2170CD.png" />
@@ -2004,10 +2017,12 @@
     <Content Include="Images\icons\warning.gif" />
     <Content Include="Images\icons\_blank.png" />
     <Content Include="Images\icons\_page.png" />
+    <Content Include="Images\import.png" />
     <Content Include="Images\loading.gif" />
     <Content Include="Images\packet.png" />
     <Content Include="Images\pdftemplate_landscape.png" />
     <Content Include="Images\pdftemplate_portrait.png" />
+    <Content Include="Images\progress_bar.gif" />
     <Content Include="Images\results-background-008000.jpg" />
     <Content Include="Images\results-background-00FFFF.jpg" />
     <Content Include="Images\results-background-2170CD.jpg" />
@@ -2026,6 +2041,8 @@
     <Content Include="BulkImport.ascx" />
     <Content Include="LinkCreator.ascx" />
     <Content Include="GetDocuments.ascx" />
+    <EmbeddedResource Include="AjaxControls\ModalUpdateProgress.js" />
+    <EmbeddedResource Include="AjaxControls\ProgressBar.js" />
     <Content Include="Scripts\jquery.auto-complete.css" />
     <Content Include="Scripts\jquery.auto-complete.js" />
     <Content Include="Scripts\jquery.blockUI.js" />
@@ -2127,17 +2144,6 @@
       <DependentUpon>DMSUploadReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Acrobat">
-      <Guid>{E64169B3-3592-47D2-816E-602C5C13F328}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

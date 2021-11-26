@@ -28,7 +28,8 @@
     <br />
     <br />
     <asp:HiddenField ID="hidFilesImported" runat="server" Value="0" />
-    <asp:HiddenField ID="hidFileImportComplete" runat="server" Value="false" />
+    <asp:HiddenField ID="hidFileImportStatus" runat="server" Value="Idle" />
+    <asp:HiddenField ID="hidProcessName" runat="server" Value="" />
     <div class="RecordDisplay">
         <label for="<%= tbFilePath.ClientID %>">
             <span class="FieldName"><span class="RequiredField">*</span> Folder:</span>
@@ -203,4 +204,16 @@
     <br style="clear: both" />
     <asp:LinkButton ID="btnImport" runat="server" Text="Import" CssClass="dnnPrimaryAction" OnClick="btnImport_Click" ValidationGroup="BulkImport" CausesValidation="true" />
     <asp:LinkButton ID="btnReset" runat="server" Text="Reset Page" CssClass="dnnSecondaryAction" OnClick="btnReset_Click" />
+    <asp:LinkButton ID="lnkFinish" runat="server" OnClick="lnkFinish_Click" style="display: none;"></asp:LinkButton>
+    <telerik:RadWindow runat="server" Width="400px" Height="160px" VisibleStatusbar="false" ShowContentDuringLoad="false" ID="bulkInsertWindow" Modal="true" Behaviors="None" Title="Importing Documents" ToolTip="Importing Documents" Animation="FlyIn" EnableShadow="True" AnimationDuration="200" Skin="Office2010Blue">
+        <ContentTemplate>
+            <div align="center" style="margin-top: 20px;">
+                Importing...<span id="progress">0%</span>
+                <br /><br />
+                <div style="width: 190px; height: 30px; background-color: #ddd; text-align: left;">
+                    <div style="width: 1%; height: 30px;" id="progressBar" runat="server"></div>
+                </div>
+            </div>
+        </ContentTemplate>
+    </telerik:RadWindow>
 </div>

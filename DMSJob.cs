@@ -33,19 +33,25 @@ namespace Gafware.Modules.DMS
                 foreach (PortalInfo portal in portals)
                 {
                     string portalAlias = String.Empty;
+#pragma warning disable CS0618 // Type or member is obsolete
                     foreach (var pa in paController.GetPortalAliasesByPortalId(portal.PortalID))
+#pragma warning restore CS0618 // Type or member is obsolete
                     {
                         if (pa.IsPrimary)
                         {
+#pragma warning disable CS0618 // Type or member is obsolete
                             portalAlias = pa.HTTPAlias;
+#pragma warning restore CS0618 // Type or member is obsolete
                             break;
                         }
                     }
                     if (!String.IsNullOrEmpty(portalAlias))
                     {
                         this.ScheduleHistoryItem.AddLogNote("<br />\r\nChecking Documents For : " + portal.PortalName + "<br />\r\n");
+#pragma warning disable CS0618 // Type or member is obsolete
                         Components.Repository portalSettings = Components.DocumentController.GetRepository(portal.PortalID, 0);
                         List<Document> documents = DocumentController.GetAllDocuments(portal.PortalID, 0);
+#pragma warning restore CS0618 // Type or member is obsolete
                         foreach (Document doc in documents)
                         {
                             if (doc != null)

@@ -134,7 +134,7 @@
                   <moduleControl>
                     <controlKey>BulkImport</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/BulkImport.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
                     <iconFile />
@@ -204,6 +204,14 @@
               <path>bin</path>
             </assembly>
             <assembly>
+              <name>Telerik.Web.UI.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Telerik.Web.UI.Skins.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
               <name>Spire.Doc.dll</name>
               <path>bin</path>
             </assembly>
@@ -241,6 +249,14 @@
             </assembly>
             <assembly>
               <name>Microsoft.WindowsAPICodePack.Shell.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>gsdll64.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>gsdll32.dll</name>
               <path>bin</path>
             </assembly>
           </assemblies>

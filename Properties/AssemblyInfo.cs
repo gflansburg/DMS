@@ -34,3 +34,5 @@ using System.Runtime.InteropServices;
 #pragma warning disable CS7035 // The specified version string does not conform to the recommended format - major.minor.build.revision
 [assembly: AssemblyFileVersion("01.00.00.*")]
 #pragma warning restore CS7035 // The specified version string does not conform to the recommended format - major.minor.build.revision
+[assembly: System.Web.UI.WebResource("Gafware.Modules.DMS.AjaxControls.ProgressBar.js", "text/javascript")]
+[assembly: System.Web.UI.WebResource("Gafware.Modules.DMS.AjaxControls.ModalUpdateProgress.js", "text/javascript")]

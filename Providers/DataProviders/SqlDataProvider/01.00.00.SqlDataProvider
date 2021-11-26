@@ -2811,6 +2811,7 @@ BEGIN
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Videos', 'Video', 'mp4,mov,avi,wmv', @PortalID, @TabModuleID)
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Music', 'Music', 'mp3,wma', @PortalID, @TabModuleID)
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Text Files', 'Text', 'txt', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Web Pages', 'HTML', 'htm,html', @PortalID, @TabModuleID)
 END
 GO
 

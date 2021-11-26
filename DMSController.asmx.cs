@@ -19,6 +19,9 @@ namespace Gafware.Modules.DMS
     [System.Web.Script.Services.ScriptService]
     public class DMSController : System.Web.Services.WebService
     {
+        public delegate void BulkImportFinishEventHandler(int filesImported);
+        public static event BulkImportFinishEventHandler OnBulkImportFinish;
+
         public enum Status
         {
             Failed,
@@ -438,6 +441,95 @@ namespace Gafware.Modules.DMS
                 rows.Add(row);
             }
             return serializer.Serialize(rows);
+        }
+
+        private static Dictionary<string, BulkImportThread> BulkImportProcessProgresses = new Dictionary<string, BulkImportThread>();
+
+        private class Stats
+        {
+            public DateTime CheckTime { get; set; }
+            public int Progress { get; set; }
+            public int FilesImported { get; set; }
+        }
+
+        private static Dictionary<string, Stats> ImportStats = new Dictionary<string, Stats>();
+
+        public static string ImportFiles(string controlPath, string filePath, bool subFolderIsDocumentName, bool subFolderIsTag, bool prependSubFolderName, string seperator, int firstLevel, DateTime? activationDate, DateTime? expirationDate, int ownerId, bool searchable, bool useCategorySecurityRoles, int securityRoleId, int[] categories, int portalId, int tabModuleId, bool portalWideRepository)
+        {
+            BulkImportThread worker = new BulkImportThread(HttpContext.Current.Request);
+            worker.Finished += new EventHandler(worker_Finished);
+            worker.ImportFiles(controlPath, filePath, subFolderIsDocumentName, subFolderIsTag, prependSubFolderName, seperator, firstLevel, activationDate, expirationDate, ownerId, searchable, useCategorySecurityRoles, securityRoleId, categories, portalId, tabModuleId, portalWideRepository);
+            ImportStats.Add(worker.ProcessName, new Stats());
+            BulkImportProcessProgresses.Add(worker.ProcessName, worker);
+            return worker.ProcessName;
+        }
+
+        private static void worker_Finished(object sender, EventArgs e)
+        {
+            BulkImportThread worker = (BulkImportThread)sender;
+            if (BulkImportProcessProgresses.ContainsKey(worker.ProcessName))
+            {
+                OnBulkImportFinish?.Invoke(worker.FilesImported);
+                BulkImportProcessProgresses.Remove(worker.ProcessName);
+                if (ImportStats != null && ImportStats.ContainsKey(worker.ProcessName ?? String.Empty))
+                {
+                    Stats stats = ImportStats[worker.ProcessName];
+                    stats.CheckTime = DateTime.Now;
+                    stats.FilesImported = worker.FilesImported;
+                    stats.Progress = 100;
+                }
+            }
+        }
+
+        [WebMethod]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void GetImportFilesProgress(string processName)
+        {
+            Stats stats = null;
+            if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+            {
+                if (BulkImportProcessProgresses != null && BulkImportProcessProgresses.ContainsKey(processName ?? String.Empty))
+                {
+                    BulkImportThread worker = BulkImportProcessProgresses[processName];
+                    stats = ImportStats[processName];
+                    stats.CheckTime = DateTime.Now;
+                    stats.Progress = worker.Progress;
+                    stats.FilesImported = worker.FilesImported;
+                }
+                else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+                {
+                    stats = ImportStats[processName];
+                }
+            }
+            var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            Context.Response.Write(oSerializer.Serialize(stats));
+        }
+
+        [WebMethod]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void GetFilesImportedCount(string processName)
+        {
+            int filesImported = 0;
+            if (BulkImportProcessProgresses != null && BulkImportProcessProgresses.ContainsKey(processName ?? String.Empty))
+            {
+                BulkImportThread worker = BulkImportProcessProgresses[processName];
+                filesImported = worker.FilesImported;
+                if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+                {
+                    Stats stats = ImportStats[processName];
+                    stats.CheckTime = DateTime.Now;
+                    stats.FilesImported = filesImported;
+                }
+            }
+            else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+            {
+                Stats stats = ImportStats[processName];
+                filesImported = stats.FilesImported;
+            }
+            var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            Context.Response.Write(oSerializer.Serialize(filesImported));
         }
     }
 }

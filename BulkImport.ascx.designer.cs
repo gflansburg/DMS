@@ -42,13 +42,22 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.HiddenField hidFilesImported;
 
         /// <summary>
-        /// hidFileImportComplete control.
+        /// hidFileImportStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hidFileImportComplete;
+        protected global::System.Web.UI.WebControls.HiddenField hidFileImportStatus;
+
+        /// <summary>
+        /// hidProcessName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidProcessName;
 
         /// <summary>
         /// tbFilePath control.
@@ -301,5 +310,32 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnReset;
+
+        /// <summary>
+        /// lnkFinish control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkFinish;
+
+        /// <summary>
+        /// bulkInsertWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindow bulkInsertWindow;
+
+        /// <summary>
+        /// progressBar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl progressBar;
     }
 }

@@ -1338,5 +1338,126 @@ namespace Gafware.Modules.DMS
             file.FileVersion.Contents = null;
             file.FileVersion.Thumbnail = null;
         }
+
+        public static void CreateThumbnail(HttpRequest request, string controlPath, string fileName, int fileVersionId)
+        {
+            if (System.IO.File.Exists(fileName))
+            {
+                if (System.IO.Path.GetExtension(fileName).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    byte[] thumbnail = CreateThumbnail(request, controlPath, fileName);
+                    if (thumbnail != null && thumbnail.Length > 0)
+                    {
+                        DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                    }
+                }
+                else if (System.IO.Path.GetExtension(fileName).Equals(".png", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".jpg", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".gif", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".bmp", StringComparison.OrdinalIgnoreCase))
+                {
+                    using (Bitmap bmp = new Bitmap(fileName))
+                    {
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, bmp);
+                        if (thumbnail != null && thumbnail.Length > 0)
+                        {
+                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                        }
+                    }
+                }
+                else if (System.IO.Path.GetExtension(fileName).Equals(".doc", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".docx", StringComparison.OrdinalIgnoreCase))
+                {
+                    string tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(fileName));
+                    try
+                    {
+                        using (Spire.Doc.Document doc = new Spire.Doc.Document(fileName))
+                        {
+                            doc.SaveToFile(tempPdf, Spire.Doc.FileFormat.PDF);
+                            doc.Close();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    if (System.IO.File.Exists(tempPdf))
+                    {
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                        if (thumbnail != null && thumbnail.Length > 0)
+                        {
+                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                        }
+                        System.IO.File.Delete(tempPdf);
+                    }
+                }
+                else if (System.IO.Path.GetExtension(fileName).Equals(".xls", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    string tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(fileName));
+                    try
+                    {
+                        using (Spire.Xls.Workbook workbook = new Spire.Xls.Workbook())
+                        {
+                            workbook.LoadFromFile(fileName);
+                            workbook.ConverterSetting.SheetFitToPage = true;
+                            workbook.SaveToFile(tempPdf, Spire.Xls.FileFormat.PDF);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    if (System.IO.File.Exists(tempPdf))
+                    {
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                        if (thumbnail != null && thumbnail.Length > 0)
+                        {
+                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                        }
+                        System.IO.File.Delete(tempPdf);
+                    }
+                }
+                else if (System.IO.Path.GetExtension(fileName).Equals(".mp3", StringComparison.OrdinalIgnoreCase))
+                {
+                    try
+                    {
+                        using (Id3.Mp3 mp3 = new Id3.Mp3(fileName))
+                        {
+                            if (mp3 != null)
+                            {
+                                Id3.Id3Tag tag = mp3.GetTag(Id3.Id3TagFamily.Version2X);
+                                if (tag != null)
+                                {
+                                    if (tag.Pictures.Count > 0)
+                                    {
+                                        using (MemoryStream ms = new MemoryStream(tag.Pictures[0].PictureData))
+                                        {
+                                            using (Bitmap bmp = new Bitmap(ms))
+                                            {
+                                                byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                                                if (thumbnail != null && thumbnail.Length > 0)
+                                                {
+                                                    DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                else if (System.IO.Path.GetExtension(fileName).Equals(".mp4", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".mov", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".wmv", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".avi", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".wma", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".ppt", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".pptx", StringComparison.OrdinalIgnoreCase))
+                {
+                    using (Microsoft.WindowsAPICodePack.Shell.ShellFile shellFile = Microsoft.WindowsAPICodePack.Shell.ShellFile.FromFilePath(fileName))
+                    {
+                        Bitmap bmp = new Bitmap(shellFile.Thumbnail.LargeBitmap);
+                        bmp.MakeTransparent();
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                        if (thumbnail != null && thumbnail.Length > 0)
+                        {
+                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

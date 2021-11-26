@@ -900,3 +900,13 @@ a.version {
     top: -7px;
     left: -7px;
 }
+
+.dms th {
+	padding-right: 20px;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: center;
+    padding-bottom: 10px;
+    border: none;
+}

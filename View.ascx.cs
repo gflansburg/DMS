@@ -257,6 +257,10 @@ namespace Gafware.Modules.DMS
                     string packetID = (Request.QueryString["p"] ?? String.Empty).Trim();
                     string strQuery = (Request.QueryString["q"] ?? String.Empty).Trim();
                     string strType = (Request.QueryString["type"] ?? String.Empty).Trim();
+                    if(strQuery.Equals("[All]"))
+                    {
+                        strQuery = string.Empty;
+                    }
                     if (String.IsNullOrEmpty(strQuery) && !String.IsNullOrEmpty(Request.QueryString["Search"]))
                     {
                         strQuery = Request.QueryString["Search"].Trim();
@@ -494,7 +498,8 @@ namespace Gafware.Modules.DMS
             }
             else*/
             {
-                Response.Redirect(TabController.CurrentPage.FullUrl + "?q=" + System.Web.HttpUtility.UrlEncode(tbKeywords.Text) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty)); // + (Request.QueryString["type"] != null ? "&type=" + Request.QueryString["type"] : String.Empty));
+                string url = TabController.CurrentPage.FullUrl + "?q=" + System.Web.HttpUtility.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) && PortalSettings.ActiveTab.TabName.Equals("Home", StringComparison.OrdinalIgnoreCase) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
+                Response.Redirect(url, true); // + (Request.QueryString["type"] != null ? "&type=" + Request.QueryString["type"] : String.Empty));
             }
         }
 
