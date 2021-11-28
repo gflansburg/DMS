@@ -18,7 +18,7 @@
 </style>
 <div class="se-pre-con"></div>
 <div class="dms" style="padding: 10px;">
-    <asp:Panel ID="pnlDetails" runat="server" style="display: none">
+    <asp:Panel ID="pnlDetails" runat="server" Visible="false">
         <asp:Panel ID="pnlNotFound" runat="server" Visible="false">
             <h3>The document you are trying to retrieve is no longer available or you do not have sufficient privileges.</h3><br />
             If you reached this page through a bookmarked link or from another website, please use our document search to find a new version of the document you requested.
@@ -510,7 +510,7 @@
             </div>
         </div>
     </asp:Panel>
-    <asp:Panel ID="pnlGrid" runat="server" style="display: none">
+    <asp:Panel ID="pnlGrid" runat="server">
         <h3><%=LocalizeString("BasicSettings")%></h3>
         <asp:HiddenField ID="hidFilesDeleted" runat="server" Value="0" />
         <asp:HiddenField ID="hidFileDeleteStatus" runat="server" Value="Idle" />

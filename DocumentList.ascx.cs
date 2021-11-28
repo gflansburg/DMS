@@ -855,8 +855,8 @@ namespace Gafware.Modules.DMS
                 {
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     lblCategory.Text = CategoryName;
-                    pnlDetails.Style.Add("display", "none");
-                    pnlGrid.Style.Remove("display");
+                    //pnlDetails.Style.Add("display", "none");
+                    //pnlGrid.Style.Remove("display");
                     BindDropDowns();
                     foreach(Category category in categories)
                     {
@@ -1049,8 +1049,10 @@ namespace Gafware.Modules.DMS
         {
             DocumentID = documentId;
             ViewMode = ViewMode.Details;
-            pnlDetails.Style.Remove("display");
-            pnlGrid.Style.Add("display", "none");
+            //pnlDetails.Style.Remove("display");
+            //pnlGrid.Style.Add("display", "none");
+            pnlDetails.Visible = true;
+            pnlGrid.Visible = false;
         }
 
         protected void gv_DataBound(object sender, EventArgs e)
@@ -1121,8 +1123,10 @@ namespace Gafware.Modules.DMS
         {
             DocumentID = 0;
             ViewMode = ViewMode.Edit;
-            pnlDetails.Style.Remove("display");
-            pnlGrid.Style.Add("display", "none");
+            //pnlDetails.Style.Remove("display");
+            //pnlGrid.Style.Add("display", "none");
+            pnlDetails.Visible = true;
+            pnlGrid.Visible = false;
         }
 
         protected void backCommandButton_Click(object sender, EventArgs e)
@@ -1344,8 +1348,10 @@ namespace Gafware.Modules.DMS
             TagsFilesEnabled = (DocumentID != 0);
             if (DocumentID == 0)
             {
-                pnlDetails.Style.Add("display", "none");
-                pnlGrid.Style.Remove("display");
+                //pnlDetails.Style.Add("display", "none");
+                //pnlGrid.Style.Remove("display");
+                pnlDetails.Visible = false;
+                pnlGrid.Visible = true;
                 DocumentID = 0;
                 CreateDataTable(false);
             }
@@ -1369,16 +1375,20 @@ namespace Gafware.Modules.DMS
                 Components.DocumentController.DeleteDocument(DocumentID);
             }
             DocumentID = 0;
-            pnlDetails.Style.Add("display", "none");
-            pnlGrid.Style.Remove("display");
+            //pnlDetails.Style.Add("display", "none");
+            //pnlGrid.Style.Remove("display");
+            pnlDetails.Visible = false;
+            pnlGrid.Visible = true;
             DocumentID = 0;
             CreateDataTable(true);
         }
 
         protected void btnBack_Click(object sender, EventArgs e)
         {
-            pnlDetails.Style.Add("display", "none");
-            pnlGrid.Style.Remove("display");
+            //pnlDetails.Style.Add("display", "none");
+            //pnlGrid.Style.Remove("display");
+            pnlDetails.Visible = false;
+            pnlGrid.Visible = true;
             DocumentID = 0;
             CreateDataTable(false);
         }
