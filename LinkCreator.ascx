@@ -52,6 +52,8 @@
             <span class="FieldName"><span class="RequiredField">*</span> Available Documents:</span>
             <span class="FieldValue">
                 <asp:DropDownList ID="ddDocuments" runat="server" Width="675px" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="LinkCreator"></asp:DropDownList>
+<%--                <asp:HiddenField ID="hidDocumentId" runat="server" Value="0" />
+                <asp:TextBox ID="tbDocument" Width="675px" runat="server" ValidationGroup="LinkCreator"></asp:TextBox>--%>
                 <asp:LinkButton ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Add Document" ValidationGroup="LinkCreator" CssClass="dnnPrimaryAction" style="line-height: 20px;" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="LinkCreator"></asp:RequiredFieldValidator>
             </span>

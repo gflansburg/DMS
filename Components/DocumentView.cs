@@ -34,7 +34,7 @@ namespace Gafware.Modules.DMS.Components
         /// <summary>
         /// CategoriesRaw
         /// </summary>
-        public List<Category> CategoriesRaw { get; set; }
+        //public List<Category> CategoriesRaw { get; set; }
         /// <summary>
         /// Creator ID
         /// </summary>
@@ -49,12 +49,12 @@ namespace Gafware.Modules.DMS.Components
             DocumentName = Null.SetNullString(dr["DocumentName"]);
             PortalId = Null.SetNullInteger(dr["PortalID"]);
             LastModifiedOnDate = Null.SetNullDateTime(dr["DateLastModified"]);
-            List<DocumentCategory> categories = DocumentController.GetAllCategoriesForDocument(DocumentId);
+            /*List<DocumentCategory> categories = DocumentController.GetAllCategoriesForDocument(DocumentId);
             CategoriesRaw = new List<Category>();
             foreach(DocumentCategory category in categories)
             {
                 CategoriesRaw.Add(category.Category);
-            }
+            }*/
         }
 
         public override int KeyID

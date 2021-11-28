@@ -742,7 +742,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("  $('#" + tbKeywords.ClientID + "').autoComplete({");
                 sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + " }, function(data) { response(data); }); },");
                 sb.AppendLine("    cache: false,");
-                sb.AppendLine("    minChars: 1,");
+                sb.AppendLine("    minChars: 3,");
                 sb.AppendLine("    onSelect: function(event, term, item) {");
                 sb.AppendLine("      $('#" + tbKeywords.ClientID + "').val(term);");
                 //sb.AppendLine("      $('#" + btnSearch.ClientID + "').click();");
@@ -1135,20 +1135,23 @@ namespace Gafware.Modules.DMS
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 System.Data.DataRowView row = (System.Data.DataRowView)e.Row.DataItem;
+                List<Components.DocumentCategory> docCategories = Components.DocumentController.GetAllCategoriesForDocument((int)row["DocumentId"]);
+                
                 List<Category> categories = DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 foreach (Category category in categories)
                 {
                     Label lbl = ((Label)e.Row.FindControl("lbl" + Generic.RemoveSpecialCharacters(category.CategoryName).Replace(" ", "_")));
                     if (lbl != null)
                     {
-                        if (row[Generic.RemoveSpecialCharacters(category.CategoryName).Replace(" ", "_")].GetType() == typeof(string))
-                        {
-                            lbl.Text = (string)row[Generic.RemoveSpecialCharacters(category.CategoryName).Replace(" ", "_")];
-                        }
-                        else
-                        {
-                            lbl.Text = "No";
-                        }
+                        lbl.Text = (docCategories.FirstOrDefault(docCat => category.CategoryId == docCat.CategoryId) != null ? "Yes" : "No");
+                        //if (row[Generic.RemoveSpecialCharacters(category.CategoryName).Replace(" ", "_")].GetType() == typeof(string))
+                        //{
+                        //    lbl.Text = (string)row[Generic.RemoveSpecialCharacters(category.CategoryName).Replace(" ", "_")];
+                        //}
+                        //else
+                        //{
+                        //    lbl.Text = "No";
+                        //}
                     }
                 }
                 LinkButton lnk = (LinkButton)e.Row.FindControl("lnkDocumentName");
@@ -2125,6 +2128,11 @@ namespace Gafware.Modules.DMS
             deleteAllWindow.VisibleOnPageLoad = false;
             hidFileDeleteStatus.Value = "Finished";
             CreateDataTable(true);
+        }
+
+        protected void btnBack2_Click(object sender, EventArgs e)
+        {
+            btnBack_Click(sender, e);
         }
     }
 }

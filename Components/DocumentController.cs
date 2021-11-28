@@ -94,6 +94,11 @@ namespace Gafware.Modules.DMS.Components
             return CBO.FillCollection<Document>(DataProvider.Instance().GetAllDocuments(portalId, tabModuleId));
         }
 
+        public static List<DropDownDocument> GetAllDocumentsForDropDown(int portalId, int tabModuleId)
+        {
+            return CBO.FillCollection<DropDownDocument>(DataProvider.Instance().GetAllDocuments(portalId, tabModuleId));
+        }
+
         public static List<DocumentView> GetAllDocumentsForView(int portalId, int tabModuleId)
         {
             return CBO.FillCollection<DocumentView>(DataProvider.Instance().GetAllDocuments(portalId, tabModuleId));

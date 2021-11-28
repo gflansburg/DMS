@@ -263,7 +263,7 @@
         </asp:Panel>
         <br style="clear: both;" />
         <div id="pnlBack2" runat="server" style="float: left; text-align: right; margin: 0px 0px 5px 0px;" visible="false">
-            <asp:LinkButton ID="btnBack2" runat="server" Text="Back" CssClass="dnnSecondaryAction" OnClick="btnBack_Click" CausesValidation="false" />
+            <asp:LinkButton ID="btnBack2" runat="server" Text="Back" CssClass="dnnSecondaryAction" OnClick="btnBack2_Click" CausesValidation="false" />
         </div>
         <div id="pnlControl2" runat="server" style="float: right; text-align: right; margin: 0px 1px 5px 0px;" visible="false">
             <asp:LinkButton ID="btnSave2" runat="server" Text="Save Document" CssClass="dnnPrimaryAction" OnClick="btnSave_Click" CausesValidation="true" ValidationGroup="DocumentControl" /> <asp:LinkButton ID="btnCancel2" runat="server" Text="Cancel" CssClass="dnnSecondaryAction" OnClick="btnCancel_Click" CausesValidation="false" />

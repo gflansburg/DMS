@@ -104,6 +104,8 @@ namespace Gafware.Modules.DMS.Data
 
         public abstract IDataReader GetAllDocuments(int portalId, int tabModuleId);
 
+        public abstract IDataReader GetAllDocumentsForDropDown(int portalId, int tabModuleId);
+
         public abstract IDataReader GetAllPublicDocuments(int portalId, int tabModuleId);
 
         public abstract IDataReader GetAllDocumentsForTag(int tagId, bool portalWideRepository);

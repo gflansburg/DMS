@@ -207,6 +207,11 @@ namespace Gafware.Modules.DMS.Data
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllDocuments", portalId, tabModuleId);
         }
 
+        public override IDataReader GetAllDocumentsForDropDown(int portalId, int tabModuleId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllDocuments", portalId, tabModuleId);
+        }
+
         public override IDataReader GetDocument(int documentId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetDocument", documentId);

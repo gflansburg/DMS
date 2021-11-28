@@ -187,7 +187,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("  $('#" + tbKeywords.ClientID + "').autoComplete({");
                 sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + " }, function(data) { response(data); }); },");
                 sb.AppendLine("    cache: false,");
-                sb.AppendLine("    minChars: 1,");
+                sb.AppendLine("    minChars: 3,");
                 sb.AppendLine("    onSelect: function(event, term, item) {");
                 sb.AppendLine("      $('#" + tbKeywords.ClientID + "').val(term);");
                 //sb.AppendLine("      $('#" + btnSearch.ClientID + "').click();");

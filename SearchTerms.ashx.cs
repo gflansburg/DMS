@@ -22,25 +22,10 @@ namespace Gafware.Modules.DMS
             {
                 settings = new Components.DMSPortalSettings();
             }
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            List<Tag> tags = DocumentController.FindSearchTags(term, PortalId, settings.PortalWideRepository ? 0 : TabModuleId);
-            if (tags.Count > 0)
-            {
-                sb.Append("[");
-                bool first = true;
-                foreach (Tag tag in tags)
-                {
-                    if (!first)
-                    {
-                        sb.Append(",");
-                    }
-                    //sb.Append("{" + String.Format("\"id\":{0},\"value\":\"{1}\"", tag.TagId, tag.TagName.Replace("\"", "&quot;")) + "}");
-                    sb.Append(String.Format("\"{0}\"", tag.TagName.Replace("\"", "&quot;")));
-                    first = false;
-                }
-                sb.Append("]");
-            }
-            context.Response.Write(sb.ToString());
+            IEnumerable<string> results = from tag in DocumentController.FindSearchTags(term, PortalId, settings.PortalWideRepository ? 0 : TabModuleId)
+                                          select tag.TagName;
+            var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            context.Response.Write(oSerializer.Serialize(results));
             context.Response.ContentType = "application/json";
         }
 

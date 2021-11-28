@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gafware.Modules.DMS {
-    
-    
-    public partial class LinkCreator {
-        
+namespace Gafware.Modules.DMS
+{
+
+
+    public partial class LinkCreator
+    {
+
         /// <summary>
         /// litCSS control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litCSS;
-        
+
         /// <summary>
         /// btnBack control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnBack;
-        
+
         /// <summary>
         /// tbCustomHeader control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbCustomHeader;
-        
+
         /// <summary>
         /// cbShowDescriptionToggleButton control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbShowDescriptionToggleButton;
-        
+
         /// <summary>
         /// cbShowDescription control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbShowDescription;
-        
+
         /// <summary>
         /// ddDocuments control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddDocuments;
-        
+
         /// <summary>
         /// btnSubmit control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
-        
+
         /// <summary>
         /// RequiredFieldValidator9 control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator9;
-        
+
         /// <summary>
         /// hidFileCount control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidFileCount;
-        
+
         /// <summary>
         /// gv control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gv;
-        
+
         /// <summary>
         /// lnkCustomHeaderPostback control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkCustomHeaderPostback;
-        
+
         /// <summary>
         /// pnlLink control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlLink;
-        
+
         /// <summary>
         /// hidBaseUrl control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidBaseUrl;
-        
+
         /// <summary>
         /// previewUrl control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField previewUrl;
-        
+
         /// <summary>
         /// hidDocList control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidDocList;
-        
+
         /// <summary>
         /// hidFileID control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidFileID;
-        
+
         /// <summary>
         /// preview control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField preview;
-        
+
         /// <summary>
         /// tbLinkURL control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbLinkURL;
-        
+
         /// <summary>
         /// btnPreview control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnPreview;
-        
+
         /// <summary>
         /// btnReset control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnReset;
-        
+
         /// <summary>
         /// documentSearchResults control.
         /// </summary>

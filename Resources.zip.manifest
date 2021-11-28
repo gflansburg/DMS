@@ -6757,6 +6757,14 @@
       <name>_page.png</name>
     </file>
     <file>
+      <path>Documentation/</path>
+      <name>Documentation.css</name>
+    </file>
+    <file>
+      <path>Documentation/</path>
+      <name>Documentation.html</name>
+    </file>
+    <file>
       <path>Images/</path>
       <name>category-header-008000.png</name>
     </file>
@@ -6925,14 +6933,6 @@
       <name>View.ascx.resx</name>
     </file>
     <file>
-      <path>Documentation/</path>
-      <name>Documentation.css</name>
-    </file>
-    <file>
-      <path>Documentation/</path>
-      <name>Documentation.html</name>
-    </file>
-    <file>
       <path>Scripts/</path>
       <name>add_bookmark.jquery.js</name>
     </file>
@@ -7039,6 +7039,10 @@
     <file>
       <path />
       <name>ReleaseNotes.txt</name>
+    </file>
+    <file>
+      <path />
+      <name>SearchDocuments.ashx</name>
     </file>
     <file>
       <path />
