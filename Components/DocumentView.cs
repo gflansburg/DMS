@@ -32,6 +32,14 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public new DateTime LastModifiedOnDate { get; set; }
         /// <summary>
+        /// Activation date
+        /// </summary>
+        public DateTime? ActivationDate { get; set; }
+        /// <summary>
+        /// ExpirationDate
+        /// </summary>
+        public DateTime? ExpirationDate { get; set; }
+        /// <summary>
         /// CategoriesRaw
         /// </summary>
         //public List<Category> CategoriesRaw { get; set; }
@@ -49,6 +57,8 @@ namespace Gafware.Modules.DMS.Components
             DocumentName = Null.SetNullString(dr["DocumentName"]);
             PortalId = Null.SetNullInteger(dr["PortalID"]);
             LastModifiedOnDate = Null.SetNullDateTime(dr["DateLastModified"]);
+            ActivationDate = (dr["ActivationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ActivationDate"]));
+            ExpirationDate = (dr["ExpirationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ExpirationDate"]));
             /*List<DocumentCategory> categories = DocumentController.GetAllCategoriesForDocument(DocumentId);
             CategoriesRaw = new List<Category>();
             foreach(DocumentCategory category in categories)

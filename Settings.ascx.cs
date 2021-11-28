@@ -168,8 +168,8 @@ namespace Gafware.Modules.DMS
                 DotNetNuke.Entities.Portals.PortalSettings portalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current;
                 if (repository.SaveLocalFile)
                 {
-                    List<Components.DropDownDocument> documents = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, chkPortalWideRepository.Checked ? 0 : TabModuleId);
-                    foreach (Components.DropDownDocument doc in documents)
+                    List<Components.DocumentView> documents = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, chkPortalWideRepository.Checked ? 0 : TabModuleId);
+                    foreach (Components.DocumentView doc in documents)
                     {
                         if (doc != null && (!doc.ActivationDate.HasValue || DateTime.Now >= doc.ActivationDate.Value) && (!doc.ExpirationDate.HasValue || DateTime.Now <= (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))))
                         {

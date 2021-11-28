@@ -315,7 +315,7 @@ namespace Gafware.Modules.DMS
                 {
                     gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
-                    List<Components.DropDownDocument> docs = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    List<Components.DocumentView> docs = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, PortalWideRepository ? 0 : TabModuleId);
                     List<SearchResult> results = (from doc in docs select new SearchResult { DocumentID = doc.DocumentId, DocumentName = doc.DocumentName }).ToList();
                     ddDocuments.DataSource = results;
                     ddDocuments.DataBind();

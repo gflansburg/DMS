@@ -834,7 +834,7 @@ namespace Gafware.Modules.DMS
 
         private void BindDropDowns()
         {
-            List<Components.DropDownDocument> docs = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, PortalWideRepository ? 0 : TabModuleId);
+            List<Components.DocumentView> docs = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, PortalWideRepository ? 0 : TabModuleId);
             List<SearchResult> results = (from doc in docs select new SearchResult { DocumentID = doc.DocumentId, DocumentName = doc.DocumentName }).ToList();
             ddDocuments.DataSource = results;
             ddDocuments.DataBind();

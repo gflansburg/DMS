@@ -137,7 +137,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\DropDownDocument.cs" />
     <Compile Include="DeleteAllThread.cs" />
     <Compile Include="BulkImportThread.cs" />
     <Compile Include="Components\DMSPortalSettings.cs" />
