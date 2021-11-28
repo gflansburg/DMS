@@ -106,6 +106,11 @@ BEGIN
 		[DocumentCategoryID] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	) ON [PRIMARY]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_DocumentCategory_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_DocumentCategory
+		(
+		DocumentID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -133,6 +138,17 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_DateUploaded]  DEFAULT (getdate()) FOR [DateUploaded]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_Filesize]  DEFAULT ((0)) FOR [Filesize]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_FileVersion_FileID_Version ON {databaseOwner}{objectQualifier}Gafware_DMS_FileVersion
+		(
+		FileID,
+		[Version]
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_FileVersion_Version ON {databaseOwner}{objectQualifier}Gafware_DMS_FileVersion
+		(
+		[Version]
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -261,6 +277,13 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_UseCategoryRoles]  DEFAULT ((1)) FOR [UseCategoryRoles]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_SecurityRoleID]  DEFAULT ((-1)) FOR [SecurityRoleID]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_Document_PortalID_TabModuleID_DocumentName ON {databaseOwner}{objectQualifier}Gafware_DMS_Document
+		(
+		PortalID,
+		TabModuleID,
+		DocumentName
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -275,6 +298,11 @@ BEGIN
 		[DocumentTagID] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	) ON [PRIMARY]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_DocumentTag_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_DocumentTag
+		(
+		DocumentID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -293,6 +321,11 @@ BEGIN
 		[FileID] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	) ON [PRIMARY]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_File_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_File
+		(
+		DocumentID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -388,6 +421,12 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Tag_PortalID]  DEFAULT ((0)) FOR [PortalID]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Tag_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_Tag_PortalID_TabModuleID ON {databaseOwner}{objectQualifier}Gafware_DMS_Tag
+		(
+		PortalID,
+		TabModuleID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
