@@ -78,8 +78,8 @@ namespace Gafware.Modules.DMS.Components
 
         public Repository()
         {
-            UserRoleId = 0;
-            FileNotificationsRoleId = 0;
+            UserRoleId = -2;
+            FileNotificationsRoleId = -2;
             ShowTips = true;
             ShowInstructions = true;
         }

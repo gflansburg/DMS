@@ -1180,8 +1180,6 @@ namespace Gafware.Modules.DMS
                 if (doc == null)
                 {
                     doc = new Components.Document();
-                    doc.Tags = new List<Components.DocumentTag>();
-                    doc.Files = new List<Components.DMSFile>();
                 }
                 lblActivationDate.Text = doc.ActivationDate.HasValue ? doc.ActivationDate.Value.ToString("MM/dd/yyyy") : "&nbsp;";
                 lblAdminComments.Text = !String.IsNullOrEmpty(doc.AdminComments) ? doc.AdminComments : "&nbsp;";
@@ -1194,7 +1192,7 @@ namespace Gafware.Modules.DMS
                 //lblIPAddress.Text = !String.IsNullOrEmpty(doc.IPAddress) ? doc.IPAddress : "&nbsp;";
                 lblIsSearchable.Text = doc.IsSearchable;
                 lblUseCategorySecurityRoles.Text = doc.UseCategorySecurityRoles ? "Yes" : "No";
-                lblSecurityRole.Text = doc.SecurityRole.RoleName;
+                lblSecurityRole.Text = (doc.SecurityRole != null ? doc.SecurityRole.RoleName : "Unknown");
                 //lblManagerToolkit.Text = doc.ManagerToolkit;
                 lblOwner.Text = doc.CreatedByUser != null && !String.IsNullOrEmpty(doc.CreatedByUser.LastName) ? doc.CreatedByUser.FirstName + " " + doc.CreatedByUser.LastName : "&nbsp;";
                 ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(doc.CreatedByUserID.ToString()));

@@ -119,8 +119,15 @@ namespace Gafware.Modules.DMS.Components
         {
             get
             {
-                return UserController.GetRoleById(PortalId, SecurityRoleId);
+                return UserController.GetRoleById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, SecurityRoleId);
             }
+        }
+
+        public Document()
+        {
+            SecurityRoleId = -1;
+            Tags = new List<Components.DocumentTag>();
+            Files = new List<Components.DMSFile>();
         }
 
         public override void Fill(IDataReader dr)

@@ -91,7 +91,7 @@
                     <controlKey>DocumentList</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/DocumentList.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Document List</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -102,7 +102,7 @@
                     <controlKey>PacketList</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/PacketList.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Packet List</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -113,7 +113,7 @@
                     <controlKey>TagList</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/TagList.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Tag View</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -124,7 +124,7 @@
                     <controlKey>LinkCreator</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/LinkCreator.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Link Creator</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -135,7 +135,7 @@
                     <controlKey>BulkImport</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/BulkImport.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Bulk Import</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -146,7 +146,7 @@
                     <controlKey>UploadReport</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/UploadReport.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Upload Report</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -157,7 +157,7 @@
                     <controlKey>GetDocuments</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/GetDocuments.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Get Documents</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -168,7 +168,7 @@
                     <controlKey>Preview</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/Preview.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle>Preview Document</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
@@ -300,10 +300,10 @@
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/Gafware/DMS/PacketView.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
