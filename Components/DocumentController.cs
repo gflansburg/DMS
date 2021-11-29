@@ -84,6 +84,11 @@ namespace Gafware.Modules.DMS.Components
             return CBO.FillObject<Document>(DataProvider.Instance().GetDocument(documentId));
         }
 
+        public static DocumentView GetDocumentForView(int documentId)
+        {
+            return CBO.FillObject<DocumentView>(DataProvider.Instance().GetDocument(documentId));
+        }
+
         public static Document GetDocumentByName(string name, int portalId, int tabModuleId)
         {
             return CBO.FillObject<Document>(DataProvider.Instance().GetDocumentByName(name, portalId, tabModuleId));
@@ -213,9 +218,9 @@ namespace Gafware.Modules.DMS.Components
             return objFile.FileId;
         }
 
-        public static List<Document> Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId)
+        public static List<Document> Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId, int userId)
         {
-            return CBO.FillCollection<Document>(DataProvider.Instance().Search(categoryId, keywords, bPrivate, portalId, tabModuleId));
+            return CBO.FillCollection<Document>(DataProvider.Instance().Search(categoryId, keywords, bPrivate, portalId, tabModuleId, userId));
         }
 
         public static List<Tag> FindSearchTags(string term, int portalId, int tabModuleId)

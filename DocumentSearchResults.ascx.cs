@@ -144,6 +144,30 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        public int UserId
+        {
+            get
+            {
+                return (ViewState["UserId"] != null ? (int)ViewState["UserId"] : 0);
+            }
+            set
+            {
+                ViewState["UserId"] = value;
+            }
+        }
+
+        public bool PortalWideRepository
+        {
+            get
+            {
+                return (ViewState["PortalWideRepository"] != null ? (bool)ViewState["PortalWideRepository"] : true);
+            }
+            set
+            {
+                ViewState["PortalWideRepository"] = value;
+            }
+        }
+
         public int ModuleId
         {
             get
@@ -364,7 +388,7 @@ namespace Gafware.Modules.DMS
             {
                 try
                 {
-                    Packet packet = PacketController.GetPacketByName(aryQueryString["p"], PortalId, TabModuleId);
+                    Packet packet = PacketController.GetPacketByName(aryQueryString["p"], PortalId, PortalWideRepository ? 0 : TabModuleId);
                     pnlDescription.Visible = !String.IsNullOrEmpty(packet.Description) && packet.ShowPacketDescription;
                     lblDescription.Text = packet.Description;
                     ShowDescription = packet.ShowDescription;
@@ -380,7 +404,7 @@ namespace Gafware.Modules.DMS
                     foreach (PacketTag tag in packet.Tags)
                     {
                         //tag.Tag = DocumentController.GetTag(tag.TagId);
-                        List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, TabModuleId);
+                        List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
                         foreach (Document doc in docs)
                         {
                             if (Generic.UserHasAccess(doc))
@@ -553,7 +577,8 @@ namespace Gafware.Modules.DMS
             {
                 PacketDocument doc = item as PacketDocument;
                 string strCategoryText = String.Empty;
-                foreach(DocumentCategory category in doc.Document.Categories)
+                List<DocumentCategory> categories = Components.DocumentController.GetAllCategoriesForDocument(doc.DocumentId);
+                foreach(DocumentCategory category in categories)
                 {
                     DotNetNuke.Security.Roles.RoleInfo categoryRole = UserController.GetRoleById(PortalId, category.Category.RoleId);
                     if (categoryRole != null)
@@ -615,7 +640,7 @@ namespace Gafware.Modules.DMS
                         }
                     }
                 }
-                FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, TabModuleId);
+                FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (fileType != null)
                 {
                     /*if (System.IO.File.Exists(MapPath(icon)))
@@ -708,7 +733,7 @@ namespace Gafware.Modules.DMS
                     }
                 }
             }
-            FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, TabModuleId);
+            FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, PortalWideRepository ? 0 : TabModuleId);
             if (fileType != null)
             {
                 /*if (System.IO.File.Exists(MapPath(icon)))

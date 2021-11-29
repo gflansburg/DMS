@@ -740,9 +740,9 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    ignore_onbeforeunload = true;");
                 sb.AppendLine("  });");
                 sb.AppendLine("  $('#" + tbKeywords.ClientID + "').autoComplete({");
-                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + " }, function(data) { response(data); }); },");
+                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + ", cid: " + (ddCategory.Items.Count == 1 ? ddCategory.SelectedValue : "$('#" + ddCategory.ClientID + "').val()") + ", p: true, uid: " + UserId.ToString() + " }, function(data) { response(data); }); },");
                 sb.AppendLine("    cache: false,");
-                sb.AppendLine("    minChars: 3,");
+                sb.AppendLine("    minChars: 1,");
                 sb.AppendLine("    onSelect: function(event, term, item) {");
                 sb.AppendLine("      $('#" + tbKeywords.ClientID + "').val(term);");
                 //sb.AppendLine("      $('#" + btnSearch.ClientID + "').click();");
@@ -836,6 +836,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                if(!IsDMSUser())
+                {
+                    base.Response.Redirect(_navigationManager.NavigateURL(), true);
+                }
                 deleteAllWindow.IconUrl = ControlPath + "Images/icons/DeleteIcon1_16px.gif";
                 deleteAllWindow.VisibleOnPageLoad = false;
                 hidFileDeleteStatus.Value = "Idle";
@@ -1429,16 +1433,16 @@ namespace Gafware.Modules.DMS
             {
                 docTag = new Components.DocumentTag();
                 docTag.DocumentId = DocumentID;
-                docTag.Tag = Components.DocumentController.GetTagByTagName(tagName, PortalId, PortalWideRepository ? 0 : TabModuleId);
-                if (docTag.Tag == null || docTag.Tag.TagId == 0)
+                Tag tag = Components.DocumentController.GetTagByTagName(tagName, PortalId, PortalWideRepository ? 0 : TabModuleId);
+                if (tag == null || tag.TagId == 0)
                 {
-                    docTag.Tag = new Components.Tag();
-                    docTag.Tag.TagName = tagName;
-                    docTag.Tag.IsPrivate = "No";
-                    docTag.Tag.PortalId = PortalId;
-                    docTag.Tag.TabModuleId = TabModuleId;
-                    Components.DocumentController.SaveTag(docTag.Tag);
-                    docTag.TagId = docTag.Tag.TagId;
+                    tag = new Components.Tag();
+                    tag.TagName = tagName;
+                    tag.IsPrivate = "No";
+                    tag.PortalId = PortalId;
+                    tag.TabModuleId = TabModuleId;
+                    Components.DocumentController.SaveTag(tag);
+                    docTag.TagId = tag.TagId;
                     ddTags.DataSource = Components.DocumentController.GetAllTags(PortalId, PortalWideRepository ? 0 : TabModuleId);
                     ddTags.DataBind();
                     ddTags.Items.Insert(0, new ListItem("Select an existing tag", ""));
@@ -1446,14 +1450,14 @@ namespace Gafware.Modules.DMS
                 }
                 else
                 {
-                    docTag.TagId = docTag.Tag.TagId;
+                    docTag.TagId = tag.TagId;
                 }
                 Components.DocumentController.SaveDocumentTag(docTag);
                 tags.Add(docTag);
                 tbTags.Entries.Clear();
-                foreach (Components.DocumentTag tag in tags)
+                foreach (Components.DocumentTag tag2 in tags)
                 {
-                    tbTags.Entries.Add(new Telerik.Web.UI.AutoCompleteBoxEntry(tag.Tag.TagName));
+                    tbTags.Entries.Add(new Telerik.Web.UI.AutoCompleteBoxEntry(tag2.Tag.TagName));
                 }
                 //TelerikAjaxUtility.GetCurrentRadAjaxManager().ResponseScripts.Add("$(\"#" + pnlSaveMessage.ClientID + "\").show(); " + (setFocus ? "setCaretAtEnd(document.GetElementById('" + tbTags.ClientID + "')); " : String.Empty ) + "setTimeout(function() { $(\"#" + pnlSaveMessage.ClientID + "\").fadeOut(\"slow\", function () { $(\"#" + pnlSaveMessage.ClientID + "\").hide(); }); }, 2000);");
                 pnlFiles.Visible = (DocumentID != 0 /*&& tags.Count > 0*/);
@@ -1469,7 +1473,6 @@ namespace Gafware.Modules.DMS
                 docTag = new Components.DocumentTag();
                 docTag.DocumentId = DocumentID;
                 docTag.TagId = tagID;
-                docTag.Tag = Components.DocumentController.GetTag(tagID);
                 Components.DocumentController.SaveDocumentTag(docTag);
                 tags.Add(docTag);
                 tbTags.Entries.Clear();

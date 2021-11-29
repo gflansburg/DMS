@@ -33,6 +33,10 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public int RoleId { get; set; }
         /// <summary>
+        /// Name of required role
+        /// </summary>
+        public string RoleName { get; set; }
+        /// <summary>
         /// Required role
         /// </summary>
         public RoleInfo Role { get; set; }
@@ -56,6 +60,7 @@ namespace Gafware.Modules.DMS.Components
             PortalId = Null.SetNullInteger(dr["PortalId"]);
             RoleId = Null.SetNullInteger(dr["RoleId"]);
             Role = UserController.GetRoleById(PortalId, RoleId);
+            RoleName = Role.RoleName;
             TabModuleId = Null.SetNullInteger(dr["TabModuleId"]);
         }
 

@@ -466,6 +466,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                if (!IsAdmin())
+                {
+                    base.Response.Redirect(_navigationManager.NavigateURL(), true);
+                }
                 letterFilter.ForeColor = gvPackets.HeaderStyle.BackColor = gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                 documentSearchResults.NavigationManager = _navigationManager;
                 documentSearchResults.CategoryName = CategoryName;
@@ -474,7 +478,9 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ThumbnailType = ThumbnailType;
                 documentSearchResults.UseLocalFile = SaveLocalFile;
                 documentSearchResults.PortalId = PortalId;
-                documentSearchResults.TabModuleId = PortalWideRepository ? 0 : TabModuleId;
+                documentSearchResults.PortalWideRepository = PortalWideRepository;
+                documentSearchResults.UserId = UserId;
+                documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
                 documentSearchResults.ControlPath = ControlPath;
                 documentSearchResults.IsLink = false;

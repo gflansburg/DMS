@@ -53,11 +53,24 @@ namespace Gafware.Modules.DMS
         #region Base Method Implementations
         public void Page_Load()
         {
-            if(!IsPostBack && Request.QueryString["ctl"].ToLower() == "editsettings")
+            if (Request.QueryString["ctl"].ToLower() == "editsettings" && !IsAdmin())
+            {
+                base.Response.Redirect(_navigationManager.NavigateURL(), true);
+            }
+            if (!IsPostBack && Request.QueryString["ctl"].ToLower() == "editsettings")
             {
                 LoadSettings();
                 pnlUpdateSettings.Visible = true;
             }
+        }
+
+        public bool IsAdmin()
+        {
+            if ((new ModuleSecurity((new ModuleController()).GetTabModule(this.TabModuleId))).HasEditPermissions)
+            {
+                return true;
+            }
+            return false;
         }
 
         /// -----------------------------------------------------------------------------

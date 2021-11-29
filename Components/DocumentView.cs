@@ -28,6 +28,10 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public int PortalId { get; set; }
         /// <summary>
+        /// TabModule Id
+        /// </summary>
+        public int TabModuleId { get; set; }
+        /// <summary>
         /// Date of last modification
         /// </summary>
         public new DateTime LastModifiedOnDate { get; set; }
@@ -56,15 +60,16 @@ namespace Gafware.Modules.DMS.Components
             CreatedByUserID = Null.SetNullInteger(dr["CreatorID"]);
             DocumentName = Null.SetNullString(dr["DocumentName"]);
             PortalId = Null.SetNullInteger(dr["PortalID"]);
+            TabModuleId = Null.SetNullInteger(dr["TabModuleID"]);
             LastModifiedOnDate = Null.SetNullDateTime(dr["DateLastModified"]);
             ActivationDate = (dr["ActivationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ActivationDate"]));
             ExpirationDate = (dr["ExpirationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ExpirationDate"]));
             /*List<DocumentCategory> categories = DocumentController.GetAllCategoriesForDocument(DocumentId);
-            CategoriesRaw = new List<Category>();
-            foreach(DocumentCategory category in categories)
-            {
-                CategoriesRaw.Add(category.Category);
-            }*/
+             CategoriesRaw = new List<Category>();
+             foreach(DocumentCategory category in categories)
+             {
+                 CategoriesRaw.Add(category.Category);
+             }*/
         }
 
         public override int KeyID

@@ -109,7 +109,8 @@ BEGIN
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_DocumentCategory_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_DocumentCategory
 		(
-		DocumentID
+		DocumentID,
+		CategoryID
 		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
@@ -301,7 +302,8 @@ BEGIN
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_DocumentTag_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_DocumentTag
 		(
-		DocumentID
+		DocumentID,
+		TagID
 		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
@@ -324,7 +326,9 @@ BEGIN
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_File_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_File
 		(
-		DocumentID
+		DocumentID,
+		StatusID,
+		FileName
 		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
@@ -350,6 +354,13 @@ BEGIN
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_PortalID]  DEFAULT ((0)) FOR [PortalID]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_Packet_PortalID_TabModuleID_Name ON {databaseOwner}{objectQualifier}Gafware_DMS_Packet
+		(
+		PortalID,
+		TabModuleID,
+		[Name]
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -368,6 +379,13 @@ BEGIN
 	) ON [PRIMARY]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PacketDoc_SortOrder]  DEFAULT ((0)) FOR [SortOrder]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_PacketDoc_DocumentID ON {databaseOwner}{objectQualifier}Gafware_DMS_PacketDoc
+		(
+		PacketID,
+		DocumentID,
+		FileID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -385,6 +403,12 @@ BEGIN
 	) ON [PRIMARY]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketTag] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PacketTag_SortOrder]  DEFAULT ((0)) FOR [SortOrder]
+
+	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_PacketTag_PacketID ON {databaseOwner}{objectQualifier}Gafware_DMS_PacketTag
+		(
+		PacketID,
+		TagID
+		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
 
@@ -425,7 +449,8 @@ BEGIN
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_Tag_PortalID_TabModuleID ON {databaseOwner}{objectQualifier}Gafware_DMS_Tag
 		(
 		PortalID,
-		TabModuleID
+		TabModuleID,
+		TagName
 		) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 END
 GO
@@ -437,7 +462,7 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Split]') and OBJECTPROPERTY(id, N'IsTableFunction') = 1)
+IF EXISTS (SELECT * FROM   sys.objects WHERE  object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Gafware_DMS_Split]') AND type IN ( N'FN', N'IF', N'TF', N'FS', N'FT' ))
 BEGIN
 	DROP FUNCTION {databaseOwner}[{objectQualifier}Gafware_DMS_Split]
 END
@@ -468,6 +493,31 @@ BEGIN
         IF LEN(@String) = 0 BREAK       
     END   
 	RETURN       
+END
+GO
+
+IF EXISTS (SELECT * FROM   sys.objects WHERE  object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserIsInRole]') AND type IN ( N'FN', N'IF', N'TF', N'FS', N'FT' ))
+BEGIN
+	DROP FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+END
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIsInRole]
+(
+	@UserId Int,
+	@RoleId Int
+)
+RETURNS 	Bit
+AS
+BEGIN
+	RETURN CASE WHEN EXISTS (SELECT {databaseOwner}[{objectQualifier}UserRoles].*, {databaseOwner}[{objectQualifier}Users].IsSuperUser FROM {databaseOwner}[{objectQualifier}UserRoles] 
+								INNER JOIN {databaseOwner}[{objectQualifier}Users] ON dbo.[{objectQualifier}UserRoles].UserID = {databaseOwner}[{objectQualifier}Users].UserID 
+								WHERE {databaseOwner}[{objectQualifier}UserRoles].UserID = @UserId 
+								AND IsNull({databaseOwner}[{objectQualifier}UserRoles].EffectiveDate, GetDate()) >= GetDate() 
+								AND IsNull({databaseOwner}[{objectQualifier}UserRoles].ExpiryDate, GetDate()) <= GetDate()
+								AND ((@RoleId >= 0 AND {databaseOwner}[{objectQualifier}UserRoles].RoleID = @RoleId) 
+								OR (@RoleId = -2 AND {databaseOwner}[{objectQualifier}Users].IsSuperUser = 1))) OR @RoleId = -1 OR @RoleId = -3 THEN 1 
+			ELSE 0 END
 END
 GO
 
@@ -2335,7 +2385,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SearchDocuments]
 	@Keywords nvarchar(255),
 	@Private bit,
 	@PortalID int,
-	@TabModuleID int
+	@TabModuleID int,
+	@UserID int
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -2345,9 +2396,15 @@ BEGIN
 	--DECLARE @CategoryID int
 	--DECLARE @Keywords nvarchar(255)
 	--DECLARE @Private bit
+	--DECLARE @UserID int
+	--DECLARE @PortalID int
+	--DECLARE @TabModuleID int
 	--SET @CategoryID = 0
-	--SET @Keywords = N'hipaa';
+	--SET @Keywords = N'MERP'
 	--SET @Private = 0
+	--SET @PortalID = 0
+	--SET @TabModuleID = 72
+	--SET @UserID = 1
 	
     -- Insert statements for procedure here
     DECLARE @sql nvarchar(max)
@@ -2361,14 +2418,20 @@ BEGIN
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] AS Tag ON Tag.TagID = DocTag.TagID '
 	IF(@CategoryID IS NOT NULL AND @CategoryID > 0)
 	BEGIN
-		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCam ON DocCam.[DocumentID] = Doc.[DocumentID] AND DocCam.[CategoryID] = ' + CAST(@CategoryID as nvarchar(10)) + ' '
+		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCat ON DocCat.[DocumentID] = Doc.[DocumentID] AND DocCat.[CategoryID] = ' + CAST(@CategoryID as nvarchar(10)) + ' '
 	END
+	ELSE
+	BEGIN
+		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCat ON DocCat.[DocumentID] = Doc.[DocumentID] '
+	END
+	SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] Cat ON Cat.[CategoryID] = DocCat.[CategoryID] '
 	SET @sql = @sql + 'WHERE Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end +  ' AND (Doc.ActivationDate IS NULL OR getdate() >= Doc.ActivationDate) AND (Doc.ExpirationDate IS NULL OR getdate() <= Doc.ExpirationDate) '
 	IF (@Private = 0)
 	BEGIN
 		SET @sql = @sql + 'AND (Doc.IsSearchable = ''Yes'' OR Doc.IsSearchable IS NULL) '
 	END
 	SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
+	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR {databaseOwner}UserIsInRole(' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) '
 	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 	BEGIN
 		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
@@ -2410,7 +2473,7 @@ BEGIN
 		END
 	END
 	SET @sql = @sql + 'ORDER BY Doc.DocumentName'
-	PRINT @sql
+	--PRINT @sql
 	CREATE TABLE #x(
 	[DocumentID] [int] NOT NULL,
 	[CreatorID] [int] NULL,

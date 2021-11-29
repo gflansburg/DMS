@@ -252,24 +252,23 @@ namespace Gafware.Modules.DMS
 
         private void AddTag(Document doc, string tagName)
         {
-            Components.DocumentTag docTag = new Components.DocumentTag();
-            docTag.DocumentId = doc.DocumentId;
-            docTag.Tag = Components.DocumentController.GetTagByTagName(tagName, PortalId, PortalWideRepository ? 0 : TabModuleId);
-            if (docTag.Tag == null || docTag.Tag.TagId == 0)
+            Components.Tag tag = Components.DocumentController.GetTagByTagName(tagName, PortalId, PortalWideRepository ? 0 : TabModuleId);
+            if (tag == null || tag.TagId == 0)
             {
-                docTag.Tag = new Components.Tag();
-                docTag.Tag.TagName = tagName;
-                docTag.Tag.IsPrivate = "No";
-                docTag.Tag.PortalId = PortalId;
-                docTag.Tag.TabModuleId = TabModuleId;
-                Components.DocumentController.SaveTag(docTag.Tag);
-                docTag.TagId = docTag.Tag.TagId;
+                tag = new Components.Tag();
+                tag.TagName = tagName;
+                tag.IsPrivate = "No";
+                tag.PortalId = PortalId;
+                tag.TabModuleId = TabModuleId;
+                Components.DocumentController.SaveTag(tag);
             }
-            else
+            if (!doc.Tags.Exists(t => t.TagId == tag.TagId))
             {
-                docTag.TagId = docTag.Tag.TagId;
+                Components.DocumentTag docTag = new Components.DocumentTag();
+                docTag.DocumentId = doc.DocumentId;
+                docTag.TagId = tag.TagId;
+                Components.DocumentController.SaveDocumentTag(docTag);
             }
-            Components.DocumentController.SaveDocumentTag(docTag);
         }
     }
 }

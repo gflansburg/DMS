@@ -137,13 +137,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\DocumentView.cs" />
     <Compile Include="DeleteAllThread.cs" />
     <Compile Include="BulkImportThread.cs" />
     <Compile Include="Components\DMSPortalSettings.cs" />
     <Compile Include="Components\ThumbnailMode.cs" />
     <Compile Include="Components\ThumbnailResize.cs" />
     <Compile Include="Components\UserController.cs" />
-    <Compile Include="Components\DocumentView.cs" />
     <Compile Include="Components\FileVersion.cs" />
     <Compile Include="Components\FileType.cs" />
     <Compile Include="Components\DMSFile.cs" />

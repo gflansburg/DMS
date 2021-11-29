@@ -30,7 +30,13 @@ namespace Gafware.Modules.DMS.Components
         /// <summary>
         /// Category
         /// </summary>
-        public Category Category { get; set; }
+        public Category Category
+        { 
+            get
+            {
+                return DocumentController.GetCategory(CategoryId);
+            }
+        }
 
         public override void Fill(IDataReader dr)
         {
@@ -39,7 +45,6 @@ namespace Gafware.Modules.DMS.Components
             DocumentCategoryId = Null.SetNullInteger(dr["DocumentCategoryID"]);
             DocumentId = Null.SetNullInteger(dr["DocumentID"]);
             CategoryId = Null.SetNullInteger(dr["CategoryID"]);
-            Category = DocumentController.GetCategory(CategoryId);
         }
 
         public bool Equals(Category other)

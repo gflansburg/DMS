@@ -65,7 +65,9 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ThumbnailType = ThumbnailType;
                 documentSearchResults.UseLocalFile = SaveLocalFile;
                 documentSearchResults.PortalId = PortalId;
-                documentSearchResults.TabModuleId = PortalWideRepository ? 0 : TabModuleId;
+                documentSearchResults.PortalWideRepository = PortalWideRepository;
+                documentSearchResults.UserId = UserId;
+                documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
                 documentSearchResults.ControlPath = ControlPath;
                 if (!IsPostBack)

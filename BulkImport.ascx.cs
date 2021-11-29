@@ -184,6 +184,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                if (!IsAdmin())
+                {
+                    base.Response.Redirect(_navigationManager.NavigateURL(), true);
+                }
                 bulkInsertWindow.IconUrl = ControlPath + "Images/import.png";
                 bulkInsertWindow.VisibleOnPageLoad = false;
                 hidFileImportStatus.Value = "Idle";

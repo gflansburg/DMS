@@ -367,9 +367,9 @@ namespace Gafware.Modules.DMS.Data
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetPacketByName", name, portalId, tabModuleId);
         }
 
-        public override IDataReader Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId)
+        public override IDataReader Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId, int userId)
         {
-            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "SearchDocuments", categoryId, keywords, bPrivate, portalId, tabModuleId);
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "SearchDocuments", categoryId, keywords, bPrivate, portalId, tabModuleId, userId);
         }
 
         public override IDataReader FindSearchTags(string term, int portalId, int tabModuleId)

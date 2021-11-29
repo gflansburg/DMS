@@ -82,10 +82,25 @@ namespace Gafware.Modules.DMS.Components
                 return DocumentController.GetStatus(StatusId);
             }
         }
+        private FileVersion _fileVersion = null;
         /// <summary>
         /// FileVersion
         /// </summary>
-        public FileVersion FileVersion { get; set; }
+        public FileVersion FileVersion 
+        { 
+            get
+            {
+                if(_fileVersion == null)
+                {
+                    _fileVersion = DocumentController.GetFileVersion(FileVersionId);
+                }
+                return _fileVersion;
+            }
+            set
+            {
+                _fileVersion = value;
+            }
+        }
         /// <summary>
         /// Uploader
         /// </summary>
@@ -125,7 +140,6 @@ namespace Gafware.Modules.DMS.Components
             IPAddress = Null.SetNullString(dr["IPAddress"]);
             MimeType = Null.SetNullString(dr["MimeType"]);
             Filesize = Null.SetNullInteger(dr["Filesize"]);
-            FileVersion = DocumentController.GetFileVersion(FileVersionId);
         }
 
         public override int KeyID

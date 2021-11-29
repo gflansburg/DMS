@@ -174,7 +174,7 @@ namespace Gafware.Modules.DMS.Data
 
         public abstract int SaveFile(DMSFile objFile);
 
-        public abstract IDataReader Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId);
+        public abstract IDataReader Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId, int userId);
 
         public abstract IDataReader FindSearchTags(string term, int portalId, int tabModuleId);
 

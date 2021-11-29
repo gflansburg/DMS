@@ -49,6 +49,7 @@ namespace Gafware.Modules.DMS
     public partial class View : DMSModuleBase, IActionable
     {
         private readonly INavigationManager _navigationManager;
+        private bool _filterAdded = false;
 
         public View()
         {
@@ -185,9 +186,9 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    ignore_onbeforeunload = true;");
                 sb.AppendLine("  });");
                 sb.AppendLine("  $('#" + tbKeywords.ClientID + "').autoComplete({");
-                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + " }, function(data) { response(data); }); },");
+                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + ", cid: " + (ddCategory.Items.Count == 1 ? ddCategory.SelectedValue : "$('#" + ddCategory.ClientID + "').val()") + ", cid: " + (ddCategory.Items.Count == 1 ? ddCategory.SelectedValue : "$('#" + ddCategory.ClientID + "').val()") + ", p: " + Private.ToString().ToLower() + ", uid: " + UserId.ToString() + " }, function(data) { response(data); }); },");
                 sb.AppendLine("    cache: false,");
-                sb.AppendLine("    minChars: 3,");
+                sb.AppendLine("    minChars: 1,");
                 sb.AppendLine("    onSelect: function(event, term, item) {");
                 sb.AppendLine("      $('#" + tbKeywords.ClientID + "').val(term);");
                 //sb.AppendLine("      $('#" + btnSearch.ClientID + "').click();");
@@ -230,7 +231,9 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ThumbnailType = ThumbnailType;
                 documentSearchResults.UseLocalFile = SaveLocalFile;
                 documentSearchResults.PortalId = PortalId;
-                documentSearchResults.TabModuleId = PortalWideRepository ? 0 : TabModuleId;
+                documentSearchResults.PortalWideRepository = PortalWideRepository;
+                documentSearchResults.UserId = UserId;
+                documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
                 documentSearchResults.ControlPath = ControlPath;
                 if (!IsPostBack)
@@ -364,9 +367,11 @@ namespace Gafware.Modules.DMS
                     }
                     if (docs.Count > 0)
                     {
-                        Session["search"] = docs;
+                        if (!_filterAdded)
+                        {
+                            AddFilter(docs, strQuery);
+                        }
                         SetSearchText();
-                        AddFilter(docs, strQuery);
                         documentSearchResults.IsLink = !bSearch;
                         pnlSearchResults.Visible = (docs.Count > 1);
                     }
@@ -399,7 +404,6 @@ namespace Gafware.Modules.DMS
             List<Category> filteredCategories = new List<Category>();
             foreach(Category category in categories)
             {
-                
                 DotNetNuke.Security.Roles.RoleInfo categoryRole = UserController.GetRoleById(PortalId, category.RoleId);
                 if (categoryRole != null)
                 {
@@ -427,7 +431,7 @@ namespace Gafware.Modules.DMS
             if (docs == null || bReload)
             {
                 SetSearchText();
-                docs = DocumentController.Search(categoryID, searchTerms, Private, PortalId, PortalWideRepository ? 0 : TabModuleId);
+                docs = DocumentController.Search(categoryID, searchTerms, Private, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
             }
             AddFilter(docs, searchTerms);
         }
@@ -465,18 +469,15 @@ namespace Gafware.Modules.DMS
             documentSearchResults.SelectedDocuments = new List<PacketDocument>();
             foreach (Document doc in filter)
             {
-                foreach (DocumentCategory docCat in doc.Categories)
+                /*foreach (DocumentCategory docCat in doc.Categories)
                 {
-                    DotNetNuke.Security.Roles.RoleInfo categoryRole = UserController.GetRoleById(PortalId, docCat.Category.RoleId);
-                    if (categoryRole != null)
+                    if (UserInfo.IsInRole(docCat.Category.RoleName))
                     {
-                        if (UserInfo.IsInRole(categoryRole.RoleName))
-                        {
-                            documentSearchResults.SelectedDocuments.Add(new PacketDocument(doc, 0));
-                            break;
-                        }
+                        documentSearchResults.SelectedDocuments.Add(new PacketDocument(doc, 0));
+                        break;
                     }
-                }
+                }*/
+                documentSearchResults.SelectedDocuments.Add(new PacketDocument(doc, 0));
             }
             documentSearchResults.Keywords = searchTerms;
             documentSearchResults.BindData();

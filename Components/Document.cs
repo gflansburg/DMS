@@ -73,18 +73,6 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public int TabModuleId { get; set; }
         /// <summary>
-        /// Categories
-        /// </summary>
-        public List<DocumentCategory> Categories { get; set; }
-        /// <summary>
-        /// Tags
-        /// </summary>
-        public List<DocumentTag> Tags { get; set; }
-        /// <summary>
-        /// Files
-        /// </summary>
-        public new List<DMSFile> Files { get; set; }
-        /// <summary>
         /// Created on date
         /// </summary>
         public new DateTime CreatedOnDate { get; set; }
@@ -110,10 +98,29 @@ namespace Gafware.Modules.DMS.Components
                 return null;
             }
         }
+        private List<Category> _categoriesRaw = null;
         /// <summary>
         /// CategoriesRaw
         /// </summary>
-        public List<Category> CategoriesRaw { get; set; }
+        public List<Category> CategoriesRaw 
+        { 
+            get
+            {
+                if(_categoriesRaw == null)
+                {
+                    _categoriesRaw = new List<Category>();
+                    foreach (DocumentCategory category in Categories)
+                    {
+                        _categoriesRaw.Add(category.Category);
+                    }
+                }
+                return _categoriesRaw;
+            }
+            set
+            {
+                _categoriesRaw = value;
+            }
+        }
 
         public DotNetNuke.Security.Roles.RoleInfo SecurityRole
         {
@@ -123,11 +130,69 @@ namespace Gafware.Modules.DMS.Components
             }
         }
 
+        private List<DMSFile> _files = null;
+        /// <summary>
+        /// Files
+        /// </summary>
+        public new List<DMSFile> Files
+        {
+            get
+            {
+                if (_files == null)
+                {
+                    _files = DocumentController.GetAllFilesForDocument(DocumentId);
+                }
+                return _files;
+            }
+            set
+            {
+                _files = value;
+            }
+        }
+
+        private List<DocumentCategory> _categories = null;
+        /// <summary>
+        /// Categories
+        /// </summary>
+        public List<DocumentCategory> Categories
+        {
+            get
+            {
+                if (_categories == null)
+                {
+                    _categories = DocumentController.GetAllCategoriesForDocument(DocumentId);
+                }
+                return _categories;
+            }
+            set
+            {
+                _categories = value;
+            }
+        }
+
+        private List<DocumentTag> _tags = null;
+        /// <summary>
+        /// Tags
+        /// </summary>
+        public List<DocumentTag> Tags 
+        { 
+            get
+            {
+                if(_tags == null)
+                {
+                    _tags = DocumentController.GetAllTagsForDocument(DocumentId);
+                }
+                return _tags;
+            }
+            set
+            {
+                _tags = value;
+            }
+        }
+
         public Document()
         {
             SecurityRoleId = -1;
-            Tags = new List<Components.DocumentTag>();
-            Files = new List<Components.DMSFile>();
         }
 
         public override void Fill(IDataReader dr)
@@ -151,14 +216,6 @@ namespace Gafware.Modules.DMS.Components
             TabModuleId = Null.SetNullInteger(dr["TabModuleID"]);
             CreatedOnDate = Null.SetNullDateTime(dr["DateCreated"]);
             LastModifiedOnDate = Null.SetNullDateTime(dr["DateLastModified"]);
-            Tags = DocumentController.GetAllTagsForDocument(DocumentId);
-            Files = DocumentController.GetAllFilesForDocument(DocumentId);
-            Categories = DocumentController.GetAllCategoriesForDocument(DocumentId);
-            CategoriesRaw = new List<Category>();
-            foreach(DocumentCategory category in Categories)
-            {
-                CategoriesRaw.Add(category.Category);
-            }
         }
 
         public override int KeyID

@@ -324,6 +324,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                if (!IsAdmin())
+                {
+                    base.Response.Redirect(_navigationManager.NavigateURL(), true);
+                }
                 filter.ForeColor = gvDocuments.HeaderStyle.BackColor = gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                 List<Category> categories = DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (!IsPostBack)

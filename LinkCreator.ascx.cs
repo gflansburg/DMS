@@ -297,6 +297,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                if (!IsDMSUser())
+                {
+                    base.Response.Redirect(_navigationManager.NavigateURL(), true);
+                }
                 documentSearchResults.NavigationManager = _navigationManager;
                 documentSearchResults.CategoryName = CategoryName;
                 documentSearchResults.Theme = Theme;
@@ -304,7 +308,9 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ThumbnailType = ThumbnailType;
                 documentSearchResults.UseLocalFile = SaveLocalFile;
                 documentSearchResults.PortalId = PortalId;
-                documentSearchResults.TabModuleId = PortalWideRepository ? 0 : TabModuleId;
+                documentSearchResults.PortalWideRepository = PortalWideRepository;
+                documentSearchResults.UserId = UserId;
+                documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
                 documentSearchResults.ControlPath = ControlPath;
                 documentSearchResults.IsLink = false;

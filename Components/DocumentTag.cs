@@ -30,7 +30,13 @@ namespace Gafware.Modules.DMS.Components
         /// <summary>
         /// Tag
         /// </summary>
-        public Tag Tag { get; set; }
+        public Tag Tag 
+        { 
+            get
+            {
+                return DocumentController.GetTag(TagId);
+            }
+        }
 
         public override void Fill(IDataReader dr)
         {
@@ -39,7 +45,6 @@ namespace Gafware.Modules.DMS.Components
             DocumentTagId = Null.SetNullInteger(dr["DocumentTagID"]);
             DocumentId = Null.SetNullInteger(dr["DocumentID"]);
             TagId = Null.SetNullInteger(dr["TagID"]);
-            Tag = DocumentController.GetTag(TagId);
         }
 
         public override int KeyID

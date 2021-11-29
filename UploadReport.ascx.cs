@@ -137,6 +137,10 @@ namespace Gafware.Modules.DMS
         {
             try
             {
+                if (!IsAdmin())
+                {
+                    base.Response.Redirect(_navigationManager.NavigateURL(), true);
+                }
                 DMSUploadReport dmsRpt = new DMSUploadReport();
                 dmsRpt.ConnectionString = DocumentController.ConnectionString;
                 dmsRpt.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Letter;
