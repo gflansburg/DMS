@@ -58,7 +58,7 @@
                     </div>
                 </ItemTemplate>
                 <FooterTemplate>
-                    <div style="float: right;"><%= GetFileCount.ToString() %> Results</div>
+                    <div style="float: right;"><%= GetFooter() %> Results</div>
                 </FooterTemplate>
             </asp:TemplateField>
 		</Columns>

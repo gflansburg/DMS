@@ -855,5 +855,10 @@ namespace Gafware.Modules.DMS
         {
             Generic.ApplyPaging(rptDocuments);
         }
+
+        protected string GetFooter()
+        {
+            return string.Format("Showing {0} to {1} of {2} ", (rptDocuments.PageIndex * rptDocuments.PageSize) + 1, Math.Min((rptDocuments.PageIndex + 1) * rptDocuments.PageSize, GetFileCount), GetFileCount);
+        }
     }
 }
