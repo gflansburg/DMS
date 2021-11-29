@@ -212,19 +212,35 @@ namespace Gafware.Modules.DMS
                 string tempPdf = null;
                 if (System.IO.Path.GetExtension(file).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
                 {
-                    tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file));
-                    using(GhostscriptProcessor processor = new GhostscriptProcessor())
+                    try
                     {
-                        List<string> switches = new List<string>();
-                        switches.Add("-dNOPAUSE");
-                        switches.Add("-sDEVICE=pdfwrite");
-                        switches.Add("-sOutputFile=\"" + tempPdf + "\"");
-                        switches.Add("-c");
-                        switches.Add("\"[/Title (" + doc.DocumentName + ") /DOCINFO pdfmark\"");
-                        switches.Add("-q");
-                        switches.Add("-f");
-                        switches.Add(file);
-                        processor.StartProcessing(switches.ToArray(), null);
+                        tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file));
+                        using (GhostscriptProcessor processor = new GhostscriptProcessor())
+                        {
+                            List<string> switches = new List<string>();
+                            switches.Add("-empty");
+                            switches.Add("-dQUIET");
+                            switches.Add("-dSAFER");
+                            switches.Add("-dBATCH");
+                            switches.Add("-dNOPAUSE");
+                            switches.Add("-dNOPROMPT");
+                            switches.Add("-sDEVICE=pdfwrite");
+                            switches.Add("-sOutputFile=\"" + tempPdf + "\"");
+                            switches.Add("-c");
+                            switches.Add("\"[/Title (" + doc.DocumentName + ") /DOCINFO pdfmark\"");
+                            switches.Add("-q");
+                            switches.Add("-f");
+                            switches.Add(file);
+                            processor.StartProcessing(switches.ToArray(), null);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        if(System.IO.File.Exists(tempPdf))
+                        {
+                            System.IO.File.Delete(tempPdf);
+                        }
+                        tempPdf = null;
                     }
                 }
                 using (System.IO.FileStream stream = new System.IO.FileStream(tempPdf != null && System.IO.File.Exists(tempPdf) ? tempPdf : file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
