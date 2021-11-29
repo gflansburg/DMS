@@ -58,6 +58,7 @@ BEGIN
 		[Theme] [nvarchar](50) NOT NULL,
 		[ThumbnailType] [nvarchar](50) NOT NULL,
 		[ThumbnailSize] [int] NOT NULL,
+		[PageSize] [int] NOT NULL,
 	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Repository] PRIMARY KEY CLUSTERED 
 	(
 		[RepositoryID] ASC
@@ -73,6 +74,7 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_ThumbnailSize]  DEFAULT ((128)) FOR [ThumbnailSize]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CategoryName]  DEFAULT ('Category') FOR [CategoryName]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_PageSize]  DEFAULT ((20)) FOR [PageSize]
 END
 GO
 
