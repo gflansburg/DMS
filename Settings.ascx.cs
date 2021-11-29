@@ -50,6 +50,37 @@ namespace Gafware.Modules.DMS
             _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptDMS");
+            if (literal == null)
+            {
+                literal = new System.Web.UI.HtmlControls.HtmlGenericControl("script")
+                {
+                    ID = "ComponentScriptDMS"
+                };
+                literal.Attributes.Add("language", "javascript");
+                literal.Attributes.Add("type", "text/javascript");
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.AppendLine("jQuery(document).ready(function() {");
+                sb.AppendLine("  var prm = Sys.WebForms.PageRequestManager.getInstance();");
+                sb.AppendLine("  prm.add_endRequest(SettingsEndRequest);");
+                sb.AppendLine("  prm.add_beginRequest(SettingsBeginRequest);");
+                sb.AppendLine("});");
+                sb.AppendLine("function SettingsBeginRequest(sender, args) {");
+                sb.AppendLine("  try { CKEDITOR.instances." + txtReplyEmail.ClientID + "_txtReplyEmail.updateElement(); } catch {}");
+                sb.AppendLine("}");
+                sb.AppendLine("function SettingsEndRequest(sender, args) {");
+                sb.AppendLine("  if (CKEDITOR.instances['" + txtReplyEmail.ClientID + "_txtReplyEmail']) {");
+                sb.AppendLine("    CKEDITOR.remove(CKEDITOR.instances['" + txtReplyEmail.ClientID + "_txtReplyEmail']);");
+                sb.AppendLine("  }");
+                sb.AppendLine("  LoadCKEditorInstance_" + txtReplyEmail.ClientID + "_txtReplyEmail(sender, args);");
+                sb.AppendLine("}");
+                literal.InnerHtml = sb.ToString();
+                this.Page.Header.Controls.Add(literal);
+            }
+        }
+
         #region Base Method Implementations
         public void Page_Load()
         {

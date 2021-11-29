@@ -68,7 +68,7 @@
                   <moduleControl>
                     <controlKey>EditSettings</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/Settings.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Document Management System Settings</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile />
@@ -79,7 +79,7 @@
                   <moduleControl>
                     <controlKey>Settings</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/Settings.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Document Management System Settings</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile />
