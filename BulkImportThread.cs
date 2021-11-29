@@ -14,6 +14,9 @@ namespace Gafware.Modules.DMS
         private System.Threading.Thread _worker = null;
         private string _processName = Guid.NewGuid().ToString();
         public event EventHandler Finished;
+        private Components.Document Doc;
+        private string tempPdf = null;
+        private bool isProcessing = false;
 
         public HttpRequest Request { get; private set; }
         public int PortalId { get; private set; }
@@ -209,16 +212,19 @@ namespace Gafware.Modules.DMS
                         }
                     }
                 }
-                string tempPdf = null;
+                tempPdf = null;
+                Doc = doc;
+                isProcessing = false;
                 if (System.IO.Path.GetExtension(file).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
                 {
                     try
                     {
+                        isProcessing = true;
                         tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file));
                         using (GhostscriptProcessor processor = new GhostscriptProcessor())
                         {
+                            processor.Completed += Processor_Completed;
                             List<string> switches = new List<string>();
-                            switches.Add("-empty");
                             switches.Add("-dQUIET");
                             switches.Add("-dSAFER");
                             switches.Add("-dBATCH");
@@ -228,66 +234,97 @@ namespace Gafware.Modules.DMS
                             switches.Add("-sOutputFile=\"" + tempPdf + "\"");
                             switches.Add("-c");
                             switches.Add("\"[/Title (" + doc.DocumentName + ") /DOCINFO pdfmark\"");
-                            switches.Add("-q");
                             switches.Add("-f");
                             switches.Add(file);
-                            processor.StartProcessing(switches.ToArray(), null);
+                            processor.Process(switches.ToArray());
+                        }
+                        while (isProcessing)
+                        {
+                            System.Threading.Thread.Sleep(10);
                         }
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         if(System.IO.File.Exists(tempPdf))
                         {
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            {
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch(Exception)
+                            {
+                            }
                         }
                         tempPdf = null;
+                        isProcessing = false;
+                        AddFile(doc, file);
                     }
                 }
-                using (System.IO.FileStream stream = new System.IO.FileStream(tempPdf != null && System.IO.File.Exists(tempPdf) ? tempPdf : file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
+                else
                 {
-                    if (stream.Length > 0)
-                    {
-                        Components.DMSFile dmsFile = doc.Files.Find(p => p.Filename.Equals(System.IO.Path.GetFileName(file).Replace(" ", "_"), StringComparison.OrdinalIgnoreCase));
-                        if (dmsFile == null)
-                        {
-                            dmsFile = new Components.DMSFile();
-                            dmsFile.DocumentId = doc.DocumentId;
-                            dmsFile.FileType = Components.DMSFile.GetFileType(System.IO.Path.GetExtension(file), PortalId, PortalWideRepository ? 0 : TabModuleId);
-                            dmsFile.StatusId = 1;
-                            dmsFile.Filename = System.IO.Path.GetFileName(file).Replace(" ", "_");
-                            dmsFile.UploadDirectory = string.Format("Files/{0}", Generic.CreateSafeFolderName(doc.DocumentName));
-                            dmsFile.MimeType = MimeMapping.GetMimeMapping(file);
-                            Components.DocumentController.SaveFile(dmsFile);
-                            dmsFile.FileVersion = new Components.FileVersion();
-                            dmsFile.FileVersion.FileId = dmsFile.FileId;
-                            dmsFile.FileVersion.Version = 1000000;
-                            dmsFile.CreatedOnDate = DateTime.Now;
-                            doc.Files.Add(dmsFile);
-                        }
-                        else
-                        {
-                            dmsFile.FileVersion = dmsFile.FileVersion;
-                            dmsFile.FileVersion.FileVersionId = 0;
-                            dmsFile.FileVersion.Version++;
-                        }
-                        dmsFile.FileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
-                        dmsFile.FileVersion.CreatedByUserID = OwnerId;
-                        dmsFile.FileVersion.CreatedOnDate = DateTime.Now;
-                        dmsFile.FileVersion.Filesize = (int)stream.Length;
-                        Components.DocumentController.SaveFileVersion(dmsFile.FileVersion);
-                        dmsFile.FileVersionId = dmsFile.FileVersion.FileVersionId;
-                        Components.DocumentController.SaveFile(dmsFile);
-                        dmsFile.FileVersion.SaveContents(stream);
-                        Generic.CreateThumbnail(Request, ControlPath, file, dmsFile.FileVersionId);
-                        Progress = (int)(((double)FilesImported * 100.0) / (double)FileCount);
-                        FilesImported++;
-                    }
+                    AddFile(doc, file);
                 }
-                if(tempPdf != null && System.IO.File.Exists(tempPdf))
+            }
+        }
+
+        private void AddFile(Components.Document doc, string file)
+        {
+            using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
+            {
+                if (stream.Length > 0)
+                {
+                    Components.DMSFile dmsFile = doc.Files.Find(p => p.Filename.Equals(System.IO.Path.GetFileName(file).Replace(" ", "_"), StringComparison.OrdinalIgnoreCase));
+                    if (dmsFile == null)
+                    {
+                        dmsFile = new Components.DMSFile();
+                        dmsFile.DocumentId = doc.DocumentId;
+                        dmsFile.FileType = Components.DMSFile.GetFileType(System.IO.Path.GetExtension(file), PortalId, PortalWideRepository ? 0 : TabModuleId);
+                        dmsFile.StatusId = 1;
+                        dmsFile.Filename = System.IO.Path.GetFileName(file).Replace(" ", "_");
+                        dmsFile.UploadDirectory = string.Format("Files/{0}", Generic.CreateSafeFolderName(doc.DocumentName));
+                        dmsFile.MimeType = MimeMapping.GetMimeMapping(file);
+                        Components.DocumentController.SaveFile(dmsFile);
+                        dmsFile.FileVersion = new Components.FileVersion();
+                        dmsFile.FileVersion.FileId = dmsFile.FileId;
+                        dmsFile.FileVersion.Version = 1000000;
+                        dmsFile.CreatedOnDate = DateTime.Now;
+                        doc.Files.Add(dmsFile);
+                    }
+                    else
+                    {
+                        dmsFile.FileVersion = dmsFile.FileVersion;
+                        dmsFile.FileVersion.FileVersionId = 0;
+                        dmsFile.FileVersion.Version++;
+                    }
+                    dmsFile.FileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                    dmsFile.FileVersion.CreatedByUserID = OwnerId;
+                    dmsFile.FileVersion.CreatedOnDate = DateTime.Now;
+                    dmsFile.FileVersion.Filesize = (int)stream.Length;
+                    Components.DocumentController.SaveFileVersion(dmsFile.FileVersion);
+                    dmsFile.FileVersionId = dmsFile.FileVersion.FileVersionId;
+                    Components.DocumentController.SaveFile(dmsFile);
+                    dmsFile.FileVersion.SaveContents(stream);
+                    Generic.CreateThumbnail(Request, ControlPath, file, dmsFile.FileVersionId);
+                    Progress = (int)(((double)FilesImported * 100.0) / (double)FileCount);
+                    FilesImported++;
+                }
+            }
+        }
+
+        private void Processor_Completed(object sender, GhostscriptProcessorEventArgs e)
+        {
+            AddFile(Doc, tempPdf);
+            if (tempPdf != null && System.IO.File.Exists(tempPdf))
+            {
+                try
                 {
                     System.IO.File.Delete(tempPdf);
                 }
+                catch (Exception)
+                {
+                }
             }
+            isProcessing = false;
         }
 
         private void AddTag(Document doc, string tagName)
