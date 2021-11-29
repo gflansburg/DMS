@@ -20,13 +20,13 @@
 <asp:Panel ID="pnlDocumentsFound" runat="server" Visible="false">
     <div class="SearchResultHeader" id="SearchResultHeader2" runat="server"><span class="text_medium"><strong style="color:#FFFFFF;"><asp:Label ID="lblHeader" runat="server" Text="Document Search Results" /></strong></span></div>
     <asp:Panel ID="pnlDescription" runat="server" CssClass="PacketDescription" Visible="false"><asp:Label ID="lblDescription" runat="server"></asp:Label></asp:Panel>
-    <asp:Repeater ID="rptDocuments" runat="server" OnItemDataBound="rptDocuments_ItemDataBound">
+<%--    <asp:Repeater ID="rptDocuments" runat="server" OnItemDataBound="rptDocuments_ItemDataBound">
         <ItemTemplate>
 		    <div class="SearchResultRecordAlt">
 			    <span style="color: #<%# Theme %>;"><strong><%# Eval("Document.DocumentName").ToString().ToUpper() %></strong></span><br /> 
                 <%# GetCategories(Container.DataItem) %>
                 <div class="text_small" style="margin: 0px 0 0px 5px;">
-                    <asp:Repeater ID="rptFiles" runat="server">
+                   <asp:Repeater ID="rptFiles" runat="server">
                         <ItemTemplate>
                             <%# DocFileLink(Container.DataItem) %>&nbsp;
                         </ItemTemplate>
@@ -35,5 +35,40 @@
                 <div style="padding: 0 5px 0 0px;" id="details" runat="server" visible='<%# !String.IsNullOrEmpty(Eval("Document.DocumentDetails").ToString()) && ShowDescription %>'><strong>Description: </strong><%# Eval("Document.DocumentDetails") %></div>
             </div>
         </ItemTemplate>
-    </asp:Repeater>
+    </asp:Repeater>--%>
+    <asp:GridView ID="rptDocuments" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
+        EmptyDataText="No matching document found." OnRowDataBound="rptDocuments_RowDataBound" OnDataBound="rptDocuments_DataBound"
+        ForeColor="Black" GridLines="None" DataKeyNames="DocumentID" BackColor="White" BorderColor="#DEDFDE" PageSize="20"
+        BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="False" Width="100%" ShowFooter="false"
+        OnPageIndexChanging="rptDocuments_PageIndexChanging" ShowHeader="False" PagerSettings-PageButtonCount="5">
+		<Columns>
+            <asp:TemplateField ItemStyle-HorizontalAlign="Left">
+                <ItemTemplate>
+		            <div class="SearchResultRecordAlt">
+			            <span style="color: #<%# Theme %>;"><strong><%# Eval("Document.DocumentName").ToString().ToUpper() %></strong></span><br /> 
+                        <%# GetCategories(Container.DataItem) %>
+                        <div class="text_small" style="margin: 0px 0 0px 5px;">
+                           <asp:Repeater ID="rptFiles" runat="server">
+                                <ItemTemplate>
+                                    <%# DocFileLink(Container.DataItem) %>&nbsp;
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
+                        <div style="padding: 0 5px 0 0px;" id="details" runat="server" visible='<%# !String.IsNullOrEmpty(Eval("Document.DocumentDetails").ToString()) && ShowDescription %>'><strong>Description: </strong><%# Eval("Document.DocumentDetails") %></div>
+                    </div>
+                </ItemTemplate>
+            </asp:TemplateField>
+		</Columns>
+		<RowStyle BackColor="#FFFFFF" VerticalAlign="Top" />
+		<PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+        <PagerTemplate>
+            <table class="pager">
+                <tr>
+                    <td>
+                        <asp:PlaceHolder ID="ph" runat="server"></asp:PlaceHolder>
+                    </td>
+                </tr>
+            </table>
+        </PagerTemplate>		            
+	</asp:GridView>
 </asp:Panel>

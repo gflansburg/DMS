@@ -127,6 +127,7 @@ BEGIN
 		[WebpageURL] [varchar](255) NULL,
 		[IPAddress] [varchar](16) NOT NULL,
 		[Filesize] [int] NOT NULL,
+		[IsLandscape] [bit] NOT NULL,
 		[Thumbnail] [varbinary](MAX) NULL,
 	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_FileVersion] PRIMARY KEY CLUSTERED 
 	(
@@ -139,6 +140,8 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_DateUploaded]  DEFAULT (getdate()) FOR [DateUploaded]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_Filesize]  DEFAULT ((0)) FOR [Filesize]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_IsLandscape]  DEFAULT ((0)) FOR [IsLandscape]
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_FileVersion_FileID_Version ON {databaseOwner}{objectQualifier}Gafware_DMS_FileVersion
 		(
@@ -2171,6 +2174,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveThumbnail]
 	@FileVersionID int,
+	@IsLandscape bit,
 	@Thumbnail varbinary(MAX)
 AS
 BEGIN
@@ -2180,7 +2184,7 @@ BEGIN
 
     -- Insert statements for procedure here
 	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
-	SET Thumbnail = @Thumbnail WHERE FileVersionID = @FileVersionID
+	SET IsLandscape = @IsLandscape, Thumbnail = @Thumbnail WHERE FileVersionID = @FileVersionID
 END
 GO
 

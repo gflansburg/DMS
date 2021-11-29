@@ -1010,7 +1010,7 @@ namespace Gafware.Modules.DMS
             return destImage;
         }
 
-        public static byte[] CreateThumbnail(HttpRequest request, string controlPath, System.Drawing.Bitmap img, ThumbnailMode thumbnailMode = ThumbnailMode.Auto, ThumbnailResize thumbnailResize = ThumbnailResize.Stretch)
+        public static byte[] CreateThumbnail(HttpRequest request, string controlPath, System.Drawing.Bitmap img, ref bool isLandscape, ThumbnailMode thumbnailMode = ThumbnailMode.Auto, ThumbnailResize thumbnailResize = ThumbnailResize.Stretch)
         {
             byte[] byteImage = null;
             string templatePortraitFile = request.MapPath(string.Format("{0}/Images/pdftemplate_portrait.png", controlPath));
@@ -1023,6 +1023,7 @@ namespace Gafware.Modules.DMS
             if (img.Width <= img.Height || thumbnailMode == ThumbnailMode.Portrait)
             {
                 templateFile = templatePortraitFile;
+                isLandscape = false;
             }
             else if (img.Width > img.Height || thumbnailMode == ThumbnailMode.Landscape)
             {
@@ -1031,6 +1032,7 @@ namespace Gafware.Modules.DMS
                 thumbnailWidth ^= thumbnailHeight;
                 thumbnailHeight = thumbnailWidth ^ thumbnailHeight;
                 thumbnailWidth ^= thumbnailHeight;
+                isLandscape = true;
             }
             // Load the template graphic
             using (Bitmap templateBitmap = new Bitmap(templateFile))
@@ -1071,7 +1073,7 @@ namespace Gafware.Modules.DMS
             return byteImage;
         }
 
-        public static byte[] CreateThumbnail(HttpRequest request, string controlPath, string inputFile)
+        public static byte[] CreateThumbnail(HttpRequest request, string controlPath, string inputFile, ref bool isLandscape)
         {
             try
             {
@@ -1085,7 +1087,7 @@ namespace Gafware.Modules.DMS
                     var pageNumber = 1;
                     using (Bitmap img = new Bitmap(rasterizer.GetPage(10, pageNumber)))
                     {
-                        return CreateThumbnail(request, controlPath, img);
+                        return CreateThumbnail(request, controlPath, img, ref isLandscape );
                     }
                 }
             }
@@ -1112,6 +1114,7 @@ namespace Gafware.Modules.DMS
             file.FileVersion.LoadThumbnail();
             if (file.FileVersion.Thumbnail == null || file.FileVersion.Thumbnail.Length == 0)
             {
+                bool isLandscape = false;
                 if (file != null && file.FileType.Equals("pdf", StringComparison.OrdinalIgnoreCase) && file.Status.StatusId == 1)
                 {
                     if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
@@ -1126,10 +1129,10 @@ namespace Gafware.Modules.DMS
                             fs.Write(file.FileVersion.Contents, 0, file.FileVersion.Contents.Length);
                             fs.Close();
                         }
-                        file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                        file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, tempPdf, ref isLandscape);
                         if (file.FileVersion.Thumbnail != null)
                         {
-                            file.FileVersion.SaveThumbnail();
+                            file.FileVersion.SaveThumbnail(isLandscape);
                         }
                         if (System.IO.File.Exists(tempPdf))
                         {
@@ -1149,10 +1152,10 @@ namespace Gafware.Modules.DMS
                         {
                             using (Bitmap bmp = new Bitmap(ms))
                             {
-                                file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, bmp);
+                                file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, bmp, ref isLandscape);
                                 if (file.FileVersion.Thumbnail != null)
                                 {
-                                    file.FileVersion.SaveThumbnail();
+                                    file.FileVersion.SaveThumbnail(isLandscape);
                                 }
                             }
                         }
@@ -1183,10 +1186,10 @@ namespace Gafware.Modules.DMS
                         }
                         if (System.IO.File.Exists(tempPdf))
                         {
-                            file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                            file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, tempPdf, ref isLandscape);
                             if (file.FileVersion.Thumbnail != null)
                             {
-                                file.FileVersion.SaveThumbnail();
+                                file.FileVersion.SaveThumbnail(isLandscape);
                             }
                             System.IO.File.Delete(tempPdf);
                         }
@@ -1219,10 +1222,10 @@ namespace Gafware.Modules.DMS
                         }
                         if (System.IO.File.Exists(tempPdf))
                         {
-                            file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                            file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, tempPdf, ref isLandscape);
                             if (file.FileVersion.Thumbnail != null)
                             {
-                                file.FileVersion.SaveThumbnail();
+                                file.FileVersion.SaveThumbnail(isLandscape);
                             }
                             System.IO.File.Delete(tempPdf);
                         }
@@ -1286,10 +1289,10 @@ namespace Gafware.Modules.DMS
                                                 {
                                                     using (Bitmap bmp = new Bitmap(ms))
                                                     {
-                                                        file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, bmp, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                                                        file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, bmp, ref isLandscape, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
                                                         if (file.FileVersion.Thumbnail != null)
                                                         {
-                                                            file.FileVersion.SaveThumbnail();
+                                                            file.FileVersion.SaveThumbnail(isLandscape);
                                                         }
                                                     }
                                                 }
@@ -1322,10 +1325,10 @@ namespace Gafware.Modules.DMS
                         {
                             Bitmap bmp = new Bitmap(shellFile.Thumbnail.LargeBitmap);
                             bmp.MakeTransparent();
-                            file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, bmp, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                            file.FileVersion.Thumbnail = CreateThumbnail(request, controlPath, bmp, ref isLandscape, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
                             if (file.FileVersion.Thumbnail != null)
                             {
-                                file.FileVersion.SaveThumbnail();
+                                file.FileVersion.SaveThumbnail(isLandscape);
                             }
                             if (System.IO.File.Exists(tempFile))
                             {
@@ -1343,22 +1346,23 @@ namespace Gafware.Modules.DMS
         {
             if (System.IO.File.Exists(fileName))
             {
+                bool isLandscape = false;
                 if (System.IO.Path.GetExtension(fileName).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
                 {
-                    byte[] thumbnail = CreateThumbnail(request, controlPath, fileName);
+                    byte[] thumbnail = CreateThumbnail(request, controlPath, fileName, ref isLandscape);
                     if (thumbnail != null && thumbnail.Length > 0)
                     {
-                        DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                        DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                     }
                 }
                 else if (System.IO.Path.GetExtension(fileName).Equals(".png", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".jpg", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".gif", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".bmp", StringComparison.OrdinalIgnoreCase))
                 {
                     using (Bitmap bmp = new Bitmap(fileName))
                     {
-                        byte[] thumbnail = CreateThumbnail(request, controlPath, bmp);
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ref isLandscape);
                         if (thumbnail != null && thumbnail.Length > 0)
                         {
-                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                            DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                         }
                     }
                 }
@@ -1378,10 +1382,10 @@ namespace Gafware.Modules.DMS
                     }
                     if (System.IO.File.Exists(tempPdf))
                     {
-                        byte[] thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, tempPdf, ref isLandscape);
                         if (thumbnail != null && thumbnail.Length > 0)
                         {
-                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                            DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                         }
                         System.IO.File.Delete(tempPdf);
                     }
@@ -1403,10 +1407,10 @@ namespace Gafware.Modules.DMS
                     }
                     if (System.IO.File.Exists(tempPdf))
                     {
-                        byte[] thumbnail = CreateThumbnail(request, controlPath, tempPdf);
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, tempPdf, ref isLandscape);
                         if (thumbnail != null && thumbnail.Length > 0)
                         {
-                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                            DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                         }
                         System.IO.File.Delete(tempPdf);
                     }
@@ -1428,10 +1432,10 @@ namespace Gafware.Modules.DMS
                                         {
                                             using (Bitmap bmp = new Bitmap(ms))
                                             {
-                                                byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                                                byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ref isLandscape, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
                                                 if (thumbnail != null && thumbnail.Length > 0)
                                                 {
-                                                    DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                                                    DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                                                 }
                                             }
                                         }
@@ -1450,10 +1454,10 @@ namespace Gafware.Modules.DMS
                     {
                         Bitmap bmp = new Bitmap(shellFile.Thumbnail.LargeBitmap);
                         bmp.MakeTransparent();
-                        byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                        byte[] thumbnail = CreateThumbnail(request, controlPath, bmp, ref isLandscape, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
                         if (thumbnail != null && thumbnail.Length > 0)
                         {
-                            DocumentController.SaveThumbnail(fileVersionId, thumbnail);
+                            DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                         }
                     }
                 }

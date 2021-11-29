@@ -243,9 +243,9 @@ namespace Gafware.Modules.DMS.Components
             return DataProvider.Instance().GetFileContents(fileVersionId);
         }
 
-        public static void SaveThumbnail(int fileId, byte[] thumbnail)
+        public static void SaveThumbnail(int fileId, bool isLandscape, byte[] thumbnail)
         {
-            DataProvider.Instance().SaveThumbnail(fileId, thumbnail);
+            DataProvider.Instance().SaveThumbnail(fileId, isLandscape, thumbnail);
         }
 
         public static byte[] GetThumbnail(int fileId)

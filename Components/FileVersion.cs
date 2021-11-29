@@ -48,12 +48,14 @@ namespace Gafware.Modules.DMS.Components
         /// Filesize
         /// </summary>
         public int Filesize { get; set; }
-
+        /// <summary>
+        /// Is Lasscape Thumbnail
+        /// </summary>
+        public bool IsLandscape { get; private set; }
         /// <summary>
         /// Thumbnail
         /// </summary>
         public byte[] Thumbnail { get; set; }
-
         /// <summary>
         /// Contents
         /// </summary>
@@ -81,6 +83,7 @@ namespace Gafware.Modules.DMS.Components
             CreatedOnDate = Null.SetNullDateTime(dr["DateUploaded"]);
             IPAddress = Null.SetNullString(dr["IPAddress"]);
             Filesize = Null.SetNullInteger(dr["Filesize"]);
+            IsLandscape = Null.SetNullBoolean(dr["IsLandscape"]);
         }
 
         public override int KeyID
@@ -116,16 +119,18 @@ namespace Gafware.Modules.DMS.Components
             Contents = DocumentController.GetFileContents(FileVersionId);
         }
 
-        public void SaveThumbnail()
+        public void SaveThumbnail(bool isLandscape)
         {
-            DocumentController.SaveThumbnail(FileVersionId, Thumbnail);
+            IsLandscape = isLandscape;
+            DocumentController.SaveThumbnail(FileVersionId, isLandscape, Thumbnail);
         }
 
-        public void SaveThumbnail(System.IO.Stream stream)
+        public void SaveThumbnail(System.IO.Stream stream, bool isLandscape)
         {
             Thumbnail = new byte[stream.Length];
+            IsLandscape = isLandscape;
             stream.Read(Thumbnail, 0, (int)stream.Length);
-            DocumentController.SaveThumbnail(FileVersionId, Thumbnail);
+            DocumentController.SaveThumbnail(FileVersionId, isLandscape, Thumbnail);
         }
 
         public void LoadThumbnail()

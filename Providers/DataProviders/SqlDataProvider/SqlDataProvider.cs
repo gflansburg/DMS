@@ -428,9 +428,9 @@ namespace Gafware.Modules.DMS.Data
             return null;
         }
 
-        public override void SaveThumbnail(int fileVersionId, byte[] thumbnail)
+        public override void SaveThumbnail(int fileVersionId, bool isLandscape, byte[] thumbnail)
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "SaveThumbnail", fileVersionId, thumbnail == null ? DBNull.Value : (object)thumbnail);
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "SaveThumbnail", fileVersionId, isLandscape, thumbnail == null ? DBNull.Value : (object)thumbnail);
         }
 
         public override byte[] GetThumbnail(int fileVersionId)

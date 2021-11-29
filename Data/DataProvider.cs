@@ -186,7 +186,7 @@ namespace Gafware.Modules.DMS.Data
 
         public abstract byte[] GetFileContents(int fileVersionId);
 
-        public abstract void SaveThumbnail(int fileVersionId, byte[] thumbnail);
+        public abstract void SaveThumbnail(int fileVersionId, bool isLandscape, byte[] thumbnail);
 
         public abstract byte[] GetThumbnail(int fileVersionId);
 

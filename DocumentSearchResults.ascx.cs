@@ -320,6 +320,10 @@ namespace Gafware.Modules.DMS
                 Label1.Style["color"] = lblHeader.Style["color"] = "white !important";
                 BindData();
             }
+            else
+            {
+                Generic.ApplyPaging(rptDocuments);
+            }
         }
 
         private void ParseQueryString()
@@ -358,7 +362,7 @@ namespace Gafware.Modules.DMS
                             Document doc = DocumentController.GetDocument(Convert.ToInt32(docid));
                             if (Generic.UserHasAccess(doc))
                             {
-                                if (doc.Files.FindAll(p => p.Status.StatusId == 1).Count > 0)
+                                if (doc.Files.FindAll(p => p.StatusId == 1).Count > 0)
                                 {
                                     PacketDocument packetDoc = new PacketDocument(doc, 0);
                                     if (fileId > 0)
@@ -443,7 +447,7 @@ namespace Gafware.Modules.DMS
                             PacketDocument packet = new PacketDocument(doc, 0);
                             if (!String.IsNullOrEmpty(strType))
                             {
-                                DMSFile file = doc.Files.Find(p => p.Status.StatusId == 1 && p.FileType.Equals(strType, StringComparison.OrdinalIgnoreCase));
+                                DMSFile file = doc.Files.Find(p => p.StatusId == 1 && p.FileType.Equals(strType, StringComparison.OrdinalIgnoreCase));
                                 if (file != null)
                                 {
                                     packet.FileId = file.FileId;
@@ -551,7 +555,7 @@ namespace Gafware.Modules.DMS
             }
             else if (GetFileCount > 1 || (GetFileCount == 1 && !IsLink))
             {
-                rptDocuments.DataSource = SelectedDocuments.FindAll(p => (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0).OrderBy(o => o.SortOrder);
+                rptDocuments.DataSource = SelectedDocuments.FindAll(p => (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0).OrderBy(o => o.SortOrder).ToList();
                 rptDocuments.DataBind();
                 pnlDocumentsFound.Visible = true;
                 Title = "Documents";
@@ -623,7 +627,7 @@ namespace Gafware.Modules.DMS
                 sb.Append(strAnchor);
                 //string icon = string.Format("{0}/Images/icons/{2}/{1}.png", ControlPath, file.FileType, ThumbnailType);
                 string icon = String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
-                bool portrait = true;
+                /*bool portrait = true;
                 bool hasThumbnail = false;
                 file.FileVersion.LoadThumbnail();
                 if(file.FileVersion.Thumbnail != null && file.FileVersion.Thumbnail.Length > 0)
@@ -639,7 +643,7 @@ namespace Gafware.Modules.DMS
                             hasThumbnail = true;
                         }
                     }
-                }
+                }*/
                 FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (fileType != null)
                 {
@@ -651,7 +655,8 @@ namespace Gafware.Modules.DMS
                     {
                         sb.Append("<img alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + ResolveUrl("~/DesktopModules/Gafware/DMS/images/icons/_blank.png") + "\" border=\"0\" />");
                     }*/
-                    sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                    //sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                    sb.Append("<img style=\"height: " + (file.FileVersion.IsLandscape ? ThumbnailLandscapeHeight.ToString() : ThumbnailSize.ToString()) + "px;\" alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
                 }
                 else
                 {
@@ -663,7 +668,8 @@ namespace Gafware.Modules.DMS
                     {
                         sb.Append("<img alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + ResolveUrl("~/DesktopModules/Gafware/DMS/images/icons/_blank.png") + "\" border=\"0\" />");
                     }*/
-                    sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                    //sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                    sb.Append("<img style=\"height: " + (file.FileVersion.IsLandscape ? ThumbnailLandscapeHeight.ToString() : ThumbnailSize.ToString()) + "px;\" alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
                 }
                 sb.Append("</a>");
                 sb.Append("<br />" + strAnchor);
@@ -714,25 +720,7 @@ namespace Gafware.Modules.DMS
             }
             sb.Append("<div style=\"display: inline-block; text-align: center;\">");
             sb.Append(strAnchor);
-            //string icon = string.Format("{0}/Images/icons/{2}/{1}.png", ControlPath, file.FileType, ThumbnailType);
             string icon = String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
-            bool portrait = true;
-            bool hasThumbnail = false;
-            file.FileVersion.LoadThumbnail();
-            if (file.FileVersion.Thumbnail != null && file.FileVersion.Thumbnail.Length > 0)
-            {
-                using (System.IO.MemoryStream ms = new System.IO.MemoryStream(file.FileVersion.Thumbnail))
-                {
-                    using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(ms))
-                    {
-                        if (bmp.Width > bmp.Height)
-                        {
-                            portrait = false;
-                        }
-                        hasThumbnail = true;
-                    }
-                }
-            }
             FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, PortalWideRepository ? 0 : TabModuleId);
             if (fileType != null)
             {
@@ -744,7 +732,8 @@ namespace Gafware.Modules.DMS
                 {
                     sb.Append("<img alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + ResolveUrl("~/DesktopModules/Gafware/DMS/images/icons/_blank.png") + "\" border=\"0\" />");
                 }*/
-                sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                //sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                sb.Append("<img style=\"height: " + (file.FileVersion.IsLandscape ? ThumbnailLandscapeHeight.ToString() : ThumbnailSize.ToString()) + "px;\" alt=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" title=\"" + (String.IsNullOrEmpty(fileType.FileTypeShortName) ? file.FileType.ToUpper() : fileType.FileTypeShortName) + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
             }
             else
             {
@@ -756,7 +745,8 @@ namespace Gafware.Modules.DMS
                 {
                     sb.Append("<img alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + ResolveUrl("~/DesktopModules/Gafware/DMS/images/icons/_blank.png") + "\" border=\"0\" />");
                 }*/
-                sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                //sb.Append("<img style=\"height: " + (!hasThumbnail ? ThumbnailSize.ToString() : portrait ? ThumbnailSize.ToString() : ThumbnailLandscapeHeight.ToString()) + "px;\" alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
+                sb.Append("<img style=\"height: " + (file.FileVersion.IsLandscape ? ThumbnailLandscapeHeight.ToString() : ThumbnailSize.ToString()) + "px;\" alt=\"" + file.FileType.ToUpper() + " document opens in new window.\" title=\"" + file.FileType.ToUpper() + " document opens in new window.\" src=\"" + icon + "\" border=\"0\" />");
             }
             sb.Append("</a>");
             sb.Append("<br/>" + strAnchor);
@@ -786,10 +776,24 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        protected void rptDocuments_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                PacketDocument doc = (PacketDocument)e.Row.DataItem;
+                Repeater rpt = (Repeater)e.Row.FindControl("rptFiles");
+                if (rpt != null)
+                {
+                    rpt.DataSource = GetActiveFilesForDocument(doc);
+                    rpt.DataBind();
+                }
+            }
+        }
+
         List<DMSFile> GetActiveFilesForDocument(PacketDocument doc)
         {
             DotNetNuke.Entities.Portals.PortalSettings portal = DotNetNuke.Entities.Portals.PortalSettings.Current;
-            return doc.Document.Files.FindAll(p => p.Status.StatusId == 1 && (!UseLocalFile || (UseLocalFile && System.IO.File.Exists(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, p.UploadDirectory.Replace("/", "\\"), p.Filename)))));
+            return doc.Document.Files.FindAll(p => p.StatusId == 1 && (!UseLocalFile || (UseLocalFile && System.IO.File.Exists(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, p.UploadDirectory.Replace("/", "\\"), p.Filename)))));
         }
 
         protected int GetFileCount
@@ -800,7 +804,7 @@ namespace Gafware.Modules.DMS
                 List<PacketDocument> docs = SelectedDocuments.FindAll(p => (Managers ? p.Document.ManagerToolkit == "Yes" : true) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))));
                 foreach (PacketDocument doc in docs)
                 {
-                    count += doc.Document.Files.FindAll(p => p.Status.StatusId == 1 && (doc.FileId == 0 || p.FileId == doc.FileId)).Count;
+                    count += doc.Document.Files.FindAll(p => p.StatusId == 1 && (doc.FileId == 0 || p.FileId == doc.FileId)).Count;
                 }
                 return count;
             }
@@ -810,7 +814,7 @@ namespace Gafware.Modules.DMS
         {
             foreach(PacketDocument doc in docs)
             {
-                List<DMSFile> files = doc.Document.Files.FindAll(p => p.Status.StatusId == 1);
+                List<DMSFile> files = doc.Document.Files.FindAll(p => p.StatusId == 1);
                 if (doc.FileId > 0)
                 {
                     DMSFile file = files.Find(p => p.FileId == doc.FileId );
@@ -825,6 +829,17 @@ namespace Gafware.Modules.DMS
                 }
             }
             return null;
+        }
+
+        protected void rptDocuments_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            rptDocuments.PageIndex = e.NewPageIndex;
+            BindData();
+        }
+
+        protected void rptDocuments_DataBound(object sender, EventArgs e)
+        {
+            Generic.ApplyPaging(rptDocuments);
         }
     }
 }
