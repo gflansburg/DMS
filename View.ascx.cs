@@ -269,6 +269,7 @@ namespace Gafware.Modules.DMS
                 {
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     pnlDefault.Visible = ShowTips;
+                    lblCategoryName.Text = CategoryName.ToLower();
                     pnlInstructions.Visible = ShowInstructions;
                     lblInstructions.Text = Instructions;
                     ScheduleJob();

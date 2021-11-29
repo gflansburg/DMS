@@ -71,7 +71,7 @@
             <asp:Panel ID="pnlDefault" runat="server">
 	            <span style="margin: 0px 0px 0px 15px;"><span class="SearchText"><strong>Document Search Tips:</strong></span></span>
 	            <ul style="margin-top: 5px;">
-	                <li id="pnlCategoryTip" runat="server">Choose at least one location. </li>
+	                <li id="pnlCategoryTip" runat="server">Choose at least one <asp:Label ID="lblCategoryName" runat="server" Text="category"></asp:Label>. </li>
 	                <li>Search by keyword.</li>
 	                <li>Bookmark important completed searches in your web browser.</li>
 	                <li>To view all documents, click "Go!" without typing a keyword.</li>

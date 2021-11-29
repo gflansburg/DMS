@@ -240,6 +240,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlCategoryTip;
 
         /// <summary>
+        /// lblCategoryName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCategoryName;
+
+        /// <summary>
         /// pnlResults control.
         /// </summary>
         /// <remarks>
