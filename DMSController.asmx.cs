@@ -503,6 +503,10 @@ namespace Gafware.Modules.DMS
                 else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
                 {
                     stats = ImportStats[processName];
+                    if ((DateTime.Now - stats.CheckTime).TotalMinutes > 5)
+                    {
+                        stats.Progress = 100;
+                    }
                 }
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -581,6 +585,10 @@ namespace Gafware.Modules.DMS
                 else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
                 {
                     stats = ImportStats[processName];
+                    if((DateTime.Now - stats.CheckTime).TotalMinutes > 5)
+                    {
+                        stats.Progress = 100;
+                    }
                 }
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();

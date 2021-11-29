@@ -220,8 +220,36 @@ namespace Gafware.Modules.DMS
                              .ToArray();
         }
 
+        private void FixThumnails()
+        {
+            List<Document> docs = DocumentController.GetAllDocuments(PortalId, TabModuleId);
+            foreach(Document doc in docs)
+            {
+                doc.Files = DocumentController.GetAllFilesForDocument(doc.DocumentId);
+                foreach (DMSFile file in doc.Files)
+                {
+                    if (file.FileType.Equals("pdf", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            file.FileVersion.Thumbnail = null;
+                            file.FileVersion.SaveThumbnail(false);
+                            Generic.CreateThumbnail(this.Request, ControlPath, file);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            //if (IsAdmin())
+            //{
+            //    FixThumnails();
+            //}
             try
             {
                 documentSearchResults.NavigationManager = _navigationManager;

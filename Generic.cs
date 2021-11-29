@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -1087,7 +1088,10 @@ namespace Gafware.Modules.DMS
                     var pageNumber = 1;
                     using (Bitmap img = new Bitmap(rasterizer.GetPage(10, pageNumber)))
                     {
-                        return CreateThumbnail(request, controlPath, img, ref isLandscape );
+                        if (!IsImageBlank(img))
+                        {
+                            return CreateThumbnail(request, controlPath, img, ref isLandscape);
+                        }
                     }
                 }
             }
@@ -1095,6 +1099,40 @@ namespace Gafware.Modules.DMS
             {
             }
             return null;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PixelData
+        {
+            public byte B;
+            public byte G;
+            public byte R;
+            public byte A;
+        }
+
+        public static bool IsImageBlank(Bitmap bitmap)
+        {
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            bool bIsWhite = true;
+            unsafe
+            {
+                PixelData* pPixel = (PixelData*)bitmapData.Scan0;
+                for (int i = 0; i < bitmapData.Height && bIsWhite; i++)
+                {
+                    for (int j = 0; j < bitmapData.Width; j++)
+                    {
+                        if (pPixel->B != 255 || pPixel->G != 255 || pPixel->R != 255)
+                        {
+                            bIsWhite = false;
+                            break;
+                        }
+                        pPixel++;
+                    }
+                    pPixel += bitmapData.Stride - (bitmapData.Width * 4);
+                }
+            }
+            bitmap.UnlockBits(bitmapData);
+            return bIsWhite;
         }
 
         public static byte[] FiletoByteArray(string filePath)
