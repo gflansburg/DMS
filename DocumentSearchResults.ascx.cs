@@ -81,6 +81,7 @@ namespace Gafware.Modules.DMS
                 return (int)((97 * ThumbnailSize) / 128);
             }
         }
+
         public int ThumbnailSize
         {
             get
@@ -90,6 +91,18 @@ namespace Gafware.Modules.DMS
             set
             {
                 ViewState["ThumbnailSize"] = value;
+            }
+        }
+
+        public int PageSize
+        {
+            get
+            {
+                return (ViewState["PageSize"] != null ? (int)ViewState["PageSize"] : 20);
+            }
+            set
+            {
+                ViewState["PageSize"] = value;
             }
         }
 
@@ -315,6 +328,7 @@ namespace Gafware.Modules.DMS
         {
             if (!IsPostBack)
             {
+                rptDocuments.PageSize = PageSize;
                 lnkFileLocation.ForeColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                 SearchResultHeader.Style["background"] = SearchResultHeader2.Style["background"] = String.Format("url({0}Images/category-header-{1}.png) no-repeat;", ControlPath, Theme);
                 Label1.Style["color"] = lblHeader.Style["color"] = "white !important";

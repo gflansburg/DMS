@@ -255,6 +255,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.NavigationManager = _navigationManager;
                 documentSearchResults.CategoryName = CategoryName;
                 documentSearchResults.Theme = Theme;
+                documentSearchResults.PageSize = PageSize;
                 documentSearchResults.ThumbnailSize = ThumbnailSize;
                 documentSearchResults.ThumbnailType = ThumbnailType;
                 documentSearchResults.UseLocalFile = SaveLocalFile;

@@ -219,4 +219,10 @@
   <data name="lblPortalWideRepository.Text" xml:space="preserve">
     <value>Portal Wide Repository</value>
   </data>
+  <data name="lblPageSize.Help" xml:space="preserve">
+    <value>Number of results per page to show.</value>
+  </data>
+  <data name="lblPageSize.Text" xml:space="preserve">
+    <value>Page Size</value>
+  </data>
 </root>

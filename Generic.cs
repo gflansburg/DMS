@@ -1093,6 +1093,20 @@ namespace Gafware.Modules.DMS
                             return CreateThumbnail(request, controlPath, img, ref isLandscape);
                         }
                     }
+                    rasterizer.Close();
+                    rasterizer.CustomSwitches.Clear();
+                    rasterizer.Open(inputFile);
+                    using (Bitmap img = new Bitmap(rasterizer.GetPage(10, pageNumber)))
+                    {
+                        using (Bitmap img2 = new Bitmap((img.Width > img.Height ? (img.Height * 83) / 109 : img.Width), img.Height, PixelFormat.Format24bppRgb))
+                        {
+                            using (Graphics g = Graphics.FromImage(img2))
+                            {
+                                g.DrawImage(img, 0, 0);
+                            }
+                            return CreateThumbnail(request, controlPath, img2, ref isLandscape);
+                        }
+                    }
                 }
             }
             catch (Exception)

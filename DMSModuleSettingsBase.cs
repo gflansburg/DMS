@@ -116,6 +116,15 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        public int PageSize
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.PageSize : 20);
+            }
+        }
+
         public string Theme
         {
             get

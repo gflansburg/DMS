@@ -332,6 +332,7 @@ namespace Gafware.Modules.DMS
                 List<Category> categories = DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (!IsPostBack)
                 {
+                    gv.PageSize = PageSize;
                     foreach (Category category in categories)
                     {
                         TemplateField field = new TemplateField();

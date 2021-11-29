@@ -455,14 +455,14 @@ namespace Gafware.Modules.DMS
             public int FilesProcessed { get; set; }
         }
 
-        private static Dictionary<string, Stats> ImportStats = new Dictionary<string, Stats>();
+        private static Dictionary<string, Stats> JobStats = new Dictionary<string, Stats>();
 
         public static string ImportFiles(string controlPath, string filePath, bool subFolderIsDocumentName, bool subFolderIsTag, bool prependSubFolderName, string seperator, int firstLevel, DateTime? activationDate, DateTime? expirationDate, int ownerId, bool searchable, bool useCategorySecurityRoles, int securityRoleId, int[] categories, int portalId, int tabModuleId, bool portalWideRepository)
         {
             BulkImportThread worker = new BulkImportThread(HttpContext.Current.Request);
             worker.Finished += new EventHandler(BulkImportThread_Finished);
             worker.ImportFiles(controlPath, filePath, subFolderIsDocumentName, subFolderIsTag, prependSubFolderName, seperator, firstLevel, activationDate, expirationDate, ownerId, searchable, useCategorySecurityRoles, securityRoleId, categories, portalId, tabModuleId, portalWideRepository);
-            ImportStats.Add(worker.ProcessName, new Stats());
+            JobStats.Add(worker.ProcessName, new Stats());
             ProcessProgresses.Add(worker.ProcessName, worker);
             return worker.ProcessName;
         }
@@ -474,9 +474,9 @@ namespace Gafware.Modules.DMS
             {
                 OnBulkImportFinish?.Invoke(worker.FilesImported);
                 ProcessProgresses.Remove(worker.ProcessName);
-                if (ImportStats != null && ImportStats.ContainsKey(worker.ProcessName ?? String.Empty))
+                if (JobStats != null && JobStats.ContainsKey(worker.ProcessName ?? String.Empty))
                 {
-                    Stats stats = ImportStats[worker.ProcessName];
+                    Stats stats = JobStats[worker.ProcessName];
                     stats.CheckTime = DateTime.Now;
                     stats.FilesProcessed = worker.FilesImported;
                     stats.Progress = 100;
@@ -490,24 +490,43 @@ namespace Gafware.Modules.DMS
         public void GetImportFilesProgress(string processName)
         {
             Stats stats = null;
-            if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+            if (ProcessProgresses != null && ProcessProgresses.ContainsKey(processName ?? String.Empty))
             {
-                if (ProcessProgresses != null && ProcessProgresses.ContainsKey(processName ?? String.Empty))
+                BulkImportThread worker = (BulkImportThread)ProcessProgresses[processName];
+                if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
                 {
-                    BulkImportThread worker = (BulkImportThread)ProcessProgresses[processName];
-                    stats = ImportStats[processName];
+                    stats = JobStats[processName];
                     stats.CheckTime = DateTime.Now;
                     stats.Progress = worker.Progress;
                     stats.FilesProcessed = worker.FilesImported;
                 }
-                else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+                else
                 {
-                    stats = ImportStats[processName];
-                    if ((DateTime.Now - stats.CheckTime).TotalMinutes > 5)
+                    stats = new Stats()
                     {
-                        stats.Progress = 100;
-                    }
+                        Progress = worker.Progress,
+                        FilesProcessed = worker.FilesImported,
+                        CheckTime = DateTime.Now
+                    };
+                    JobStats.Add(processName, stats);
                 }
+            }
+            else if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
+            {
+                stats = JobStats[processName];
+                if ((DateTime.Now - stats.CheckTime).TotalMinutes > 5)
+                {
+                    stats.Progress = 100;
+                }
+            }
+            else
+            {
+                stats = new Stats()
+                {
+                    Progress = 100,
+                    FilesProcessed = 0,
+                    CheckTime = DateTime.Now
+                };
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             Context.Response.Write(oSerializer.Serialize(stats));
@@ -523,16 +542,16 @@ namespace Gafware.Modules.DMS
             {
                 BulkImportThread worker = (BulkImportThread)ProcessProgresses[processName];
                 filesImported = worker.FilesImported;
-                if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+                if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
                 {
-                    Stats stats = ImportStats[processName];
+                    Stats stats = JobStats[processName];
                     stats.CheckTime = DateTime.Now;
                     stats.FilesProcessed = filesImported;
                 }
             }
-            else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+            else if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
             {
-                Stats stats = ImportStats[processName];
+                Stats stats = JobStats[processName];
                 filesImported = stats.FilesProcessed;
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -544,7 +563,7 @@ namespace Gafware.Modules.DMS
             DeleteAllThread worker = new DeleteAllThread(HttpContext.Current.Request);
             worker.Finished += new EventHandler(DeleteAllThread_Finished);
             worker.DeleteAll(dataView, portalId, tabModuleId, portalWideRepository);
-            ImportStats.Add(worker.ProcessName, new Stats());
+            JobStats.Add(worker.ProcessName, new Stats());
             ProcessProgresses.Add(worker.ProcessName, worker);
             return worker.ProcessName;
         }
@@ -556,9 +575,9 @@ namespace Gafware.Modules.DMS
             {
                 OnDeleteAllFinish?.Invoke(worker.FilesDeleted);
                 ProcessProgresses.Remove(worker.ProcessName);
-                if (ImportStats != null && ImportStats.ContainsKey(worker.ProcessName ?? String.Empty))
+                if (JobStats != null && JobStats.ContainsKey(worker.ProcessName ?? String.Empty))
                 {
-                    Stats stats = ImportStats[worker.ProcessName];
+                    Stats stats = JobStats[worker.ProcessName];
                     stats.CheckTime = DateTime.Now;
                     stats.FilesProcessed = worker.FilesDeleted;
                     stats.Progress = 100;
@@ -572,24 +591,43 @@ namespace Gafware.Modules.DMS
         public void GetDeleteAllProgress(string processName)
         {
             Stats stats = null;
-            if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+            if (ProcessProgresses != null && ProcessProgresses.ContainsKey(processName ?? String.Empty))
             {
-                if (ProcessProgresses != null && ProcessProgresses.ContainsKey(processName ?? String.Empty))
+                DeleteAllThread worker = (DeleteAllThread)ProcessProgresses[processName];
+                if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
                 {
-                    DeleteAllThread worker = (DeleteAllThread)ProcessProgresses[processName];
-                    stats = ImportStats[processName];
+                    stats = JobStats[processName];
                     stats.CheckTime = DateTime.Now;
                     stats.Progress = worker.Progress;
                     stats.FilesProcessed = worker.FilesDeleted;
                 }
-                else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+                else
                 {
-                    stats = ImportStats[processName];
-                    if((DateTime.Now - stats.CheckTime).TotalMinutes > 5)
+                    stats = new Stats()
                     {
-                        stats.Progress = 100;
-                    }
+                        Progress = worker.Progress,
+                        FilesProcessed = worker.FilesDeleted,
+                        CheckTime = DateTime.Now
+                    };
+                    JobStats.Add(processName, stats);
                 }
+            }
+            else if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
+            {
+                stats = JobStats[processName];
+                if((DateTime.Now - stats.CheckTime).TotalMinutes > 5)
+                {
+                    stats.Progress = 100;
+                }
+            }
+            else
+            {
+                stats = new Stats()
+                {
+                    Progress = 100,
+                    FilesProcessed = 0,
+                    CheckTime = DateTime.Now
+                };
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             Context.Response.Write(oSerializer.Serialize(stats));
@@ -605,16 +643,16 @@ namespace Gafware.Modules.DMS
             {
                 DeleteAllThread worker = (DeleteAllThread)ProcessProgresses[processName];
                 filesDeleted = worker.FilesDeleted;
-                if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+                if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
                 {
-                    Stats stats = ImportStats[processName];
+                    Stats stats = JobStats[processName];
                     stats.CheckTime = DateTime.Now;
                     stats.FilesProcessed = filesDeleted;
                 }
             }
-            else if (ImportStats != null && ImportStats.ContainsKey(processName ?? String.Empty))
+            else if (JobStats != null && JobStats.ContainsKey(processName ?? String.Empty))
             {
-                Stats stats = ImportStats[processName];
+                Stats stats = JobStats[processName];
                 filesDeleted = stats.FilesProcessed;
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();

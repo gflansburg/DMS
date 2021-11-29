@@ -100,6 +100,8 @@ namespace Gafware.Modules.DMS
                     ddFileNotifications.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Unauthenticated Users", "-3"));
                     ddFileNotifications.SelectedIndex = ddFileNotifications.Items.IndexOf(ddlRole.Items.FindByValue(FileNotificationsRole.ToString()));
 
+                    ddlPageSize.SelectedIndex = ddlPageSize.Items.IndexOf(ddlPageSize.Items.FindByValue(PageSize.ToString()));
+
                     tbFileNotificationSubject.Text = NewFileSubject;
                     txtReplyEmail.Text = NewFileMsg;
 
@@ -170,6 +172,7 @@ namespace Gafware.Modules.DMS
                 repository.Theme = ddlTheme.SelectedValue;
                 repository.ThumbnailType = ddlThumbnailType.SelectedValue;
                 repository.ThumbnailSize = Convert.ToInt32(ddlThumbnailSize.SelectedValue);
+                repository.PageSize = Convert.ToInt32(ddlPageSize.SelectedValue);
                 Components.DocumentController.SaveRepository(repository);
                 DMSPortalSettings settings = Components.DocumentController.GetPortalSettings(PortalId);
                 if(settings == null)

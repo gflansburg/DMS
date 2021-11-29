@@ -214,9 +214,6 @@
     <Compile Include="AjaxControls\ProgressBar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SearchDocuments.ashx.cs">
-      <DependentUpon>SearchDocuments.ashx</DependentUpon>
-    </Compile>
     <Compile Include="TagList.ascx.cs">
       <DependentUpon>TagList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2101,7 +2098,6 @@
     <Content Include="SearchTerms.ashx" />
     <Content Include="GetFile.ashx" />
     <Content Include="GetIcon.ashx" />
-    <Content Include="SearchDocuments.ashx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

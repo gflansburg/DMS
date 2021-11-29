@@ -854,9 +854,11 @@ namespace Gafware.Modules.DMS
                 tbAdminComments.Attributes.Add("onfocus", "this.rows=8;");
                 tbAdminComments.Attributes.Add("onblur", "this.rows=1;");
                 changeOwnershipCommandButton.Visible = delAllCommandButton.Visible = IsAdmin();
+                progressBar.Style["background-color"] = "#" + Theme;
                 List<Category> categories = DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (!IsPostBack)
                 {
+                    gv.PageSize = PageSize;
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     lblCategory.Text = CategoryName;
                     //pnlDetails.Style.Add("display", "none");

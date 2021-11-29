@@ -68,30 +68,6 @@ namespace Gafware.Modules.DMS
                 script2.Attributes.Add("src", ControlPath + "Scripts/jquery.blockUI.js");
                 this.Page.Header.Controls.Add(script2);
             }
-            System.Web.UI.HtmlControls.HtmlGenericControl script4 = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptAutoComplete");
-            if (script4 == null)
-            {
-                script4 = new System.Web.UI.HtmlControls.HtmlGenericControl("script")
-                {
-                    ID = "ComponentScriptAutoComplete"
-                };
-                script4.Attributes.Add("language", "javascript");
-                script4.Attributes.Add("type", "text/javascript");
-                script4.Attributes.Add("src", ControlPath + "Scripts/jquery.auto-complete.js");
-                this.Page.Header.Controls.Add(script4);
-            }
-            System.Web.UI.HtmlControls.HtmlGenericControl css = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentStyleAutoComplete");
-            if (css == null)
-            {
-                css = new System.Web.UI.HtmlControls.HtmlGenericControl("link")
-                {
-                    ID = "ComponentStyleAutoComplete"
-                };
-                css.Attributes.Add("type", "text/css");
-                css.Attributes.Add("rel", "stylesheet");
-                css.Attributes.Add("href", ControlPath + "Scripts/jquery.auto-complete.css");
-                this.Page.Header.Controls.Add(css);
-            }
             System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptDMS");
             if (literal == null)
             {
@@ -208,22 +184,8 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("function MyEndRequest(sender, args) {");
                 sb.AppendLine("  initCustomHeaderKeyDown();");
                 sb.AppendLine("  initDialogJavascript();");
-                //sb.AppendLine("  initAutoCompleteJavascript();");
                 sb.AppendLine("  hideBlockingScreen();");
                 sb.AppendLine("}");
-                /*sb.AppendLine("function initAutoCompleteJavascript() {");
-                sb.AppendLine("  $(\".ui-autocomplete\").wrap('<div class=\"dms\" />');");
-                sb.AppendLine("  $('#" + tbDocument.ClientID + "').autoComplete({");
-                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchDocuments.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + " }, function(data) { response(data); }); },");
-                sb.AppendLine("    cache: false,");
-                sb.AppendLine("    minChars: 3,");
-                sb.AppendLine("    onSelect: function(event, term, item) {");
-                sb.AppendLine("      $('#" + tbDocument.ClientID + "').val(term.DocumentName);");
-                sb.AppendLine("      $('#" + hidDocumentId.ClientID + "').val(term.DocumentId);");
-                sb.AppendLine("        " + Page.ClientScript.GetPostBackEventReference(btnSubmit, String.Empty) + ";");
-                sb.AppendLine("    }");
-                sb.AppendLine("  });");
-                sb.AppendLine("}");*/
                 sb.AppendLine("function MM_swapImgRestore() { //v3.0");
                 sb.AppendLine("    var i, x, a = document.MM_sr; for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;");
                 sb.AppendLine("}");
@@ -254,7 +216,6 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("  prm.add_endRequest(MyEndRequest);");
                 sb.AppendLine("  initCustomHeaderKeyDown();");
                 sb.AppendLine("  initDialogJavascript();");
-                //sb.AppendLine("  initAutoCompleteJavascript();");
                 sb.AppendLine("});");
                 sb.AppendLine("function initDialogJavascript() {");
                 sb.AppendLine("  $('a[href^=mailto]').on('click', function() {");
@@ -304,6 +265,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.NavigationManager = _navigationManager;
                 documentSearchResults.CategoryName = CategoryName;
                 documentSearchResults.Theme = Theme;
+                documentSearchResults.PageSize = PageSize;
                 documentSearchResults.ThumbnailSize = ThumbnailSize;
                 documentSearchResults.ThumbnailType = ThumbnailType;
                 documentSearchResults.UseLocalFile = SaveLocalFile;

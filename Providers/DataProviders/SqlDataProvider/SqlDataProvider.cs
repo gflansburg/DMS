@@ -544,7 +544,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SaveRepository(Components.Repository objRepository)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveRepository", objRepository.RepositoryId, objRepository.PortalId, objRepository.TabModuleId, objRepository.UserRoleId, objRepository.FileNotificationsRoleId, objRepository.NewFileSubject, objRepository.NewFileMsg, objRepository.CategoryName, objRepository.SaveLocalFile, objRepository.ShowTips, objRepository.ShowInstructions, objRepository.Instructions, objRepository.Theme, objRepository.ThumbnailType, objRepository.ThumbnailSize));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveRepository", objRepository.RepositoryId, objRepository.PortalId, objRepository.TabModuleId, objRepository.UserRoleId, objRepository.FileNotificationsRoleId, objRepository.NewFileSubject, objRepository.NewFileMsg, objRepository.CategoryName, objRepository.SaveLocalFile, objRepository.ShowTips, objRepository.ShowInstructions, objRepository.Instructions, objRepository.Theme, objRepository.ThumbnailType, objRepository.ThumbnailSize, objRepository.PageSize));
         }
 
         public override IDataReader GetPortalSettings(int portalId)

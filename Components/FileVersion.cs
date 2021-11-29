@@ -135,7 +135,10 @@ namespace Gafware.Modules.DMS.Components
 
         public void LoadThumbnail()
         {
-            Thumbnail = DocumentController.GetThumbnail(FileVersionId);
+            if (Thumbnail == null || Thumbnail.Length == 0)
+            {
+                Thumbnail = DocumentController.GetThumbnail(FileVersionId);
+            }
         }
     }
 }

@@ -58,6 +58,19 @@
     </div>
 
     <div class="dnnFormItem">
+        <dnn:Label ID="lblPageSize" runat="server" ControlName="ddlPageSize" Suffix=":" /> 
+        <asp:DropDownList ID="ddlPageSize" runat="server">
+            <asp:listitem text="5" value="5"></asp:listitem>
+            <asp:listitem text="10" value="10"></asp:listitem>
+            <asp:listitem text="20" value="20"></asp:listitem>
+            <asp:listitem text="25" value="25"></asp:listitem>
+            <asp:listitem text="40" value="40"></asp:listitem>
+            <asp:listitem text="50" value="50"></asp:listitem>
+            <asp:listitem text="100" value="100"></asp:listitem>
+        </asp:DropDownList>
+    </div>
+
+    <div class="dnnFormItem">
         <dnn:Label ID="lblSaveLocalFile" runat="server" ControlName="chkSaveLocalFile" Suffix=":" /> 
         <div class="toggleButton" id="chkSaveLocalFileToggleButton" runat="server" style="width: 120px; display: inline-block; top: -5px;">
             <label for='<%= chkSaveLocalFile.ClientID %>'><asp:CheckBox ID="chkSaveLocalFile" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>

@@ -993,6 +993,7 @@ BEGIN
       ,fv.[IPAddress]
       ,fv.[Filesize]
 	  ,fv.[FileVersionID]
+	  ,fv.[IsLandscape]
     FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
     INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] fv ON fv.FileID = f.FileID
 	WHERE f.[FileID] = @FileID
@@ -2858,7 +2859,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]
 	@Instructions nvarchar(255),
 	@Theme nvarchar(50),
 	@ThumbnailType nvarchar(50),
-	@ThumbnailSize int
+	@ThumbnailSize int,
+	@PageSize int
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -2868,8 +2870,8 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@RepositoryID IS NULL OR @RepositoryID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize)
-		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize)
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize, PageSize)
+		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize, @PageSize)
 		SET @RepositoryID = @@IDENTITY
 	END
 	ELSE
@@ -2886,7 +2888,8 @@ BEGIN
 			Instructions = @Instructions,
 			Theme = @Theme,
 			ThumbnailType = @ThumbnailType,
-			ThumbnailSize = @ThumbnailSize
+			ThumbnailSize = @ThumbnailSize,
+			PageSize = @PageSize
 		WHERE RepositoryID = @RepositoryID
 	END
 	SELECT @RepositoryID AS RepositoryID

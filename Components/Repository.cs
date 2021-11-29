@@ -72,6 +72,10 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public string ThumbnailType { get; set; }
         /// <summary>
+        /// Page Size
+        /// </summary>
+        public int PageSize { get; set; }
+        /// <summary>
         /// Tumbnail Size
         /// </summary>
         public int ThumbnailSize { get; set; }
@@ -82,6 +86,7 @@ namespace Gafware.Modules.DMS.Components
             FileNotificationsRoleId = -2;
             ShowTips = true;
             ShowInstructions = true;
+            PageSize = 20;
         }
 
         public override void Fill(IDataReader dr)
@@ -103,6 +108,7 @@ namespace Gafware.Modules.DMS.Components
             Theme = Null.SetNullString(dr["Theme"]);
             ThumbnailType = Null.SetNullString(dr["ThumbnailType"]);
             ThumbnailSize = Null.SetNullInteger(dr["ThumbnailSize"]);
+            PageSize = Null.SetNullInteger(dr["PageSize"]);
         }
 
         public override int KeyID

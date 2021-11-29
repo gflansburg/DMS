@@ -39,7 +39,7 @@
     <asp:GridView ID="rptDocuments" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
         EmptyDataText="No matching document found." OnRowDataBound="rptDocuments_RowDataBound" OnDataBound="rptDocuments_DataBound"
         ForeColor="Black" GridLines="None" DataKeyNames="DocumentID" BackColor="White" BorderColor="#DEDFDE" PageSize="20"
-        BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="False" Width="100%" ShowFooter="false"
+        BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="False" Width="100%" ShowFooter="True"
         OnPageIndexChanging="rptDocuments_PageIndexChanging" ShowHeader="False" PagerSettings-PageButtonCount="5">
 		<Columns>
             <asp:TemplateField ItemStyle-HorizontalAlign="Left">
@@ -57,6 +57,9 @@
                         <div style="padding: 0 5px 0 0px;" id="details" runat="server" visible='<%# !String.IsNullOrEmpty(Eval("Document.DocumentDetails").ToString()) && ShowDescription %>'><strong>Description: </strong><%# Eval("Document.DocumentDetails") %></div>
                     </div>
                 </ItemTemplate>
+                <FooterTemplate>
+                    <div style="float: right;"><%= GetFileCount.ToString() %> Results</div>
+                </FooterTemplate>
             </asp:TemplateField>
 		</Columns>
 		<RowStyle BackColor="#FFFFFF" VerticalAlign="Top" />
