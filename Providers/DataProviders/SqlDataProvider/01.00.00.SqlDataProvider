@@ -2431,7 +2431,7 @@ BEGIN
 		SET @sql = @sql + 'AND (Doc.IsSearchable = ''Yes'' OR Doc.IsSearchable IS NULL) '
 	END
 	SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
-	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR {databaseOwner}UserIsInRole(' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) '
+	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR (Doc.[UseCategoryRoles] = 1 AND dbo.UserIsInRole(' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) OR (Doc.[UseCategoryRoles] = 0 AND dbo.UserIsInRole(' + CAST(@UserID as nvarchar(10)) + ', Doc.[SecurityRoleID]) = 1)) '
 	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 	BEGIN
 		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
