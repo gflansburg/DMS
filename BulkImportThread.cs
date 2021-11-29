@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Ghostscript.NET;
+using Ghostscript.NET.Processor;
 
 namespace Gafware.Modules.DMS
 {
@@ -207,7 +209,25 @@ namespace Gafware.Modules.DMS
                         }
                     }
                 }
-                using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
+                string tempPdf = null;
+                if (System.IO.Path.GetExtension(file).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file));
+                    using(GhostscriptProcessor processor = new GhostscriptProcessor())
+                    {
+                        List<string> switches = new List<string>();
+                        switches.Add("-dNOPAUSE");
+                        switches.Add("-sDEVICE=pdfwrite");
+                        switches.Add("-sOutputFile=\"" + tempPdf + "\"");
+                        switches.Add("-c");
+                        switches.Add("\"[/Title (" + doc.DocumentName + ") /DOCINFO pdfmark\"");
+                        switches.Add("-q");
+                        switches.Add("-f");
+                        switches.Add(file);
+                        processor.StartProcessing(switches.ToArray(), null);
+                    }
+                }
+                using (System.IO.FileStream stream = new System.IO.FileStream(tempPdf != null && System.IO.File.Exists(tempPdf) ? tempPdf : file, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
                 {
                     if (stream.Length > 0)
                     {
@@ -246,6 +266,10 @@ namespace Gafware.Modules.DMS
                         Progress = (int)(((double)FilesImported * 100.0) / (double)FileCount);
                         FilesImported++;
                     }
+                }
+                if(tempPdf != null && System.IO.File.Exists(tempPdf))
+                {
+                    System.IO.File.Delete(tempPdf);
                 }
             }
         }
