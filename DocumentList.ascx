@@ -70,6 +70,15 @@
                     </span>
                 </div>
                 <br style="clear: both;" />
+                <div class="RecordDisplay">
+                    <span class="FieldName">Replace PDF Title</span>
+                    <span class="FieldValue">
+                        <div class="toggleButton" id="cbReplacePDFTitle2ToggleButton" runat="server" style="width: 120px; display: inline-block">
+                            <label for='<%= cbReplacePDFTitle2.ClientID %>'><asp:CheckBox ID="cbReplacePDFTitle2" AutoPostBack="false" runat="server" /><span></span></label>
+                        </div>
+                    </span>
+                </div>
+                <br style="clear: both;" />
             </asp:Panel>
             <div class="RecordDisplay">
                 <asp:Panel ID="pnlDocumentDetailsDetails" runat="server">
@@ -423,10 +432,16 @@
                         <span class="FieldValuePopup">
                             <asp:FileUpload ID="upDocument" runat="server" CssClass="inputfile" />
                             <label for="<%= upDocument.ClientID %>"><span></span> <strong><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg></strong></label>
-                            <asp:Panel ID="pnlUploadMsg" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; visibility: hidden; overflow: auto; width: 100%; height: 165px;"></asp:Panel>
+                            <asp:Panel ID="pnlUploadMsg" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; visibility: hidden; overflow: auto; width: 100%; height: 65px;"></asp:Panel>
                         </span>
                     </div>
                     <br style="clear: both;" />
+                    <div style="float: left; text-align: left; margin: 5px 1px 0px 0px;">
+                        <span>Replace PDF Title: </span>
+                        <div class="toggleButton" id="cbReplacePDFTitleToggleButton" runat="server" style="width: 120px; display: inline-block">
+                            <label for='<%= cbReplacePDFTitle.ClientID %>'><asp:CheckBox ID="cbReplacePDFTitle" AutoPostBack="false" runat="server" /><span></span></label>
+                        </div>
+                    </div>
                     <div style="float: right; text-align: right; margin: 5px 1px 0px 0px;">
                         <a class="dnnSecondaryAction" id="btnCancelFile" runat="server">Cancel</a>
                         <asp:LinkButton ID="btnSaveFile" runat="server" Text="Save" CausesValidation="false" OnClick="btnSaveFile_Click" Enabled="true" CssClass="dnnPrimaryAction" OnClientClick="return OnUpload();" />

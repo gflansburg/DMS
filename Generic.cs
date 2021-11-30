@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
 using Gafware.Modules.DMS.Components;
+using Ghostscript.NET.Processor;
 using Ghostscript.NET.Rasterizer;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -976,6 +977,43 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("    display: none;");
             sb.AppendLine("}");
             return sb.ToString();
+        }
+
+        public static void ReplacePDFTitle(DMSFile file, string title)
+        {
+            if (System.IO.Path.GetExtension(file.Filename).Equals(".pdf", StringComparison.OrdinalIgnoreCase) && file.StatusId == 1)
+            {
+                try
+                {
+                    file.FileVersion.LoadContents();
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        string tempPdf = String.Format("{0}{1}.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file.Filename));
+                        string keywords = string.Join(", ", (from tag in Components.DocumentController.GetAllTagsForDocument(file.DocumentId) select tag.Tag.TagName).ToList());
+                        using (Spire.Pdf.PdfDocument doc = new Spire.Pdf.PdfDocument(file.FileVersion.Contents))
+                        {
+                            doc.XmpMetaData.SetTitle(title);
+                            doc.XmpMetaData.SetKeywords(keywords);
+                            doc.SaveToFile(tempPdf);
+                            if (System.IO.File.Exists(tempPdf))
+                            {
+                                file.FileVersion.Contents = System.IO.File.ReadAllBytes(tempPdf);
+                                file.FileVersion.SaveContents();
+                                try
+                                {
+                                    System.IO.File.Delete(tempPdf);
+                                }
+                                catch(Exception)
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
 
         public static Bitmap ResizeImage(System.Drawing.Image image, int width, int height, bool fast = false)

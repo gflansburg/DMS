@@ -384,7 +384,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("     bgiframe: true,");
             sb.AppendLine("     modal: true,");
             sb.AppendLine("     width: 600,");
-            sb.AppendLine("     height: 350,");
+            sb.AppendLine("     height: 250,");
             sb.AppendLine("     appendTo: 'form',");
             sb.AppendLine("     dialogClass: 'dialog',");
             sb.AppendLine("     resizable: false,");
@@ -1301,8 +1301,27 @@ namespace Gafware.Modules.DMS
                 Components.DocumentController.SaveDocument(doc);
                 foreach (Components.DMSFile file in doc.Files)
                 {
+                    if(cbReplacePDFTitle2.Checked)
+                    {
+                        FileVersion fileVersion = file.FileVersion;
+                        fileVersion.LoadContents();
+                        fileVersion.FileVersionId = 0;
+                        fileVersion.Version++;
+                        fileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                        fileVersion.CreatedByUserID = UserId;
+                        fileVersion.CreatedOnDate = DateTime.Now;
+                        Components.DocumentController.SaveFileVersion(fileVersion);
+                        file.FileVersionId = fileVersion.FileVersionId;
+                        fileVersion.SaveContents();
+                        file.Filesize = fileVersion.Filesize;
+                        Components.DocumentController.SaveFile(file);
+                        Generic.ReplacePDFTitle(file, doc.DocumentName);
+                    }
                     Generic.CreateThumbnail(Request, ControlPath, file);
                 }
+                doc.Files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
+                gvFiles.DataSource = doc.Files;
+                gvFiles.DataBind();
                 foreach (RepeaterItem item in rptCategory.Items)
                 {
                     HiddenField hidCategoryId = (HiddenField)item.FindControl("hidCategoryId");
@@ -1335,6 +1354,7 @@ namespace Gafware.Modules.DMS
                         }
                     }
                 }
+                cbReplacePDFTitle2.Checked = false;
                 DocumentID = doc.DocumentId;
                 TagsFilesEnabled = (DocumentID != 0);
                 ViewMode = ViewMode.Details;
@@ -1585,6 +1605,8 @@ namespace Gafware.Modules.DMS
             fileVersion.WebPageUrl = tbURL.Text.Split(',')[0];
             Components.DocumentController.SaveFileVersion(fileVersion);
             file.FileVersionId = fileVersion.FileVersionId;
+            file.Filesize = fileVersion.Filesize;
+            Components.DocumentController.SaveFile(file);
             ToggleStatus(file, true);
             doc.Files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
             gvFiles.DataSource = doc.Files;
@@ -1675,9 +1697,10 @@ namespace Gafware.Modules.DMS
             file.FileVersion.CreatedOnDate = DateTime.Now;
             file.FileVersion.Filesize = upDocument.PostedFile.ContentLength;
             Components.DocumentController.SaveFileVersion(file.FileVersion);
-            file.FileVersionId = file.FileVersion.FileVersionId;
-            Components.DocumentController.SaveFile(file);
             file.FileVersion.SaveContents(upDocument.PostedFile.InputStream);
+            file.FileVersionId = file.FileVersion.FileVersionId;
+            file.Filesize = file.FileVersion.Filesize;
+            Components.DocumentController.SaveFile(file);
             /*if (file.StatusId == 1)
             {
                 doc.CreateDocumentFolder();
@@ -1688,6 +1711,11 @@ namespace Gafware.Modules.DMS
                 upDocument.PostedFile.SaveAs(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, file.UploadDirectory.Replace("/", "\\"), file.Filename));
             }*/
             ToggleStatus(file, true);
+            if (cbReplacePDFTitle.Checked)
+            {
+                Generic.ReplacePDFTitle(file, doc.DocumentName);
+            }
+            cbReplacePDFTitle.Checked = false;
             Generic.CreateThumbnail(Request, ControlPath, file);
             doc.Files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
             gvFiles.DataSource = doc.Files;

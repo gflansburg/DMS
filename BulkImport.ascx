@@ -114,6 +114,15 @@
         <br style="clear: both" />
     </asp:Panel>
     <div class="RecordDisplay">
+        <span class="FieldName">Replace PDF Title</span>
+        <span class="FieldValue">
+            <div class="toggleButton" id="cbReplacePDFTitleToggleButton" runat="server" style="width: 120px; display: inline-block">
+                <label for='<%= cbReplacePDFTitle.ClientID %>'><asp:CheckBox ID="cbReplacePDFTitle" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
+            </div>
+        </span>
+    </div>
+    <br style="clear: both;" />
+    <div class="RecordDisplay">
         <label for="<%= dtActivation.ClientID %>">
             <span class="FieldName">Activation Date</span>
             <span class="FieldValue" style="position: relative; top: -5px;">

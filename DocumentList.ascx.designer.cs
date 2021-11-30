@@ -222,6 +222,24 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CustomValidator valExists;
 
         /// <summary>
+        /// cbReplacePDFTitle2ToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbReplacePDFTitle2ToggleButton;
+
+        /// <summary>
+        /// cbReplacePDFTitle2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbReplacePDFTitle2;
+
+        /// <summary>
         /// pnlDocumentDetailsDetails control.
         /// </summary>
         /// <remarks>
@@ -832,6 +850,24 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlUploadMsg;
+
+        /// <summary>
+        /// cbReplacePDFTitleToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbReplacePDFTitleToggleButton;
+
+        /// <summary>
+        /// cbReplacePDFTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbReplacePDFTitle;
 
         /// <summary>
         /// btnCancelFile control.

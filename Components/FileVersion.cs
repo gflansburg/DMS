@@ -100,17 +100,23 @@ namespace Gafware.Modules.DMS.Components
 
         public void SaveContents()
         {
+            Filesize = Contents.Length;
+            DocumentController.SaveFileVersion(this);
             DocumentController.SaveFileContents(FileVersionId, Contents);
         }
 
         public void SaveContents(System.IO.Stream stream)
         {
+            Filesize = (int)stream.Length;
+            DocumentController.SaveFileVersion(this);
             DocumentController.SaveFileContents(FileVersionId, stream);
         }
 
         public void SaveContents(byte[] data)
         {
             Contents = data;
+            Filesize = Contents.Length;
+            DocumentController.SaveFileVersion(this);
             DocumentController.SaveFileContents(FileVersionId, Contents);
         }
 

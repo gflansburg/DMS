@@ -202,6 +202,7 @@ namespace Gafware.Modules.DMS
                     ddlSecurityRole.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Unauthenticated Users", "-3"));
                     rptCategory.DataSource = Components.DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                     rptCategory.DataBind();
+                    rptCategory.Visible = Components.DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId).Count > 1;
                     ddlSecurityRole.SelectedIndex = ddlSecurityRole.Items.IndexOf(ddlSecurityRole.Items.FindByValue("-1"));
                     ddOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
                     ddOwner.DataBind();
@@ -297,7 +298,7 @@ namespace Gafware.Modules.DMS
                             }
                         }
                     }
-                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, dtActivation.SelectedDate, dtExpiration.SelectedDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), PortalId, TabModuleId, PortalWideRepository);
+                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, dtActivation.SelectedDate, dtExpiration.SelectedDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), cbReplacePDFTitle.Checked, PortalId, TabModuleId, PortalWideRepository);
                     bulkInsertWindow.VisibleOnPageLoad = true;
                     hidFileImportStatus.Value = "Started";
                 }
@@ -316,6 +317,7 @@ namespace Gafware.Modules.DMS
             cbSubFolderIsTag.Checked = false;
             cbUseCategorySecurityRoles.Checked = false;
             cbIsSearchable.Checked = true;
+            cbReplacePDFTitle.Checked = true;
             cbPrependSubFolderName.Checked = false;
             ddlSecurityRole.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
             ddlSecurityRole.DataBind();
@@ -324,6 +326,7 @@ namespace Gafware.Modules.DMS
             ddlSecurityRole.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Unauthenticated Users", "-3"));
             rptCategory.DataSource = Components.DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
             rptCategory.DataBind();
+            rptCategory.Visible = Components.DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId).Count > 1;
             pnlSecurityRole.Visible = !cbUseCategorySecurityRoles.Checked;
             ddlSecurityRole.SelectedIndex = ddlSecurityRole.Items.IndexOf(ddlSecurityRole.Items.FindByValue("-1"));
             ddOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);

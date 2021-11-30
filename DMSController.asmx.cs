@@ -457,11 +457,11 @@ namespace Gafware.Modules.DMS
 
         private static Dictionary<string, Stats> JobStats = new Dictionary<string, Stats>();
 
-        public static string ImportFiles(string controlPath, string filePath, bool subFolderIsDocumentName, bool subFolderIsTag, bool prependSubFolderName, string seperator, int firstLevel, DateTime? activationDate, DateTime? expirationDate, int ownerId, bool searchable, bool useCategorySecurityRoles, int securityRoleId, int[] categories, int portalId, int tabModuleId, bool portalWideRepository)
+        public static string ImportFiles(string controlPath, string filePath, bool subFolderIsDocumentName, bool subFolderIsTag, bool prependSubFolderName, string seperator, int firstLevel, DateTime? activationDate, DateTime? expirationDate, int ownerId, bool searchable, bool useCategorySecurityRoles, int securityRoleId, int[] categories, bool replacePDFTitle, int portalId, int tabModuleId, bool portalWideRepository)
         {
             BulkImportThread worker = new BulkImportThread(HttpContext.Current.Request);
             worker.Finished += new EventHandler(BulkImportThread_Finished);
-            worker.ImportFiles(controlPath, filePath, subFolderIsDocumentName, subFolderIsTag, prependSubFolderName, seperator, firstLevel, activationDate, expirationDate, ownerId, searchable, useCategorySecurityRoles, securityRoleId, categories, portalId, tabModuleId, portalWideRepository);
+            worker.ImportFiles(controlPath, filePath, subFolderIsDocumentName, subFolderIsTag, prependSubFolderName, seperator, firstLevel, activationDate, expirationDate, ownerId, searchable, useCategorySecurityRoles, securityRoleId, categories, replacePDFTitle, portalId, tabModuleId, portalWideRepository);
             JobStats.Add(worker.ProcessName, new Stats());
             ProcessProgresses.Add(worker.ProcessName, worker);
             return worker.ProcessName;

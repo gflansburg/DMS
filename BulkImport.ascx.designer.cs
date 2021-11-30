@@ -177,6 +177,24 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.DropDownList lstLevel;
 
         /// <summary>
+        /// cbReplacePDFTitleToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbReplacePDFTitleToggleButton;
+
+        /// <summary>
+        /// cbReplacePDFTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbReplacePDFTitle;
+
+        /// <summary>
         /// dtActivation control.
         /// </summary>
         /// <remarks>
