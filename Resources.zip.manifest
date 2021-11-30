@@ -7481,14 +7481,6 @@
       <name>View.ascx.resx</name>
     </file>
     <file>
-      <path>AjaxControls/</path>
-      <name>ModalUpdateProgress.js</name>
-    </file>
-    <file>
-      <path>AjaxControls/</path>
-      <name>ProgressBar.js</name>
-    </file>
-    <file>
       <path>Scripts/</path>
       <name>add_bookmark.jquery.js</name>
     </file>
@@ -7527,6 +7519,14 @@
     <file>
       <path>Documentation/</path>
       <name>Documentation.html</name>
+    </file>
+    <file>
+      <path>AjaxControls/</path>
+      <name>ModalUpdateProgress.js</name>
+    </file>
+    <file>
+      <path>AjaxControls/</path>
+      <name>ProgressBar.js</name>
     </file>
     <file>
       <path />
