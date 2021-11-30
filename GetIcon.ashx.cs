@@ -122,7 +122,7 @@ namespace Gafware.Modules.DMS
         private byte[] GetThumbnail(HttpContext context, string fileType, string thumbnailType, ref string mimeType)
         {
             mimeType = "image/svg+xml";
-            string icon = context.Request.MapPath(String.Format("/DesktopModules/Gafware/DMS/Images/icons/{0}/{1}.svg", thumbnailType, fileType));
+            string icon = context.Request.MapPath(String.Format("/DesktopModules/Gafware/DMS/Images/icons/{0}/{1}.svg", thumbnailType, fileType.Equals("url", StringComparison.OrdinalIgnoreCase) ? "htm" : fileType));
             if (!System.IO.File.Exists(icon))
             {
                 mimeType = "image/png";
