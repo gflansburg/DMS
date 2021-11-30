@@ -4949,6 +4949,38 @@
       <name>UpgradeWizardLog.css</name>
     </file>
     <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>add_bookmark.jquery.js</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>jquery.auto-complete.css</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>jquery.auto-complete.js</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>jquery.blockUI.js</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>jquery.custom-file-input.js</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>jquery.highlightFade.js</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>jquery.tablednd_0_5.js</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Scripts/</path>
+      <name>sortElements.js</name>
+    </file>
+    <file>
       <path>Images/icons/extra/</path>
       <name>catalog.json</name>
     </file>
@@ -5051,38 +5083,6 @@
     <file>
       <path>Images/icons/extra/</path>
       <name>folder.svg</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>add_bookmark.jquery.js</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>jquery.auto-complete.css</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>jquery.auto-complete.js</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>jquery.blockUI.js</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>jquery.custom-file-input.js</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>jquery.highlightFade.js</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>jquery.tablednd_0_5.js</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Scripts/</path>
-      <name>sortElements.js</name>
     </file>
     <file>
       <path>Backup/DMS/Images/icons/</path>
@@ -5423,6 +5423,58 @@
     <file>
       <path>Backup/DMS/Images/icons/</path>
       <name>_page.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>category-header.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>formbg.jpg</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>loading.gif</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>ou.gif</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>results-background-blue.jpg</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>results-background-red.jpg</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>row-anchor.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>sortneutral.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>ui-bg_flat_0_aaaaaa_40x100.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>ui-bg_flat_75_ffffff_40x100.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>ui-bg_glass_65_ffffff_1x400.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>ui-bg_highlight-soft_75_cccccc_1x100.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Images/</path>
+      <name>ui-icons_222222_256x240.png</name>
     </file>
     <file>
       <path>Images/icons/classic/</path>
@@ -7045,58 +7097,6 @@
       <name>zsh.svg</name>
     </file>
     <file>
-      <path>Backup/DMS/Images/</path>
-      <name>category-header.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>formbg.jpg</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>loading.gif</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>ou.gif</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>results-background-blue.jpg</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>results-background-red.jpg</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>row-anchor.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>sortneutral.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>ui-bg_flat_0_aaaaaa_40x100.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>ui-bg_flat_75_ffffff_40x100.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>ui-bg_glass_65_ffffff_1x400.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>ui-bg_highlight-soft_75_cccccc_1x100.png</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Images/</path>
-      <name>ui-icons_222222_256x240.png</name>
-    </file>
-    <file>
       <path>Backup/DMS/Documentation/</path>
       <name>Documentation.css</name>
     </file>
@@ -7143,6 +7143,86 @@
     <file>
       <path>Backup/DMS/App_LocalResources/</path>
       <name>View.ascx.resx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>DMSController.asmx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>DMSUploadReport.resx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>DocumentList.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>DocumentSearchResults.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>GetDocuments.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>GetFile.ashx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>LetterFilter.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>License.txt</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>LinkCreator.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>module.css</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>PacketList.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>PacketSettings.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>PacketView.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>Preview.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>ReleaseNotes.txt</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>SearchTerms.ashx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>Settings.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>TagList.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>UploadReport.ascx</name>
+    </file>
+    <file>
+      <path>Backup/DMS/</path>
+      <name>View.ascx</name>
     </file>
     <file>
       <path>Images/icons/</path>
@@ -7233,84 +7313,8 @@
       <name>_page.png</name>
     </file>
     <file>
-      <path>Backup/DMS/</path>
-      <name>DMSController.asmx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>DMSUploadReport.resx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>DocumentList.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>DocumentSearchResults.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>GetDocuments.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>GetFile.ashx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>LetterFilter.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>License.txt</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>LinkCreator.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>module.css</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>PacketList.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>PacketSettings.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>PacketView.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>Preview.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>ReleaseNotes.txt</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>SearchTerms.ashx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>Settings.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>TagList.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>UploadReport.ascx</name>
-    </file>
-    <file>
-      <path>Backup/DMS/</path>
-      <name>View.ascx</name>
+      <path>_UpgradeWizard_Files/</path>
+      <name>UpgradeWizardLog.css</name>
     </file>
     <file>
       <path>Images/</path>
@@ -7437,6 +7441,46 @@
       <name>ui-icons_222222_256x240.png</name>
     </file>
     <file>
+      <path>Documentation/</path>
+      <name>Documentation.css</name>
+    </file>
+    <file>
+      <path>Documentation/</path>
+      <name>Documentation.html</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>add_bookmark.jquery.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.auto-complete.css</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.auto-complete.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.blockUI.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.custom-file-input.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.highlightFade.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.tablednd_0_5.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>sortElements.js</name>
+    </file>
+    <file>
       <path>App_LocalResources/</path>
       <name>BulkImport.resx</name>
     </file>
@@ -7479,46 +7523,6 @@
     <file>
       <path>App_LocalResources/</path>
       <name>View.ascx.resx</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>add_bookmark.jquery.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.auto-complete.css</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.auto-complete.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.blockUI.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.custom-file-input.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.highlightFade.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.tablednd_0_5.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>sortElements.js</name>
-    </file>
-    <file>
-      <path>Documentation/</path>
-      <name>Documentation.css</name>
-    </file>
-    <file>
-      <path>Documentation/</path>
-      <name>Documentation.html</name>
     </file>
     <file>
       <path>AjaxControls/</path>

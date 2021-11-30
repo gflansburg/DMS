@@ -244,12 +244,34 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        private void FixTitles()
+        {
+            List<DocumentView> docs = DocumentController.GetAllDocumentsForTag(17, PortalWideRepository);
+            Response.Write(docs.Count() + " documents found.<br />");
+            foreach (DocumentView doc in docs)
+            {
+                List<DMSFile> files = DocumentController.GetAllFilesForDocument(doc.DocumentId);
+                foreach (DMSFile file in files)
+                {
+                    Response.Write(file.Filename + "<br />");
+                    if (file.FileType.Equals("pdf", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            Generic.ReplacePDFTitle(file, doc.DocumentName);
+                            Response.Write(doc.DocumentName + "<br />");
+                        }
+                        catch(Exception ex)
+                        {
+                            Response.Write(ex.Message + "<br />");
+                        }
+                    }
+                }
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (IsAdmin())
-            //{
-            //    FixThumnails();
-            //}
             try
             {
                 documentSearchResults.NavigationManager = _navigationManager;
@@ -267,6 +289,11 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ControlPath = ControlPath;
                 if (!IsPostBack)
                 {
+                    //if (IsAdmin())
+                    //{
+                        //FixThumnails();
+                        //FixTitles();
+                    //}
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     pnlDefault.Visible = ShowTips;
                     lblCategoryName.Text = CategoryName.ToLower();

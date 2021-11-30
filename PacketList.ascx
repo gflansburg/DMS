@@ -275,6 +275,10 @@
 </div>
 <div id="previewDialog" class="nocontent dms">
     <div id="preview-content" class="dialog-content" style="overflow: auto; height: 100%; width: 100%;">
-        <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" />
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always" ChildrenAsTriggers="true" >
+            <ContentTemplate>
+                <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" />
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
 </div>
