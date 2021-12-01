@@ -502,6 +502,11 @@ namespace Gafware.Modules.DMS.Data
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllDocumentsForTag", tagId, portalWideRepository);
         }
 
+        public override IDataReader GetDocumentsForTag(int tagId, int portalId, int tabModuleId, int userId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetDocumentsForTag", tagId, portalId, tabModuleId, userId);
+        }
+
         public override IDataReader GetAllPacketsForUser(int userId, int portalId, int tabModuleId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllPacketsForUser", userId, portalId, tabModuleId);

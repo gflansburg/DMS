@@ -114,6 +114,11 @@ namespace Gafware.Modules.DMS.Components
             return CBO.FillCollection<DocumentView>(DataProvider.Instance().GetAllDocumentsForTag(tagId, portalWideRepository));
         }
 
+        public static List<Document> GetDocumentsForTag(int tagId, int portalId, int tabModuleId, int userId)
+        {
+            return CBO.FillCollection<Document>(DataProvider.Instance().GetDocumentsForTag(tagId, portalId, tabModuleId, userId));
+        }
+
         public static List<Document> GetAllPublicDocuments(int portalId, int tabModuleId)
         {
             return CBO.FillCollection<Document>(DataProvider.Instance().GetAllPublicDocuments(portalId, tabModuleId));

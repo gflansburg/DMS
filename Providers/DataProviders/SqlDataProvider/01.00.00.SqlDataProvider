@@ -517,7 +517,7 @@ RETURNS 	Bit
 AS
 BEGIN
 	RETURN CASE WHEN EXISTS (SELECT {databaseOwner}[{objectQualifier}UserRoles].*, {databaseOwner}[{objectQualifier}Users].IsSuperUser FROM {databaseOwner}[{objectQualifier}UserRoles] 
-								INNER JOIN {databaseOwner}[{objectQualifier}Users] ON dbo.[{objectQualifier}UserRoles].UserID = {databaseOwner}[{objectQualifier}Users].UserID 
+								INNER JOIN {databaseOwner}[{objectQualifier}Users] ON {databaseOwner}[{objectQualifier}UserRoles].UserID = {databaseOwner}[{objectQualifier}Users].UserID 
 								WHERE {databaseOwner}[{objectQualifier}UserRoles].UserID = @UserId 
 								AND IsNull({databaseOwner}[{objectQualifier}UserRoles].EffectiveDate, GetDate()) >= GetDate() 
 								AND IsNull({databaseOwner}[{objectQualifier}UserRoles].ExpiryDate, GetDate()) <= GetDate()
@@ -1221,7 +1221,7 @@ BEGIN
     -- Insert statements for procedure here
 	SELECT p.* FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] p
 	INNER JOIN {databaseOwner}[{objectQualifier}Users] AS Users ON Users.UserID = @UserID
-	WHERE (p.UserID = @UserID OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, (SELECT RoleID FROM dbo.Roles WHERE RoleName = 'Administrators' AND PortalID = @PortalID)) = 1) 
+	WHERE (p.UserID = @UserID OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, (SELECT RoleID FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleName = 'Administrators' AND PortalID = @PortalID)) = 1) 
 	AND p.PortalID = @PortalID AND p.TabModuleID = case when @TabModuleID = 0 then p.TabModuleID else @TabModuleID end
 	ORDER BY p.PacketID
 END
@@ -1476,7 +1476,7 @@ BEGIN
 	BEGIN
 		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCam ON DocCam.[DocumentID] = Doc.[DocumentID] AND DocCam.[CategoryID] = ' + CAST(@CategoryID as nvarchar(10)) + ' '
 	END
-	SET @sql = @sql + 'WHERE (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) +  ', (SELECT RoleID FROM dbo.Roles WHERE RoleName = ''Administrators'' AND PortalID = ' + CAST(@PortalID as nvarchar(10)) +  ')) = 1) AND Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end + ' '
+	SET @sql = @sql + 'WHERE (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) +  ', (SELECT RoleID FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleName = ''Administrators'' AND PortalID = ' + CAST(@PortalID as nvarchar(10)) +  ')) = 1) AND Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end + ' '
 	--SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
 	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 	BEGIN
@@ -2439,7 +2439,7 @@ BEGIN
 		SET @sql = @sql + 'AND (Doc.IsSearchable = ''Yes'' OR Doc.IsSearchable IS NULL) '
 	END
 	SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
-	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR (Doc.[UseCategoryRoles] = 1 AND dbo.UserIsInRole(' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) OR (Doc.[UseCategoryRoles] = 0 AND dbo.UserIsInRole(' + CAST(@UserID as nvarchar(10)) + ', Doc.[SecurityRoleID]) = 1)) '
+	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR (Doc.[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) OR (Doc.[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.[SecurityRoleID]) = 1)) '
 	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 	BEGIN
 		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
@@ -2990,6 +2990,36 @@ BEGIN
 
     -- Insert statements for procedure here
 	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID ORDER BY TabModuleID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentsForTag]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentsForTag]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetDocumentsForTag]
+	@TagID int,
+	@PortalID int,
+	@TabModuleID int,
+	@UserID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT DISTINCT {databaseOwner}[{objectQualifier}Gafware_DMS_Document].* 
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] 
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] ON {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag].TagID = @TagID
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] ON {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[DocumentID] = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[DocumentID]
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ON {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[CategoryID] = {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[CategoryID]
+	WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_Document].PortalID = @PortalID AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].TabModuleID = case when @TabModuleID = 0 then {databaseOwner}[{objectQualifier}Gafware_DMS_Document].TabModuleID else @TabModuleID end
+	AND ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
+	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[SecurityRoleID]) = 1))
+	ORDER BY DocumentName
 END
 GO
 

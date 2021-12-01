@@ -428,17 +428,18 @@ namespace Gafware.Modules.DMS
                         foreach (PacketTag tag in packet.Tags)
                         {
                             //tag.Tag = DocumentController.GetTag(tag.TagId);
-                            List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
+                            //List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
+                            List<Document> docs = DocumentController.GetDocumentsForTag(tag.TagId, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
                             foreach (Document doc in docs)
                             {
-                                if (Generic.UserHasAccess(doc))
-                                {
+                                //if (Generic.UserHasAccess(doc))
+                                //{
                                     if (SelectedDocuments.Find(p => p.Document.DocumentId == doc.DocumentId) == null)
                                     {
                                         PacketDocument packetDoc = new PacketDocument(doc, packet.PacketId);
                                         SelectedDocuments.Add(packetDoc);
                                     }
-                                }
+                                //}
                             }
                         }
                         BindData();
