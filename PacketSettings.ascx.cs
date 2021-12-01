@@ -83,7 +83,7 @@ namespace Gafware.Modules.DMS
                     ddlPacket.DataBind();
 
                     if (Settings.Contains("PacketID"))
-                        ddlPacket.SelectedIndex = ddlPacket.Items.IndexOf(ddlPacket.Items.FindByValue(Settings["PacketID"].ToString()));
+                        ddlPacket.SelectedIndex = ddlPacket.Items.IndexOf(ddlPacket.Items.FindByText(Settings["PacketID"].ToString()));
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -104,11 +104,13 @@ namespace Gafware.Modules.DMS
                 var modules = new ModuleController();
 
                 //module settings
-                modules.UpdateTabModuleSetting(TabModuleId, "PacketID", ddlPacket.SelectedValue);
+                modules.UpdateTabModuleSetting(TabModuleId, "PacketID", ddlPacket.SelectedItem.Text);
                 modules.UpdateTabModuleSetting(TabModuleId, "ThumbnailType", ddlThumbnailType.SelectedValue);
                 modules.UpdateTabModuleSetting(TabModuleId, "ThumbnailSize", ddlThumbnailSize.SelectedValue);
                 modules.UpdateTabModuleSetting(TabModuleId, "PageSize", ddlPageSize.SelectedValue);
                 modules.UpdateTabModuleSetting(TabModuleId, "Theme", ddlTheme.SelectedValue);
+                Packet packet = PacketController.GetPacket(Convert.ToInt32(ddlPacket.SelectedValue));
+                modules.UpdateTabModuleSetting(TabModuleId, "RepositoryID", packet.TabModuleId.ToString());
             }
             catch (Exception exc) //Module failed to load
             {

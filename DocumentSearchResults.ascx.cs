@@ -410,10 +410,9 @@ namespace Gafware.Modules.DMS
             {
                 try
                 {
-                    Packet packet = PacketController.GetPacketByName(aryQueryString["p"], PortalId, 0);
+                    Packet packet = PacketController.GetPacketByName(aryQueryString["p"], PortalId, PortalWideRepository ? 0 : TabModuleId);
                     if (packet != null)
                     {
-                        TabModuleId = packet.TabModuleId;
                         pnlDescription.Visible = !String.IsNullOrEmpty(packet.Description) && packet.ShowPacketDescription;
                         lblDescription.Text = packet.Description;
                         ShowDescription = packet.ShowDescription;

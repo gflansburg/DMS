@@ -9,7 +9,7 @@
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblPacket" runat="server" /> 
-        <asp:DropDownList ID="ddlPacket" DataValueField="Name" DataTextField="Name" runat="server"></asp:DropDownList>
+        <asp:DropDownList ID="ddlPacket" DataValueField="PacketId" DataTextField="Name" runat="server"></asp:DropDownList>
         <asp:LinkButton ID="btnReload" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReload_Click" />
     </div>
     <div class="dnnFormItem">

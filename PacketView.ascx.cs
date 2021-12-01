@@ -60,6 +60,10 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
                 documentSearchResults.ControlPath = ControlPath;
+                if (Settings.Contains("RepositoryID"))
+                {
+                    documentSearchResults.TabModuleId = Convert.ToInt32(Settings["RepositoryID"].ToString());
+                }
                 if (!String.IsNullOrEmpty(PacketId))
                 {
                     documentSearchResults.QueryString = String.Format("p={0}", PacketId);
