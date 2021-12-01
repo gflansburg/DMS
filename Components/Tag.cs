@@ -24,10 +24,6 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public string TagName { get; set; }
         /// <summary>
-        /// Is private
-        /// </summary>
-        public string IsPrivate { get; set; }
-        /// <summary>
         /// Weight (order)
         /// </summary>
         public int Weight { get; set; }
@@ -44,18 +40,12 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public int DocumentCount { get; set; }
 
-        public Tag()
-        {
-            IsPrivate = "No";
-        }
-
         public override void Fill(IDataReader dr)
         {
             //base.Fill(dr);
 
             TagId = Null.SetNullInteger(dr["TagId"]);
             TagName = Null.SetNullString(dr["TagName"]);
-            IsPrivate = Null.SetNullString(dr["IsPrivate"]);
             Weight = Null.SetNullInteger(dr["Weight"]);
             DocumentCount = Null.SetNullInteger(dr["DocumentCount"]);
             PortalId = Null.SetNullInteger(dr["PortalID"]);

@@ -26,25 +26,12 @@
                 <label for="<%= tbTagName.ClientID %>" >
                     <span class="FieldNameShort"><span class="RequiredField">*</span> Tag Name:</span>
                     <span class="FieldValue">
-                        <asp:TextBox ID="tbTagName" runat="server" MaxLength="50" ValidationGroup="TagEditor" Width="890px"></asp:TextBox>
+                        <asp:TextBox ID="tbTagName" runat="server" MaxLength="50" ValidationGroup="TagEditor" autofocus Width="890px"></asp:TextBox>
                         <asp:RequiredFieldValidator Font-Italic="true" ForeColor="Red" ID="valTagName" runat="server" CssClass="red-text" Font-Bold="true" ErrorMessage=" Invalid entry." ValidationGroup="TagEditor" ControlToValidate="tbTagName" Display="Dynamic"></asp:RequiredFieldValidator>
                     </span>
                 </label>
             </div>
-            <%--<br clear="all" />
-            <div class="RecordDisplay">
-                <label for="<%= rblIsPrivate.ClientID %>" >
-                    <span class="FieldNameShort"><span class="RequiredField">*</span> Is Private:</span>
-                    <span class="FieldValueShort">
-                        <asp:RadioButtonList ID="rblIsPrivate" runat="server" RepeatDirection="Horizontal" ValidationGroup="TagEditor" CellPadding="0" CellSpacing="0">
-                            <asp:ListItem Text="Yes" Value="1" />
-                            <asp:ListItem Text="No" Value="0" Selected="True" />
-                        </asp:RadioButtonList>
-                    </span>
-                    <span class="FormInstructions"> Denotes whether public website users can see this tag.</span>
-                </label>
-            </div>
-            <br clear="all" />
+            <%--<br style="clear: both" />
             <div class="RecordDisplay">
                 <label for="<%= tbTagName.ClientID %>" >
                     <span class="FieldNameShort"><span class="RequiredField">*</span> Weight:</span>
@@ -55,7 +42,7 @@
                     <span class="FormInstructions">Requires numeric values; Higher numbers appear in search dropdown menu first</span>
                 </label>
             </div>--%>
-            <br clear="all" style="clear: both" />
+            <br style="clear: both" />
             <asp:LinkButton ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Submit" ValidationGroup="TagEditor" CssClass="dnnPrimaryAction" />
             <asp:LinkButton ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="Cancel" CausesValidation="false" CssClass="dnnSecondaryAction" />
         </asp:Panel>

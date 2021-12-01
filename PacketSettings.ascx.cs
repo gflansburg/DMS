@@ -11,9 +11,12 @@
 */
 
 using System;
+using System.Collections.Generic;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using Gafware.Modules.DMS.Components;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Gafware.Modules.DMS
 {
@@ -39,6 +42,13 @@ namespace Gafware.Modules.DMS
     /// -----------------------------------------------------------------------------
     public partial class PacketSettings : DMSModuleSettingsBase
     {
+        private readonly INavigationManager _navigationManager;
+
+        public PacketSettings()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
         #region Base Method Implementations
 
         /// -----------------------------------------------------------------------------
@@ -55,8 +65,10 @@ namespace Gafware.Modules.DMS
                     //Check for existing settings and use those on this page
                     //Settings["SettingName"]
 
-                    ddlRepository.DataSource = DocumentController.GetAllRepositories(PortalId);
+                    List<Repository> repositories = DocumentController.GetAllRepositories(PortalId);
+                    ddlRepository.DataSource = repositories;
                     ddlRepository.DataBind();
+                    pnlRepository.Visible = repositories.Count > 1;
 
                     if (Settings.Contains("PageSize"))
                         ddlPageSize.SelectedIndex = ddlPageSize.Items.IndexOf(ddlPageSize.Items.FindByValue(Settings["PageSize"].ToString()));
@@ -120,6 +132,28 @@ namespace Gafware.Modules.DMS
 
         #endregion
 
+        public void Page_Load()
+        {
+            if (Request.QueryString["ctl"].ToLower() == "editsettings" && !IsAdmin())
+            {
+                base.Response.Redirect(_navigationManager.NavigateURL(), true);
+            }
+            if (!IsPostBack && Request.QueryString["ctl"].ToLower() == "editsettings")
+            {
+                LoadSettings();
+                pnlUpdateSettings.Visible = true;
+            }
+        }
+
+        public bool IsAdmin()
+        {
+            if ((new ModuleSecurity((new ModuleController()).GetTabModule(this.TabModuleId))).HasEditPermissions)
+            {
+                return true;
+            }
+            return false;
+        }
+
         protected void btnReload_Click(object sender, EventArgs e)
         {
             int oldIndex = ddlPacket.SelectedIndex;
@@ -135,6 +169,20 @@ namespace Gafware.Modules.DMS
         protected void ddlRepository_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnReload_Click(sender, e);
+        }
+
+        protected void updateSettings_Click(object sender, EventArgs e)
+        {
+            if (this.Page.IsValid)
+            {
+                UpdateSettings();
+                cancelSettings_Click(sender, e);
+            }
+        }
+
+        protected void cancelSettings_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(_navigationManager.NavigateURL());
         }
     }
 }

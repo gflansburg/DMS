@@ -3,7 +3,7 @@
 <%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
 <h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded">Packet</a></h2>
 <fieldset>
-    <div class="dnnFormItem">
+    <div class="dnnFormItem" runat="server" id="pnlRepository">
         <dnn:Label ID="lblRepository" runat="server" ControlName="ddlRepository" Suffix=":" /> 
         <asp:DropDownList ID="ddlRepository" DataValueField="TabModuleId" DataTextField="Name" OnSelectedIndexChanged="ddlRepository_SelectedIndexChanged" runat="server"></asp:DropDownList>
     </div>
@@ -56,3 +56,11 @@
         </asp:DropDownList>
     </div>
 </fieldset>
+
+<asp:Panel ID="pnlUpdateSettings" runat="server" Visible="false">
+    <hr />
+    <div style="float:right;margin-bottom:10px;">
+        <asp:linkbutton runat="server" id="updateSettings" causesvalidation="True" CssClass="dnnPrimaryAction" OnClick="updateSettings_Click"><asp:label runat="server" resourcekey="lblUpdateSettings" /></asp:linkbutton>
+        <asp:linkbutton runat="server" id="cancelSettings" causesvalidation="False" CssClass="dnnSecondaryAction" OnClick="cancelSettings_Click"><asp:label runat="server" resourcekey="lblCancelSettings" /></asp:linkbutton>
+    </div>
+</asp:Panel>

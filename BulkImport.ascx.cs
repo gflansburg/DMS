@@ -298,7 +298,7 @@ namespace Gafware.Modules.DMS
                             }
                         }
                     }
-                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, dtActivation.SelectedDate, dtExpiration.SelectedDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), cbReplacePDFTitle.Checked, PortalId, TabModuleId, PortalWideRepository);
+                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, dtActivation.SelectedDate, dtExpiration.SelectedDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), cbReplacePDFTitle.Checked, cbIsPublic.Checked, PortalId, TabModuleId, PortalWideRepository);
                     bulkInsertWindow.VisibleOnPageLoad = true;
                     hidFileImportStatus.Value = "Started";
                 }
@@ -319,6 +319,7 @@ namespace Gafware.Modules.DMS
             cbIsSearchable.Checked = true;
             cbReplacePDFTitle.Checked = true;
             cbPrependSubFolderName.Checked = false;
+            cbIsPublic.Checked = true;
             ddlSecurityRole.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
             ddlSecurityRole.DataBind();
             ddlSecurityRole.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All Users", "-1"));

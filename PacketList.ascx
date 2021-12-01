@@ -36,7 +36,7 @@
                 <label for="<%= tbName.ClientID %>" >
                     <span class="FieldName"><span class="RequiredField">*</span> Name:</span>
                     <span class="FieldValue">
-                        <asp:TextBox ID="tbName" runat="server" MaxLength="50" Width="675px" ValidationGroup="PacketEditor"></asp:TextBox>
+                        <asp:TextBox ID="tbName" runat="server" MaxLength="50" Width="675px" autofocus ValidationGroup="PacketEditor"></asp:TextBox>
                         <asp:LinkButton ID="btnEditName" CssClass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Edit Name" Width="100px" OnClick="btnEditName_Click" style="line-height: 20px;" />
                         <asp:HiddenField ID="hidCancelRename" runat="server" />
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>

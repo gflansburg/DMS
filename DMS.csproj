@@ -2034,6 +2034,7 @@
     <Content Include="Images\results-background-FF00FF.jpg" />
     <Content Include="Images\results-background-FF8000.jpg" />
     <Content Include="Images\row-anchor.png" />
+    <Content Include="Images\settings.png" />
     <Content Include="Images\sortneutral.png" />
     <Content Include="Images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Images\ui-bg_flat_75_ffffff_40x100.png" />

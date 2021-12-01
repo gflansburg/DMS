@@ -29,6 +29,7 @@ namespace Gafware.Modules.DMS
         public DateTime? ActivationDate { get; private set; }
         public DateTime? ExpirationDate { get; private set; }
         public int OwnerId { get; private set; }
+        public bool IsPublic { get; private set; }
         public bool Searchable { get; private set; }
         public bool UseCategorySecurityRoles { get; private set; }
         public int SecurityRoleId { get; private set; }
@@ -52,7 +53,7 @@ namespace Gafware.Modules.DMS
             }
         }
 
-        public void ImportFiles(string controlPath, string filePath, bool subFolderIsDocumentName, bool subFolderIsTag, bool prependSubFolderName, string seperator, int firstLevel, DateTime? activationDate, DateTime? expirationDate, int ownerId, bool searchable, bool useCategorySecurityRoles, int securityRoleId, int[] categories, bool replacePDFTitle, int portalId, int tabModuleId, bool portalWideRepository)
+        public void ImportFiles(string controlPath, string filePath, bool subFolderIsDocumentName, bool subFolderIsTag, bool prependSubFolderName, string seperator, int firstLevel, DateTime? activationDate, DateTime? expirationDate, int ownerId, bool searchable, bool useCategorySecurityRoles, int securityRoleId, int[] categories, bool replacePDFTitle, bool isPublic, int portalId, int tabModuleId, bool portalWideRepository)
         {
             PortalId = portalId;
             TabModuleId = tabModuleId;
@@ -72,6 +73,7 @@ namespace Gafware.Modules.DMS
             SecurityRoleId = securityRoleId;
             Categories = categories;
             ReplacePDFTitle = replacePDFTitle;
+            IsPublic = isPublic;
             _worker = new System.Threading.Thread(new System.Threading.ThreadStart(DoBulkImport));
             _worker.Start();
         }
@@ -143,10 +145,10 @@ namespace Gafware.Modules.DMS
                     doc.CreatedByUserID = OwnerId;
                     doc.DocumentDetails = documentName;
                     doc.ExpirationDate = ExpirationDate;
-                    doc.IsSearchable = (Searchable ? "Yes" : "No");
+                    doc.IsSearchable = Searchable;
                     doc.UseCategorySecurityRoles = UseCategorySecurityRoles;
                     doc.SecurityRoleId = SecurityRoleId;
-                    //doc.ManagerToolkit = "No";
+                    doc.IsPublic = IsPublic;
                     doc.DocumentName = documentName;
                     doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
                     Components.DocumentController.SaveDocument(doc);
@@ -187,10 +189,10 @@ namespace Gafware.Modules.DMS
                         doc.CreatedByUserID = OwnerId;
                         doc.DocumentDetails = documentName;
                         doc.ExpirationDate = ExpirationDate;
-                        doc.IsSearchable = (Searchable ? "Yes" : "No");
+                        doc.IsSearchable = Searchable;
                         doc.UseCategorySecurityRoles = UseCategorySecurityRoles;
                         doc.SecurityRoleId = SecurityRoleId;
-                        //doc.ManagerToolkit = "No";
+                        doc.IsPublic = IsPublic;
                         doc.DocumentName = documentName;
                         doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
                         Components.DocumentController.SaveDocument(doc);
@@ -304,7 +306,6 @@ namespace Gafware.Modules.DMS
             {
                 tag = new Components.Tag();
                 tag.TagName = tagName;
-                tag.IsPrivate = "No";
                 tag.PortalId = PortalId;
                 tag.TabModuleId = TabModuleId;
                 Components.DocumentController.SaveTag(tag);

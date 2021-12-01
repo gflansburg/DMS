@@ -460,14 +460,14 @@ namespace Gafware.Modules.DMS
             }
         }
 
-        public static string GetRandomKeyNoDuplication(int portalId, int tabModuleId)
+        public static string GetRandomKeyNoDuplication(int portalId)
         {
             bool matchFound = true;
             string rkey = GenerateRandString(13, GetAscVal("Gafware_DMS_Packet", 101));
 
             while (matchFound)
             {
-                Components.Packet packet = Components.PacketController.GetPacketByName(rkey, portalId, tabModuleId);
+                Components.Packet packet = Components.PacketController.FindPacket(rkey, portalId);
                 if (packet == null)
                 {
                     matchFound = false;

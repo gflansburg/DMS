@@ -31,40 +31,35 @@
         <div style="clear: both"></div>
         <asp:Panel ID="pnlSearch" runat="server">
             <div class="searchBox" id="searchBox" runat="server">
-                <div style="padding: 5px;">
-                    <table cellpadding="0" cellspacing="0" width="100%">
-                        <tr>
-                            <td align="left" valign="top"><span class="SearchText"><strong>Enter search term(s): </strong></span><br style="clear: none" /></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <asp:TextBox ID="tbKeywords" Width="100%" runat="server" style="margin-bottom: 3px" autofocus placeholder="Search Terms ..."></asp:TextBox>
-                            </td>
-                            <td width="100" align="right" valign="top">
-                                <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" style="margin-left: 20px;" />
-                            </td>
-                        </tr>
-                    </table>
-                    <asp:Panel ID="pnlInstructions" runat="server">
+                <div style="padding: 5px; width: 100%; text-align: left;">
+                    <div style="width: 100%;">
+                        <span class="SearchText"><strong>Enter search term(s): </strong></span>
+                        <br style="clear: none" />
+                        <asp:TextBox ID="tbKeywords" runat="server" style="min-width: 200px; width: calc(100% - 120px); margin-bottom: 3px;" autofocus placeholder="Search Terms ..."></asp:TextBox>
+                        <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" style="margin-left: 5px;" />
+                    </div>
+                    <asp:Panel ID="pnlInstructions" runat="server" style="text-align: center">
                         <br />
                         <asp:Label ID="lblInstructions" runat="server" Text='To view all documents, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>
                     </asp:Panel>
                 </div>
-                <div style="width: 20%; float: left;" id="pnlCategory" runat="server">
-                    <span class="SearchText"><strong><asp:Label ID="lblCategory" runat="server" Text="Category"></asp:Label>:</strong></span><br style="clear: none"/> 
-                    <asp:DropDownList ID="ddCategory" runat="server" DataTextField="CategoryName" DataValueField="CategoryId" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                <div style="display: inline">
+                    <div style="display: inline-block" id="pnlCategory" runat="server">
+                        <span class="SearchText"><strong><asp:Label ID="lblCategory" runat="server" Text="Category"></asp:Label>:</strong></span><br style="clear: none"/> 
+                        <asp:DropDownList ID="ddCategory" runat="server" DataTextField="CategoryName" DataValueField="CategoryId" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                    </div>
                 </div>
-                <div style="width: 80%; float: right; margin-top: 15px;">
-                    <table cellpadding="0" cellspacing="0" align="center">
-                        <tr>
-                            <td><span class="SearchText"><strong>Show Descriptions:</strong></span>&nbsp;</td>
-                            <td>
-                                <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 120px">
-                                    <label><asp:CheckBox ID="cbShowDescription" AutoPostBack="true" Checked="true" runat="server" OnCheckedChanged="cbShowDescription_CheckedChanged" /><span></span></label>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                <div style="float: right; display: inline; margin-top: 20px;">
+                    <div style="display: inline; width: 100%; min-width: 275px;">
+                        <div style="height: 30px; vertical-align: middle; display: inline-block; padding-top: 4px;">
+                            <span class="SearchText"><strong>Show Descriptions:</strong></span>&nbsp;
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 120px">
+                                <label><asp:CheckBox ID="cbShowDescription" AutoPostBack="true" Checked="true" runat="server" OnCheckedChanged="cbShowDescription_CheckedChanged" /><span></span></label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <br style="clear: both;" />
             </div>

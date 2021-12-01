@@ -41,9 +41,9 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public string IPAddress { get; set; }
         /// <summary>
-        /// Manager toolkit
+        /// IsPublic
         /// </summary>
-        public string ManagerToolkit { get; set; }
+        public bool IsPublic { get; set; }
         /// <summary>
         /// Activation date
         /// </summary>
@@ -55,7 +55,7 @@ namespace Gafware.Modules.DMS.Components
         /// <summary>
         /// Is searchable
         /// </summary>
-        public string IsSearchable { get; set; }
+        public bool IsSearchable { get; set; }
         /// <summary>
         /// Use Category Security Roles
         /// </summary>
@@ -193,6 +193,8 @@ namespace Gafware.Modules.DMS.Components
         public Document()
         {
             SecurityRoleId = -1;
+            IsPublic = true;
+            IsSearchable = true;
         }
 
         public override void Fill(IDataReader dr)
@@ -205,11 +207,11 @@ namespace Gafware.Modules.DMS.Components
             ShortDescription = Null.SetNullString(dr["ShortDescription"]);
             DocumentDetails = Null.SetNullString(dr["DocumentDetails"]);
             AdminComments = Null.SetNullString(dr["AdminComments"]);
-            ManagerToolkit = Null.SetNullString(dr["ManagerToolkit"]);
+            IsPublic = Null.SetNullBoolean(dr["IsPublic"]);
             ActivationDate = (dr["ActivationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ActivationDate"]));
             ExpirationDate = (dr["ExpirationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ExpirationDate"]));
             IPAddress = Null.SetNullString(dr["IPAddress"]);
-            IsSearchable = Null.SetNullString(dr["IsSearchable"]);
+            IsSearchable = Null.SetNullBoolean(dr["IsSearchable"]);
             SecurityRoleId = Null.SetNullInteger(dr["SecurityRoleID"]);
             UseCategorySecurityRoles = Null.SetNullBoolean(dr["UseCategoryRoles"]);
             PortalId = Null.SetNullInteger(dr["PortalID"]);

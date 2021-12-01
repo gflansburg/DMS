@@ -42,6 +42,33 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.TextBox tbCustomHeader;
 
         /// <summary>
+        /// pnlIncludePrivate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlIncludePrivate;
+
+        /// <summary>
+        /// cbIncludePrivateToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbIncludePrivateToggleButton;
+
+        /// <summary>
+        /// cbIncludePrivate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbIncludePrivate;
+
+        /// <summary>
         /// cbShowDescriptionToggleButton control.
         /// </summary>
         /// <remarks>

@@ -31,6 +31,11 @@ namespace Gafware.Modules.DMS.Components
             return CBO.FillCollection<Packet>(DataProvider.Instance().GetAllPacketsForUser(userId, portalId, tabModuleId));
         }
 
+        public static Packet FindPacket(string packetName, int portalId)
+        {
+            return CBO.FillObject<Packet>(DataProvider.Instance().FindPacket(packetName, portalId));
+        }
+
         public static List<Packet> GetAllPacketsContainingDocument(int documentId)
         {
             return CBO.FillCollection<Packet>(DataProvider.Instance().GetAllPacketsContainingDocument(documentId));
@@ -62,9 +67,9 @@ namespace Gafware.Modules.DMS.Components
             return CBO.FillObject<PacketDocument>(DataProvider.Instance().GetPacketDoc(packetDocId));
         }
 
-        public static List<PacketDocument> GetAllDocumentsForPacket(int packetId)
+        public static List<PacketDocument> GetAllDocumentsForPacket(int packetId, int userId)
         {
-            return CBO.FillCollection<PacketDocument>(DataProvider.Instance().GetAllDocumentsForPacket(packetId));
+            return CBO.FillCollection<PacketDocument>(DataProvider.Instance().GetAllDocumentsForPacket(packetId, userId));
         }
 
         public static void DeletePacketDoc(int packetDocId)

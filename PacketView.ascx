@@ -2,5 +2,5 @@
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register Src="~/desktopmodules/Gafware/DMS/DocumentSearchResults.ascx" TagPrefix="uc1" TagName="DocumentSearchResults" %>
 <div class="dms">
-    <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" IsLink="false" />
+    <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" ShowAdmin="true" IsLink="false" />
 </div>

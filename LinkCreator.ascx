@@ -35,6 +35,20 @@
         </label>
     </div>
     <br style="clear: both" />
+    <asp:Panel ID="pnlIncludePrivate" runat="server" Visible="false">
+        <div class="RecordDisplay">
+            <label for="<%= cbIncludePrivate.ClientID %>">
+                <span class="FieldName"><span class="RequiredField">*</span> Include Private:</span>
+                <span class="FieldValue">
+                    <%--<asp:CheckBox ID="cbIncludePrivate" runat="server" AutoPostBack="true" Checked="false" OnCheckedChanged="cbIncludePrivate_CheckedChanged" />--%>
+                    <div class="toggleButton" id="cbIncludePrivateToggleButton" runat="server" style="width: 120px">
+                        <label><asp:CheckBox ID="cbIncludePrivate" AutoPostBack="true" Checked="false" runat="server" OnCheckedChanged="cbIncludePrivate_CheckedChanged" /><span></span></label>
+                    </div>
+                </span>
+            </label>
+        </div>
+        <br style="clear: both" />
+    </asp:Panel>
     <div class="RecordDisplay">
         <label for="<%= cbShowDescription.ClientID %>">
             <span class="FieldName"><span class="RequiredField">*</span> Show Description:</span>

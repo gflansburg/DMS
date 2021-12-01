@@ -274,6 +274,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.UserId = UserId;
                 documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
+                documentSearchResults.IsAdmin = IsAdmin();
                 documentSearchResults.ControlPath = ControlPath;
                 documentSearchResults.IsLink = false;
                 documentSearchResults.Search = true;
@@ -281,6 +282,7 @@ namespace Gafware.Modules.DMS
                 //btnReset.OnClientClick = "$('#" + tbCustomHeader.ClientID + "').val(''); return true;";
                 if (!IsPostBack)
                 {
+                    pnlIncludePrivate.Visible = IsAdmin();
                     gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                     List<Components.DocumentView> docs = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, PortalWideRepository ? 0 : TabModuleId);
@@ -474,7 +476,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext=", cbShowDescription.Checked ? "Yes" : "No", strDocList, fileId)))));
+            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&searchprivate={3}&headertext=", cbShowDescription.Checked ? "Yes" : "No", strDocList, fileId, cbIncludePrivate.Checked ? "Yes" : "No")))));
             return _navigationManager.NavigateURL("GetDocuments", strArrays);
         }
 
@@ -629,6 +631,11 @@ namespace Gafware.Modules.DMS
         }
 
         protected void cbShowDescription_CheckedChanged(object sender, EventArgs e)
+        {
+            SetLinkUrl();
+        }
+
+        protected void cbIncludePrivate_CheckedChanged(object sender, EventArgs e)
         {
             SetLinkUrl();
         }

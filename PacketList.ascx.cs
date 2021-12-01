@@ -444,6 +444,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.UserId = UserId;
                 documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
+                documentSearchResults.IsAdmin = IsAdmin();
                 documentSearchResults.ControlPath = ControlPath;
                 documentSearchResults.IsLink = false;
                 documentSearchResults.Search = true;
@@ -741,7 +742,7 @@ namespace Gafware.Modules.DMS
                     packet.CustomHeader = String.Empty;
                     packet.Description = String.Empty;
                     packet.Documents = new List<Components.PacketDocument>();
-                    packet.Name = Generic.GetRandomKeyNoDuplication(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    packet.Name = Generic.GetRandomKeyNoDuplication(PortalId);
                     packet.Tags = new List<Components.PacketTag>();
                 }
                 tbAdminComments.Text = packet.AdminComments.Trim();
@@ -750,7 +751,7 @@ namespace Gafware.Modules.DMS
                 tbName.Text = packet.Name.Trim();
                 if (String.IsNullOrWhiteSpace(packet.Name))
                 {
-                    tbName.Text = Generic.GetRandomKeyNoDuplication(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    tbName.Text = Generic.GetRandomKeyNoDuplication(PortalId);
                 }
                 tbName.Enabled = (packet.PacketId == 0);
                 btnEditName.Visible = (packet.PacketId > 0);
@@ -785,6 +786,8 @@ namespace Gafware.Modules.DMS
                 tbName.BackColor = (tbName.Enabled ? System.Drawing.Color.White : System.Drawing.Color.Silver);
                 tbName.Width = new Unit(packet.PacketId > 0 ? "686px" : "780px");
                 btnEditName.Text = (tbName.Enabled ? "Save Name" : "Edit Name");
+                ddDocuments.SelectedIndex = 0;
+                ddTags.SelectedIndex = 0;
             }
             else
             {

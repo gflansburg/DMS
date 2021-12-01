@@ -202,6 +202,16 @@
     </asp:Repeater>
     <div class="RecordDisplay">
         <label for="<%= cbIsSearchable.ClientID %>">
+            <span class="FieldName"><span class="RequiredField">*</span> Public</span>
+            <span class="FieldValue">
+                <div class="toggleButton" id="cbIsPublicToggleButton" runat="server" style="width: 120px">
+                    <label for='<%= cbIsPublic.ClientID %>'><asp:CheckBox ID="cbIsPublic" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
+                </div>
+            </span>
+        </label>
+    </div>
+    <div class="RecordDisplay">
+        <label for="<%= cbIsSearchable.ClientID %>">
             <span class="FieldName"><span class="RequiredField">*</span> Searchable</span>
             <span class="FieldValue">
                 <div class="toggleButton" id="cbIsSearchableToggleButton" runat="server" style="width: 120px">

@@ -15,6 +15,15 @@ namespace Gafware.Modules.DMS
     {
 
         /// <summary>
+        /// pnlRepository control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlRepository;
+
+        /// <summary>
         /// lblRepository control.
         /// </summary>
         /// <remarks>
@@ -130,5 +139,32 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPageSize;
+
+        /// <summary>
+        /// pnlUpdateSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlUpdateSettings;
+
+        /// <summary>
+        /// updateSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton updateSettings;
+
+        /// <summary>
+        /// cancelSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cancelSettings;
     }
 }

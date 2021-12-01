@@ -111,23 +111,23 @@
                 </asp:Panel>
             </div>
             <br style="clear: both;" />
-<%--            <div class="RecordDisplay">
-                <asp:Panel ID="pnlManagerToolkitDetails" runat="server">
-                    <span class="FieldName">Manager Toolkit</span>
+            <div class="RecordDisplay">
+                <asp:Panel ID="pnlIsPublicDetails" runat="server">
+                    <span class="FieldName">Public</span>
                     <span class="FieldValue FieldValueSpan">
-                        <asp:Label ID="lblManagerToolkit" runat="server">&nbsp;</asp:Label>
+                        <asp:Label ID="lblIsPublic" runat="server">&nbsp;</asp:Label>
                     </span>
                 </asp:Panel>
-                <asp:Panel ID="pnlManagerToolkitEdit" runat="server" Visible="false">
-                    <span class="FieldName"><span class="RequiredField">*</span> Manager Toolkit</span>
+                <asp:Panel ID="pnlIsPublicEdit" runat="server" Visible="false">
+                    <span class="FieldName"><span class="RequiredField">*</span> Public</span>
                     <span class="FieldValue">
-                        <div class="toggleButton" id="cbManagerToolkitToggleButton" runat="server" style="width: 120px">
-                            <label for='<%= cbManagerToolkit.ClientID %>'><asp:CheckBox ID="cbManagerToolkit" AutoPostBack="false" runat="server" /><span></span></label>
+                        <div class="toggleButton" id="cbIsPublicToggleButton" runat="server" style="width: 120px">
+                            <label for='<%= cbIsPublic.ClientID %>'><asp:CheckBox ID="cbIsPublic" AutoPostBack="false" runat="server" /><span></span></label>
                         </div>
                     </span>
                 </asp:Panel>
             </div>
-            <br style="clear: both;" />--%>
+            <br style="clear: both;" />
             <div class="RecordDisplay" style="position: relative;">
                 <asp:Panel ID="pnlActivationDateDetails" runat="server">
                     <span class="FieldName">Activation Date</span>
@@ -531,19 +531,19 @@
         <asp:HiddenField ID="hidFileDeleteStatus" runat="server" Value="Idle" />
         <asp:HiddenField ID="hidProcessName" runat="server" Value="" />
         <div class="searchBox" id="searchBox" runat="server">
-            <div style="width: 180px; float: left; display: inline-block">
-                <strong><asp:Label ID="lblCategory" runat="server" Text="Label"></asp:Label></strong><br clear="none"/> 
+            <div style="width: 190px; float: left; display: inline-block">
+                <strong><asp:Label ID="lblCategory" runat="server" Text="Label"></asp:Label></strong><br style="clear: none" />
                 <asp:DropDownList ID="ddCategory" runat="server" DataTextField="CategoryName" DataValueField="CategoryId" AutoPostBack="true" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged"></asp:DropDownList>
             </div>
-            <div style="margin-left: 10px; text-align: left; padding-right: 30px; display: inline-block">
-    	        <strong>Enter search term(s): </strong><br clear="none" />
-                <div style="width: 800px;">
-                    <asp:TextBox ID="tbKeywords" Width="660px" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
+            <div style="margin-left: 10px; text-align: left; padding-right: 30px; display: inline-block; width: calc(100% - 200px)">
+    	        <strong>Enter search term(s): </strong><br style="clear: none" />
+                <div style="width: 100%;">
+                    <asp:TextBox ID="tbKeywords" style="min-width: 200px; width: calc(100% - 120px)" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
 					<asp:LinkButton ID="btnSearch" Width="100px" runat="server" Text="Go!" OnClick="btnSearch_Click" CssClass="dnnPrimaryAction" />
                 </div>
                 <asp:Label ID="lblInstructions" runat="server" Text='To view all documents, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>
             </div>
-            <br clear="all"/>
+            <br style="clear: both" />
        	    <br />
         </div>
         <br />

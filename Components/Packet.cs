@@ -60,10 +60,25 @@ namespace Gafware.Modules.DMS.Components
         /// Tags
         /// </summary>
         public List<PacketTag> Tags { get; set; }
+        private List<PacketDocument> _documents = null;
         /// <summary>
         /// Documents
         /// </summary>
-        public List<PacketDocument> Documents { get; set; }
+        public List<PacketDocument> Documents 
+        { 
+            get
+            {
+                if(_documents == null)
+                {
+                    Documents = PacketController.GetAllDocumentsForPacket(PacketId, 0);
+                }
+                return _documents;
+            }
+            set
+            {
+                _documents = value;
+            }
+        }
         /// <summary>
         /// Creator
         /// </summary>
@@ -90,7 +105,6 @@ namespace Gafware.Modules.DMS.Components
             PortalId = Null.SetNullInteger(dr["PortalID"]);
             TabModuleId = Null.SetNullInteger(dr["TabModuleID"]);
             Tags = PacketController.GetAllTagsForPacket(PacketId);
-            Documents = PacketController.GetAllDocumentsForPacket(PacketId);
         }
 
         public override int KeyID

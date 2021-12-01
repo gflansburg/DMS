@@ -70,6 +70,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.UserId = UserId;
                 documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
+                documentSearchResults.IsAdmin = IsAdmin();
                 documentSearchResults.ControlPath = ControlPath;
                 if (!IsPostBack)
                 {
@@ -100,6 +101,15 @@ namespace Gafware.Modules.DMS
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        public bool IsAdmin()
+        {
+            if ((new ModuleSecurity((new ModuleController()).GetTabModule(this.TabModuleId))).HasEditPermissions)
+            {
+                return true;
+            }
+            return false;
         }
 
         public ModuleActionCollection ModuleActions

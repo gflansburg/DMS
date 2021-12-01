@@ -286,6 +286,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.UserId = UserId;
                 documentSearchResults.TabModuleId = TabModuleId;
                 documentSearchResults.ModuleId = ModuleId;
+                documentSearchResults.IsAdmin = IsAdmin();
                 documentSearchResults.ControlPath = ControlPath;
                 if (!IsPostBack)
                 {
@@ -308,7 +309,6 @@ namespace Gafware.Modules.DMS
                     bool bSearchVisible = true;
                     bool bMenuOn = (!String.IsNullOrEmpty(Request.QueryString["menu"]) && Generic.IsBoolean(Request.QueryString["menu"]) ? Generic.ToBoolean(Request.QueryString["menu"]) : false);
                     bool bDescriptions = (!String.IsNullOrEmpty(Request.QueryString["descriptions"]) && Generic.IsBoolean(Request.QueryString["descriptions"]) ? Generic.ToBoolean(Request.QueryString["descriptions"]) : true);
-                    bool bManagers = (!String.IsNullOrEmpty(Request.QueryString["managers"]) && Generic.IsBoolean(Request.QueryString["managers"]) ? Generic.ToBoolean(Request.QueryString["managers"]) : false);
                     bool bPrivate = (!String.IsNullOrEmpty(Request.QueryString["searchprivate"]) && Generic.IsBoolean(Request.QueryString["searchprivate"]) ? Generic.ToBoolean(Request.QueryString["searchprivate"]) : false);
                     string strHeaderText = (Request.QueryString["headerText"] ?? String.Empty).Trim();
                     string strKeywords = (Request.QueryString["keywords"] ?? String.Empty).Trim();
@@ -340,7 +340,6 @@ namespace Gafware.Modules.DMS
                     //rblShowDescription.SelectedIndex = (bDescriptions ? 0 : 1);
                     cbShowDescription.Checked = bDescriptions;
                     documentSearchResults.Header = strHeaderText;
-                    documentSearchResults.Managers = bManagers;
                     Private = bPrivate;
                     if(!string.IsNullOrEmpty(strCategory))
                     {

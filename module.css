@@ -95,7 +95,6 @@
     font-family: Verdana, Arial, Helvetica, sans-serif; 
     font-size: 12px; 
     padding: 10px; 
-    text-align: center;
 }
 .dms .PacketDescription {
 	padding-left: 8px;
@@ -467,10 +466,6 @@
 /* Overlays */
 .dms .ui-widget-overlay { background: #aaaaaa url("images/ui-bg_flat_0_aaaaaa_40x100.png") 50% 50% repeat-x; opacity: .3;filter:Alpha(Opacity=30); }
 .dms .ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa url("images/ui-bg_flat_0_aaaaaa_40x100.png") 50% 50% repeat-x; opacity: .3;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -khtml-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }
-
-.dms table .SearchText td {
-    padding-right: 5px;
-}
 
 .dms th, .dms td, .dms table, .dms h1, .dms h2, .dms h3, .dms h4, .dms h5, .dms h6, .dms .Head, .dms .SubHead, .dms .SubSubHead, .dms .Normal, .dms .NormalBold, .dms .NormalRed, .dms .NormalTextBox, .dms .NormalDisabled, .dms .CommandButton {
     line-height: 1.65em;

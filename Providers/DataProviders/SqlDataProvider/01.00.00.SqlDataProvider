@@ -263,13 +263,13 @@ BEGIN
 		[ShortDescription] [nvarchar](1250) NULL,
 		[DocumentDetails] [nvarchar](4000) NULL,
 		[AdminComments] [nvarchar](2500) NULL,
-		[ManagerToolkit] [nvarchar](3) NULL,
+		[IsPublic] [bit] NOT NULL,
 		[ActivationDate] [datetime] NULL,
 		[ExpirationDate] [datetime] NULL,
 		[DateCreated] [datetime] NULL,
 		[DateLastModified] [datetime] NULL,
 		[IPAddress] [nvarchar](16) NULL,
-		[IsSearchable] [nvarchar](3) NULL,
+		[IsSearchable] [bit] NOT NULL,
 		[UseCategoryRoles] [bit] NOT NULL,
 		[SecurityRoleID] [int] NOT NULL,
 		[PortalID] [int] NOT NULL,
@@ -436,7 +436,6 @@ BEGIN
 	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag](
 		[TagID] [int] IDENTITY(1,1) NOT NULL,
 		[TagName] [nvarchar](50) NULL,
-		[IsPrivate] [nvarchar](3) NULL,
 		[Weight] [int] NULL,
 		[PortalID] [int] NOT NULL,
 		[TabModuleID] [int] NOT NULL,
@@ -806,7 +805,7 @@ BEGIN
 
     -- Insert statements for procedure here
 	SELECT *, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag].TagID = {databaseOwner}[{objectQualifier}Gafware_DMS_Tag].TagID) AS DocumentCount 
-	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end AND ISNULL(IsPrivate, 'No') = 'No' AND TagName LIKE '%' + @Term + '%' ORDER BY [Weight] DESC
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end AND TagName LIKE '%' + @Term + '%' ORDER BY [Weight] DESC
 END
 GO
 
@@ -910,7 +909,8 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllDocumentsForPacket]
 	-- Add the parameters for the stored procedure here
-	@PacketID int
+	@PacketID int,
+	@UserID int
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -918,7 +918,15 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc] WHERE PacketID = @PacketID ORDER BY SortOrder
+	SELECT DISTINCT {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc].*, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentName
+	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc]
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ON {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] ON {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[DocumentID] = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[DocumentID]
+	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ON {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[CategoryID] = {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[CategoryID]
+	WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc].[PacketID] = @PacketID
+	AND (@UserID = 0 OR (({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsSearchable] = 1 AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsPublic] = 1) OR {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID) OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
+	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[SecurityRoleID]) = 1))
+	ORDER BY {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentName
 END
 GO
 
@@ -1235,7 +1243,8 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllPublicDocuments]
 	@PortalID int,
-	@TabModuleID int
+	@TabModuleID int,
+	@UserID int
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -1245,7 +1254,7 @@ BEGIN
     -- Insert statements for procedure here
 	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
 	WHERE (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0
-	AND ISNULL(IsSearchable, 'Yes') = 'Yes'
+	AND ((IsSearchable = 1 AND IsPublic = 1) OR CreatorID = @UserID)
 	AND (ActivationDate IS NULL OR GETDATE() >= ActivationDate)
 	AND (ExpirationDate IS NULL OR GETDATE() <= ExpirationDate)
 	AND PortalID = @PortalID
@@ -1272,7 +1281,7 @@ BEGIN
     -- Insert statements for procedure here
 	SELECT t.*, (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] d WHERE d.TagID = t.TagID) AS DocumentCount
 	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] t 
-	WHERE ISNULL(t.IsPrivate, 'No') = 'No' AND t.PortalID = @PortalID AND t.TabModuleID = case when @TabModuleID = 0 then t.TabModuleID else @TabModuleID end
+	WHERE t.PortalID = @PortalID AND t.TabModuleID = case when @TabModuleID = 0 then t.TabModuleID else @TabModuleID end
 	ORDER BY t.TagName, t.[Weight]
 END
 GO
@@ -1464,10 +1473,9 @@ BEGIN
     -- Insert statements for procedure here
     DECLARE @sql nvarchar(max)
 	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[ShortDescription],Doc.[DocumentDetails]' +
-				',Doc.[AdminComments],Doc.[ManagerToolkit],Doc.[ActivationDate],Doc.[ExpirationDate]' +
+				',Doc.[AdminComments],Doc.[IsPublic],Doc.[ActivationDate],Doc.[ExpirationDate]' +
 				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress]' +
-				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], ' +
-				'ISNULL(Doc.[IsSearchable], ''Yes'') AS [IsSearchable],Doc.[PortalID],Doc.[TabModuleID] ' +
+				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], Doc.[IsSearchable], Doc.[PortalID], Doc.[TabModuleID] ' +
 				'FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] AS Doc ' + 
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] AS DocTag ON DocTag.DocumentID = Doc.DocumentID ' +
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] AS Tag ON Tag.TagID = DocTag.TagID ' +
@@ -1527,7 +1535,7 @@ BEGIN
 	[ShortDescription] [nvarchar](1250) NULL,
 	[DocumentDetails] [nvarchar](4000) NULL,
 	[AdminComments] [nvarchar](2500) NULL,
-	[ManagerToolkit] [nvarchar](3) NULL,
+	[IsPublic] [bit] NOT NULL,
 	[ActivationDate] [datetime] NULL,
 	[ExpirationDate] [datetime] NULL,
 	[DateCreated] [datetime] NULL,
@@ -1535,7 +1543,7 @@ BEGIN
 	[IPAddress] [nvarchar](16) NULL,
 	[UseCategoryRoles] [bit] NOT NULL,
 	[SecurityRoleID] [int] NOT NULL,
-	[IsSearchable] [nvarchar](3) NULL,
+	[IsSearchable] [bit] NOT NULL,
 	[PortalID] [int] NOT NULL,
 	[TabModuleID] [int] NOT NULL)
 	INSERT #x
@@ -1718,6 +1726,26 @@ BEGIN
 END
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_FindPacket]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_FindPacket]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_FindPacket]
+	@PacketName nvarchar(50),
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM [{objectQualifier}Gafware_DMS_Packet] WHERE [Name] = @PacketName AND PortalID = @PortalID
+END
+GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 BEGIN
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetPacketDocument]
@@ -1772,7 +1800,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT TagName FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE ISNULL(IsPrivate, 'No') = 'No' AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY [Weight] DESC
+	SELECT TagName FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY [Weight] DESC
 END
 GO
 
@@ -1862,7 +1890,7 @@ BEGIN
 SELECT d.[DocumentName]
       ,d.[DocumentDetails]
       ,d.[AdminComments]
-      ,d.[ManagerToolkit]
+      ,d.[IsPublic]
       ,d.[ActivationDate]
       ,d.[ExpirationDate]
       ,d.[DateCreated]
@@ -1987,11 +2015,11 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]
 	@ShortDescription nvarchar(1250),
 	@DocumentDetails nvarchar(4000),
 	@AdminComments nvarchar(2500),
-	@ManagerToolkit nvarchar(3),
+	@IsPublic bit,
 	@ActivationDate datetime,
 	@ExpirationDate datetime,
 	@IPAddress nvarchar(16),
-	@IsSearchable nvarchar(3),
+	@IsSearchable bit,
 	@UseCategoryRoles bit,
 	@SecurityRoleID int,
 	@PortalID int,
@@ -2005,9 +2033,9 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@DocumentID IS NULL OR @DocumentID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Document] (CreatorID, DocumentName, ShortDescription, DocumentDetails, AdminComments, ManagerToolkit, ActivationDate,
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Document] (CreatorID, DocumentName, ShortDescription, DocumentDetails, AdminComments, IsPublic, ActivationDate,
 		ExpirationDate, IPAddress, IsSearchable, UseCategoryRoles, SecurityRoleID, PortalID, TabModuleID, DateCreated, DateLastModified)
-		VALUES (@CreatorID, @DocumentName, @ShortDescription, @DocumentDetails, @AdminComments, @ManagerToolkit, @ActivationDate, @ExpirationDate,
+		VALUES (@CreatorID, @DocumentName, @ShortDescription, @DocumentDetails, @AdminComments, @IsPublic, @ActivationDate, @ExpirationDate,
 		@IPAddress, @IsSearchable, @UseCategoryRoles, @SecurityRoleID, @PortalID, @TabModuleID, GETDATE(), GETDATE())
 		SET @DocumentID = @@IDENTITY
 	END
@@ -2019,7 +2047,7 @@ BEGIN
 			ShortDescription = @ShortDescription,
 			DocumentDetails = @DocumentDetails,
 			AdminComments = @AdminComments,
-			ManagerToolkit = @ManagerToolkit,
+			IsPublic = @IsPublic,
 			ActivationDate = @ActivationDate,
 			ExpirationDate = @ExpirationDate,
 			IPAddress = @IPAddress,
@@ -2352,7 +2380,6 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveTag]
 	@TagID int,
 	@TagName nvarchar(50),
-	@IsPrivate nvarchar(3),
 	@Weight int,
 	@PortalID int,
 	@TabModuleID int
@@ -2365,14 +2392,13 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@TagID IS NULL OR @TagID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] (TagName, IsPrivate, [Weight], PortalID, TabModuleID) VALUES (@TagName, @IsPrivate, @Weight, @PortalID, @TabModuleID)
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] (TagName, [Weight], PortalID, TabModuleID) VALUES (@TagName, @Weight, @PortalID, @TabModuleID)
 		SET @TagID = @@IDENTITY
 	END
 	ELSE
 	BEGIN
 		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Tag]
 		SET	TagName = @TagName,
-			IsPrivate = @IsPrivate,
 			[Weight] = @Weight,
 			PortalID = @PortalID,
 			TabModuleID = @TabModuleID
@@ -2417,10 +2443,9 @@ BEGIN
     -- Insert statements for procedure here
     DECLARE @sql nvarchar(max)
 	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[ShortDescription],Doc.[DocumentDetails]' +
-				',Doc.[AdminComments],Doc.[ManagerToolkit],Doc.[ActivationDate],Doc.[ExpirationDate]' +
+				',Doc.[AdminComments],Doc.[IsPublic],Doc.[ActivationDate],Doc.[ExpirationDate]' +
 				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress],Doc.[PortalID],Doc.[TabModuleID]' +
-				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], ' +
-				'ISNULL(Doc.[IsSearchable], ''Yes'') AS [IsSearchable] ' +
+				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], Doc.[IsSearchable] ' +
 				'FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] AS Doc ' + 
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] AS DocTag ON DocTag.DocumentID = Doc.DocumentID ' +
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] AS Tag ON Tag.TagID = DocTag.TagID '
@@ -2436,7 +2461,7 @@ BEGIN
 	SET @sql = @sql + 'WHERE Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end +  ' AND (Doc.ActivationDate IS NULL OR getdate() >= Doc.ActivationDate) AND (Doc.ExpirationDate IS NULL OR getdate() <= Doc.ExpirationDate) '
 	IF (@Private = 0)
 	BEGIN
-		SET @sql = @sql + 'AND (Doc.IsSearchable = ''Yes'' OR Doc.IsSearchable IS NULL) '
+		SET @sql = @sql + 'AND ((Doc.[IsSearchable] = 1 AND Doc.[IsPublic] = 1) OR Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ') '
 	END
 	SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
 	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR (Doc.[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) OR (Doc.[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.[SecurityRoleID]) = 1)) '
@@ -2489,7 +2514,7 @@ BEGIN
 	[ShortDescription] [nvarchar](1250) NULL,
 	[DocumentDetails] [nvarchar](4000) NULL,
 	[AdminComments] [nvarchar](2500) NULL,
-	[ManagerToolkit] [nvarchar](3) NULL,
+	[IsPublic] [bit] NOT NULL,
 	[ActivationDate] [datetime] NULL,
 	[ExpirationDate] [datetime] NULL,
 	[DateCreated] [datetime] NULL,
@@ -2499,7 +2524,7 @@ BEGIN
 	[TabModuleID] [int] NOT NULL,
 	[UseCategoryRoles] [bit] NOT NULL,
 	[SecurityRoleID] [int] NOT NULL,
-	[IsSearchable] [nvarchar](3) NULL)
+	[IsSearchable] [bit] NOT NULL)
 	INSERT #x
 	EXECUTE(@sql)
 	DECLARE @count int
@@ -3017,7 +3042,7 @@ BEGIN
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] ON {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[DocumentID] = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[DocumentID]
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ON {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[CategoryID] = {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[CategoryID]
 	WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_Document].PortalID = @PortalID AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].TabModuleID = case when @TabModuleID = 0 then {databaseOwner}[{objectQualifier}Gafware_DMS_Document].TabModuleID else @TabModuleID end
-	AND ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
+	AND ((({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsSearchable] = 1 AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsPublic] = 1) OR {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID) OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
 	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[SecurityRoleID]) = 1))
 	ORDER BY DocumentName
 END

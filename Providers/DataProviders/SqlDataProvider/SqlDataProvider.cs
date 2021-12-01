@@ -199,7 +199,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SaveTag(Tag objTag)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveTag", objTag.TagId, objTag.TagName, objTag.IsPrivate, objTag.Weight, objTag.PortalId, objTag.TabModuleId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveTag", objTag.TagId, objTag.TagName, objTag.Weight, objTag.PortalId, objTag.TabModuleId));
         }
 
         public override IDataReader GetAllDocuments(int portalId, int tabModuleId)
@@ -229,7 +229,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SaveDocument(Document objDocument)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveDocument", objDocument.DocumentId, objDocument.CreatedByUserID, objDocument.DocumentName, objDocument.ShortDescription, objDocument.DocumentDetails, objDocument.AdminComments, objDocument.ManagerToolkit, objDocument.ActivationDate, objDocument.ExpirationDate, objDocument.IPAddress, objDocument.IsSearchable, objDocument.UseCategorySecurityRoles, objDocument.SecurityRoleId, objDocument.PortalId, objDocument.TabModuleId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveDocument", objDocument.DocumentId, objDocument.CreatedByUserID, objDocument.DocumentName, objDocument.ShortDescription, objDocument.DocumentDetails, objDocument.AdminComments, objDocument.IsPublic, objDocument.ActivationDate, objDocument.ExpirationDate, objDocument.IPAddress, objDocument.IsSearchable, objDocument.UseCategorySecurityRoles, objDocument.SecurityRoleId, objDocument.PortalId, objDocument.TabModuleId));
         }
 
         public override IDataReader GetAllTagsForDocument(int documentId)
@@ -297,9 +297,9 @@ namespace Gafware.Modules.DMS.Data
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SavePacket", objPacket.PacketId, objPacket.CreatedByUserID, objPacket.Name, objPacket.ShowDescription, objPacket.ShowPacketDescription, objPacket.Description, objPacket.AdminComments, objPacket.CustomHeader, objPacket.PortalId, objPacket.TabModuleId));
         }
 
-        public override IDataReader GetAllDocumentsForPacket(int packetId)
+        public override IDataReader GetAllDocumentsForPacket(int packetId, int userId)
         {
-            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllDocumentsForPacket", packetId);
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllDocumentsForPacket", packetId, userId);
         }
 
         public override IDataReader GetPacketDoc(int packetDocId)
@@ -365,6 +365,11 @@ namespace Gafware.Modules.DMS.Data
         public override IDataReader GetPacketByName(string name, int portalId, int tabModuleId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetPacketByName", name, portalId, tabModuleId);
+        }
+
+        public override IDataReader FindPacket(string name, int portalId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "FindPacket", name, portalId);
         }
 
         public override IDataReader Search(int categoryId, string keywords, bool bPrivate, int portalId, int tabModuleId, int userId)
@@ -492,9 +497,9 @@ namespace Gafware.Modules.DMS.Data
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveFileType", objFileType.FileTypeId, objFileType.FileTypeName, objFileType.FileTypeShortName, objFileType.FileTypeExt, objFileType.PortalId, objFileType.TabModuleId));
         }
 
-        public override IDataReader GetAllPublicDocuments(int portalId, int tabModuleId)
+        public override IDataReader GetAllPublicDocuments(int portalId, int tabModuleId, int userId)
         {
-            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllPublicDocuments", portalId, tabModuleId);
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllPublicDocuments", portalId, tabModuleId, userId);
         }
 
         public override IDataReader GetAllDocumentsForTag(int tagId, bool portalWideRepository)

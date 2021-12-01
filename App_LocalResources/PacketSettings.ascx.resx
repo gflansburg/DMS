@@ -150,4 +150,10 @@
   <data name="lblTheme.Text" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="lblCancelSettings.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="lblUpdateSettings.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

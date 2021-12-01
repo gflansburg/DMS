@@ -92,8 +92,8 @@ namespace Gafware.Modules.DMS
                     pnlDetails2.Visible = (value == DMS.ViewMode.Details || DocumentID > 0);
                     pnlOwnerDetails.Visible = (value == DMS.ViewMode.Details || (value == DMS.ViewMode.Edit && !(user.IsSuperUser || user.IsInRole("Administrator"))));
                     pnlOwnerEdit.Visible = (value == DMS.ViewMode.Edit && (user.IsSuperUser || user.IsInRole("Administrator")));
-                    //pnlManagerToolkitDetails.Visible = (value == DMS.ViewMode.Details);
-                    //pnlManagerToolkitEdit.Visible = (value == DMS.ViewMode.Edit);
+                    pnlIsPublicDetails.Visible = (value == DMS.ViewMode.Details);
+                    pnlIsPublicEdit.Visible = (value == DMS.ViewMode.Edit);
                     pnlActivationDateDetails.Visible = (value == DMS.ViewMode.Details);
                     pnlActivationDateEdit.Visible = (value == DMS.ViewMode.Edit);
                     pnlExpirationDateDetails.Visible = (value == DMS.ViewMode.Details);
@@ -740,7 +740,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    ignore_onbeforeunload = true;");
                 sb.AppendLine("  });");
                 sb.AppendLine("  $('#" + tbKeywords.ClientID + "').autoComplete({");
-                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + ", cid: " + (ddCategory.Items.Count == 1 ? ddCategory.SelectedValue : "$('#" + ddCategory.ClientID + "').val()") + ", p: true, uid: " + UserId.ToString() + " }, function(data) { response(data); }); },");
+                sb.AppendLine("    source: function(term, response) { $.getJSON('" + ControlPath + "SearchTerms.ashx', { q: term, pid: " + PortalId.ToString() + ", mid: " + TabModuleId.ToString() + ", cid: " + (ddCategory.Items.Count == 1 ? ddCategory.SelectedValue : "$('#" + ddCategory.ClientID + "').val()") + ", p: true, uid: " + UserId.ToString() + ", a: true, u: " + ddOwner.SelectedValue + " }, function(data) { response(data); }); },");
                 sb.AppendLine("    cache: false,");
                 sb.AppendLine("    minChars: 1,");
                 sb.AppendLine("    onSelect: function(event, term, item) {");
@@ -1196,24 +1196,24 @@ namespace Gafware.Modules.DMS
                 lblDocumentName.Text = !String.IsNullOrEmpty(doc.DocumentName) ? doc.DocumentName : (DocumentID == 0 && ViewMode == ViewMode.Edit ? "New Document" : "&nbsp;");
                 lblExpirationDate.Text = doc.ExpirationDate.HasValue ? doc.ExpirationDate.Value.ToString("MM/dd/yyyy") : "&nbsp;";
                 //lblIPAddress.Text = !String.IsNullOrEmpty(doc.IPAddress) ? doc.IPAddress : "&nbsp;";
-                lblIsSearchable.Text = doc.IsSearchable;
+                lblIsSearchable.Text = doc.IsSearchable ? "Yes" : "No";
                 lblUseCategorySecurityRoles.Text = doc.UseCategorySecurityRoles ? "Yes" : "No";
                 lblSecurityRole.Text = (doc.SecurityRole != null ? doc.SecurityRole.RoleName : "Unknown");
-                //lblManagerToolkit.Text = doc.ManagerToolkit;
+                lblIsPublic.Text = doc.IsPublic ? "Yes" : "No";
                 lblOwner.Text = doc.CreatedByUser != null && !String.IsNullOrEmpty(doc.CreatedByUser.LastName) ? doc.CreatedByUser.FirstName + " " + doc.CreatedByUser.LastName : "&nbsp;";
                 ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(doc.CreatedByUserID.ToString()));
                 dtActivation.SelectedDate = doc.ActivationDate;
                 dtExpiration.SelectedDate = doc.ExpirationDate;
                 if (doc.DocumentId > 0)
                 {
-                    //cbManagerToolkit.Checked = doc.ManagerToolkit.Equals("Yes");
-                    cbIsSearchable.Checked = doc.IsSearchable.Equals("Yes");
+                    cbIsPublic.Checked = doc.IsPublic;
+                    cbIsSearchable.Checked = doc.IsSearchable;
                     cbUseCategorySecurityRoles.Checked = doc.UseCategorySecurityRoles;
                     ddlSecurityRole.SelectedIndex = ddlSecurityRole.Items.IndexOf(ddlSecurityRole.Items.FindByValue(doc.SecurityRoleId.ToString()));
                 }
                 else
                 {
-                    //cbManagerToolkit.Checked = false;
+                    cbIsPublic.Checked = true;
                     cbIsSearchable.Checked = true;
                     cbUseCategorySecurityRoles.Checked = true;
                     ddlSecurityRole.SelectedIndex = ddlSecurityRole.Items.IndexOf(ddlSecurityRole.Items.FindByValue("-1"));
@@ -1292,10 +1292,10 @@ namespace Gafware.Modules.DMS
                 doc.CreatedByUserID = Convert.ToInt32(ddOwner2.SelectedValue);
                 doc.DocumentDetails = tbDocumentDetails.Text;
                 doc.ExpirationDate = dtExpiration.SelectedDate;
-                doc.IsSearchable = (cbIsSearchable.Checked ? "Yes" : "No");
+                doc.IsSearchable = cbIsSearchable.Checked;
                 doc.UseCategorySecurityRoles = cbUseCategorySecurityRoles.Checked;
                 doc.SecurityRoleId = Convert.ToInt32(ddlSecurityRole.SelectedValue);
-                //doc.ManagerToolkit = (cbManagerToolkit.Checked ? "Yes" : "No");
+                doc.IsPublic = cbIsPublic.Checked;
                 doc.DocumentName = tbDocumentName.Text;
                 doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
                 Components.DocumentController.SaveDocument(doc);
@@ -1460,7 +1460,6 @@ namespace Gafware.Modules.DMS
                 {
                     tag = new Components.Tag();
                     tag.TagName = tagName;
-                    tag.IsPrivate = "No";
                     tag.PortalId = PortalId;
                     tag.TabModuleId = TabModuleId;
                     Components.DocumentController.SaveTag(tag);

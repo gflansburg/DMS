@@ -39,6 +39,30 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        public bool ShowAdmin
+        {
+            get
+            {
+                return (ViewState["ShowAdmin"] != null ? (bool)ViewState["ShowAdmin"] : false);
+            }
+            set
+            {
+                ViewState["ShowAdmin"] = value;
+            }
+        }
+
+        public bool IsAdmin
+        {
+            get
+            {
+                return (ViewState["IsAdmin"] != null ? (bool)ViewState["IsAdmin"] : false);
+            }
+            set
+            {
+                ViewState["IsAdmin"] = value;
+            }
+        }
+
         public string Title
         {
             get
@@ -238,18 +262,6 @@ namespace Gafware.Modules.DMS
             }
         }
 
-        public bool Managers
-        {
-            get
-            {
-                return (ViewState["Managers"] != null ? (bool)ViewState["Managers"] : false);
-            }
-            set
-            {
-                ViewState["Managers"] = value;
-            }
-        }
-
         public List<PacketDocument> SelectedDocuments
         {
             get
@@ -341,6 +353,7 @@ namespace Gafware.Modules.DMS
         {
             if (!IsPostBack)
             {
+                pnlAdmin.Visible = ShowAdmin && IsAdmin;
                 rptDocuments.PageSize = (PageSize == 0 ? 10 : PageSize);
                 if(PageSize == 0)
                 {
@@ -430,29 +443,17 @@ namespace Gafware.Modules.DMS
                         lblDescription.Text = packet.Description;
                         ShowDescription = packet.ShowDescription;
                         Header = packet.CustomHeader;
-                        SelectedDocuments = new List<PacketDocument>();
-                        foreach (PacketDocument doc in packet.Documents)
-                        {
-                            if (Generic.UserHasAccess(doc.Document))
-                            {
-                                SelectedDocuments.Add(doc);
-                            }
-                        }
+                        SelectedDocuments = PacketController.GetAllDocumentsForPacket(packet.PacketId, UserId);
                         foreach (PacketTag tag in packet.Tags)
                         {
-                            //tag.Tag = DocumentController.GetTag(tag.TagId);
-                            //List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
                             List<Document> docs = DocumentController.GetDocumentsForTag(tag.TagId, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
                             foreach (Document doc in docs)
                             {
-                                //if (Generic.UserHasAccess(doc))
-                                //{
-                                    if (SelectedDocuments.Find(p => p.Document.DocumentId == doc.DocumentId) == null)
-                                    {
-                                        PacketDocument packetDoc = new PacketDocument(doc, packet.PacketId);
-                                        SelectedDocuments.Add(packetDoc);
-                                    }
-                                //}
+                                if (SelectedDocuments.Find(p => p.Document.DocumentId == doc.DocumentId) == null)
+                                {
+                                    PacketDocument packetDoc = new PacketDocument(doc, packet.PacketId);
+                                    SelectedDocuments.Add(packetDoc);
+                                }
                             }
                         }
                         BindData();
@@ -844,7 +845,7 @@ namespace Gafware.Modules.DMS
             get
             {
                 int count = 0;
-                List<PacketDocument> docs = SelectedDocuments.FindAll(p => (Managers ? p.Document.ManagerToolkit == "Yes" : true) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))));
+                List<PacketDocument> docs = SelectedDocuments.FindAll(p => ((p.Document.IsPublic && p.Document.IsSearchable) || p.Document.CreatedByUserID == UserId) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))));
                 foreach (PacketDocument doc in docs)
                 {
                     count += doc.Document.Files.FindAll(p => p.StatusId == 1 && (doc.FileId == 0 || p.FileId == doc.FileId)).Count;
@@ -888,6 +889,15 @@ namespace Gafware.Modules.DMS
         protected string GetFooter()
         {
             return (PageSize == 0 ? string.Format("{0} Results", GetFileCount) : string.Format("Showing {0} to {1} of {2} ", (rptDocuments.PageIndex * rptDocuments.PageSize) + 1, Math.Min((rptDocuments.PageIndex + 1) * rptDocuments.PageSize, GetFileCount), GetFileCount));
+        }
+
+        protected void btnAdmin_Click(object sender, ImageClickEventArgs e)
+        {
+            if (ShowAdmin && IsAdmin)
+            {
+                string[] strArrays = new string[] { string.Concat("mid=", ModuleId.ToString()) };
+                Response.Redirect(_navigationManager.NavigateURL("EditSettings", strArrays));
+            }
         }
     }
 }

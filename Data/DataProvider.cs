@@ -106,7 +106,7 @@ namespace Gafware.Modules.DMS.Data
 
         public abstract IDataReader GetAllDocumentsForDropDown(int portalId, int tabModuleId);
 
-        public abstract IDataReader GetAllPublicDocuments(int portalId, int tabModuleId);
+        public abstract IDataReader GetAllPublicDocuments(int portalId, int tabModuleId, int userId);
 
         public abstract IDataReader GetAllDocumentsForTag(int tagId, bool portalWideRepository);
         
@@ -145,12 +145,14 @@ namespace Gafware.Modules.DMS.Data
         public abstract IDataReader GetPacket(int packetId);
 
         public abstract IDataReader GetPacketByName(string name, int portalId, int tabModuleId);
+        
+        public abstract IDataReader FindPacket(string name, int portalId);
 
         public abstract void DeletePacket(int packetId);
 
         public abstract int SavePacket(Packet objPacket);
 
-        public abstract IDataReader GetAllDocumentsForPacket(int packetId);
+        public abstract IDataReader GetAllDocumentsForPacket(int packetId, int userId);
 
         public abstract IDataReader GetPacketDoc(int packetDocId);
 

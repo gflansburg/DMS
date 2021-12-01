@@ -114,6 +114,24 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Label lblHeader;
 
         /// <summary>
+        /// pnlAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlAdmin;
+
+        /// <summary>
+        /// btnAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnAdmin;
+
+        /// <summary>
         /// pnlDescription control.
         /// </summary>
         /// <remarks>
