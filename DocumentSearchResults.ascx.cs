@@ -410,36 +410,45 @@ namespace Gafware.Modules.DMS
             {
                 try
                 {
-                    Packet packet = PacketController.GetPacketByName(aryQueryString["p"], PortalId, PortalWideRepository ? 0 : TabModuleId);
-                    pnlDescription.Visible = !String.IsNullOrEmpty(packet.Description) && packet.ShowPacketDescription;
-                    lblDescription.Text = packet.Description;
-                    ShowDescription = packet.ShowDescription;
-                    Header = packet.CustomHeader;
-                    SelectedDocuments = new List<PacketDocument>();
-                    foreach (PacketDocument doc in packet.Documents)
+                    Packet packet = PacketController.GetPacketByName(aryQueryString["p"], PortalId, 0);
+                    if (packet != null)
                     {
-                        if (Generic.UserHasAccess(doc.Document))
+                        TabModuleId = packet.TabModuleId;
+                        pnlDescription.Visible = !String.IsNullOrEmpty(packet.Description) && packet.ShowPacketDescription;
+                        lblDescription.Text = packet.Description;
+                        ShowDescription = packet.ShowDescription;
+                        Header = packet.CustomHeader;
+                        SelectedDocuments = new List<PacketDocument>();
+                        foreach (PacketDocument doc in packet.Documents)
                         {
-                            SelectedDocuments.Add(doc);
-                        }
-                    }
-                    foreach (PacketTag tag in packet.Tags)
-                    {
-                        //tag.Tag = DocumentController.GetTag(tag.TagId);
-                        List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
-                        foreach (Document doc in docs)
-                        {
-                            if (Generic.UserHasAccess(doc))
+                            if (Generic.UserHasAccess(doc.Document))
                             {
-                                if (SelectedDocuments.Find(p => p.Document.DocumentId == doc.DocumentId) == null)
+                                SelectedDocuments.Add(doc);
+                            }
+                        }
+                        foreach (PacketTag tag in packet.Tags)
+                        {
+                            //tag.Tag = DocumentController.GetTag(tag.TagId);
+                            List<Document> docs = DocumentController.Search(0, tag.Tag.TagName, true, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
+                            foreach (Document doc in docs)
+                            {
+                                if (Generic.UserHasAccess(doc))
                                 {
-                                    PacketDocument packetDoc = new PacketDocument(doc, packet.PacketId);
-                                    SelectedDocuments.Add(packetDoc);
+                                    if (SelectedDocuments.Find(p => p.Document.DocumentId == doc.DocumentId) == null)
+                                    {
+                                        PacketDocument packetDoc = new PacketDocument(doc, packet.PacketId);
+                                        SelectedDocuments.Add(packetDoc);
+                                    }
                                 }
                             }
                         }
+                        BindData();
                     }
-                    BindData();
+                    else
+                    {
+                        pnlSearchNotFound.Visible = true;
+                        Title = "Document Packet Not Found";
+                    }
                 }
                 catch
                 {
