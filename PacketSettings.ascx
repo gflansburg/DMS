@@ -13,6 +13,19 @@
         <asp:LinkButton ID="btnReload" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReload_Click" />
     </div>
     <div class="dnnFormItem">
+        <dnn:Label ID="lblTheme" runat="server" ControlName="ddlTheme" Suffix=":" /> 
+        <asp:DropDownList ID="ddlTheme" runat="server">
+            <asp:listitem text="Red" value="990000"></asp:listitem>
+            <asp:listitem text="Green" value="008000"></asp:listitem>
+            <asp:listitem text="Blue" value="2170CD"></asp:listitem>
+            <asp:listitem text="Yellow" value="C8C800"></asp:listitem>
+            <asp:listitem text="Cyan" value="00FFFF"></asp:listitem>
+            <asp:listitem text="Magenta" value="FF00FF"></asp:listitem>
+            <asp:listitem text="Orange" value="FF8000"></asp:listitem>
+            <asp:listitem text="Gray" value="808080"></asp:listitem>
+        </asp:DropDownList>
+    </div>
+    <div class="dnnFormItem">
         <dnn:Label ID="lblThumbnailType" runat="server" ControlName="ddlThumbnailType" Suffix=":" /> 
         <asp:DropDownList ID="ddlThumbnailType" runat="server">
             <asp:listitem text="Classic" value="classic"></asp:listitem>

@@ -60,6 +60,24 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.LinkButton btnReload;
 
         /// <summary>
+        /// lblTheme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblTheme;
+
+        /// <summary>
+        /// ddlTheme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTheme;
+
+        /// <summary>
         /// lblThumbnailType control.
         /// </summary>
         /// <remarks>

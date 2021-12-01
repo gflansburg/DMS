@@ -147,4 +147,7 @@
   <data name="lblRepository.Text" xml:space="preserve">
     <value>Repository</value>
   </data>
+  <data name="lblTheme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
 </root>

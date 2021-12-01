@@ -328,11 +328,10 @@ namespace Gafware.Modules.DMS
         {
             if (!IsPostBack)
             {
-                rptDocuments.PageSize = PageSize;
+                rptDocuments.PageSize = (PageSize == 0 ? 10 : PageSize);
                 if(PageSize == 0)
                 {
                     rptDocuments.AllowPaging = false;
-                    rptDocuments.ShowFooter = false;
                 }
                 lnkFileLocation.ForeColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                 SearchResultHeader.Style["background"] = SearchResultHeader2.Style["background"] = String.Format("url({0}Images/category-header-{1}.png) no-repeat;", ControlPath, Theme);
@@ -863,7 +862,7 @@ namespace Gafware.Modules.DMS
 
         protected string GetFooter()
         {
-            return string.Format("Showing {0} to {1} of {2} ", (rptDocuments.PageIndex * rptDocuments.PageSize) + 1, Math.Min((rptDocuments.PageIndex + 1) * rptDocuments.PageSize, GetFileCount), GetFileCount);
+            return (PageSize == 0 ? string.Format("{0} Results", GetFileCount) : string.Format("Showing {0} to {1} of {2} ", (rptDocuments.PageIndex * rptDocuments.PageSize) + 1, Math.Min((rptDocuments.PageIndex + 1) * rptDocuments.PageSize, GetFileCount), GetFileCount));
         }
     }
 }

@@ -76,7 +76,10 @@ namespace Gafware.Modules.DMS
                 {
                     documentSearchResults.ThumbnailType = Settings["ThumbnailType"].ToString();
                 }
-
+                if (Settings.Contains("Theme"))
+                {
+                    documentSearchResults.Theme = Settings["Theme"].ToString();
+                }
             }
             catch (Exception exc) //Module failed to load
             {

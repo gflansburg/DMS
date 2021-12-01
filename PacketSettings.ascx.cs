@@ -74,6 +74,10 @@ namespace Gafware.Modules.DMS
                         ddlRepository.SelectedIndex = ddlRepository.Items.IndexOf(ddlRepository.Items.FindByValue(Settings["RepositoryID"].ToString()));
                     else
                         ddlRepository.SelectedIndex = 0;
+                    if (Settings.Contains("Theme"))
+                        ddlTheme.SelectedIndex = ddlTheme.Items.IndexOf(ddlTheme.Items.FindByValue(Settings["Theme"].ToString()));
+                    else
+                        ddlTheme.SelectedIndex = ddlTheme.Items.IndexOf(ddlTheme.Items.FindByValue(Theme));
 
                     ddlPacket.DataSource = PacketController.GetAllPackets(PortalId, PortalWideRepository ? 0 : Convert.ToInt32(ddlRepository.SelectedValue));
                     ddlPacket.DataBind();
@@ -104,6 +108,7 @@ namespace Gafware.Modules.DMS
                 modules.UpdateTabModuleSetting(TabModuleId, "ThumbnailType", ddlThumbnailType.SelectedValue);
                 modules.UpdateTabModuleSetting(TabModuleId, "ThumbnailSize", ddlThumbnailSize.SelectedValue);
                 modules.UpdateTabModuleSetting(TabModuleId, "PageSize", ddlPageSize.SelectedValue);
+                modules.UpdateTabModuleSetting(TabModuleId, "Theme", ddlTheme.SelectedValue);
             }
             catch (Exception exc) //Module failed to load
             {
