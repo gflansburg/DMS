@@ -542,9 +542,14 @@ namespace Gafware.Modules.DMS.Data
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetRepository", portalId, tabModuleId);
         }
 
+        public override IDataReader GetAllRepositories(int portalId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetAllRepositories", portalId);
+        }
+
         public override int SaveRepository(Components.Repository objRepository)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveRepository", objRepository.RepositoryId, objRepository.PortalId, objRepository.TabModuleId, objRepository.UserRoleId, objRepository.FileNotificationsRoleId, objRepository.NewFileSubject, objRepository.NewFileMsg, objRepository.CategoryName, objRepository.SaveLocalFile, objRepository.ShowTips, objRepository.ShowInstructions, objRepository.Instructions, objRepository.Theme, objRepository.ThumbnailType, objRepository.ThumbnailSize, objRepository.PageSize));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveRepository", objRepository.RepositoryId, objRepository.PortalId, objRepository.TabModuleId, objRepository.UserRoleId, objRepository.FileNotificationsRoleId, objRepository.NewFileSubject, objRepository.NewFileMsg, objRepository.CategoryName, objRepository.SaveLocalFile, objRepository.ShowTips, objRepository.ShowInstructions, objRepository.Instructions, objRepository.Theme, objRepository.ThumbnailType, objRepository.ThumbnailSize, objRepository.PageSize, objRepository.Name));
         }
 
         public override IDataReader GetPortalSettings(int portalId)

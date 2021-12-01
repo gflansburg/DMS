@@ -46,6 +46,7 @@ BEGIN
 		[RepositoryID] [int] IDENTITY(1,1) NOT NULL,
 		[PortalID] [int] NOT NULL,
 		[TabModuleID] [int] NOT NULL,
+		[Name] [nvarchar](255) NOT NULL,
 		[UserRoleID] [int] NOT NULL,
 		[FileNotificationsRoleID] [int] NOT NULL,
 		[NewFileSubject] [nvarchar](255) NOT NULL,
@@ -2862,7 +2863,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]
 	@Theme nvarchar(50),
 	@ThumbnailType nvarchar(50),
 	@ThumbnailSize int,
-	@PageSize int
+	@PageSize int,
+	@Name nvarchar(255)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -2872,8 +2874,8 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@RepositoryID IS NULL OR @RepositoryID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize, PageSize)
-		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize, @PageSize)
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize, PageSize, [Name])
+		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize, @PageSize, @Name)
 		SET @RepositoryID = @@IDENTITY
 	END
 	ELSE
@@ -2891,7 +2893,8 @@ BEGIN
 			Theme = @Theme,
 			ThumbnailType = @ThumbnailType,
 			ThumbnailSize = @ThumbnailSize,
-			PageSize = @PageSize
+			PageSize = @PageSize,
+			[Name] = @Name
 		WHERE RepositoryID = @RepositoryID
 	END
 	SELECT @RepositoryID AS RepositoryID
@@ -2967,6 +2970,26 @@ BEGIN
     ) fv
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON d.DocumentID = f.DocumentID
 	WHERE f.[FileName] LIKE @FileName + '%' AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then d.TabModuleID else @TabModuleID end
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_GetAllRepositories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllRepositories]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_GetAllRepositories]
+	-- Add the parameters for the stored procedure here
+	@PortalID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID ORDER BY TabModuleID
 END
 GO
 

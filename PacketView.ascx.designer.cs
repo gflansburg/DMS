@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gafware.Modules.DMS {
-    
-    
-    public partial class PacketView {
-        
+namespace Gafware.Modules.DMS
+{
+
+
+    public partial class PacketView
+    {
+
         /// <summary>
         /// documentSearchResults control.
         /// </summary>

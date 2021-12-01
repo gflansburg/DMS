@@ -318,6 +318,11 @@ namespace Gafware.Modules.DMS.Components
             return CBO.FillObject<Repository>(DataProvider.Instance().GetRepository(portalId, tabModuleId));
         }
 
+        public static List<Repository> GetAllRepositories(int portalId)
+        {
+            return CBO.FillCollection<Repository>(DataProvider.Instance().GetAllRepositories(portalId));
+        }
+
         public static int SaveRepository(Repository objRepository)
         {
             DataProvider.Instance().SaveRepository(objRepository);

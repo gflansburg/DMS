@@ -20,6 +20,10 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public int RepositoryId { get; set; }
         /// <summary>
+        /// Name of repository
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
         /// Id of user role
         /// </summary>
         public int UserRoleId { get; set; }
@@ -94,6 +98,7 @@ namespace Gafware.Modules.DMS.Components
             //base.Fill(dr);
 
             RepositoryId = Null.SetNullInteger(dr["RepositoryId"]);
+            Name = Null.SetNullString(dr["Name"]);
             UserRoleId = Null.SetNullInteger(dr["UserRoleID"]);
             FileNotificationsRoleId = Null.SetNullInteger(dr["FileNotificationsRoleID"]);
             NewFileSubject = Null.SetNullString(dr["NewFileSubject"]);

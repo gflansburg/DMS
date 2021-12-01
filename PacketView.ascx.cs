@@ -64,6 +64,19 @@ namespace Gafware.Modules.DMS
                 {
                     documentSearchResults.QueryString = String.Format("p={0}", PacketId);
                 }
+                if (Settings.Contains("PageSize"))
+                {
+                    documentSearchResults.PageSize = Convert.ToInt32(Settings["PageSize"].ToString());
+                }
+                if (Settings.Contains("ThumbnailSize"))
+                {
+                    documentSearchResults.ThumbnailSize = Convert.ToInt32(Settings["ThumbnailSize"].ToString());
+                }
+                if (Settings.Contains("ThumbnailType"))
+                {
+                    documentSearchResults.ThumbnailType = Settings["ThumbnailType"].ToString();
+                }
+
             }
             catch (Exception exc) //Module failed to load
             {

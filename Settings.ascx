@@ -13,6 +13,14 @@
         </div>
     </div>
 
+    <asp:Panel ID="pnlName" runat="server">
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblName" runat="server" ControlName="tbName" Suffix=":" /> 
+            <asp:TextBox ID="tbName" runat="server" MaxLength="255"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Repository Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red"></asp:RequiredFieldValidator>
+        </div>
+    </asp:Panel>
+
     <div class="dnnFormItem">
         <dnn:Label ID="lblRole" runat="server" ControlName="ddlRole" Suffix=":" /> 
         <asp:DropDownList ID="ddlRole" DataValueField="RoleId" DataTextField="RoleName" runat="server"></asp:DropDownList>

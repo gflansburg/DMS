@@ -55,11 +55,31 @@ namespace Gafware.Modules.DMS
                     //Check for existing settings and use those on this page
                     //Settings["SettingName"]
 
-                    ddlPacket.DataSource = PacketController.GetAllPackets(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    ddlRepository.DataSource = DocumentController.GetAllRepositories(PortalId);
+                    ddlRepository.DataBind();
+
+                    if (Settings.Contains("PageSize"))
+                        ddlPageSize.SelectedIndex = ddlPageSize.Items.IndexOf(ddlPageSize.Items.FindByValue(Settings["PageSize"].ToString()));
+                    else
+                        ddlPageSize.SelectedIndex = ddlPageSize.Items.IndexOf(ddlPageSize.Items.FindByValue(PageSize.ToString()));
+                    if (Settings.Contains("ThumbnailSize"))
+                        ddlThumbnailSize.SelectedIndex = ddlThumbnailSize.Items.IndexOf(ddlThumbnailSize.Items.FindByValue(Settings["ThumbnailSize"].ToString()));
+                    else
+                        ddlThumbnailSize.SelectedIndex = ddlThumbnailSize.Items.IndexOf(ddlThumbnailSize.Items.FindByValue(ThumbnailSize.ToString()));
+                    if (Settings.Contains("ThumbnailType"))
+                        ddlThumbnailType.SelectedIndex = ddlThumbnailType.Items.IndexOf(ddlThumbnailType.Items.FindByValue(Settings["ThumbnailType"].ToString()));
+                    else
+                        ddlThumbnailType.SelectedIndex = ddlThumbnailType.Items.IndexOf(ddlThumbnailType.Items.FindByValue(ThumbnailType));
+                    if (Settings.Contains("RepositoryID"))
+                        ddlRepository.SelectedIndex = ddlRepository.Items.IndexOf(ddlRepository.Items.FindByValue(Settings["RepositoryID"].ToString()));
+                    else
+                        ddlRepository.SelectedIndex = 0;
+
+                    ddlPacket.DataSource = PacketController.GetAllPackets(PortalId, PortalWideRepository ? 0 : Convert.ToInt32(ddlRepository.SelectedValue));
                     ddlPacket.DataBind();
 
-                    if (Settings.Contains("PacketId"))
-                        ddlPacket.SelectedIndex = ddlPacket.Items.IndexOf(ddlPacket.Items.FindByValue(Settings["PacketId"].ToString()));
+                    if (Settings.Contains("PacketID"))
+                        ddlPacket.SelectedIndex = ddlPacket.Items.IndexOf(ddlPacket.Items.FindByValue(Settings["PacketID"].ToString()));
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -80,7 +100,10 @@ namespace Gafware.Modules.DMS
                 var modules = new ModuleController();
 
                 //module settings
-                modules.UpdateTabModuleSetting(TabModuleId, "PacketId", ddlPacket.SelectedValue);
+                modules.UpdateTabModuleSetting(TabModuleId, "PacketID", ddlPacket.SelectedValue);
+                modules.UpdateTabModuleSetting(TabModuleId, "ThumbnailType", ddlThumbnailType.SelectedValue);
+                modules.UpdateTabModuleSetting(TabModuleId, "ThumbnailSize", ddlThumbnailSize.SelectedValue);
+                modules.UpdateTabModuleSetting(TabModuleId, "PageSize", ddlPageSize.SelectedValue);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -94,12 +117,17 @@ namespace Gafware.Modules.DMS
         {
             int oldIndex = ddlPacket.SelectedIndex;
             ddlPacket.SelectedIndex = -1;
-            ddlPacket.DataSource = PacketController.GetAllPackets(PortalId, PortalWideRepository ? 0 : TabModuleId);
+            ddlPacket.DataSource = PacketController.GetAllPackets(PortalId, PortalWideRepository ? 0 : Convert.ToInt32(ddlRepository.SelectedValue));
             ddlPacket.DataBind();
             if(oldIndex < ddlPacket.Items.Count)
             {
                 ddlPacket.SelectedIndex = oldIndex;
             }
+        }
+
+        protected void ddlRepository_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnReload_Click(sender, e);
         }
     }
 }

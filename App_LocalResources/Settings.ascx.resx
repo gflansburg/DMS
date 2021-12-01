@@ -225,4 +225,7 @@
   <data name="lblPageSize.Text" xml:space="preserve">
     <value>Page Size</value>
   </data>
+  <data name="lblName.Text" xml:space="preserve">
+    <value>Repository Name</value>
+  </data>
 </root>

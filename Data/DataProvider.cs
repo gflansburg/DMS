@@ -222,6 +222,8 @@ namespace Gafware.Modules.DMS.Data
 
         public abstract IDataReader GetRepository(int portalId, int tabModuleId);
 
+        public abstract IDataReader GetAllRepositories(int portalId);
+
         public abstract int SaveRepository(Repository objRepository);
 
         public abstract IDataReader GetPortalSettings(int portalId);

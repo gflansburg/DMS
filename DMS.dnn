@@ -302,7 +302,7 @@
                   <moduleControl>
                     <controlKey/>
                     <controlSrc>DesktopModules/Gafware/DMS/PacketView.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle/>
                     <controlType>View</controlType>
                     <iconFile />
@@ -312,7 +312,7 @@
                   <moduleControl>
                     <controlKey>Settings</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/PacketSettings.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Document Packet Settings</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile />

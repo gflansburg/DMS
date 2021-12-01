@@ -62,6 +62,15 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        public string RepositoryName
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? (String.IsNullOrEmpty(portal.Name) ? String.Empty : portal.Name) : String.Empty);
+            }
+        }
+
         public bool SaveLocalFile
         {
             get

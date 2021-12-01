@@ -132,4 +132,19 @@
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Document Packet Settings</value>
   </data>
+  <data name="lblPageSize.Help" xml:space="preserve">
+    <value>Number of results per page to show.</value>
+  </data>
+  <data name="lblPageSize.Text" xml:space="preserve">
+    <value>Page Size</value>
+  </data>
+  <data name="lblThumbnailSize.Text" xml:space="preserve">
+    <value>Thumbnail Size</value>
+  </data>
+  <data name="lblThumbnailType.Text" xml:space="preserve">
+    <value>Thumbnail Theme</value>
+  </data>
+  <data name="lblRepository.Text" xml:space="preserve">
+    <value>Repository</value>
+  </data>
 </root>

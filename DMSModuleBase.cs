@@ -80,6 +80,15 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        public string RepositoryName
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? (String.IsNullOrEmpty(portal.Name) ? String.Empty : portal.Name) : String.Empty);
+            }
+        }
+
         public bool SaveLocalFile
         {
             get
@@ -158,11 +167,11 @@ namespace Gafware.Modules.DMS
             get
             {
                 _packetId = string.Empty;
-                if (Settings.Contains("PacketId"))
+                if (Settings.Contains("PacketID"))
                 {
-                    if (!string.IsNullOrWhiteSpace(Settings["PacketId"].ToString()))
+                    if (!string.IsNullOrWhiteSpace(Settings["PacketID"].ToString()))
                     {
-                        _packetId = Settings["PacketId"].ToString();
+                        _packetId = Settings["PacketID"].ToString();
                     }
                 }
                 return _packetId;

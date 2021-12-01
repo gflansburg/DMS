@@ -329,6 +329,11 @@ namespace Gafware.Modules.DMS
             if (!IsPostBack)
             {
                 rptDocuments.PageSize = PageSize;
+                if(PageSize == 0)
+                {
+                    rptDocuments.AllowPaging = false;
+                    rptDocuments.ShowFooter = false;
+                }
                 lnkFileLocation.ForeColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                 SearchResultHeader.Style["background"] = SearchResultHeader2.Style["background"] = String.Format("url({0}Images/category-header-{1}.png) no-repeat;", ControlPath, Theme);
                 Label1.Style["color"] = lblHeader.Style["color"] = "white !important";

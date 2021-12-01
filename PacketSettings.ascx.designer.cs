@@ -7,11 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gafware.Modules.DMS {
-    
-    
-    public partial class PacketSettings {
-        
+namespace Gafware.Modules.DMS
+{
+
+
+    public partial class PacketSettings
+    {
+
+        /// <summary>
+        /// lblRepository control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblRepository;
+
+        /// <summary>
+        /// ddlRepository control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRepository;
+
         /// <summary>
         /// lblPacket control.
         /// </summary>
@@ -20,7 +40,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblPacket;
-        
+
         /// <summary>
         /// ddlPacket control.
         /// </summary>
@@ -29,7 +49,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPacket;
-        
+
         /// <summary>
         /// btnReload control.
         /// </summary>
@@ -38,5 +58,59 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnReload;
+
+        /// <summary>
+        /// lblThumbnailType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblThumbnailType;
+
+        /// <summary>
+        /// ddlThumbnailType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlThumbnailType;
+
+        /// <summary>
+        /// lblThumbnailSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblThumbnailSize;
+
+        /// <summary>
+        /// ddlThumbnailSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlThumbnailSize;
+
+        /// <summary>
+        /// lblPageSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblPageSize;
+
+        /// <summary>
+        /// ddlPageSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPageSize;
     }
 }
