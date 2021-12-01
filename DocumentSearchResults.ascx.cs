@@ -14,6 +14,19 @@ namespace Gafware.Modules.DMS
     {
         private INavigationManager _navigationManager;
 
+        private List<Category> _poralCategories = null;
+        protected List<Category> PortalCategories
+        {
+            get
+            {
+                if (_poralCategories == null)
+                {
+                    _poralCategories = Components.DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                }
+                return _poralCategories;
+            }
+        }
+
         public INavigationManager NavigationManager
         {
             get
@@ -608,23 +621,26 @@ namespace Gafware.Modules.DMS
             {
                 PacketDocument doc = item as PacketDocument;
                 string strCategoryText = String.Empty;
-                List<DocumentCategory> categories = Components.DocumentController.GetAllCategoriesForDocument(doc.DocumentId);
-                foreach(DocumentCategory category in categories)
+                if (PortalCategories.Count > 1)
                 {
-                    DotNetNuke.Security.Roles.RoleInfo categoryRole = UserController.GetRoleById(PortalId, category.Category.RoleId);
-                    if (categoryRole != null)
+                    List<DocumentCategory> categories = Components.DocumentController.GetAllCategoriesForDocument(doc.DocumentId);
+                    foreach (DocumentCategory category in categories)
                     {
-                        if (DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo().IsInRole(categoryRole.RoleName))
+                        DotNetNuke.Security.Roles.RoleInfo categoryRole = UserController.GetRoleById(PortalId, category.Category.RoleId);
+                        if (categoryRole != null)
                         {
-                            strCategoryText += category.Category.CategoryName + ", ";
+                            if (DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo().IsInRole(categoryRole.RoleName))
+                            {
+                                strCategoryText += category.Category.CategoryName + ", ";
+                            }
                         }
                     }
-                }
-                if (!String.IsNullOrEmpty(strCategoryText))
-                {
-                    strCategoryText = strCategoryText.Substring(0, strCategoryText.Length - 2);
-                    strCategoryText = "<strong>" + CategoryName + ": </strong>" + strCategoryText + "<br />";
-                    return "<div style=\"padding: 4px 5px 0 0px;\">" + strCategoryText + "</div>";
+                    if (!String.IsNullOrEmpty(strCategoryText))
+                    {
+                        strCategoryText = strCategoryText.Substring(0, strCategoryText.Length - 2);
+                        strCategoryText = "<strong>" + CategoryName + ": </strong>" + strCategoryText + "<br />";
+                        return "<div style=\"padding: 4px 5px 0 0px;\">" + strCategoryText + "</div>";
+                    }
                 }
             }
             return String.Empty;
