@@ -30,7 +30,7 @@
         <label for="<%= tbCustomHeader.ClientID %>">
             <span class="FieldName">Custom Header:</span>
             <span class="FieldValue">
-                <asp:TextBox ID="tbCustomHeader" runat="server" Width="790px" ValidationGroup="LinkCreator"></asp:TextBox>
+                <asp:TextBox ID="tbCustomHeader" runat="server" Width="790px" autofocus ValidationGroup="LinkCreator"></asp:TextBox>
             </span>
         </label>
     </div>

@@ -34,7 +34,7 @@
         <label for="<%= tbFilePath.ClientID %>">
             <span class="FieldName"><span class="RequiredField">*</span> Folder:</span>
             <span class="FieldValue">
-                <asp:TextBox ID="tbFilePath" runat="server" Width="790px" ValidationGroup="BulkImport"></asp:TextBox>
+                <asp:TextBox ID="tbFilePath" runat="server" Width="790px" autofocus ValidationGroup="BulkImport"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbFilePath" Display="Dynamic" ErrorMessage="<br />File Path is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="BulkImport"></asp:RequiredFieldValidator>
                 <asp:CustomValidator ID="valFilePath" runat="server" ErrorMessage="<br />Invalid Folder" ControlToValidate="tbFilePath" Display="Dynamic" CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="BulkImport"></asp:CustomValidator>
             </span>
