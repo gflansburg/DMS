@@ -168,11 +168,11 @@ namespace Gafware.Modules.DMS
             System.Web.UI.HtmlControls.HtmlGenericControl script = new System.Web.UI.HtmlControls.HtmlGenericControl();
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.AppendLine("function canRemoveTag(sender, eventArgs) {");
-            sb.AppendLine("  if(confirm('Are you sure you want to delete this tag?')) {");
+            sb.AppendLine("  if(confirm('" + LocalizeString("DeleteTagConfirm") + "')) {");
             sb.AppendLine("    var autoCompleteBox = $find('" + tbTags.ClientID + "');");
             sb.AppendLine("    var count = autoCompleteBox.get_entries().get_count();");
             sb.AppendLine("    if(count < 2) {");
-            sb.AppendLine("      alert('Each document requires at least one tag. The last tag cannot be deleted.');");
+            sb.AppendLine("      alert('" + LocalizeString("OneTagError") + "');");
             sb.AppendLine("      eventArgs.set_cancel(true);");
             sb.AppendLine("    } else {");
             sb.AppendLine("      var hid = document.getElementById('" + hidTagToRemove.ClientID + "');");
@@ -217,7 +217,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("      break;");
             sb.AppendLine("  }");
             sb.AppendLine("  if (i >= validFiles.length) {");
-            sb.Append("    var msg = 'This not a valid file upload file with an extention of one of the following:<br/><br/>");
+            sb.Append("    var msg = '" + LocalizeString("InvalidFileType") + ":<br/><br/>");
             foreach (Components.FileType fileType in fileTypes)
             {
                 sb.Append(fileType.FileTypeName.Replace("'", "\\'") + " (" + fileType.FileTypeExt + ")<br/>");
@@ -388,7 +388,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("     appendTo: 'form',");
             sb.AppendLine("     dialogClass: 'dialog',");
             sb.AppendLine("     resizable: false,");
-            sb.AppendLine("     title: 'Add New File',");
+            sb.AppendLine("     title: '" + LocalizeString("AddNewFile") + "',");
             sb.AppendLine("     closeOnEsacpe: true,");
             sb.AppendLine("     Cancel: function () {");
             sb.AppendLine("       $(this).dialog('close');");
@@ -411,7 +411,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("     height: 200,");
             sb.AppendLine("     dialogClass: 'dialog',");
             sb.AppendLine("     resizable: false,");
-            sb.AppendLine("     title: 'Version',");
+            sb.AppendLine("     title: '" + LocalizeString("Version") + "',");
             sb.AppendLine("     closeOnEsacpe: true,");
             sb.AppendLine("     Cancel: function () {");
             sb.AppendLine("       $(this).dialog('close');");
@@ -454,13 +454,13 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("    success: function (result) {");
             sb.AppendLine("      if (result.Status === 1) {");
             sb.AppendLine("        var msg = $(\".statusMessage[data-uid='\" + fileId + \"']\");");
-            sb.AppendLine("        msg.text('Saved'); msg.show(); setTimeout(function () { msg.fadeOut(\"slow\", function () { msg.hide(); }); }, 2000);");
+            sb.AppendLine("        msg.text('" + LocalizeString("Saved") + "'); msg.show(); setTimeout(function () { msg.fadeOut(\"slow\", function () { msg.hide(); }); }, 2000);");
             sb.AppendLine("        $(\".document[data-uid='\" + fileId + \"']\").prop('href', result.DocumentUrl);");
             sb.AppendLine("        $.each(result.Inactive, function (i, item) {");
             sb.AppendLine("          $(\".toggleButton[data-uid='\" + item.FileId + \"'] label input[type='checkbox']\").prop(\"checked\", false);");
             sb.AppendLine("          $(\".document[data-uid='\" + item.FileId + \"']\").prop('href', item.DocumentUrl);");
             sb.AppendLine("          var msg2 = $(\".statusMessage[data-uid='\" + item.FileId + \"']\");");
-            sb.AppendLine("          msg2.text('Saved'); msg2.show(); setTimeout(function () { msg2.fadeOut(\"slow\", function () { msg2.hide(); }); }, 2000);");
+            sb.AppendLine("          msg2.text('" + LocalizeString("Saved") + "'); msg2.show(); setTimeout(function () { msg2.fadeOut(\"slow\", function () { msg2.hide(); }); }, 2000);");
             sb.AppendLine("        });");
             sb.AppendLine("      } else {");
             sb.AppendLine("        cb.checked = !cb.checked;");
@@ -951,7 +951,7 @@ namespace Gafware.Modules.DMS
             ddCategory.SelectedIndex = 0;
             ddOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddOwner.DataBind();
-            ddOwner.Items.Insert(0, new ListItem("-- Owner --", "0"));
+            ddOwner.Items.Insert(0, new ListItem(LocalizeString("Owner2"), "0"));
             if (IsAdmin())
             {
                 ddOwner.SelectedIndex = 0;
@@ -963,22 +963,22 @@ namespace Gafware.Modules.DMS
 
             ddCurrentOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddCurrentOwner.DataBind();
-            ddCurrentOwner.Items.Insert(0, new ListItem("-- Current Owner --", "0"));
+            ddCurrentOwner.Items.Insert(0, new ListItem(LocalizeString("CurrentOwner"), "0"));
             ddCurrentOwner.SelectedIndex = 0;
 
             ddNewOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddNewOwner.DataBind();
-            ddNewOwner.Items.Insert(0, new ListItem("-- New Owner --", "0"));
+            ddNewOwner.Items.Insert(0, new ListItem(LocalizeString("NewOwner"), "0"));
             ddNewOwner.SelectedIndex = 0;
 
             ddOwner2.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddOwner2.DataBind();
-            ddOwner2.Items.Insert(0, new ListItem("-- Select Owner --", "0"));
+            ddOwner2.Items.Insert(0, new ListItem(LocalizeString("SelectOwner"), "0"));
             ddOwner2.SelectedIndex = 0;
 
             ddTags.DataSource = Components.DocumentController.GetAllTags(PortalId, PortalWideRepository ? 0 : TabModuleId);
             ddTags.DataBind();
-            ddTags.Items.Insert(0, new ListItem("Select an existing tag", ""));
+            ddTags.Items.Insert(0, new ListItem(LocalizeString("SelectExistingTag"), ""));
             ddTags.SelectedIndex = 0;
         }
 
@@ -1134,12 +1134,12 @@ namespace Gafware.Modules.DMS
                 {
                     dataView.RowFilter = "DocumentName LIKE '" + letterFilter.Filter + "%'";
                 }
-                gv.EmptyDataText = "<br /><strong>No documents found for '" + letterFilter.Filter + "'.</strong>";
+                gv.EmptyDataText = LocalizeString("NoDocumentsFor") + " '" + letterFilter.Filter + "'.</strong>";
             }
             else
             {
                 dataView.RowFilter = String.Empty;
-                gv.EmptyDataText = "<br /><strong>No documents found.</strong>";
+                gv.EmptyDataText = LocalizeString("NoDocuments");
             }
             gv.DataSource = dataView;
             gv.DataBind();
@@ -1214,13 +1214,13 @@ namespace Gafware.Modules.DMS
                 lblDateLastModified.Text = doc.LastModifiedOnDate.ToString("MM/dd/yyyy");
                 lblDetails.Text = !String.IsNullOrEmpty(doc.DocumentDetails) ? doc.DocumentDetails : "&nbsp;";
                 lblDocumentID.Text = doc.DocumentId.ToString();
-                lblDocumentName.Text = !String.IsNullOrEmpty(doc.DocumentName) ? doc.DocumentName : (DocumentID == 0 && ViewMode == ViewMode.Edit ? "New Document" : "&nbsp;");
+                lblDocumentName.Text = !String.IsNullOrEmpty(doc.DocumentName) ? doc.DocumentName : (DocumentID == 0 && ViewMode == ViewMode.Edit ? LocalizeString("NewDocument") : "&nbsp;");
                 lblExpirationDate.Text = doc.ExpirationDate.HasValue ? doc.ExpirationDate.Value.ToString("MM/dd/yyyy") : "&nbsp;";
                 //lblIPAddress.Text = !String.IsNullOrEmpty(doc.IPAddress) ? doc.IPAddress : "&nbsp;";
-                lblIsSearchable.Text = doc.IsSearchable ? "Yes" : "No";
-                lblUseCategorySecurityRoles.Text = doc.UseCategorySecurityRoles ? "Yes" : "No";
-                lblSecurityRole.Text = (doc.SecurityRole != null ? doc.SecurityRole.RoleName : "Unknown");
-                lblIsPublic.Text = doc.IsPublic ? "Yes" : "No";
+                lblIsSearchable.Text = LocalizeString(doc.IsSearchable ? "Yes" : "No");
+                lblUseCategorySecurityRoles.Text = LocalizeString(doc.UseCategorySecurityRoles ? "Yes" : "No");
+                lblSecurityRole.Text = (doc.SecurityRole != null ? doc.SecurityRole.RoleName : LocalizeString("Unknown"));
+                lblIsPublic.Text = LocalizeString(doc.IsPublic ? "Yes" : "No");
                 lblOwner.Text = doc.CreatedByUser != null && !String.IsNullOrEmpty(doc.CreatedByUser.LastName) ? doc.CreatedByUser.FirstName + " " + doc.CreatedByUser.LastName : "&nbsp;";
                 ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(doc.CreatedByUserID.ToString()));
                 dtActivation.SelectedDate = doc.ActivationDate;
@@ -1487,7 +1487,7 @@ namespace Gafware.Modules.DMS
                     docTag.TagId = tag.TagId;
                     ddTags.DataSource = Components.DocumentController.GetAllTags(PortalId, PortalWideRepository ? 0 : TabModuleId);
                     ddTags.DataBind();
-                    ddTags.Items.Insert(0, new ListItem("Select an existing tag", ""));
+                    ddTags.Items.Insert(0, new ListItem(LocalizeString("SelectExistingTag"), ""));
                     ddTags.SelectedIndex = 0;
                 }
                 else

@@ -300,4 +300,49 @@
   <data name="WebPageURL.Text" xml:space="preserve">
     <value>Web Page URL</value>
   </data>
+  <data name="AddNewFile.Text" xml:space="preserve">
+    <value>Add New File</value>
+  </data>
+  <data name="CurrentOwner.Text" xml:space="preserve">
+    <value>-- Current Owner --</value>
+  </data>
+  <data name="DeleteTagConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this tag?</value>
+  </data>
+  <data name="InvalidFileType.Text" xml:space="preserve">
+    <value>This not a valid file upload file with an extention of one of the following</value>
+  </data>
+  <data name="NewDocument.Text" xml:space="preserve">
+    <value>New Document</value>
+  </data>
+  <data name="NewOwner.Text" xml:space="preserve">
+    <value>-- New Owner --</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NoDocumentsFor.Text" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No documents found for</value>
+  </data>
+  <data name="OneTagError.Text" xml:space="preserve">
+    <value>Each document requires at least one tag. The last tag cannot be deleted.</value>
+  </data>
+  <data name="Owner2.Text" xml:space="preserve">
+    <value>-- Owner --</value>
+  </data>
+  <data name="Saved.Text" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="SelectExistingTag.Text" xml:space="preserve">
+    <value>Select an Existing Tag</value>
+  </data>
+  <data name="SelectOwner.Text" xml:space="preserve">
+    <value>-- Select Owner --</value>
+  </data>
+  <data name="Unknown.Text" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

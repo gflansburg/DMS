@@ -16,6 +16,10 @@
     .nocontent {
         display: none;
     }
+    .dms .dnnFormItem .toggleButton {
+        top: 0;
+        left: -8px !important;
+    }
 </style>
 <div class="se-pre-con"></div>
 <div class="dms" style="padding: 10px;">
@@ -187,7 +191,7 @@
                         <asp:Panel ID="pnlCategoryEdit" runat="server" Visible="<%# ViewMode == Gafware.Modules.DMS.ViewMode.Edit %>">
                             <div class="dnnFormItem">
                                 <div class="dnnLabel"><label id="label3"><span id="lblCategory3" runat="server"><%# Eval("CategoryName") %>:</span></label></div>
-                                <div class="toggleButton" id="cbCategoryToggleButton" runat="server" style="width: 120px; display: inline-block; position: relative; top: -8px; left: -8px;">
+                                <div class="toggleButton" id="cbCategoryToggleButton" runat="server">
                                     <label><asp:CheckBox ID="cbCategory" Checked="true" AutoPostBack="false" runat="server" /><span></span></label>
                                 </div>
                             </div>
@@ -203,7 +207,7 @@
                 <asp:Panel ID="pnlSearchableEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblIsSearchable3" runat="server" ResourceKey="lblIsSearchable2" ControlName="cbIsSearchable" Suffix=":" /> 
-                        <div class="toggleButton" id="cbIsSearchableToggleButton" runat="server" style="width: 120px">
+                        <div class="toggleButton" id="cbIsSearchableToggleButton" runat="server">
                             <label for='<%= cbIsSearchable.ClientID %>'><asp:CheckBox ID="cbIsSearchable" AutoPostBack="false" runat="server" /><span></span></label>
                         </div>
                     </div>
@@ -304,7 +308,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField ItemStyle-CssClass="itemStatus" ItemStyle-VerticalAlign="Middle" ItemStyle-Width="120px" HeaderText="Status" ItemStyle-HorizontalAlign="Center">
                         <ItemTemplate>
-                            <div class="toggleButton" id="cbActiveToggleButton" runat="server" style="width: 120px" data-uid='<%# Eval("FileId") %>'>
+                            <div class="toggleButton" id="cbActiveToggleButton" runat="server" data-uid='<%# Eval("FileId") %>'>
                                 <label><asp:CheckBox ID="cbActive" Checked='<%# ((int)Eval("StatusId")) == 1 %>' AutoPostBack="false" runat="server" onclick='<%# "toggleStatus(this," + Eval("FileId").ToString() + ")" %>' /><span></span></label>
                             </div>
                             <asp:Panel ID="pnlSaveMessage" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; display: none;" data-uid='<%# Eval("FileId") %>'>Saved</asp:Panel>
@@ -394,7 +398,7 @@
                     <br style="clear: both;" />
                     <div style="float: left; text-align: left; margin: 5px 1px 0px 0px;">
                         <span><%= LocalizeString("ReplacePDFTitle") %> </span>
-                        <div class="toggleButton" id="cbReplacePDFTitleToggleButton" runat="server" style="width: 120px; display: inline-block">
+                        <div class="toggleButton" id="cbReplacePDFTitleToggleButton" runat="server">
                             <label for='<%= cbReplacePDFTitle.ClientID %>'><asp:CheckBox ID="cbReplacePDFTitle" AutoPostBack="false" runat="server" /><span></span></label>
                         </div>
                     </div>
