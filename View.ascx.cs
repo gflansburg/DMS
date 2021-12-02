@@ -298,6 +298,9 @@ namespace Gafware.Modules.DMS
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"twitter:url\" content=\"" + PortalSettings.ActiveTab.FullUrl + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"twitter:domain\" content=\"" + Request.Url.Host + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:type\" content=\"website\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.Description) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.Description) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.Description) + "\" />"));
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     pnlDefault.Visible = ShowTips;
                     lblCategoryName.Text = CategoryName.ToLower();
@@ -430,30 +433,6 @@ namespace Gafware.Modules.DMS
                         {
                             AddFilter(docs, strQuery);
                         }
-                        else
-                        {
-                            if (!documentSearchResults.Header.Equals("Document Search Results"))
-                            {
-                                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
-                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
-                            }
-                            else
-                            {
-                                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
-                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
-                            }
-                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
-                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
-                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
-                            if (docs[0].Files.Count > 0)
-                            {
-                                DMSFile file = docs[0].Files[0];
-                                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
-                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
-                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter: card\" content=\"summary_large_image\">\" />"));
-
-                            }
-                        }
                         SetSearchText();
                         documentSearchResults.IsLink = !bSearch;
                         pnlSearchResults.Visible = (docs.Count > 1);
@@ -462,7 +441,7 @@ namespace Gafware.Modules.DMS
                     {
                         Search(true);
                     }
-                    else if(String.IsNullOrEmpty(strQuery))
+                    else if(!_filterAdded)
                     {
                         Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.TabName) + "\" />"));
                         Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.TabName) + "\" />"));
@@ -554,6 +533,7 @@ namespace Gafware.Modules.DMS
 
         private void AddFilter(List<Document> docs, string searchTerms)
         {
+            _filterAdded = true;
             List<Document> filter = new List<Document>(docs);
             documentSearchResults.SelectedDocuments = new List<PacketDocument>();
             foreach (Document doc in filter)
@@ -582,17 +562,18 @@ namespace Gafware.Modules.DMS
                 }
                 else
                 {
-                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentName) + "\" />"));
-                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentName) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(searchTerms) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(searchTerms) + "\" />"));
                 }
-                Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
+                /*Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
                 Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
-                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
+                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));*/
                 if (filter[0].Files.Count > 0)
                 {
                     DMSFile file = filter[0].Files[0];
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:card\" content=\"summary_large_image\">\" />"));
                 }
             }
         }
