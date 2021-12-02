@@ -538,7 +538,7 @@
             <div style="margin-left: 10px; text-align: left; padding-right: 30px; display: inline-block; width: calc(100% - 200px)">
     	        <strong>Enter search term(s): </strong><br style="clear: none" />
                 <div style="width: 100%;">
-                    <asp:TextBox ID="tbKeywords" style="min-width: 200px; width: calc(100% - 120px)" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
+                    <asp:TextBox ID="tbKeywords" style="min-width: 300px; width: calc(100% - 120px)" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
 					<asp:LinkButton ID="btnSearch" Width="100px" runat="server" Text="Go!" OnClick="btnSearch_Click" CssClass="dnnPrimaryAction" />
                 </div>
                 <asp:Label ID="lblInstructions" runat="server" Text='To view all documents, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>

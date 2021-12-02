@@ -35,7 +35,7 @@
                     <div style="width: 100%;">
                         <span class="SearchText"><strong>Enter search term(s): </strong></span>
                         <br style="clear: none" />
-                        <asp:TextBox ID="tbKeywords" runat="server" style="min-width: 200px; width: calc(100% - 150px);" autofocus placeholder="Search Terms ..."></asp:TextBox>
+                        <asp:TextBox ID="tbKeywords" runat="server" style="min-width: 300px; width: calc(100% - 150px);" autofocus placeholder="Search Terms ..."></asp:TextBox>
                         <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" style="margin-left: 5px;" />
                     </div>
                     <asp:Panel ID="pnlInstructions" runat="server" style="text-align: center">
