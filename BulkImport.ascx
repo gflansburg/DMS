@@ -16,6 +16,10 @@
 	    background-color: #000;
         opacity: 0.6;
     }
+    .dms .dnnFormItem .toggleButton {
+        top: 0;
+        left: -8px !important;
+    }
 </style>
 <asp:Literal ID="litCSS" runat="server"></asp:Literal>
 <div class="se-pre-con"></div>
@@ -148,6 +152,7 @@
                 <label for='<%= cbIsSearchable.ClientID %>'><asp:CheckBox ID="cbIsSearchable" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
             </div>
         </div>
+        <br style="clear: both" />
     </fieldset>
     <hr />
     <div style="float:right;margin-bottom:10px;">

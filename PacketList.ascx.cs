@@ -457,6 +457,7 @@ namespace Gafware.Modules.DMS
                     btnAddTag.Text = LocalizeString(btnAddTag.ID);
                     btnAddDocument.Text = LocalizeString(btnAddDocument.ID);
                     btnReset.Text = LocalizeString(btnReset.ID);
+                    btnSaveChange.Text = LocalizeString(btnSaveChange.ID);
                     //changeOwnershipCommandButton.Value = LocalizeString(changeOwnershipCommandButton.ID);
                     gv.EmptyDataText = LocalizeString("NoDocumentsSelected");
                     gv.PageSize = PageSize;

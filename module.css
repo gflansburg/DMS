@@ -12,6 +12,19 @@
     width: 16px;
 }
 
+.dms fieldset {
+    display: table;
+}
+
+.dms .dnnFormItem {
+    clear: both;
+}
+
+.dms .dnnFormItem .RadPicker {
+    position: relative;
+    top: -5px;
+}
+
 .dms .dnnFormItem span {
     vertical-align: middle;
     min-height: 25px;
@@ -25,7 +38,7 @@
     width: 120px;
     display: inline-block;
     position: relative;
-    left: -8px;
+    top: 6px;
 }
 
 .dms .dnnFormItem input[type="text"],
@@ -41,28 +54,29 @@
 .dms .dnnFormItem a.dnnFormHelp {
     margin-top: 8px !important;
     margin-right: 4px !important;
+    width: 16px;
 }
 
 .dms .dnnLabel {
     clear: both;
     vertical-align: middle;
+    padding: 5px;
     background-color: #DDD;
     line-height: 25px;
     min-height: 25px;
-    padding: 5px;
     width: 200px;
     float: left;
 }
 
 .dms .dnnLabel label {
     margin: 0;
+    padding-right: 12px;
 }
 
 .dms .dnnLabel span {
     font-weight: bold;
     font-size: 12px;
     text-align: right;
-    margin-right: 12px;
 }
 
 .dms .dnnTooltip .dnnFormHelpContent, 
@@ -72,7 +86,8 @@
 
 .dms .dnnLabel span.dnnHelpText {
     width: auto;
-    max-width: auto;
+    max-width: initial;
+    text-align: left;
 }
 
 .dms .LinkPagingSelected {

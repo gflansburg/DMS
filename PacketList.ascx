@@ -16,6 +16,10 @@
     .dms .nocontent {
         display: none;
     }
+    .dms .dnnFormItem .toggleButton {
+        top: 0;
+        left: -8px !important;
+    }
 </style>
 <div class="se-pre-con"></div>
 <asp:Literal ID="litCSS" runat="server"></asp:Literal>
@@ -213,7 +217,7 @@
                     </div>
                 </fieldset>
                 <div style="float: right; text-align: right; margin: 5px 1px 0px 0px;">
-                    <a class="dnnSecondaryAction" id="btnCancelChange" runat="server">Cancel</a>
+                    <a class="dnnSecondaryAction" id="btnCancelChange" runat="server"><%= LocalizeString("Cancel") %></a>
                     <asp:LinkButton ID="btnSaveChange" runat="server" Text="Save" ValidationGroup="NewOwnership" CssClass="dnnPrimaryAction" OnClick="btnSaveChange_Click" />
                 </div>
             </div>

@@ -154,7 +154,7 @@
     <value>Show Doc Description</value>
   </data>
   <data name="lblShowPacketDescription.Text" xml:space="preserve">
-    <value>Show Packet Description</value>
+    <value>Show Description</value>
   </data>
   <data name="lblTags.Text" xml:space="preserve">
     <value>Available Tags</value>
@@ -206,6 +206,9 @@
   </data>
   <data name="PacketErrorInfo.Text" xml:space="preserve">
     <value>If you reached this page through a bookmarked link or from another website, please use our document search to find a new version of the document you requested.</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="ChangeOwnership.Text" xml:space="preserve">
     <value>Change Packet Ownership</value>

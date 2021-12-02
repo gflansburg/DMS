@@ -834,24 +834,6 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Label lblDateLastModified;
 
         /// <summary>
-        /// lblIPAddress2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblIPAddress2;
-
-        /// <summary>
-        /// lblIPAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIPAddress;
-
-        /// <summary>
         /// pnlBack2 control.
         /// </summary>
         /// <remarks>
@@ -1383,6 +1365,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.GridView gv;
 
         /// <summary>
+        /// lblCurrentOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblCurrentOwner;
+
+        /// <summary>
         /// ddCurrentOwner control.
         /// </summary>
         /// <remarks>
@@ -1399,6 +1390,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+
+        /// <summary>
+        /// lblNewOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblNewOwner;
 
         /// <summary>
         /// ddNewOwner control.

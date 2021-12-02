@@ -217,10 +217,10 @@
                         <dnn:Label ID="lblDateLastModified2" runat="server" Suffix=":" /> 
                         <asp:Label ID="lblDateLastModified" runat="server">&nbsp;</asp:Label>
                     </div>
-                    <div class="dnnFormItem">
+<%--                    <div class="dnnFormItem">
                         <dnn:Label ID="lblIPAddress2" runat="server" Suffix=":" /> 
                         <asp:Label ID="lblIPAddress" runat="server">&nbsp;</asp:Label>
-                    </div>
+                    </div>--%>
                 </asp:Panel>
             </fieldset>
         </asp:Panel>
@@ -558,22 +558,18 @@
     <div id="changeOwnershipDialog" class="nocontent">
         <div id="changeOwnership-content" class="dialog-content">
             <div class="dms body_padding">
-                <div class="RecordDisplay">
-                    <span class="FieldNamePopup"><%= LocalizeString("CurrentOwner") %></span>
-                    <span class="FieldValuePopup">
+                <fieldset>
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
                         <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
-                    </span>
-                </div>
-                <br style="clear: both;" />
-                <div class="RecordDisplay">
-                    <span class="FieldNamePopup"><%= LocalizeString("NewOwner") %></span>
-                    <span class="FieldValuePopup">
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
                         <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
-                    </span>
-                </div>
-                <br style="clear: both;" />
+                    </div>
+                </fieldset>
                 <div style="float: right; text-align: right; margin: 5px 1px 0px 0px;">
                     <asp:LinkButton Text="Cancel" CssClass="dnnSecondaryAction" ID="btnCancelChange" runat="server" />
                     <asp:LinkButton ID="btnSaveChange" runat="server" Text="Save" ValidationGroup="NewOwnership" CssClass="dnnPrimaryAction" OnClick="btnSaveChange_Click" />

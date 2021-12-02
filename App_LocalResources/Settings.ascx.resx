@@ -157,7 +157,7 @@
     <value>The subject of the file notification message that is sent to the new file notification group users.</value>
   </data>
   <data name="lblFileNotificationSubject.Text" xml:space="preserve">
-    <value>File Notification Email Subject</value>
+    <value>Email Subject</value>
   </data>
   <data name="lblReplyEmail.Help" xml:space="preserve">
     <value>The body of the file notification message that is sent to the new file notification group users.</value>
@@ -199,7 +199,7 @@
     <value>Instructions</value>
   </data>
   <data name="lblShowInstructions.Text" xml:space="preserve">
-    <value>Show Search Instructions</value>
+    <value>Show Instructions</value>
   </data>
   <data name="lblShowTips.Text" xml:space="preserve">
     <value>Show Search Tips</value>

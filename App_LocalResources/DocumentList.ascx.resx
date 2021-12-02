@@ -228,7 +228,7 @@
   <data name="ChangeOwnership.Text" xml:space="preserve">
     <value>Change Document Ownership</value>
   </data>
-  <data name="CurrentOwner.Text" xml:space="preserve">
+  <data name="lblCurrentOwner.Text" xml:space="preserve">
     <value>Current Owner</value>
   </data>
   <data name="DeleteAll.Text" xml:space="preserve">
@@ -261,7 +261,7 @@
   <data name="NewLink.Text" xml:space="preserve">
     <value>New Link</value>
   </data>
-  <data name="NewOwner.Text" xml:space="preserve">
+  <data name="lblNewOwner.Text" xml:space="preserve">
     <value>New Owner</value>
   </data>
   <data name="NoDocuments" xml:space="preserve">
