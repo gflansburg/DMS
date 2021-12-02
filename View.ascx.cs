@@ -430,34 +430,43 @@ namespace Gafware.Modules.DMS
                         {
                             AddFilter(docs, strQuery);
                         }
+                        else
+                        {
+                            if (!documentSearchResults.Header.Equals("Document Search Results"))
+                            {
+                                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
+                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
+                            }
+                            else
+                            {
+                                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
+                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
+                            }
+                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
+                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
+                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
+                            if (docs[0].Files.Count > 0)
+                            {
+                                DMSFile file = docs[0].Files[0];
+                                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter: card\" content=\"summary_large_image\">\" />"));
+
+                            }
+                        }
                         SetSearchText();
                         documentSearchResults.IsLink = !bSearch;
                         pnlSearchResults.Visible = (docs.Count > 1);
-                        if (!documentSearchResults.Header.Equals("Document Search Results"))
-                        {
-                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
-                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
-                        }
-                        else
-                        {
-                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
-                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
-                        }
-                        Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
-                        Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
-                        Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
-                        if (docs[0].Files.Count > 0)
-                        {
-                            DMSFile file = docs[0].Files[0];
-                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
-                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
-                            Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter: card\" content=\"summary_large_image\">\" />"));
-                            
-                        }
                     }
                     else if (!String.IsNullOrEmpty(tbKeywords.Text))
                     {
                         Search(true);
+                    }
+                    else if(String.IsNullOrEmpty(strQuery))
+                    {
+                        Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.TabName) + "\" />"));
+                        Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.TabName) + "\" />"));
+
                     }
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                 }
