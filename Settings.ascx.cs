@@ -323,7 +323,11 @@ namespace Gafware.Modules.DMS
 
         protected void gv_Categories_RowDataBound(object sender, System.Web.UI.WebControls.GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Footer)
+            if(e.Row.RowType == DataControlRowType.Header)
+            {
+                e.Row.Cells[1].Text = tbCategory.Text;
+            }
+            else if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Footer)
             {
                 TextBox categoryName = e.Row.FindControl(e.Row.RowType == DataControlRowType.DataRow ? "tbCategoryName" : "tbCategoryName2") as TextBox;
                 if (categoryName != null)

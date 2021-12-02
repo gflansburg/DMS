@@ -181,7 +181,7 @@
     <value>Display name for creating groups (i.e. Category, Type, Location, etc.)</value>
   </data>
   <data name="lblCategory.Text" xml:space="preserve">
-    <value>Category Name</value>
+    <value>Category Heading</value>
   </data>
   <data name="lblSaveLocalFile.Help" xml:space="preserve">
     <value>Save a copy of the file to the local file system. Useful when allowing Google to crawl and index the files for Google search.</value>

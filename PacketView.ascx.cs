@@ -65,10 +65,6 @@ namespace Gafware.Modules.DMS
                 {
                     documentSearchResults.TabModuleId = Convert.ToInt32(Settings["RepositoryID"].ToString());
                 }
-                if (!String.IsNullOrEmpty(PacketId))
-                {
-                    documentSearchResults.QueryString = String.Format("p={0}", PacketId);
-                }
                 if (Settings.Contains("PageSize"))
                 {
                     documentSearchResults.PageSize = Convert.ToInt32(Settings["PageSize"].ToString());
@@ -84,6 +80,10 @@ namespace Gafware.Modules.DMS
                 if (Settings.Contains("Theme"))
                 {
                     documentSearchResults.Theme = Settings["Theme"].ToString();
+                }
+                if (!String.IsNullOrEmpty(PacketId))
+                {
+                    documentSearchResults.QueryString = String.Format("p={0}", PacketId);
                 }
             }
             catch (Exception exc) //Module failed to load
