@@ -361,7 +361,7 @@
         <asp:Panel ID="pnlLink" runat="server" Visible="false">
             <br />
             <p><strong><%= LocalizeString("LinkURL") %></strong> <span><%= LocalizeString("LinkURLHelp") %></span></p>
-            <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" Width="98%" Rows="3" runat="server"></asp:TextBox>
+            <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" Width="100%" Rows="3" runat="server"></asp:TextBox>
         </asp:Panel>
         <asp:HiddenField ID="history" runat="server" Value="0" />
         <asp:LinkButton ID="lnkReload" runat="server" CausesValidation="false" style="display: none;" OnClick="lnkReload_Click">Reload</asp:LinkButton>
@@ -371,7 +371,7 @@
                     <div class="RecordDisplay">
                         <span class="FieldNamePopup"><%= LocalizeString("WebPageURL") %></span>
                         <span class="FieldValuePopup">
-                            <asp:TextBox ID="tbURL" runat="server" Width="400px" ValidationGroup="NewHyperlink"></asp:TextBox>
+                            <asp:TextBox ID="tbURL" runat="server" Width="100%" ValidationGroup="NewHyperlink"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="tbURL" Display="Dynamic" ErrorMessage="<br />Web Page URL is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewHyperlink"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator Font-Italic="true" ForeColor="Red" ID="RegularExpressionValidator1" runat="server" CssClass="FormInstructions" Font-Bold="true" ErrorMessage="<br />Not a properly formated url." ControlToValidate="tbURL" Display="Dynamic" ValidationExpression="(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?" ValidationGroup="NewHyperlink"></asp:RegularExpressionValidator>
                         </span>
