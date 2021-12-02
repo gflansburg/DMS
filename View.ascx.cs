@@ -274,7 +274,6 @@ namespace Gafware.Modules.DMS
         {
             try
             {
-                documentSearchResults.NavigationManager = _navigationManager;
                 documentSearchResults.CategoryName = CategoryName;
                 documentSearchResults.Theme = Theme;
                 documentSearchResults.PageSize = PageSize;
@@ -292,9 +291,11 @@ namespace Gafware.Modules.DMS
                 {
                     //if (IsAdmin())
                     //{
-                        //FixThumnails();
-                        //FixTitles();
+                    //FixThumnails();
+                    //FixTitles();
                     //}
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:url\" content=\"" + Request.Url.GetLeftPart(UriPartial.Path) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:type\" content=\"website\" />"));
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     pnlDefault.Visible = ShowTips;
                     lblCategoryName.Text = CategoryName.ToLower();
@@ -430,11 +431,29 @@ namespace Gafware.Modules.DMS
                         SetSearchText();
                         documentSearchResults.IsLink = !bSearch;
                         pnlSearchResults.Visible = (docs.Count > 1);
+                        if (!documentSearchResults.Header.Equals("Document Search Results"))
+                        {
+                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
+                        }
+                        else
+                        {
+                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentName) + "\" />"));
+                        }
+                        Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(docs[0].DocumentDetails) + "\" />"));
+                        if (docs[0].Files.Count > 0)
+                        {
+                            DMSFile file = docs[0].Files[0];
+                            Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                        }
                     }
                     else if (!String.IsNullOrEmpty(tbKeywords.Text))
                     {
                         Search(true);
                     }
+                    /*else
+                    {
+                        Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(Page.Title) + "\" />"));
+                    }*/
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                 }
                 else
@@ -540,6 +559,23 @@ namespace Gafware.Modules.DMS
             Session["search"] = docs;
             pnlDefault.Visible = false;
             pnlResults.Visible = true;
+            if (filter.Count > 0)
+            {
+                if (!documentSearchResults.Header.Equals("Document Search Results"))
+                {
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
+                }
+                else
+                {
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentName) + "\" />"));
+                }
+                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
+                if (filter[0].Files.Count > 0)
+                {
+                    DMSFile file = filter[0].Files[0];
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                }
+            }
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
