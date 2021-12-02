@@ -1391,7 +1391,7 @@ namespace Gafware.Modules.DMS
             if (doc != null)
             {
                 DotNetNuke.Entities.Portals.PortalSettings portal = DotNetNuke.Entities.Portals.PortalSettings.Current;
-                string uploadDirectory = String.Format("{0}Files\\{1}", portal.HomeDirectoryMapPath, Generic.CreateSafeFolderName(doc.DocumentName));
+                string uploadDirectory = String.Format("{0}Files\\{1}\\{2}", portal.HomeDirectoryMapPath, TabModuleId, Generic.CreateSafeFolderName(doc.DocumentName));
                 if (System.IO.Directory.Exists(uploadDirectory))
                 {
                     System.IO.Directory.Delete(uploadDirectory, true);
@@ -1677,7 +1677,7 @@ namespace Gafware.Modules.DMS
                 file.FileType = Components.DMSFile.GetFileType(System.IO.Path.GetExtension(upDocument.PostedFile.FileName), PortalId, PortalWideRepository ? 0 : TabModuleId);
                 file.StatusId = 2;
                 file.Filename = System.IO.Path.GetFileName(upDocument.PostedFile.FileName).Replace(" ", "_");
-                file.UploadDirectory = string.Format("Files/{0}", Generic.CreateSafeFolderName(doc.DocumentName));
+                file.UploadDirectory = string.Format("Files/{0}/{1}", TabModuleId, Generic.CreateSafeFolderName(doc.DocumentName));
                 file.MimeType = upDocument.PostedFile.ContentType;
                 Components.DocumentController.SaveFile(file);
                 file.FileVersion = new Components.FileVersion();

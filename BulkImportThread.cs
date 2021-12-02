@@ -269,7 +269,7 @@ namespace Gafware.Modules.DMS
                         dmsFile.FileType = Components.DMSFile.GetFileType(System.IO.Path.GetExtension(file), PortalId, PortalWideRepository ? 0 : TabModuleId);
                         dmsFile.StatusId = 1;
                         dmsFile.Filename = System.IO.Path.GetFileName(file).Replace(" ", "_");
-                        dmsFile.UploadDirectory = string.Format("Files/{0}", Generic.CreateSafeFolderName(doc.DocumentName));
+                        dmsFile.UploadDirectory = string.Format("Files/{0}/{1}", TabModuleId, Generic.CreateSafeFolderName(doc.DocumentName));
                         dmsFile.MimeType = MimeMapping.GetMimeMapping(file);
                         Components.DocumentController.SaveFile(dmsFile);
                         dmsFile.FileVersion = new Components.FileVersion();
