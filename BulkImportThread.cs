@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using Ghostscript.NET;
 using Ghostscript.NET.Processor;
+using DotNetNuke.Entities.Portals;
 
 namespace Gafware.Modules.DMS
 {

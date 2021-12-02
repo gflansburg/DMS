@@ -294,6 +294,8 @@ namespace Gafware.Modules.DMS
                     //FixThumnails();
                     //FixTitles();
                     //}
+                    btnSearch.Text = LocalizeString(btnSearch.ID);
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"keywords\" content=\"" + PortalSettings.ActiveTab.KeyWords + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:url\" content=\"" + PortalSettings.ActiveTab.FullUrl + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"twitter:url\" content=\"" + PortalSettings.ActiveTab.FullUrl + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"twitter:domain\" content=\"" + Request.Url.Host + "\" />"));
@@ -483,7 +485,7 @@ namespace Gafware.Modules.DMS
             }
             ddCategory.DataSource = filteredCategories;
             ddCategory.DataBind();
-            ddCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
+            ddCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem(LocalizeString("All"), "0"));
             ddCategory.SelectedIndex = 0;
             pnlCategory.Visible = pnlCategoryTip.Visible = filteredCategories.Count > 1;
         }
@@ -510,25 +512,25 @@ namespace Gafware.Modules.DMS
             {
                 if (String.IsNullOrWhiteSpace(tbKeywords.Text.Trim()))
                 {
-                    litSearch.Text = String.Format("Searching {0}.", ddCategory.SelectedItem.Text);
+                    litSearch.Text = String.Format("{1} {0}.", ddCategory.SelectedItem.Text, LocalizeString("Searching"));
                 }
                 else
                 {
-                    litSearch.Text = String.Format("Searching {0} for \"<strong>{1}</strong>\".", ddCategory.SelectedItem.Text, System.Web.HttpUtility.HtmlEncode(tbKeywords.Text.Trim()));
+                    litSearch.Text = String.Format("{2} {0} {3} \"<strong>{1}</strong>\".", ddCategory.SelectedItem.Text, System.Web.HttpUtility.HtmlEncode(tbKeywords.Text.Trim()), LocalizeString("Searching"), LocalizeString("For"));
                 }
             }
             else
             {
                 if (String.IsNullOrWhiteSpace(tbKeywords.Text.Trim()))
                 {
-                    litSearch.Text = "Searching all locations";
+                    litSearch.Text = LocalizeString("SearchingAllLocations");
                 }
                 else
                 {
-                    litSearch.Text = String.Format("Searching all locations for \"<strong>{0}</strong>\".", System.Web.HttpUtility.HtmlEncode(tbKeywords.Text.Trim()));
+                    litSearch.Text = String.Format("{1} \"<strong>{0}</strong>\".", System.Web.HttpUtility.HtmlEncode(tbKeywords.Text.Trim()), LocalizeString("SearchingAllLocationsFor"));
                 }
             }
-            litSearch.Text += " Documents will open in a new window.";
+            litSearch.Text += " " + LocalizeString("DocumentsWillOpen");
         }
 
         private void AddFilter(List<Document> docs, string searchTerms)
@@ -555,7 +557,7 @@ namespace Gafware.Modules.DMS
             pnlResults.Visible = true;
             if (filter.Count > 0)
             {
-                if (!documentSearchResults.Header.Equals("Document Search Results"))
+                if (!documentSearchResults.Header.Equals(documentSearchResults.LocalizeString("ResultsHeader")))
                 {
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(documentSearchResults.Header) + "\" />"));
@@ -565,9 +567,6 @@ namespace Gafware.Modules.DMS
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:title\" content=\"" + HttpUtility.HtmlEncode(searchTerms) + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(searchTerms) + "\" />"));
                 }
-                /*Page.Header.Controls.Add(new LiteralControl("<meta name=\"description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
-                Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));
-                Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:description\" content=\"" + HttpUtility.HtmlEncode(filter[0].DocumentDetails) + "\" />"));*/
                 if (filter[0].Files.Count > 0)
                 {
                     DMSFile file = filter[0].Files[0];

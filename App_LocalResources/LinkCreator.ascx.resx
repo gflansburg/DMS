@@ -123,4 +123,40 @@
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Link Creator</value>
   </data>
+  <data name="BasicHelp.Text" xml:space="preserve">
+    <value>Copy and paste the following link to show a listing of the documents selected above.</value>
+  </data>
+  <data name="BasicInfo.Text" xml:space="preserve">
+    <value>Custom headers and descriptions are only shown when multiple documents are selected. If only one document is selected, then the link generated will take the user directly to the document.</value>
+  </data>
+  <data name="btnAddDocument.Text" xml:space="preserve">
+    <value>Add Document</value>
+  </data>
+  <data name="btnPreview.Text" xml:space="preserve">
+    <value>Preview Documents</value>
+  </data>
+  <data name="btnReset.Text" xml:space="preserve">
+    <value>Reset Page</value>
+  </data>
+  <data name="DocumentsSelected.Text" xml:space="preserve">
+    <value>Documents Selected</value>
+  </data>
+  <data name="lblCustomHeader.Text" xml:space="preserve">
+    <value>Custom Header</value>
+  </data>
+  <data name="lblDocuments.Text" xml:space="preserve">
+    <value>Available Documents</value>
+  </data>
+  <data name="lblIncludePrivate.Text" xml:space="preserve">
+    <value>Include Private</value>
+  </data>
+  <data name="lblShowDescription.Text" xml:space="preserve">
+    <value>Show Description</value>
+  </data>
+  <data name="LinkURL.Text" xml:space="preserve">
+    <value>Link URL</value>
+  </data>
+  <data name="NoDocuments.Text" xml:space="preserve">
+    <value>No documents selected.</value>
+  </data>
 </root>

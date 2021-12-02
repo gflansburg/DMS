@@ -25,15 +25,15 @@
             <asp:linkbutton runat="server" id="viewTagsCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="viewTagsCommandButton_Click"><asp:label runat="server" resourcekey="viewTagsCommandButton" /></asp:linkbutton>
             <asp:linkbutton runat="server" id="linkCreatorCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="linkCreatorCommandButton_Click"><asp:label runat="server" resourcekey="linkCreatorCommandButton" /></asp:linkbutton>
             <asp:linkbutton runat="server" id="uploadReportCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="uploadReportCommandButton_Click"><asp:label runat="server" resourcekey="uploadReportCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="bulkImportCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="bulkImportCommandButton_Click"><asp:label runat="server" resourcekey="BulkImport" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="settingsCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="settingsCommandButton_Click"><asp:label runat="server" resourcekey="Settings" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="bulkImportCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="bulkImportCommandButton_Click"><asp:label runat="server" resourcekey="bulkImportCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="settingsCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="settingsCommandButton_Click"><asp:label runat="server" resourcekey="settingsCommandButton" /></asp:linkbutton>
         </div>
         <div style="clear: both"></div>
         <asp:Panel ID="pnlSearch" runat="server">
             <div class="searchBox" id="searchBox" runat="server">
                 <div style="padding: 5px; width: 100%; text-align: left;">
                     <div style="width: 100%;">
-                        <span class="SearchText"><strong>Enter search term(s): </strong></span>
+                        <span class="SearchText"><strong><%= LocalizeString("SearchTerms") %></strong> </span>
                         <br style="clear: none" />
                         <asp:TextBox ID="tbKeywords" runat="server" style="min-width: 300px; width: calc(100% - 150px);" autofocus placeholder="Search Terms ..."></asp:TextBox>
                         <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" style="margin-left: 5px;" />
@@ -52,7 +52,7 @@
                 <div style="float: right; display: inline; margin-top: 20px;">
                     <div style="display: inline; width: 100%; min-width: 275px;">
                         <div style="height: 30px; vertical-align: middle; display: inline-block; padding-top: 4px;">
-                            <span class="SearchText"><strong>Show Descriptions:</strong></span>&nbsp;
+                            <span class="SearchText"><strong><%= LocalizeString("ShowDescriptions") %></strong></span>&nbsp;
                         </div>
                         <div style="display: inline-block">
                             <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 120px">
@@ -64,19 +64,17 @@
                 <br style="clear: both;" />
             </div>
             <asp:Panel ID="pnlDefault" runat="server">
-	            <span style="margin: 0px 0px 0px 15px;"><span class="SearchText"><strong>Document Search Tips:</strong></span></span>
+	            <span style="margin: 0px 0px 0px 15px;"><span class="SearchText"><strong><%= LocalizeString("DocumentSearchTips") %></strong></span></span>
 	            <ul style="margin-top: 5px;">
-	                <li id="pnlCategoryTip" runat="server">Choose at least one <asp:Label ID="lblCategoryName" runat="server" Text="category"></asp:Label>. </li>
-	                <li>Search by keyword.</li>
-	                <li>Bookmark important completed searches in your web browser.</li>
-	                <li>To view all documents, click "Go!" without typing a keyword.</li>
-	            </ul>
+	                <li id="pnlCategoryTip" runat="server"><%= LocalizeString("ChooseOne") %> <asp:Label ID="lblCategoryName" runat="server" Text="category"></asp:Label>. </li>
+	                <%= LocalizeString("SearchTips") %>
+                </ul>
             </asp:Panel>
         </asp:Panel>
     </asp:Panel>
     <asp:Panel ID="pnlResults" runat="server" Visible="false">
         <asp:Panel ID="pnlSearchResults" runat="server">
-            <div style="text-align: center"><asp:Literal ID="litSearch" runat="server"></asp:Literal></div><br />
+            <div style="text-align: center"><br /><asp:Literal ID="litSearch" runat="server"></asp:Literal></div><br />
             <p id="addBookmarkContainer"></p>
         </asp:Panel>
         <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" />

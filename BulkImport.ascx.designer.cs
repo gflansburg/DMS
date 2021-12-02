@@ -60,6 +60,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.HiddenField hidProcessName;
 
         /// <summary>
+        /// lblFilePath control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblFilePath;
+
+        /// <summary>
         /// tbFilePath control.
         /// </summary>
         /// <remarks>
@@ -87,6 +96,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CustomValidator valFilePath;
 
         /// <summary>
+        /// lblSubFolderIsDocumentName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSubFolderIsDocumentName;
+
+        /// <summary>
         /// cbSubFolderIsDocumentNameToggleButton control.
         /// </summary>
         /// <remarks>
@@ -105,6 +123,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CheckBox cbSubFolderIsDocumentName;
 
         /// <summary>
+        /// lblSubFolderIsTag control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSubFolderIsTag;
+
+        /// <summary>
         /// cbSubFolderIsTagToggleButton control.
         /// </summary>
         /// <remarks>
@@ -121,6 +148,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbSubFolderIsTag;
+
+        /// <summary>
+        /// lblPrependSubFolderName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblPrependSubFolderName;
 
         /// <summary>
         /// cbPrependSubFolderNameToggleButton control.
@@ -150,6 +186,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlSeperator;
 
         /// <summary>
+        /// lblSeperator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSeperator;
+
+        /// <summary>
         /// lstSeperator control.
         /// </summary>
         /// <remarks>
@@ -168,6 +213,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlLevel;
 
         /// <summary>
+        /// lblLevel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblLevel;
+
+        /// <summary>
         /// lstLevel control.
         /// </summary>
         /// <remarks>
@@ -175,6 +229,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList lstLevel;
+
+        /// <summary>
+        /// lblReplacePDFTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblReplacePDFTitle;
 
         /// <summary>
         /// cbReplacePDFTitleToggleButton control.
@@ -195,6 +258,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CheckBox cbReplacePDFTitle;
 
         /// <summary>
+        /// lblActivation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblActivation;
+
+        /// <summary>
         /// dtActivation control.
         /// </summary>
         /// <remarks>
@@ -202,6 +274,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadDatePicker dtActivation;
+
+        /// <summary>
+        /// lblExpiration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblExpiration;
 
         /// <summary>
         /// dtExpiration control.
@@ -222,6 +303,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
 
         /// <summary>
+        /// lblOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblOwner;
+
+        /// <summary>
         /// ddOwner control.
         /// </summary>
         /// <remarks>
@@ -238,6 +328,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator9;
+
+        /// <summary>
+        /// lblUseCategorySecurityRoles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblUseCategorySecurityRoles;
 
         /// <summary>
         /// cbUseCategorySecurityRolesToggleButton control.
@@ -267,6 +366,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlSecurityRole;
 
         /// <summary>
+        /// lblSecurityRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSecurityRole;
+
+        /// <summary>
         /// ddlSecurityRole control.
         /// </summary>
         /// <remarks>
@@ -294,6 +402,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Repeater rptCategory;
 
         /// <summary>
+        /// lblIsPublic control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsPublic;
+
+        /// <summary>
         /// cbIsPublicToggleButton control.
         /// </summary>
         /// <remarks>
@@ -310,6 +427,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbIsPublic;
+
+        /// <summary>
+        /// lblIsSearchable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsSearchable;
 
         /// <summary>
         /// cbIsSearchableToggleButton control.

@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="LinkCreator.ascx.cs" Inherits="Gafware.Modules.DMS.LinkCreator" %>
+<%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
 <%@ Register Src="~/desktopmodules/Gafware/DMS/DocumentSearchResults.ascx" TagPrefix="uc1" TagName="DocumentSearchResults" %>
 <style type="text/css">
     .nocontent {
@@ -19,69 +20,44 @@
 <div class="se-pre-con"></div>
 <div class="dms" style="padding: 10px;">
     <h3><%=LocalizeString("BasicSettings")%></h3>
+    <br />
     <asp:LinkButton ID="btnBack" runat="server" Text="Back" CssClass="dnnSecondaryAction" OnClick="btnBack_Click" CausesValidation="false" />
-    <p>Custom headers and descriptions are only shown when multiple documents are selected. If only one document is selected, then the link generated will take the user directly to the document.</p>
-    <span class="FormText">
-        <span class="RequiredField">*</span> Required field.
-    </span>
+    <br /><br />
+    <p><%=LocalizeString("BasicInfo")%></p>
     <br />
-    <br />
-    <div class="RecordDisplay">
-        <label for="<%= tbCustomHeader.ClientID %>">
-            <span class="FieldName">Custom Header:</span>
-            <span class="FieldValue">
-                <asp:TextBox ID="tbCustomHeader" runat="server" Width="790px" autofocus ValidationGroup="LinkCreator"></asp:TextBox>
-            </span>
-        </label>
-    </div>
-    <br style="clear: both" />
-    <asp:Panel ID="pnlIncludePrivate" runat="server" Visible="false">
-        <div class="RecordDisplay">
-            <label for="<%= cbIncludePrivate.ClientID %>">
-                <span class="FieldName"><span class="RequiredField">*</span> Include Private:</span>
-                <span class="FieldValue">
-                    <%--<asp:CheckBox ID="cbIncludePrivate" runat="server" AutoPostBack="true" Checked="false" OnCheckedChanged="cbIncludePrivate_CheckedChanged" />--%>
-                    <div class="toggleButton" id="cbIncludePrivateToggleButton" runat="server" style="width: 120px">
-                        <label><asp:CheckBox ID="cbIncludePrivate" AutoPostBack="true" Checked="false" runat="server" OnCheckedChanged="cbIncludePrivate_CheckedChanged" /><span></span></label>
-                    </div>
-                </span>
-            </label>
+    <fieldset>
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblCustomHeader" runat="server" ControlName="tbCustomHeader" Suffix=":" /> 
+            <asp:TextBox ID="tbCustomHeader" runat="server" Width="100%" autofocus ValidationGroup="LinkCreator"></asp:TextBox>
         </div>
-        <br style="clear: both" />
-    </asp:Panel>
-    <div class="RecordDisplay">
-        <label for="<%= cbShowDescription.ClientID %>">
-            <span class="FieldName"><span class="RequiredField">*</span> Show Description:</span>
-            <span class="FieldValue">
-                <%--<asp:CheckBox ID="cbShowDescription" runat="server" AutoPostBack="true" Checked="false" OnCheckedChanged="cbShowDescription_CheckedChanged" />--%>
-                <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 120px">
-                    <label><asp:CheckBox ID="cbShowDescription" AutoPostBack="true" Checked="false" runat="server" OnCheckedChanged="cbShowDescription_CheckedChanged" /><span></span></label>
+        <asp:Panel ID="pnlIncludePrivate" runat="server" Visible="false">
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblIncludePrivate" runat="server" ControlName="cbIncludePrivate" Suffix=":" /> 
+                <div class="toggleButton" id="cbIncludePrivateToggleButton" runat="server">
+                    <label for="<%= cbIncludePrivate.ClientID %>"><asp:CheckBox ID="cbIncludePrivate" AutoPostBack="true" Checked="false" runat="server" OnCheckedChanged="cbIncludePrivate_CheckedChanged" /><span></span></label>
                 </div>
-            </span>
-        </label>
-    </div>
-    <br style="clear: both" />
-    <div class="RecordDisplay">
-        <label for="<%= ddDocuments.ClientID %>">
-            <span class="FieldName"><span class="RequiredField">*</span> Available Documents:</span>
-            <span class="FieldValue">
-                <asp:DropDownList ID="ddDocuments" runat="server" Width="675px" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="LinkCreator"></asp:DropDownList>
-<%--                <asp:HiddenField ID="hidDocumentId" runat="server" Value="0" />
-                <asp:TextBox ID="tbDocument" Width="675px" runat="server" ValidationGroup="LinkCreator"></asp:TextBox>--%>
-                <asp:LinkButton ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Add Document" ValidationGroup="LinkCreator" CssClass="dnnPrimaryAction" style="line-height: 20px;" />
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="LinkCreator"></asp:RequiredFieldValidator>
-            </span>
-        </label>
-    </div>
-    <br style="clear: both" />
+            </div>
+        </asp:Panel>
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblShowDescription" runat="server" ControlName="cbShowDescription" Suffix=":" /> 
+            <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server">
+                <label for="<%= cbShowDescription.ClientID %>"><asp:CheckBox ID="cbShowDescription" AutoPostBack="true" Checked="false" runat="server" OnCheckedChanged="cbShowDescription_CheckedChanged" /><span></span></label>
+            </div>
+        </div>
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblDocuments" runat="server" ControlName="ddDocuments" Suffix=":" /> 
+            <asp:DropDownList ID="ddDocuments" runat="server" Width="100%" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="LinkCreator"></asp:DropDownList>
+            <asp:LinkButton ID="btnAddDocument" runat="server" OnClick="btnAddDocument_Click" Text="Add Document" ValidationGroup="LinkCreator" CssClass="dnnPrimaryAction" style="line-height: 20px;" />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="LinkCreator"></asp:RequiredFieldValidator>
+        </div>
+    </fieldset>
     <asp:HiddenField ID="hidFileCount" runat="server" Value="0" />
-    <span style="font-weight: bold">Documents Selected</span><br />
+    <span style="font-weight: bold"><%=LocalizeString("DocumentsSelected")%></span><br />
     <div style="background-color: #EEEEEE; border: 1px solid #999; text-align: left; margin: 5px 1px 5px 0px;">
         <asp:GridView ID="gv" runat="server" BorderWidth="1px" AutoGenerateColumns="False" AllowPaging="False" AllowSorting="False"
             RowStyle-BackColor="#eeeeee" RowStyle-Height="18" Width="100%" GridLines="None" ShowHeader="false" CssClass="filesList"
             Font-Names="Arial" Font-Size="Small" CellPadding="3" CellSpacing="3" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None"
-            ForeColor="Black" DataKeyNames="PacketDocId,DocumentId" OnRowDeleting="gv_RowDeleting" OnRowDataBound="gv_RowDataBound"
-            EmptyDataText="No documents selected.">
+            ForeColor="Black" DataKeyNames="PacketDocId,DocumentId" OnRowDeleting="gv_RowDeleting" OnRowDataBound="gv_RowDataBound">
             <RowStyle VerticalAlign="Top" Font-Names="Arial" Font-Size="Small" BackColor="#F7F7F7" />
             <FooterStyle Font-Names="Arial" Font-Size="X-Small" BackColor="White" />
             <HeaderStyle BackColor="#666666" HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False" Font-Size="Small" Font-Names="Arial" ForeColor="White" Font-Bold="False" Font-Underline="false" />
@@ -114,11 +90,14 @@
         <asp:HiddenField ID="hidFileID" runat="server" Value="0" />
         <asp:HiddenField ID="preview" runat="server" Value="0" />
         <br />
-        <p><strong>Link URL</strong> <span>Copy and paste the following link to show a listing of the documents selected above.</span></p>
+        <p><strong><%= LocalizeString("LinkURL") %></strong> <span><%= LocalizeString("BasicHelp") %></span></p>
         <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" Width="100%" Rows="3" runat="server"></asp:TextBox>
         <br style="clear: both" />
-        <asp:LinkButton ID="btnPreview" runat="server" Text="Preview Documents" CssClass="dnnSecondaryAction" OnClick="btnPreview_Click" />
-        <asp:LinkButton ID="btnReset" runat="server" Text="Reset Page" CssClass="dnnSecondaryAction" OnClick="btnReset_Click" />
+        <hr />
+        <div style="float:right;margin-bottom:10px;">
+            <asp:LinkButton ID="btnPreview" runat="server" Text="Preview Documents" CssClass="dnnSecondaryAction" OnClick="btnPreview_Click" />
+            <asp:LinkButton ID="btnReset" runat="server" Text="Reset Page" CssClass="dnnSecondaryAction" OnClick="btnReset_Click" />
+        </div>
     </asp:Panel>
 </div>
 <div id="previewDialog" class="nocontent dms">

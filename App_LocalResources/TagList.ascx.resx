@@ -129,4 +129,16 @@
   <data name="EditSettings.Text" xml:space="preserve">
     <value>Edit Tag</value>
   </data>
+  <data name="lblTagName.Text" xml:space="preserve">
+    <value>Tag Name</value>
+  </data>
+  <data name="lblWeight.Text" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>

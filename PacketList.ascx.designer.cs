@@ -60,6 +60,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlFound;
 
         /// <summary>
+        /// lblName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblName;
+
+        /// <summary>
         /// tbName control.
         /// </summary>
         /// <remarks>
@@ -96,6 +105,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
 
         /// <summary>
+        /// lblDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDescription;
+
+        /// <summary>
         /// tbDescription control.
         /// </summary>
         /// <remarks>
@@ -112,6 +130,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
+
+        /// <summary>
+        /// lblShowPacketDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblShowPacketDescription;
 
         /// <summary>
         /// cbShowPacketDescriptionToggleButton control.
@@ -132,13 +159,22 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CheckBox cbShowPacketDescription;
 
         /// <summary>
-        /// Panel1 control.
+        /// pnlAdminComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
+        protected global::System.Web.UI.WebControls.Panel pnlAdminComments;
+
+        /// <summary>
+        /// lblAdminComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblAdminComments;
 
         /// <summary>
         /// tbAdminComments control.
@@ -150,6 +186,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.TextBox tbAdminComments;
 
         /// <summary>
+        /// lblCustomHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblCustomHeader;
+
+        /// <summary>
         /// tbCustomHeader control.
         /// </summary>
         /// <remarks>
@@ -157,6 +202,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbCustomHeader;
+
+        /// <summary>
+        /// lblShowDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblShowDescription;
 
         /// <summary>
         /// cbShowDescriptionToggleButton control.
@@ -177,6 +231,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.CheckBox cbShowDescription;
 
         /// <summary>
+        /// lblDocuments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDocuments;
+
+        /// <summary>
         /// ddDocuments control.
         /// </summary>
         /// <remarks>
@@ -186,13 +249,13 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.DropDownList ddDocuments;
 
         /// <summary>
-        /// btnSubmit control.
+        /// btnAddDocument control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
+        protected global::System.Web.UI.WebControls.LinkButton btnAddDocument;
 
         /// <summary>
         /// RequiredFieldValidator9 control.
@@ -204,6 +267,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator9;
 
         /// <summary>
+        /// lblTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblTags;
+
+        /// <summary>
         /// ddTags control.
         /// </summary>
         /// <remarks>
@@ -213,13 +285,13 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.DropDownList ddTags;
 
         /// <summary>
-        /// btnSubmit2 control.
+        /// btnAddTag control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSubmit2;
+        protected global::System.Web.UI.WebControls.LinkButton btnAddTag;
 
         /// <summary>
         /// RequiredFieldValidator5 control.
@@ -393,6 +465,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.GridView gv;
 
         /// <summary>
+        /// lblCurrentOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblCurrentOwner;
+
+        /// <summary>
         /// ddCurrentOwner control.
         /// </summary>
         /// <remarks>
@@ -409,6 +490,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+
+        /// <summary>
+        /// lblNewOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblNewOwner;
 
         /// <summary>
         /// ddNewOwner control.

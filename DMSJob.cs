@@ -56,12 +56,13 @@ namespace Gafware.Modules.DMS
                         {
                             if (doc != null)
                             {
-                                if ((!doc.ActivationDate.HasValue || DateTime.Now >= doc.ActivationDate.Value) && (!doc.ExpirationDate.HasValue || DateTime.Now <= (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))))
+                                bool done = false;
+                                foreach (DMSFile file in doc.Files)
                                 {
-                                    bool done = false;
-                                    foreach (DMSFile file in doc.Files)
+                                    if (!file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase) && file.StatusId == 1)
                                     {
-                                        if (!file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase) && file.StatusId == 1)
+                                        Generic.CreateThumbnail(portal, "/DesktopModules/Gafware/DMS", file);
+                                        if ((!doc.ActivationDate.HasValue || DateTime.Now >= doc.ActivationDate.Value) && (!doc.ExpirationDate.HasValue || DateTime.Now <= (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))))
                                         {
                                             if (!System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
                                             {
@@ -86,28 +87,18 @@ namespace Gafware.Modules.DMS
                                                 }
                                             }
                                         }
-                                    }
-                                }
-                                else
-                                {
-                                    bool done = false;
-                                    foreach (DMSFile file in doc.Files)
-                                    {
-                                        if (!file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
+                                        else if ((doc.ActivationDate.HasValue && DateTime.Now < doc.ActivationDate.Value) || (doc.ExpirationDate.HasValue && DateTime.Now > (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))) || file.StatusId == 2)
                                         {
-                                            if ((doc.ActivationDate.HasValue && DateTime.Now < doc.ActivationDate.Value) || (doc.ExpirationDate.HasValue && DateTime.Now > (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))) || file.StatusId == 2)
+                                            if (System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
                                             {
-                                                if (System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
+                                                if (!done)
                                                 {
-                                                    if (!done)
-                                                    {
-                                                        this.ScheduleHistoryItem.AddLogNote("<br />\r\nDeleting Files For: " + doc.DocumentName + "<br />\r\n");
-                                                        done = true;
-                                                    }
-                                                    string fileName = MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal);
-                                                    this.ScheduleHistoryItem.AddLogNote("<br />\r\nDeleting File: " + fileName + "<br />\r\n");
-                                                    System.IO.File.Delete(fileName);
+                                                    this.ScheduleHistoryItem.AddLogNote("<br />\r\nDeleting Files For: " + doc.DocumentName + "<br />\r\n");
+                                                    done = true;
                                                 }
+                                                string fileName = MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal);
+                                                this.ScheduleHistoryItem.AddLogNote("<br />\r\nDeleting File: " + fileName + "<br />\r\n");
+                                                System.IO.File.Delete(fileName);
                                             }
                                         }
                                     }

@@ -332,6 +332,10 @@ namespace Gafware.Modules.DMS
                 List<Category> categories = DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (!IsPostBack)
                 {
+                    btnSave.Text = LocalizeString(btnSave.ID);
+                    btnCancel.Text = LocalizeString(btnCancel.ID);
+                    btnBack.Text = LocalizeString(btnBack.ID);
+                    btnAddNewTag.Text = LocalizeString(btnAddNewTag.ID);
                     gv.PageSize = PageSize;
                     foreach (Category category in categories)
                     {
@@ -603,7 +607,7 @@ namespace Gafware.Modules.DMS
             pnlGrid.Visible = true;
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
             Components.Tag tempTag = Components.DocumentController.GetTagByTagName(tbTagName.Text, PortalId, PortalWideRepository ? 0 : TabModuleId);
             if (tempTag == null || tempTag.TagId == 0 || tempTag.TagId == TagID)

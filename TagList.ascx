@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TagList.ascx.cs" Inherits="Gafware.Modules.DMS.TagList" %>
+<%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
 <%@ Register Src="~/desktopmodules/Gafware/DMS/LetterFilter.ascx" TagPrefix="uc1" TagName="LetterFilter" %>
 <style type="text/css">
     .se-pre-con {
@@ -18,33 +19,23 @@
         <asp:Panel ID="pnlDetails" runat="server" Visible="false">
             <h3><%=LocalizeString("EditSettings")%></h3>
             <br />
-            <span class="FormText">
-                <span class="RequiredField">*</span> Required field.
-            </span>
-            <br /><br />
-            <div class="RecordDisplay">
-                <label for="<%= tbTagName.ClientID %>" >
-                    <span class="FieldNameShort"><span class="RequiredField">*</span> Tag Name:</span>
-                    <span class="FieldValue">
-                        <asp:TextBox ID="tbTagName" runat="server" MaxLength="50" ValidationGroup="TagEditor" autofocus Width="890px"></asp:TextBox>
-                        <asp:RequiredFieldValidator Font-Italic="true" ForeColor="Red" ID="valTagName" runat="server" CssClass="red-text" Font-Bold="true" ErrorMessage=" Invalid entry." ValidationGroup="TagEditor" ControlToValidate="tbTagName" Display="Dynamic"></asp:RequiredFieldValidator>
-                    </span>
-                </label>
+            <fieldset>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblTagName" runat="server" ControlName="tbTagName" Suffix=":" /> 
+                    <asp:TextBox ID="tbTagName" runat="server" MaxLength="50" ValidationGroup="TagEditor" autofocus Width="100%"></asp:TextBox>
+                    <asp:RequiredFieldValidator Font-Italic="true" ForeColor="Red" ID="valTagName" runat="server" CssClass="red-text" Font-Bold="true" ErrorMessage=" Invalid entry." ValidationGroup="TagEditor" ControlToValidate="tbTagName" Display="Dynamic"></asp:RequiredFieldValidator>
+                </div>
+<%--                <div class="dnnFormItem">
+                    <dnn:Label ID="lblWeight" runat="server" ControlName="tbWeight" Suffix=":" /> 
+                    <telerik:RadNumericTextBox ID="tbWeight" runat="server" DataType="System.Integer" Value="0" NumberFormat-DecimalDigits="0" ValidationGroup="TagEditor"></telerik:RadNumericTextBox>
+                    <asp:RequiredFieldValidator Font-Italic="true" ForeColor="Red" ID="RequiredFieldValidator1" runat="server" CssClass="red-text" Font-Bold="true" ErrorMessage=" Invalid entry." ValidationGroup="TagEditor" ControlToValidate="tbWeight" Display="Dynamic"></asp:RequiredFieldValidator>
+                </div>--%>
+            </fieldset>
+            <hr />
+            <div style="float:right;margin-bottom:10px;">
+                <asp:LinkButton ID="btnSave" runat="server" OnClick="btnSave_Click" Text="Save" ValidationGroup="TagEditor" CssClass="dnnPrimaryAction" />
+                <asp:LinkButton ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="Cancel" CausesValidation="false" CssClass="dnnSecondaryAction" />
             </div>
-            <%--<br style="clear: both" />
-            <div class="RecordDisplay">
-                <label for="<%= tbTagName.ClientID %>" >
-                    <span class="FieldNameShort"><span class="RequiredField">*</span> Weight:</span>
-                    <span class="FieldValueShort">
-                        <telerik:RadNumericTextBox ID="tbWeight" runat="server" DataType="System.Integer" Value="0" NumberFormat-DecimalDigits="0" ValidationGroup="TagEditor"></telerik:RadNumericTextBox>
-                        <asp:RequiredFieldValidator Font-Italic="true" ForeColor="Red" ID="RequiredFieldValidator1" runat="server" CssClass="red-text" Font-Bold="true" ErrorMessage=" Invalid entry." ValidationGroup="TagEditor" ControlToValidate="tbWeight" Display="Dynamic"></asp:RequiredFieldValidator>
-                    </span>
-                    <span class="FormInstructions">Requires numeric values; Higher numbers appear in search dropdown menu first</span>
-                </label>
-            </div>--%>
-            <br style="clear: both" />
-            <asp:LinkButton ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Submit" ValidationGroup="TagEditor" CssClass="dnnPrimaryAction" />
-            <asp:LinkButton ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="Cancel" CausesValidation="false" CssClass="dnnSecondaryAction" />
         </asp:Panel>
         <asp:Panel ID="pnlGrid" runat="server">
             <h3><%=LocalizeString("BasicSettings")%></h3>
@@ -87,7 +78,7 @@
                     </asp:TemplateField> 
                     <asp:TemplateField HeaderText="Tag Name <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Full Name' />" SortExpression="TagName"> 
                         <ItemTemplate>
-                            <a class="documentView" data-id="<%# Eval("TagId") %>" style="color: #<%# Theme %>"><%# Eval("TagName") %></a>
+                            <a class="documentView" data-id='<%# Eval("TagId") %>' style="color: #<%# Theme %>"><%# Eval("TagName") %></a>
                         </ItemTemplate> 
                     </asp:TemplateField> 
                     <asp:TemplateField HeaderText="Document Count <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Document Count' />" SortExpression="DocumentCount" ItemStyle-Width="50px"> 

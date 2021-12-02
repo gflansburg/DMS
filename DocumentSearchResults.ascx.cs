@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Services.Localization;
 using Gafware.Modules.DMS.Components;
 using Gafware.Modules.DMS.Data;
 
@@ -13,6 +14,7 @@ namespace Gafware.Modules.DMS
     public partial class DocumentSearchResults : System.Web.UI.UserControl
     {
         private INavigationManager _navigationManager;
+        private string _localResourceFile;
 
         private List<Category> _poralCategories = null;
         protected List<Category> PortalCategories
@@ -303,7 +305,7 @@ namespace Gafware.Modules.DMS
             }
             set
             {
-                lblHeader.Text = (String.IsNullOrEmpty(value) ? "Document Search Results" : value);
+                lblHeader.Text = (String.IsNullOrEmpty(value) ? LocalizeString("ResultsHeader") : value);
             }
         }
 
@@ -888,7 +890,7 @@ namespace Gafware.Modules.DMS
 
         protected string GetFooter()
         {
-            return (PageSize == 0 ? string.Format("{0} Results", GetFileCount) : string.Format("Showing {0} to {1} of {2} ", (rptDocuments.PageIndex * rptDocuments.PageSize) + 1, Math.Min((rptDocuments.PageIndex + 1) * rptDocuments.PageSize, GetFileCount), GetFileCount));
+            return (PageSize == 0 ? string.Format("{0} Results", GetFileCount) : string.Format("{3} {0} {4} {1} {5} {2} ", (rptDocuments.PageIndex * rptDocuments.PageSize) + 1, Math.Min((rptDocuments.PageIndex + 1) * rptDocuments.PageSize, GetFileCount), GetFileCount, LocalizeString("Showing"), LocalizeString("To"), LocalizeString("Of")));
         }
 
         protected void btnAdmin_Click(object sender, ImageClickEventArgs e)
@@ -898,6 +900,27 @@ namespace Gafware.Modules.DMS
                 string[] strArrays = new string[] { string.Concat("mid=", ModuleId.ToString()) };
                 Response.Redirect(_navigationManager.NavigateURL("EditSettings", strArrays));
             }
+        }
+
+        public string LocalResourceFile
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_localResourceFile))
+                {
+                    _localResourceFile = System.IO.Path.Combine(ControlPath, string.Concat(Localization.LocalResourceDirectory, "/", ID));
+                }
+                return _localResourceFile;
+            }
+            set
+            {
+                _localResourceFile = value;
+            }
+        }
+
+        public string LocalizeString(string key)
+        {
+            return Localization.GetString(key, LocalResourceFile);
         }
     }
 }

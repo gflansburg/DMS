@@ -132,6 +132,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.LinkButton btnCancel;
 
         /// <summary>
+        /// lblDocumentID2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDocumentID2;
+
+        /// <summary>
         /// lblDocumentID control.
         /// </summary>
         /// <remarks>
@@ -150,6 +159,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlOwnerDetails;
 
         /// <summary>
+        /// lblOwner2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblOwner2;
+
+        /// <summary>
         /// lblOwner control.
         /// </summary>
         /// <remarks>
@@ -166,6 +184,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlOwnerEdit;
+
+        /// <summary>
+        /// lblOwner3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblOwner3;
 
         /// <summary>
         /// ddOwner2 control.
@@ -195,6 +222,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlDocumentNameEdit;
 
         /// <summary>
+        /// lblDocumentName2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDocumentName2;
+
+        /// <summary>
         /// tbDocumentName control.
         /// </summary>
         /// <remarks>
@@ -220,6 +256,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator valExists;
+
+        /// <summary>
+        /// lblReplacePDFTitle2ToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblReplacePDFTitle2ToggleButton;
 
         /// <summary>
         /// cbReplacePDFTitle2ToggleButton control.
@@ -249,6 +294,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlDocumentDetailsDetails;
 
         /// <summary>
+        /// lblDetails2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDetails2;
+
+        /// <summary>
         /// lblDetails control.
         /// </summary>
         /// <remarks>
@@ -265,6 +319,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlDocumentDetailsEdit;
+
+        /// <summary>
+        /// lblDetails3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDetails3;
 
         /// <summary>
         /// tbDocumentDetails control.
@@ -294,6 +357,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlAdminCommentsDetails;
 
         /// <summary>
+        /// lblAdminComments2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblAdminComments2;
+
+        /// <summary>
         /// lblAdminComments control.
         /// </summary>
         /// <remarks>
@@ -310,6 +382,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlAdminCommentsEdit;
+
+        /// <summary>
+        /// lblAdminComments3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblAdminComments3;
 
         /// <summary>
         /// tbAdminComments control.
@@ -330,6 +411,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlIsPublicDetails;
 
         /// <summary>
+        /// lblIsPublic2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsPublic2;
+
+        /// <summary>
         /// lblIsPublic control.
         /// </summary>
         /// <remarks>
@@ -346,6 +436,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlIsPublicEdit;
+
+        /// <summary>
+        /// lblIsPublic3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsPublic3;
 
         /// <summary>
         /// cbIsPublicToggleButton control.
@@ -375,6 +474,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlActivationDateDetails;
 
         /// <summary>
+        /// lblActivationDate2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblActivationDate2;
+
+        /// <summary>
         /// lblActivationDate control.
         /// </summary>
         /// <remarks>
@@ -391,6 +499,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlActivationDateEdit;
+
+        /// <summary>
+        /// lblActivationDate3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblActivationDate3;
 
         /// <summary>
         /// dtActivation control.
@@ -411,6 +528,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlExpirationDateDetails;
 
         /// <summary>
+        /// lblExpirationDate2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblExpirationDate2;
+
+        /// <summary>
         /// lblExpirationDate control.
         /// </summary>
         /// <remarks>
@@ -427,6 +553,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlExpirationDateEdit;
+
+        /// <summary>
+        /// lblExpirationDate3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblExpirationDate3;
 
         /// <summary>
         /// dtExpiration control.
@@ -456,6 +591,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlUseCategorySecurityRolesDetails;
 
         /// <summary>
+        /// lblUseCategorySecurityRoles2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblUseCategorySecurityRoles2;
+
+        /// <summary>
         /// lblUseCategorySecurityRoles control.
         /// </summary>
         /// <remarks>
@@ -472,6 +616,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlUseCategorySecurityRolesEdit;
+
+        /// <summary>
+        /// lblUseCategorySecurityRoles3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblUseCategorySecurityRoles3;
 
         /// <summary>
         /// cbUseCategorySecurityRolesToggleButton control.
@@ -510,6 +663,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlSecurityRoleDetails;
 
         /// <summary>
+        /// lblSecurityRole2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSecurityRole2;
+
+        /// <summary>
         /// lblSecurityRole control.
         /// </summary>
         /// <remarks>
@@ -526,6 +688,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSecurityRoleEdit;
+
+        /// <summary>
+        /// lblSecurityRole3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblSecurityRole3;
 
         /// <summary>
         /// ddlSecurityRole control.
@@ -564,6 +735,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlSearchableDetails;
 
         /// <summary>
+        /// lblIsSearchable2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsSearchable2;
+
+        /// <summary>
         /// lblIsSearchable control.
         /// </summary>
         /// <remarks>
@@ -580,6 +760,15 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSearchableEdit;
+
+        /// <summary>
+        /// lblIsSearchable3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsSearchable3;
 
         /// <summary>
         /// cbIsSearchableToggleButton control.
@@ -609,6 +798,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlDetails2;
 
         /// <summary>
+        /// lblDateCreated2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDateCreated2;
+
+        /// <summary>
         /// lblDateCreated control.
         /// </summary>
         /// <remarks>
@@ -618,6 +816,15 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Label lblDateCreated;
 
         /// <summary>
+        /// lblDateLastModified2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblDateLastModified2;
+
+        /// <summary>
         /// lblDateLastModified control.
         /// </summary>
         /// <remarks>
@@ -625,6 +832,24 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDateLastModified;
+
+        /// <summary>
+        /// lblIPAddress2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIPAddress2;
+
+        /// <summary>
+        /// lblIPAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblIPAddress;
 
         /// <summary>
         /// pnlBack2 control.

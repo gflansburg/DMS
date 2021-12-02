@@ -132,4 +132,172 @@
   <data name="delAllCommandButton.Text" xml:space="preserve">
     <value>Delete All</value>
   </data>
+  <data name="btnBack.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="btnEdit.Text" xml:space="preserve">
+    <value>Edit Document</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Save Document</value>
+  </data>
+  <data name="lblActivationDate2.Text" xml:space="preserve">
+    <value>Activation Date</value>
+  </data>
+  <data name="lblAdminComments2.Text" xml:space="preserve">
+    <value>Admin Comments</value>
+  </data>
+  <data name="lblDateCreated2.Text" xml:space="preserve">
+    <value>Date Created</value>
+  </data>
+  <data name="lblDateLastModified2.Text" xml:space="preserve">
+    <value>Date Last Modified</value>
+  </data>
+  <data name="lblDetails2.Text" xml:space="preserve">
+    <value>Document Details</value>
+  </data>
+  <data name="lblDocumentID2.Text" xml:space="preserve">
+    <value>Document ID</value>
+  </data>
+  <data name="lblDocumentName2.Text" xml:space="preserve">
+    <value>Document Name</value>
+  </data>
+  <data name="lblExpirationDate2.Text" xml:space="preserve">
+    <value>Expiration Date</value>
+  </data>
+  <data name="lblIPAddress2.Text" xml:space="preserve">
+    <value>IP Address</value>
+  </data>
+  <data name="lblIsPublic2.Help" xml:space="preserve">
+    <value>Public is essentially "Published." Documents not public will be accessible only to you.</value>
+  </data>
+  <data name="lblIsPublic2.Text" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="lblIsSearchable2.Text" xml:space="preserve">
+    <value>Searchable</value>
+  </data>
+  <data name="lblOwner2.Text" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="lblReplacePDFTitle2ToggleButton.Text" xml:space="preserve">
+    <value>Replace PDF Title</value>
+  </data>
+  <data name="lblSecurityRole2.Text" xml:space="preserve">
+    <value>Required Role</value>
+  </data>
+  <data name="lblUseCategorySecurityRoles2.Text" xml:space="preserve">
+    <value>Use Category Security Roles</value>
+  </data>
+  <data name="NotFound.Text" xml:space="preserve">
+    <value>The document you are trying to retrieve is no longer available or you do not have sufficient privileges.</value>
+  </data>
+  <data name="NotFoundHelp.Text" xml:space="preserve">
+    <value>If you reached this page through a bookmarked link or from another website, please use our document search to find a new version of the document you requested.</value>
+  </data>
+  <data name="BasicInfo.Text" xml:space="preserve">
+    <value>Click on the document name link to see the details.</value>
+  </data>
+  <data name="btnAddTag.Text" xml:space="preserve">
+    <value>Add Tag</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnDelete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="btnReloadSecurityRoles.Text" xml:space="preserve">
+    <value>Refresh List</value>
+  </data>
+  <data name="btnSaveChange.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btnSaveFile.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btnSaveLink.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btnSearch.Text" xml:space="preserve">
+    <value>Go!</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChangeOwnership.Text" xml:space="preserve">
+    <value>Change Document Ownership</value>
+  </data>
+  <data name="CurrentOwner.Text" xml:space="preserve">
+    <value>Current Owner</value>
+  </data>
+  <data name="DeleteAll.Text" xml:space="preserve">
+    <value>Deleteing Documents</value>
+  </data>
+  <data name="Deleting.Text" xml:space="preserve">
+    <value>Deleting...</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Files.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="LinkURL.Text" xml:space="preserve">
+    <value>Link URL</value>
+  </data>
+  <data name="LinkURLHelp.Text" xml:space="preserve">
+    <value>Use this link to display the document above.</value>
+  </data>
+  <data name="lnkReload.Text" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="NewDocumentTag.Text" xml:space="preserve">
+    <value>New Document Tag:</value>
+  </data>
+  <data name="NewFile.Text" xml:space="preserve">
+    <value>New File</value>
+  </data>
+  <data name="NewLink.Text" xml:space="preserve">
+    <value>New Link</value>
+  </data>
+  <data name="NewOwner.Text" xml:space="preserve">
+    <value>New Owner</value>
+  </data>
+  <data name="NoDocuments" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No documents found.&lt;/strong&gt;</value>
+  </data>
+  <data name="NoFiles.Text" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No files found.&lt;/strong&gt;</value>
+  </data>
+  <data name="NoHistory.Text" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No history found.&lt;/strong&gt;</value>
+  </data>
+  <data name="NoPackets.Text" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No packets found.&lt;/strong&gt;</value>
+  </data>
+  <data name="Or.Text" xml:space="preserve">
+    <value>OR</value>
+  </data>
+  <data name="Owner.Text" xml:space="preserve">
+    <value>Owner:</value>
+  </data>
+  <data name="PacketListings.Text" xml:space="preserve">
+    <value>Packet Listings</value>
+  </data>
+  <data name="ReplacePDFTitle.Text" xml:space="preserve">
+    <value>Replace PDF Title:</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="WebPageURL.Text" xml:space="preserve">
+    <value>Web Page URL</value>
+  </data>
 </root>

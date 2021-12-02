@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gafware.Modules.DMS {
-    
-    
-    public partial class TagList {
-        
+namespace Gafware.Modules.DMS
+{
+
+
+    public partial class TagList
+    {
+
         /// <summary>
         /// pnlDetails control.
         /// </summary>
@@ -20,7 +22,16 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlDetails;
-        
+
+        /// <summary>
+        /// lblTagName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblTagName;
+
         /// <summary>
         /// tbTagName control.
         /// </summary>
@@ -29,7 +40,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbTagName;
-        
+
         /// <summary>
         /// valTagName control.
         /// </summary>
@@ -38,16 +49,16 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valTagName;
-        
+
         /// <summary>
-        /// btnSubmit control.
+        /// btnSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
-        
+        protected global::System.Web.UI.WebControls.LinkButton btnSave;
+
         /// <summary>
         /// btnCancel control.
         /// </summary>
@@ -56,7 +67,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnCancel;
-        
+
         /// <summary>
         /// pnlGrid control.
         /// </summary>
@@ -65,7 +76,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlGrid;
-        
+
         /// <summary>
         /// filter control.
         /// </summary>
@@ -74,7 +85,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Gafware.Modules.DMS.LetterFilter filter;
-        
+
         /// <summary>
         /// btnBack control.
         /// </summary>
@@ -83,7 +94,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnBack;
-        
+
         /// <summary>
         /// btnAddNewTag control.
         /// </summary>
@@ -92,7 +103,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnAddNewTag;
-        
+
         /// <summary>
         /// gv control.
         /// </summary>
@@ -101,7 +112,7 @@ namespace Gafware.Modules.DMS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gv;
-        
+
         /// <summary>
         /// gvDocuments control.
         /// </summary>

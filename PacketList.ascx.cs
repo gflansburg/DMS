@@ -388,11 +388,11 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    autoOpen: false,");
                 sb.AppendLine("    bgiframe: true,");
                 sb.AppendLine("    modal: true,");
-                sb.AppendLine("    width: 600,");
+                sb.AppendLine("    width: 485,");
                 sb.AppendLine("    height: 300,");
                 sb.AppendLine("    appendTo: 'form',");
                 sb.AppendLine("    dialogClass: 'dialog',");
-                sb.AppendLine("    title: 'Change Packet Ownership',");
+                sb.AppendLine("    title: '" + LocalizeString("ChangeOwnership") + "',");
                 sb.AppendLine("    closeOnEsacpe: true,");
                 sb.AppendLine("    Cancel: function () {");
                 sb.AppendLine("      $(this).dialog('close');");
@@ -451,6 +451,14 @@ namespace Gafware.Modules.DMS
                 preview.Value = "0";
                 if (!IsPostBack)
                 {
+                    btnSave.Text = LocalizeString(btnSave.ID);
+                    btnEditName.Text = LocalizeString(btnEditName.ID);
+                    btnCancel.Text = LocalizeString(btnCancel.ID);
+                    btnAddTag.Text = LocalizeString(btnAddTag.ID);
+                    btnAddDocument.Text = LocalizeString(btnAddDocument.ID);
+                    btnReset.Text = LocalizeString(btnReset.ID);
+                    //changeOwnershipCommandButton.Value = LocalizeString(changeOwnershipCommandButton.ID);
+                    gv.EmptyDataText = LocalizeString("NoDocumentsSelected");
                     gv.PageSize = PageSize;
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                     BindDropDowns();
@@ -824,10 +832,9 @@ namespace Gafware.Modules.DMS
             return SelectedDocuments.Count;
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void btnAddDocument_Click(object sender, EventArgs e)
         {
             Components.Document doc = Components.DocumentController.GetDocument(Convert.ToInt32(ddDocuments.SelectedValue));
-            //Components.Document doc = Components.DocumentController.GetDocument(Convert.ToInt32(hidDocumentId.Value));
             if (doc.DocumentId > 0 && SelectedDocuments.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == doc.DocumentId) == null)
             {
                 SelectedDocuments.Add(new PacketPayload(doc, PacketID, SelectedDocuments.Count + 1));
@@ -836,8 +843,6 @@ namespace Gafware.Modules.DMS
                 SetLinkUrl();
             }
             ddDocuments.SelectedIndex = 0;
-            //hidDocumentId.Value = "0";
-            //tbDocument.Text = string.Empty;
         }
 
         protected void gvPackets_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -1101,7 +1106,7 @@ namespace Gafware.Modules.DMS
             tbName.BackColor = (tbName.Enabled ? System.Drawing.Color.White : System.Drawing.Color.Silver);
         }
 
-        protected void btnSubmit2_Click(object sender, EventArgs e)
+        protected void btnAddTag_Click(object sender, EventArgs e)
         {
             Components.Tag tag = Components.DocumentController.GetTag(Convert.ToInt32(ddTags.SelectedValue));
             if (tag.TagId > 0 && SelectedDocuments.Find(p => p.PayloadType == PayloadType.Tag && p.PacketTag.TagId == tag.TagId) == null)
@@ -1111,9 +1116,7 @@ namespace Gafware.Modules.DMS
                 gvPackets.DataBind();
                 SetLinkUrl();
             }
-            ddDocuments.SelectedIndex = 0;
-            //hidDocumentId.Value = "0";
-            //tbDocument.Text = string.Empty;
+            ddTags.SelectedIndex = 0;
         }
 
         protected void gv_RowDataBound(object sender, GridViewRowEventArgs e)

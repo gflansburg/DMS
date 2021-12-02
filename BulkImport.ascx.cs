@@ -194,6 +194,9 @@ namespace Gafware.Modules.DMS
                 progressBar.Style["background-color"] = "#" + Theme;
                 if (!IsPostBack)
                 {
+                    btnBack.Text = LocalizeString(btnBack.ID);
+                    btnImport.Text = LocalizeString(btnImport.ID);
+                    btnReset.Text = LocalizeString(btnReset.ID);
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                     ddlSecurityRole.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
                     ddlSecurityRole.DataBind();
@@ -206,7 +209,6 @@ namespace Gafware.Modules.DMS
                     ddlSecurityRole.SelectedIndex = ddlSecurityRole.Items.IndexOf(ddlSecurityRole.Items.FindByValue("-1"));
                     ddOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
                     ddOwner.DataBind();
-                    ddOwner.Items.Insert(0, new ListItem("-- Select Owner --", "0"));
                     ddOwner.SelectedIndex = ddOwner.Items.IndexOf(ddOwner.Items.FindByValue(UserId.ToString()));
                 }
             }
@@ -332,7 +334,6 @@ namespace Gafware.Modules.DMS
             ddlSecurityRole.SelectedIndex = ddlSecurityRole.Items.IndexOf(ddlSecurityRole.Items.FindByValue("-1"));
             ddOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddOwner.DataBind();
-            ddOwner.Items.Insert(0, new ListItem("-- Select Owner --", "0"));
             ddOwner.SelectedIndex = ddOwner.Items.IndexOf(ddOwner.Items.FindByValue(UserId.ToString()));
             pnlSeperator.Visible = pnlLevel.Visible = false;
         }

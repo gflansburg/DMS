@@ -12,6 +12,69 @@
     width: 16px;
 }
 
+.dms .dnnFormItem span {
+    vertical-align: middle;
+    min-height: 25px;
+    line-height: 25px;
+    padding: 5px;
+    width: 45%;
+    max-width: 445px;
+}
+
+.dms .dnnFormItem .toggleButton {
+    width: 120px;
+    display: inline-block;
+    position: relative;
+    left: -8px;
+}
+
+.dms .dnnFormItem input[type="text"],
+.dms .dnnFormItem input[type="password"],
+.dms .dnnFormItem input[type="email"],
+.dms .dnnFormItem input[type="tel"],
+.dms .dnnFormItem select,
+.dms .dnnFormItem textarea,
+.dms .dnnFormItem a {
+    margin-top: 5px !important;
+}
+
+.dms .dnnFormItem a.dnnFormHelp {
+    margin-top: 8px !important;
+    margin-right: 4px !important;
+}
+
+.dms .dnnLabel {
+    clear: both;
+    vertical-align: middle;
+    background-color: #DDD;
+    line-height: 25px;
+    min-height: 25px;
+    padding: 5px;
+    width: 200px;
+    float: left;
+}
+
+.dms .dnnLabel label {
+    margin: 0;
+}
+
+.dms .dnnLabel span {
+    font-weight: bold;
+    font-size: 12px;
+    text-align: right;
+    margin-right: 12px;
+}
+
+.dms .dnnTooltip .dnnFormHelpContent, 
+.dms .dnnHelperTip .dnnFormHelpContent {
+    left: -8px;
+}
+
+.dms .dnnLabel span.dnnHelpText {
+    width: auto;
+    max-width: auto;
+}
+
 .dms .LinkPagingSelected {
     min-width:20px;
     background-color:White;
@@ -684,12 +747,18 @@
 .dms a.dmsButton {
     text-decoration: none;
     background-color: #D00;
+    -webkit-box-shadow: #909499 2px 2px 8px !important;
+    box-shadow: #909499 2px 2px 8px !important;
 }
 
 .dms a.dmsButton:hover span,
 .dms input[type="button"].dmsButton:hover
 .dms a.dmsButton:hover {
     background-color: #D00 !important;
+}
+
+.dms a.dmsButton {
+    height: 34px !important;
 }
 
 .dms .dmsButton span {
@@ -700,13 +769,14 @@
 .dms input[type="button"].dmsButton {
     background: #8a8a8a url(Images/dms.png) no-repeat 20px center !important;
     padding-left: 41px;
+    height: 34px !important;
 }
 
 .dms .dmsButton span,
 .dms input[type="button"].dmsButton {
     background-size: 16px !important;
     text-decoration: underline;
-    font-size: 14px;
+    font-size: 12px;
     color: white;
 }
 

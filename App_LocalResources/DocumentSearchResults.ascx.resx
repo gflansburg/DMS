@@ -117,85 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All.Text" xml:space="preserve">
-    <value>All</value>
+  <data name="NoDocumentsFound.Text" xml:space="preserve">
+    <value>No matching document found.</value>
   </data>
-  <data name="BasicSettings.Text" xml:space="preserve">
-    <value>Document and Form Search</value>
+  <data name="NotAvailable.Text" xml:space="preserve">
+    <value>The documents you are trying to retrieve are no longer available.</value>
   </data>
-  <data name="btnSearch.Text" xml:space="preserve">
-    <value>Go!</value>
+  <data name="NotAvailableHelp.Text" xml:space="preserve">
+    <value>If you reached this page through a bookmarked link or from another website, please use our document search to find a new version of the document you requested.</value>
   </data>
-  <data name="BulkImport.Text" xml:space="preserve">
-    <value>Bulk Import</value>
+  <data name="NotProcessed.Text" xml:space="preserve">
+    <value>Your document request could not be processed.</value>
   </data>
-  <data name="bulkImportCommandButton.Text" xml:space="preserve">
-    <value>Bulk Import</value>
+  <data name="Of.Text" xml:space="preserve">
+    <value>of</value>
   </data>
-  <data name="ChooseOne.Text" xml:space="preserve">
-    <value>Choose at least one</value>
+  <data name="Results.Text" xml:space="preserve">
+    <value>Results</value>
   </data>
-  <data name="DocumentList.Text" xml:space="preserve">
-    <value>Document List</value>
+  <data name="ResultsHeader.Text" xml:space="preserve">
+    <value>Document Search Results</value>
   </data>
-  <data name="DocumentSearchTips.Text" xml:space="preserve">
-    <value>Document Search Tips:</value>
+  <data name="Showing.Text" xml:space="preserve">
+    <value>Showing</value>
   </data>
-  <data name="DocumentsWillOpen.Text" xml:space="preserve">
-    <value>Documents will open in a new window.</value>
+  <data name="Thanks.Text" xml:space="preserve">
+    <value>Thanks. We're opening your document.</value>
   </data>
-  <data name="For.Text" xml:space="preserve">
-    <value>for</value>
+  <data name="ThanksInfo.Text" xml:space="preserve">
+    <value>If your document doesn't open automatically after two seconds, click here:</value>
   </data>
-  <data name="LinkCreator.Text" xml:space="preserve">
-    <value>Link Creator</value>
-  </data>
-  <data name="linkCreatorCommandButton.Text" xml:space="preserve">
-    <value>Link Creator</value>
-  </data>
-  <data name="PacketList.Text" xml:space="preserve">
-    <value>Packet List</value>
-  </data>
-  <data name="Searching.Text" xml:space="preserve">
-    <value>Searching</value>
-  </data>
-  <data name="SearchingAllLocations.Text" xml:space="preserve">
-    <value>Searching all locations</value>
-  </data>
-  <data name="SearchingAllLocationsFor.Text" xml:space="preserve">
-    <value>Searching all locations for</value>
-  </data>
-  <data name="SearchTerms.Text" xml:space="preserve">
-    <value>Enter search term(s):</value>
-  </data>
-  <data name="SearchTips.Text" xml:space="preserve">
-    <value>&lt;li&gt;Search by keyword.&lt;/li&gt;&lt;li&gt;Bookmark important completed searches in your web browser.&lt;/li&gt;&lt;li&gt;To view all documents, click "Go!" without typing a keyword.&lt;/li&gt;</value>
-  </data>
-  <data name="Settings.Text" xml:space="preserve">
-    <value>Main Settings</value>
-  </data>
-  <data name="settingsCommandButton.Text" xml:space="preserve">
-    <value>Main Settings</value>
-  </data>
-  <data name="ShowDescriptions.Text" xml:space="preserve">
-    <value>Show Descriptions:</value>
-  </data>
-  <data name="TagList.Text" xml:space="preserve">
-    <value>Tag List</value>
-  </data>
-  <data name="UploadReport.Text" xml:space="preserve">
-    <value>Upload Report</value>
-  </data>
-  <data name="uploadReportCommandButton.Text" xml:space="preserve">
-    <value>Upload Report</value>
-  </data>
-  <data name="viewDocumentsCommandButton.Text" xml:space="preserve">
-    <value>Document List</value>
-  </data>
-  <data name="viewPacketsCommandButton.Text" xml:space="preserve">
-    <value>Packet List</value>
-  </data>
-  <data name="viewTagsCommandButton.Text" xml:space="preserve">
-    <value>Tag List</value>
+  <data name="To.Text" xml:space="preserve">
+    <value>to</value>
   </data>
 </root>

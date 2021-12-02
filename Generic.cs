@@ -1553,5 +1553,347 @@ namespace Gafware.Modules.DMS
                 }
             }
         }
+
+        public static byte[] CreateThumbnail(DotNetNuke.Entities.Portals.PortalInfo portal, string controlPath, System.Drawing.Bitmap img, ref bool isLandscape, ThumbnailMode thumbnailMode = ThumbnailMode.Auto, ThumbnailResize thumbnailResize = ThumbnailResize.Stretch)
+        {
+            byte[] byteImage = null;
+            string templatePortraitFile = MapPath(string.Format("{0}/Images/pdftemplate_portrait.png", controlPath), portal);
+            string templateLandscapeFile = MapPath(string.Format("{0}/Images/pdftemplate_landscape.png", controlPath), portal);
+            // Size of generated thumbnail in pixels
+            int thumbnailWidth = 97;
+            int thumbnailHeight = 128;
+            string templateFile = templatePortraitFile;
+            // Switch between portrait and landscape
+            if (img.Width <= img.Height || thumbnailMode == ThumbnailMode.Portrait)
+            {
+                templateFile = templatePortraitFile;
+                isLandscape = false;
+            }
+            else if (img.Width > img.Height || thumbnailMode == ThumbnailMode.Landscape)
+            {
+                templateFile = templateLandscapeFile;
+                // Swap width and height (little trick not using third temp variable)
+                thumbnailWidth ^= thumbnailHeight;
+                thumbnailHeight = thumbnailWidth ^ thumbnailHeight;
+                thumbnailWidth ^= thumbnailHeight;
+                isLandscape = true;
+            }
+            // Load the template graphic
+            using (Bitmap templateBitmap = new Bitmap(templateFile))
+            {
+                // Create new blank bitmap
+                using (Bitmap thumbnailBitmap = new Bitmap(thumbnailWidth, thumbnailHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+                {
+                    // To overlay the template with the image, we need to set the transparency
+                    templateBitmap.MakeTransparent(Color.Magenta);
+                    using (Graphics thumbnailGraphics = Graphics.FromImage(thumbnailBitmap))
+                    {
+                        thumbnailGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                        thumbnailGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        thumbnailGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                        thumbnailGraphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                        // Draw rendered pdf image to new blank bitmap
+                        if (thumbnailResize == ThumbnailResize.Stretch)
+                        {
+                            thumbnailGraphics.DrawImage(img, new Rectangle(2, 2, thumbnailWidth, thumbnailHeight), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+                        }
+                        else
+                        {
+                            thumbnailGraphics.FillRectangle(Brushes.White, 0, 0, thumbnailWidth, thumbnailHeight);
+                            double ratioX = (double)(thumbnailWidth - 4) / img.Width;
+                            double ratioY = (double)(thumbnailHeight - 4) / img.Height;
+                            double ratio = Math.Min(ratioX, ratioY);
+                            int newWidth = (int)(img.Width * ratio);
+                            int newHeight = (int)(img.Height * ratio);
+                            thumbnailGraphics.DrawImage(img, new Rectangle(2 + (((thumbnailWidth - 4) - newWidth) / 2), 2 + (((thumbnailHeight - 4) - newHeight) / 2), newWidth, newHeight), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+                        }
+                        // Draw template outline over the bitmap (pdf with show through the transparent area)
+                        thumbnailGraphics.DrawImage(templateBitmap, 0, 0);
+                        //to save in database
+                        byteImage = ImageToByteArray(thumbnailBitmap);
+                    }
+                }
+            }
+            return byteImage;
+        }
+
+        public static byte[] CreateThumbnail(DotNetNuke.Entities.Portals.PortalInfo portal, string controlPath, string inputFile, ref bool isLandscape)
+        {
+            try
+            {
+                using (GhostscriptRasterizer rasterizer = new GhostscriptRasterizer())
+                {
+                    rasterizer.CustomSwitches.Add("-dUseCropBox");
+                    rasterizer.CustomSwitches.Add("-c");
+                    rasterizer.CustomSwitches.Add("[/CropBox [24 72 559 794] /PAGES pdfmark");
+                    rasterizer.CustomSwitches.Add("-f");
+                    rasterizer.Open(inputFile);
+                    var pageNumber = 1;
+                    using (Bitmap img = new Bitmap(rasterizer.GetPage(10, pageNumber)))
+                    {
+                        if (!IsImageBlank(img))
+                        {
+                            return CreateThumbnail(portal, controlPath, img, ref isLandscape);
+                        }
+                    }
+                    rasterizer.Close();
+                    rasterizer.CustomSwitches.Clear();
+                    rasterizer.Open(inputFile);
+                    using (Bitmap img = new Bitmap(rasterizer.GetPage(10, pageNumber)))
+                    {
+                        using (Bitmap img2 = new Bitmap((img.Width > img.Height ? (img.Height * 83) / 109 : img.Width), img.Height, PixelFormat.Format24bppRgb))
+                        {
+                            using (Graphics g = Graphics.FromImage(img2))
+                            {
+                                g.DrawImage(img, 0, 0);
+                            }
+                            return CreateThumbnail(portal, controlPath, img2, ref isLandscape);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return null;
+        }
+
+        public static void CreateThumbnail(DotNetNuke.Entities.Portals.PortalInfo portal, string controlPath, Components.DMSFile file)
+        {
+            file.FileVersion.LoadThumbnail();
+            if (file.FileVersion.Thumbnail == null || file.FileVersion.Thumbnail.Length == 0)
+            {
+                bool isLandscape = false;
+                if (file != null && file.FileType.Equals("pdf", StringComparison.OrdinalIgnoreCase) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        string tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file.Filename));
+                        using (var fs = System.IO.File.Create(tempPdf))
+                        {
+                            fs.Write(file.FileVersion.Contents, 0, file.FileVersion.Contents.Length);
+                            fs.Close();
+                        }
+                        file.FileVersion.Thumbnail = CreateThumbnail(portal, controlPath, tempPdf, ref isLandscape);
+                        if (file.FileVersion.Thumbnail != null)
+                        {
+                            file.FileVersion.SaveThumbnail(isLandscape);
+                        }
+                        if (System.IO.File.Exists(tempPdf))
+                        {
+                            System.IO.File.Delete(tempPdf);
+                        }
+                    }
+                }
+                else if (file != null && (file.FileType.Equals("png", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("jpg", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("gif", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("bmp", StringComparison.OrdinalIgnoreCase)) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        using (MemoryStream ms = new MemoryStream(file.FileVersion.Contents))
+                        {
+                            using (Bitmap bmp = new Bitmap(ms))
+                            {
+                                file.FileVersion.Thumbnail = CreateThumbnail(portal, controlPath, bmp, ref isLandscape);
+                                if (file.FileVersion.Thumbnail != null)
+                                {
+                                    file.FileVersion.SaveThumbnail(isLandscape);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (file != null && (file.FileType.Equals("doc", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("docx", StringComparison.OrdinalIgnoreCase)) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        string tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file.Filename));
+                        try
+                        {
+                            using (MemoryStream docStream = new MemoryStream(file.FileVersion.Contents))
+                            {
+                                using (Spire.Doc.Document doc = new Spire.Doc.Document(docStream))
+                                {
+                                    doc.SaveToFile(tempPdf, Spire.Doc.FileFormat.PDF);
+                                    doc.Close();
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        if (System.IO.File.Exists(tempPdf))
+                        {
+                            file.FileVersion.Thumbnail = CreateThumbnail(portal, controlPath, tempPdf, ref isLandscape);
+                            if (file.FileVersion.Thumbnail != null)
+                            {
+                                file.FileVersion.SaveThumbnail(isLandscape);
+                            }
+                            System.IO.File.Delete(tempPdf);
+                        }
+                    }
+                }
+                else if (file != null && (file.FileType.Equals("xls", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("xlsx", StringComparison.OrdinalIgnoreCase)) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        string tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file.Filename));
+                        try
+                        {
+                            using (MemoryStream xlsStream = new MemoryStream(file.FileVersion.Contents))
+                            {
+                                using (Spire.Xls.Workbook workbook = new Spire.Xls.Workbook())
+                                {
+                                    //workbook.LoadFromFile(tempExcel);
+                                    workbook.LoadFromStream(xlsStream);
+                                    workbook.ConverterSetting.SheetFitToPage = true;
+                                    workbook.SaveToFile(tempPdf, Spire.Xls.FileFormat.PDF);
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        if (System.IO.File.Exists(tempPdf))
+                        {
+                            file.FileVersion.Thumbnail = CreateThumbnail(portal, controlPath, tempPdf, ref isLandscape);
+                            if (file.FileVersion.Thumbnail != null)
+                            {
+                                file.FileVersion.SaveThumbnail(isLandscape);
+                            }
+                            System.IO.File.Delete(tempPdf);
+                        }
+                    }
+                }
+                /*else if (file != null && (file.FileType.Equals("ppt", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("pptx", StringComparison.OrdinalIgnoreCase)) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        string tempPdf = String.Format("{0}{1}_temp.pdf", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file.Filename));
+                        try
+                        {
+                            using (MemoryStream presentationStream = new MemoryStream(file.FileVersion.Contents))
+                            {
+                                using (Spire.Presentation.Presentation presentation = new Spire.Presentation.Presentation(presentationStream, Spire.Presentation.FileFormat.Auto))
+                                {
+                                    presentation.SaveToFile(tempPdf, Spire.Presentation.FileFormat.PDF);
+                                }
+                            }
+                        }
+                        catch(Exception)
+                        {
+                        }
+                        if (System.IO.File.Exists(tempPdf))
+                        {
+                            file.FileVersion.Thumbnail = CreateThumbnail(tempPdf);
+                            if (file.FileVersion.Thumbnail != null)
+                            {
+                                file.FileVersion.SaveThumbnail();
+                            }
+                            System.IO.File.Delete(tempPdf);
+                        }
+                    }
+                }*/
+                else if (file != null && file.FileType.Equals("mp3", StringComparison.OrdinalIgnoreCase) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        try
+                        {
+                            using (MemoryStream mp3Stream = new MemoryStream(file.FileVersion.Contents))
+                            {
+                                using (Id3.Mp3 mp3 = new Id3.Mp3(mp3Stream))
+                                {
+                                    if (mp3 != null)
+                                    {
+                                        Id3.Id3Tag tag = mp3.GetTag(Id3.Id3TagFamily.Version2X);
+                                        if (tag != null)
+                                        {
+                                            if (tag.Pictures.Count > 0)
+                                            {
+                                                using (MemoryStream ms = new MemoryStream(tag.Pictures[0].PictureData))
+                                                {
+                                                    using (Bitmap bmp = new Bitmap(ms))
+                                                    {
+                                                        file.FileVersion.Thumbnail = CreateThumbnail(portal, controlPath, bmp, ref isLandscape, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                                                        if (file.FileVersion.Thumbnail != null)
+                                                        {
+                                                            file.FileVersion.SaveThumbnail(isLandscape);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+                else if (file != null && (file.FileType.Equals("mp4", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("mov", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("wmv", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("avi", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("wma", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("ppt", StringComparison.OrdinalIgnoreCase) || file.FileType.Equals("pptx", StringComparison.OrdinalIgnoreCase)) && file.Status.StatusId == 1)
+                {
+                    if (file.FileVersion.Contents == null || file.FileVersion.Contents.Length == 0)
+                    {
+                        file.FileVersion.LoadContents();
+                    }
+                    if (file.FileVersion.Contents != null && file.FileVersion.Contents.Length > 0)
+                    {
+                        string tempFile = String.Format("{0}{1}_temp{2}", System.IO.Path.GetTempPath(), System.IO.Path.GetFileNameWithoutExtension(file.Filename), System.IO.Path.GetExtension(file.Filename));
+                        using (var fs = System.IO.File.Create(tempFile))
+                        {
+                            fs.Write(file.FileVersion.Contents, 0, file.FileVersion.Contents.Length);
+                            fs.Close();
+                        }
+                        using (Microsoft.WindowsAPICodePack.Shell.ShellFile shellFile = Microsoft.WindowsAPICodePack.Shell.ShellFile.FromFilePath(tempFile))
+                        {
+                            Bitmap bmp = new Bitmap(shellFile.Thumbnail.LargeBitmap);
+                            bmp.MakeTransparent();
+                            file.FileVersion.Thumbnail = CreateThumbnail(portal, controlPath, bmp, ref isLandscape, ThumbnailMode.Auto, ThumbnailResize.MaintainAspectRatio);
+                            if (file.FileVersion.Thumbnail != null)
+                            {
+                                file.FileVersion.SaveThumbnail(isLandscape);
+                            }
+                            if (System.IO.File.Exists(tempFile))
+                            {
+                                System.IO.File.Delete(tempFile);
+                            }
+                        }
+                    }
+                }
+            }
+            file.FileVersion.Contents = null;
+            file.FileVersion.Thumbnail = null;
+        }
+
+        public static string MapPath(string virtualPath, DotNetNuke.Entities.Portals.PortalInfo portal)
+        {
+            return (HttpContext.Current.Request != null ? HttpContext.Current.Request.MapPath(virtualPath) : virtualPath.Replace("/", "\\").Replace("~", portal.HomeDirectoryMapPath).Replace("\\\\", "\\"));
+        }
     }
 }

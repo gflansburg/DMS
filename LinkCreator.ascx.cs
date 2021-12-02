@@ -282,6 +282,11 @@ namespace Gafware.Modules.DMS
                 //btnReset.OnClientClick = "$('#" + tbCustomHeader.ClientID + "').val(''); return true;";
                 if (!IsPostBack)
                 {
+                    btnAddDocument.Text = LocalizeString(btnAddDocument.ID);
+                    btnBack.Text = LocalizeString(btnBack.ID);
+                    btnPreview.Text = LocalizeString(btnPreview.ID);
+                    btnReset.Text = LocalizeString(btnReset.ID);
+                    gv.EmptyDataText = LocalizeString("NoDocuments");
                     pnlIncludePrivate.Visible = IsAdmin();
                     gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                     litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
@@ -513,10 +518,9 @@ namespace Gafware.Modules.DMS
             base.Response.Redirect(_navigationManager.NavigateURL(), true);
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void btnAddDocument_Click(object sender, EventArgs e)
         {
             Document doc = DocumentController.GetDocument(Convert.ToInt32(ddDocuments.SelectedValue));
-            //Document doc = DocumentController.GetDocument(Convert.ToInt32(hidDocumentId.Value));
             if (doc.DocumentId > 0 && SelectedDocuments.Find(p => p.DocumentId == doc.DocumentId) == null)
             {
                 SelectedDocuments.Add(new PacketDocument(doc, 0));
@@ -525,8 +529,6 @@ namespace Gafware.Modules.DMS
                 SetLinkUrl();
             }
             ddDocuments.SelectedIndex = 0;
-            //tbDocument.Text = string.Empty;
-            //hidDocumentId.Value = "0";
         }
 
         protected void gv_RowDeleting(object sender, GridViewDeleteEventArgs e)

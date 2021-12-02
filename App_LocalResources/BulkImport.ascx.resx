@@ -123,4 +123,70 @@
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Bulk Import</value>
   </data>
+  <data name="lblActivation.Help" xml:space="preserve">
+    <value>Date the document becomes active. Leave blank for immidiately.</value>
+  </data>
+  <data name="lblActivation.Text" xml:space="preserve">
+    <value>Activation Date</value>
+  </data>
+  <data name="lblExpiration.Help" xml:space="preserve">
+    <value>Date the document expires. Leave blank for never.</value>
+  </data>
+  <data name="lblExpiration.Text" xml:space="preserve">
+    <value>Expiration Date</value>
+  </data>
+  <data name="lblFilePath.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="lblIsPublic.Text" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="lblIsSearchable.Text" xml:space="preserve">
+    <value>Searchable</value>
+  </data>
+  <data name="lblLevel.Help" xml:space="preserve">
+    <value>Folder/Sub-Folder level to start concatanting the folder names.</value>
+  </data>
+  <data name="lblLevel.Text" xml:space="preserve">
+    <value>Start Level</value>
+  </data>
+  <data name="lblOwner.Text" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="lblPrependSubFolderName.Text" xml:space="preserve">
+    <value>Prepend Folder/Sub-Folder Name</value>
+  </data>
+  <data name="lblReplacePDFTitle.Text" xml:space="preserve">
+    <value>Replace PDF Title</value>
+  </data>
+  <data name="lblSecurityRole.Text" xml:space="preserve">
+    <value>Required Security Role</value>
+  </data>
+  <data name="lblSeperator.Help" xml:space="preserve">
+    <value>How to concatanate the Folder/Sub-Folder name(s) with the Document Name.</value>
+  </data>
+  <data name="lblSeperator.Text" xml:space="preserve">
+    <value>Seperator</value>
+  </data>
+  <data name="lblSubFolderIsDocumentName.Text" xml:space="preserve">
+    <value>Folder/Sub-Folder(s) is/are Document Name(s)</value>
+  </data>
+  <data name="lblSubFolderIsTag.Text" xml:space="preserve">
+    <value>Folder/Sub-Folder(s) is/are Tag(s)</value>
+  </data>
+  <data name="lblUseCategorySecurityRoles.Text" xml:space="preserve">
+    <value>Use Category Security Roles</value>
+  </data>
+  <data name="BasicInfo.Text" xml:space="preserve">
+    <value>Physical path to files must be on the local server or file share with applicable "read" permissions for the Identity used in the DNN App Pool.</value>
+  </data>
+  <data name="btnImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="btnReset.Text" xml:space="preserve">
+    <value>Reset Page</value>
+  </data>
+  <data name="Importing.Text" xml:space="preserve">
+    <value>Importing...</value>
+  </data>
 </root>

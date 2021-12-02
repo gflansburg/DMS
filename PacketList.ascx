@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PacketList.ascx.cs" Inherits="Gafware.Modules.DMS.PacketList" %>
+<%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
 <%@ Register Src="~/desktopmodules/Gafware/DMS/LetterFilter.ascx" TagPrefix="uc1" TagName="LetterFilter" %>
 <%@ Register Src="~/desktopmodules/Gafware/DMS/DocumentSearchResults.ascx" TagPrefix="uc1" TagName="DocumentSearchResults" %>
 <style type="text/css">
@@ -24,118 +25,64 @@
         <h3><%=LocalizeString("EditSettings")%></h3>
         <br />
         <asp:Panel ID="pnlNotFound" runat="server" Visible="false">
-            <h3>The packet you are trying to retrieve is no longer available.</h3><br />
-            If you reached this page through a bookmarked link or from another website, please use our document search to find a new version of the document you requested.
+            <h3><%= LocalizeString("PacketError") %></h3><br />
+            <%= LocalizeString("PacketErrorInfo") %>
         </asp:Panel>
         <asp:Panel ID="pnlFound" runat="server">
-            <span class="FormText">
-                <span class="RequiredField">*</span> Required field.
-            </span>
-            <br /><br />
-            <div class="RecordDisplay">
-                <label for="<%= tbName.ClientID %>" >
-                    <span class="FieldName"><span class="RequiredField">*</span> Name:</span>
-                    <span class="FieldValue">
-                        <asp:TextBox ID="tbName" runat="server" MaxLength="50" Width="675px" autofocus ValidationGroup="PacketEditor"></asp:TextBox>
-                        <asp:LinkButton ID="btnEditName" CssClass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Edit Name" Width="100px" OnClick="btnEditName_Click" style="line-height: 20px;" />
-                        <asp:HiddenField ID="hidCancelRename" runat="server" />
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <div class="RecordDisplay">
-                <label for="<%= tbDescription.ClientID %>" >
-                    <span class="FieldName"><span class="RequiredField">*</span> Packet Description</span>
-                    <span class="FieldValue">
-                        <asp:TextBox ID="tbDescription" runat="server" TextMode="MultiLine" Rows="1" Width="790px"  ValidationGroup="PacketEditor"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="tbDescription" Display="Dynamic" ErrorMessage="<br />Description is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <div class="RecordDisplay">
-                <label for="<%= cbShowPacketDescription.ClientID %>" >
-                    <span class="FieldName"><span class="RequiredField">*</span> Show Packet Description:</span>
-                    <span class="FieldValue">
-                        <div class="toggleButton" id="cbShowPacketDescriptionToggleButton" runat="server" style="width: 120px; display: inline-block;">
-                            <label for='<%= cbShowPacketDescription.ClientID %>'><asp:CheckBox ID="cbShowPacketDescription" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
-                        </div>
-        <%--                <asp:RadioButtonList ID="rblShowPacketDescription" runat="server" RepeatDirection="Horizontal" ValidationGroup="PacketEditor" AutoPostBack="true" OnSelectedIndexChanged="rblShowDescription_SelectedIndexChanged" RepeatLayout="Table" CellPadding="7">
-                            <asp:ListItem Text="Yes" Value="1" Selected="True" />
-                            <asp:ListItem Text="No" Value="0" />
-                        </asp:RadioButtonList>--%>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <asp:Panel ID="Panel1" runat="server">
-                <div class="RecordDisplay">
-                    <label for="<%= tbAdminComments.ClientID %>" >
-                        <span class="FieldName">Admin Comments</span>
-                        <span class="FieldValue">
-                            <asp:TextBox ID="tbAdminComments" runat="server" TextMode="MultiLine" Rows="1" Width="790px"  ValidationGroup="PacketEditor"></asp:TextBox>
-                        </span>
-                    </label>
+            <fieldset>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblName" runat="server" ControlName="tbName" Suffix=":" /> 
+                    <asp:TextBox ID="tbName" runat="server" MaxLength="50" Width="100%" autofocus ValidationGroup="PacketEditor"></asp:TextBox>
+                    <asp:LinkButton ID="btnEditName" CssClass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Edit Name" OnClick="btnEditName_Click" style="line-height: 20px;" />
+                    <asp:HiddenField ID="hidCancelRename" runat="server" />
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
                 </div>
-                <br style="clear: both;" />
-            </asp:Panel>
-            <div class="RecordDisplay">
-                <label for="<%= tbCustomHeader.ClientID %>" >
-                    <span class="FieldName">Custom Header:</span>
-                    <span class="FieldValue">
-                        <asp:TextBox ID="tbCustomHeader" MaxLength="100" runat="server" Width="790px" ValidationGroup="PacketEditor"></asp:TextBox>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <div class="RecordDisplay">
-                <label for="<%= cbShowDescription.ClientID %>" >
-                    <span class="FieldName"><span class="RequiredField">*</span> Show Doc Descriptions:</span>
-                    <span class="FieldValue">
-
-                        <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 120px; display: inline-block;">
-                            <label for='<%= cbShowDescription.ClientID %>'><asp:CheckBox ID="cbShowDescription" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
-                        </div>
-        <%--                <asp:RadioButtonList ID="rblShowDescription" runat="server" RepeatDirection="Horizontal" ValidationGroup="PacketEditor" AutoPostBack="true" OnSelectedIndexChanged="rblShowDescription_SelectedIndexChanged" RepeatLayout="Table" CellPadding="7">
-                            <asp:ListItem Text="Yes" Value="1" Selected="True" />
-                            <asp:ListItem Text="No" Value="0" />
-                        </asp:RadioButtonList>--%>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <div class="RecordDisplay">
-                <label for="<%= ddDocuments.ClientID %>" >
-                    <span class="FieldName"><span class="RequiredField">*</span> Available Documents:</span>
-                    <span class="FieldValue">
-                        <asp:DropDownList ID="ddDocuments" runat="server" Width="675px" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="AddDocument"></asp:DropDownList>
-<%--                        <asp:HiddenField ID="hidDocumentId" runat="server" Value="0" />
-                        <asp:TextBox ID="tbDocument" Width="675px" runat="server" ValidationGroup="AddDocument"></asp:TextBox>--%>
-                        <asp:LinkButton ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Add Document" ValidationGroup="AddDocument" Width="128px"  CssClass="dnnSecondaryAction" style="line-height: 20px;" />
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="AddDocument"></asp:RequiredFieldValidator>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <div class="RecordDisplay">
-                <label for="<%= ddTags.ClientID %>" >
-                    <span class="FieldName"><span class="RequiredField">*</span> Available Tags:</span>
-                    <span class="FieldValue">
-                        <asp:DropDownList ID="ddTags" runat="server" Width="675px" DataTextField="TagName" DataValueField="TagID" ValidationGroup="AddTag"></asp:DropDownList>
-                        <asp:LinkButton ID="btnSubmit2" runat="server" OnClick="btnSubmit2_Click" Text="Add Tag" ValidationGroup="AddTag" Width="128px" CssClass="dnnSecondaryAction" style="line-height: 20px;" />
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="ddTags" InitialValue="0" Display="Dynamic" ErrorMessage=" Tag Required" Font-Bold="true" ForeColor="Red" ValidationGroup="AddTag"></asp:RequiredFieldValidator>
-                    </span>
-                </label>
-            </div>
-            <br style="clear: both;" />
-            <span style="font-weight: bold">Documents Selected</span><br />
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblDescription" runat="server" ControlName="tbDescription" Suffix=":" /> 
+                    <asp:TextBox ID="tbDescription" runat="server" TextMode="MultiLine" Rows="1" Width="100%" ValidationGroup="PacketEditor"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="tbDescription" Display="Dynamic" ErrorMessage="<br />Description is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblShowPacketDescription" runat="server" ControlName="cbShowPacketDescription" Suffix=":" /> 
+                    <div class="toggleButton" id="cbShowPacketDescriptionToggleButton" runat="server">
+                        <label for='<%= cbShowPacketDescription.ClientID %>'><asp:CheckBox ID="cbShowPacketDescription" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
+                    </div>
+                </div>
+                <asp:Panel ID="pnlAdminComments" runat="server">
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblAdminComments" runat="server" ControlName="tbAdminComments" Suffix=":" /> 
+                        <asp:TextBox ID="tbAdminComments" runat="server" TextMode="MultiLine" Width="100%" Rows="1" ValidationGroup="PacketEditor"></asp:TextBox>
+                    </div>
+                </asp:Panel>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblCustomHeader" runat="server" ControlName="tbCustomHeader" Suffix=":" /> 
+                    <asp:TextBox ID="tbCustomHeader" MaxLength="100" Width="100%" runat="server" ValidationGroup="PacketEditor"></asp:TextBox>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblShowDescription" runat="server" ControlName="cbShowDescription" Suffix=":" /> 
+                    <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server">
+                        <label for='<%= cbShowDescription.ClientID %>'><asp:CheckBox ID="cbShowDescription" AutoPostBack="false" runat="server" Checked="true" /><span></span></label>
+                    </div>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblDocuments" runat="server" ControlName="ddDocuments" Suffix=":" /> 
+                    <asp:DropDownList ID="ddDocuments" runat="server" Width="100%" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="AddDocument"></asp:DropDownList>
+                    <asp:LinkButton ID="btnAddDocument" runat="server" OnClick="btnAddDocument_Click" Text="Add Document" ValidationGroup="AddDocument" CssClass="dnnSecondaryAction" style="line-height: 20px;" />
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="AddDocument"></asp:RequiredFieldValidator>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblTags" runat="server" ControlName="ddTags" Suffix=":" /> 
+                    <asp:DropDownList ID="ddTags" runat="server" Width="100%" DataTextField="TagName" DataValueField="TagID" ValidationGroup="AddTag"></asp:DropDownList>
+                    <asp:LinkButton ID="btnAddTag" runat="server" OnClick="btnAddTag_Click" Text="Add Tag" ValidationGroup="AddTag" CssClass="dnnSecondaryAction" style="line-height: 20px;" />
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="ddTags" InitialValue="0" Display="Dynamic" ErrorMessage=" Tag Required" Font-Bold="true" ForeColor="Red" ValidationGroup="AddTag"></asp:RequiredFieldValidator>
+                </div>
+            </fieldset>
+            <span style="font-weight: bold"><%= LocalizeString("DocumentsSelected") %></span><br />
             <div style="background-color: #EEEEEE; border: 1px solid #999; text-align: left; margin: 5px 1px 5px 0px;">
                 <asp:GridView ID="gvPackets" runat="server" BorderWidth="1px" AutoGenerateColumns="False" AllowPaging="False" AllowSorting="False" 
                     RowStyle-BackColor="#eeeeee" RowStyle-Height="18" Width="100%" GridLines="None" ShowHeader="false"
                     Font-Names="Arial" Font-Size="Small" CellPadding="3" CellSpacing="3" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" 
-                    ForeColor="Black" OnRowDeleting="gvPackets_RowDeleting" OnRowDataBound="gvPackets_RowDataBound"
-                    EmptyDataText="No documents selected.">
+                    ForeColor="Black" OnRowDeleting="gvPackets_RowDeleting" OnRowDataBound="gvPackets_RowDataBound">
                     <RowStyle VerticalAlign="Top" Font-Names="Arial" Font-Size="Small" BackColor="#F7F7F7" />
                     <FooterStyle Font-Names="Arial" Font-Size="X-Small" BackColor="White" />
                     <HeaderStyle BackColor="#666666" HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False" Font-Size="Small" Font-Names="Arial" ForeColor="White" Font-Bold="False" Font-Underline="false" />
@@ -174,15 +121,19 @@
                     <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" />
                 </asp:GridView>
             </div>
-            <asp:LinkButton ID="btnReset" runat="server" Text="Reset Page" CausesValidation="false" OnClick="btnReset_Click" CssClass="dnnSecondaryAction" />
-            <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" OnClick="btnCancel_Click" CssClass="dnnSecondaryAction" />
-            <asp:LinkButton ID="btnSave" runat="server" Text="Save" ValidationGroup="PacketEditor" OnClick="btnSave_Click" CssClass="dnnPrimaryAction" />
+            <hr />
+            <div style="float:right;margin-bottom:10px;">
+                <asp:LinkButton ID="btnReset" runat="server" Text="Reset Page" CausesValidation="false" OnClick="btnReset_Click" CssClass="dnnSecondaryAction" />
+                <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CausesValidation="false" OnClick="btnCancel_Click" CssClass="dnnSecondaryAction" />
+                <asp:LinkButton ID="btnSave" runat="server" Text="Save" ValidationGroup="PacketEditor" OnClick="btnSave_Click" CssClass="dnnPrimaryAction" />
+            </div>
+            <br style="clear: both" />
             <asp:HiddenField ID="hidFileCount" runat="server" Value="0" />
             <asp:LinkButton ID="lnkCustomHeaderPostback" runat="server" style="display: none;" CausesValidation="false" OnClick="lnkCustomHeaderPostback_Click"></asp:LinkButton>
             <asp:HiddenField ID="hidBaseUrl" runat="server" Value="" />
             <asp:Panel ID="pnlLink" runat="server" Visible="false">
-                <p><strong>Link URL</strong> <span>Copy and paste the following link to show a listing of the documents selected above.</span></p>
-                <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" Width="98%" Rows="3" runat="server"></asp:TextBox>
+                <p><strong><%= LocalizeString("LinkURL") %></strong> <span><%= LocalizeString("BasicHelp") %></span></p>
+                <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" Width="100%" Rows="3" runat="server"></asp:TextBox>
             </asp:Panel>
         </asp:Panel>
     </asp:Panel>
@@ -190,7 +141,7 @@
         <h3><%=LocalizeString("BasicSettings")%></h3>
         <div style="float: left; text-align: left; margin: 0px 0px 5px 1px;">
             <uc1:LetterFilter runat="server" OnClick="letterFilter_Click" ID="letterFilter" />
-            <asp:Panel ID="pnlOwner" runat="server" style="margin-bottom: 10px;"><span style="vertical-align: middle;">Owner:</span> <asp:DropDownList ID="ddOwner" DataValueField="UserId" DataTextField="DisplayName" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddOwner_SelectedIndexChanged" style="margin-bottom: 0 !important; vertical-align: middle;"></asp:DropDownList></asp:Panel>
+            <asp:Panel ID="pnlOwner" runat="server" style="margin-bottom: 10px;"><span style="vertical-align: middle;"><%= LocalizeString("Owner") %></span> <asp:DropDownList ID="ddOwner" DataValueField="UserId" DataTextField="DisplayName" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddOwner_SelectedIndexChanged" style="margin-bottom: 0 !important; vertical-align: middle;"></asp:DropDownList></asp:Panel>
         </div>
         <div style="float:right;margin-bottom:10px;" id="pnlAdmin" runat="server">
             <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
@@ -249,22 +200,18 @@
     <div id="changeOwnershipDialog" class="nocontent">
         <div id="changeOwnership-content" class="dialog-content">
             <div class="dms body_padding">
-                <div class="RecordDisplay">
-                    <span class="FieldNamePopup">Current Owner</span>
-                    <span class="FieldValuePopup">
+                <fieldset>
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
                         <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
-                    </span>
-                </div>
-                <br style="clear: both;" />
-                <div class="RecordDisplay">
-                    <span class="FieldNamePopup">New Owner</span>
-                    <span class="FieldValuePopup">
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
                         <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
-                    </span>
-                </div>
-                <br style="clear: both;" />
+                    </div>
+                </fieldset>
                 <div style="float: right; text-align: right; margin: 5px 1px 0px 0px;">
                     <a class="dnnSecondaryAction" id="btnCancelChange" runat="server">Cancel</a>
                     <asp:LinkButton ID="btnSaveChange" runat="server" Text="Save" ValidationGroup="NewOwnership" CssClass="dnnPrimaryAction" OnClick="btnSaveChange_Click" />

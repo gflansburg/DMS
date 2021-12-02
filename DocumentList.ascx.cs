@@ -773,12 +773,12 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    autoOpen: false,");
                 sb.AppendLine("    bgiframe: true,");
                 sb.AppendLine("    modal: true,");
-                sb.AppendLine("    width: 600,");
+                sb.AppendLine("    width: 485,");
                 sb.AppendLine("    height: 300,");
                 sb.AppendLine("    appendTo: 'form',");
                 sb.AppendLine("    dialogClass: 'dialog',");
                 sb.AppendLine("     resizable: false,");
-                sb.AppendLine("    title: 'Change Document Ownership',");
+                sb.AppendLine("    title: '" + LocalizeString("ChangeOwnership") + "',");
                 sb.AppendLine("    closeOnEsacpe: true,");
                 sb.AppendLine("    Cancel: function () {");
                 sb.AppendLine("      $(this).dialog('close');");
@@ -858,7 +858,28 @@ namespace Gafware.Modules.DMS
                 List<Category> categories = DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (!IsPostBack)
                 {
+                    btnAddTag.Text = LocalizeString(btnAddTag.ID);
+                    btnBack.Text = LocalizeString(btnBack.ID);
+                    btnBack2.Text = LocalizeString(btnBack.ID);
+                    btnCancel.Text = LocalizeString(btnCancel.ID);
+                    btnCancel2.Text = LocalizeString(btnCancel.ID);
+                    btnDelete.Text = LocalizeString(btnDelete.ID);
+                    btnEdit.Text = LocalizeString(btnEdit.ID);
+                    btnReloadSecurityRoles.Text = LocalizeString(btnReloadSecurityRoles.ID);
+                    btnSave.Text = LocalizeString(btnSave.ID);
+                    btnSave2.Text = LocalizeString(btnSave.ID);
+                    btnSaveLink.Text = LocalizeString(btnSaveLink.ID);
+                    btnSaveChange.Text = LocalizeString(btnSaveChange.ID);
+                    btnSaveFile.Text = LocalizeString(btnSaveFile.ID);
+                    btnSearch.Text = LocalizeString(btnSearch.ID);
+                    lnkReload.Text = LocalizeString(lnkReload.ID);
+                    btnCancelChange.Text = LocalizeString("Cancel");
+                    gvPackets.EmptyDataText = LocalizeString("NoPackets");
+                    gvFiles.EmptyDataText = LocalizeString("NoFiles");
+                    gvHistory.EmptyDataText = LocalizeString("NoHistory");
+                    gv.EmptyDataText = LocalizeString("NoDocuments");
                     gv.PageSize = PageSize;
+                    deleteAllWindow.Title = deleteAllWindow.ToolTip = LocalizeString("DeleteAll");
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     lblCategory.Text = CategoryName;
                     //pnlDetails.Style.Add("display", "none");
