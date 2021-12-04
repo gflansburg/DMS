@@ -17,7 +17,7 @@
         display: none;
     }
     .dms .dnnFormItem .toggleButton {
-        top: 0;
+        top: -2px !important;
         left: -8px !important;
     }
 </style>
@@ -36,14 +36,14 @@
             <fieldset>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblName" runat="server" ControlName="tbName" Suffix=":" /> 
-                    <asp:TextBox ID="tbName" runat="server" MaxLength="50" Width="100%" autofocus ValidationGroup="PacketEditor"></asp:TextBox>
+                    <asp:TextBox ID="tbName" runat="server" MaxLength="50" autofocus ValidationGroup="PacketEditor" style="width: calc(100% - 305px);"></asp:TextBox>
                     <asp:LinkButton ID="btnEditName" CssClass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Edit Name" OnClick="btnEditName_Click" style="line-height: 20px;" />
                     <asp:HiddenField ID="hidCancelRename" runat="server" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblDescription" runat="server" ControlName="tbDescription" Suffix=":" /> 
-                    <asp:TextBox ID="tbDescription" runat="server" TextMode="MultiLine" Rows="1" Width="100%" ValidationGroup="PacketEditor"></asp:TextBox>
+                    <asp:TextBox ID="tbDescription" runat="server" TextMode="MultiLine" Rows="1" ValidationGroup="PacketEditor"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="tbDescription" Display="Dynamic" ErrorMessage="<br />Description is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
                 </div>
                 <div class="dnnFormItem">
@@ -55,12 +55,12 @@
                 <asp:Panel ID="pnlAdminComments" runat="server">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblAdminComments" runat="server" ControlName="tbAdminComments" Suffix=":" /> 
-                        <asp:TextBox ID="tbAdminComments" runat="server" TextMode="MultiLine" Width="100%" Rows="1" ValidationGroup="PacketEditor"></asp:TextBox>
+                        <asp:TextBox ID="tbAdminComments" runat="server" TextMode="MultiLine" Rows="1" ValidationGroup="PacketEditor"></asp:TextBox>
                     </div>
                 </asp:Panel>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblCustomHeader" runat="server" ControlName="tbCustomHeader" Suffix=":" /> 
-                    <asp:TextBox ID="tbCustomHeader" MaxLength="100" Width="100%" runat="server" ValidationGroup="PacketEditor"></asp:TextBox>
+                    <asp:TextBox ID="tbCustomHeader" MaxLength="100" runat="server" ValidationGroup="PacketEditor"></asp:TextBox>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblShowDescription" runat="server" ControlName="cbShowDescription" Suffix=":" /> 
@@ -70,19 +70,19 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblDocuments" runat="server" ControlName="ddDocuments" Suffix=":" /> 
-                    <asp:DropDownList ID="ddDocuments" runat="server" Width="100%" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="AddDocument"></asp:DropDownList>
+                    <asp:DropDownList ID="ddDocuments" runat="server" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="AddDocument" style="width: calc(100% - 327px);"></asp:DropDownList>
                     <asp:LinkButton ID="btnAddDocument" runat="server" OnClick="btnAddDocument_Click" Text="Add Document" ValidationGroup="AddDocument" CssClass="dnnSecondaryAction" style="line-height: 20px;" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="AddDocument"></asp:RequiredFieldValidator>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblTags" runat="server" ControlName="ddTags" Suffix=":" /> 
-                    <asp:DropDownList ID="ddTags" runat="server" Width="100%" DataTextField="TagName" DataValueField="TagID" ValidationGroup="AddTag"></asp:DropDownList>
+                    <asp:DropDownList ID="ddTags" runat="server" DataTextField="TagName" DataValueField="TagID" ValidationGroup="AddTag" style="width: calc(100% - 284px);"></asp:DropDownList>
                     <asp:LinkButton ID="btnAddTag" runat="server" OnClick="btnAddTag_Click" Text="Add Tag" ValidationGroup="AddTag" CssClass="dnnSecondaryAction" style="line-height: 20px;" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="ddTags" InitialValue="0" Display="Dynamic" ErrorMessage=" Tag Required" Font-Bold="true" ForeColor="Red" ValidationGroup="AddTag"></asp:RequiredFieldValidator>
                 </div>
             </fieldset>
             <span style="font-weight: bold"><%= LocalizeString("DocumentsSelected") %></span><br />
-            <div style="background-color: #EEEEEE; border: 1px solid #999; text-align: left; margin: 5px 1px 5px 0px;">
+            <div style="background-color: #EEEEEE; border: 1px solid #999; text-align: left; margin: 5px 1px 5px 0px; width: 100%; overflow: auto;">
                 <asp:GridView ID="gvPackets" runat="server" BorderWidth="1px" AutoGenerateColumns="False" AllowPaging="False" AllowSorting="False" 
                     RowStyle-BackColor="#eeeeee" RowStyle-Height="18" Width="100%" GridLines="None" ShowHeader="false"
                     Font-Names="Arial" Font-Size="Small" CellPadding="3" CellSpacing="3" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" 
@@ -113,7 +113,7 @@
                         </asp:TemplateField> 
                         <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="24px" ItemStyle-VerticalAlign="Middle"> 
                             <ItemTemplate>
-                                <asp:ImageButton ID="deleteButton" runat="server" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Remove Document" ToolTip="Remove Document" CommandName="Delete" Text="Delete" CausesValidation="false" onMouseOut="MM_swapImgRestore()" OnClientClick='<%# (PayloadType)Eval("PayloadType") == PayloadType.Document ? "return confirm(\"Are you sure you wish to remove this document?\")" : "return confirm(\"Are you sure you wish to remove this tag?\")" %>' /> 
+                                <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete" CommandName="Delete" CausesValidation="false" OnClientClick='<%# GetConfirmDeletePayload((PayloadType)Eval("PayloadType")) %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete" ToolTip="Delete" onMouseOut="MM_swapImgRestore()" /></asp:LinkButton>
                             </ItemTemplate> 
                         </asp:TemplateField> 
                         <asp:TemplateField ItemStyle-CssClass="dragHandle" ItemStyle-Width="20px" ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Middle"> 
@@ -153,53 +153,55 @@
             <input type="button" id="changeOwnershipCommandButton" runat="server" value="Change Ownership" class="secondaryButton dmsButton" resourcekey="changeOwnershipCommandButton" />
         </div>
         <br style="clear: both" />
-        <asp:GridView ID="gv" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
-            EmptyDataText="<br /><strong>No packets found.</strong>" CssClass="filesList"
-            ForeColor="Black" GridLines="None" DataKeyNames="PacketId" BackColor="White" BorderColor="#DEDFDE" PageSize="20" 
-            BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="True" Width="100%" OnDataBound="gv_DataBound"
-            OnPageIndexChanging="gv_PageIndexChanging" ShowHeader="True" OnSorting="gv_Sorting" PagerSettings-PageButtonCount="5"
-            OnRowDeleting="gv_RowDeleting" OnRowEditing="gv_RowEditing" OnRowDataBound="gv_RowDataBound">
-		    <Columns>
-                <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="100px"> 
-                    <ItemTemplate>
-                        <asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Packet" CommandName="Edit" Text="Edit" /> 
-                        &nbsp;
-                        <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Packet" CommandName="Delete" Text="Delete" OnClientClick="if (confirm('Are you sure you want to delete this packet?')) { return true; } return false;" /> 
-                    </ItemTemplate> 
-                </asp:TemplateField> 
-                <asp:TemplateField HeaderText="ID <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="PacketId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
-                    <ItemTemplate>
-                        <%# Eval("PacketId") %>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Packet Name <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Packet Name' />" HeaderStyle-Wrap="false" SortExpression="Name">
-                    <ItemTemplate>
-                        <asp:LinkButton ID="lnkPreview" runat="server" CommandName="Preview" CommandArgument='<%# Eval("PacketId") %>' OnCommand="lnkPreview_Command"><%# Eval("Name") %></asp:LinkButton>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Comments <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Comments' />" HeaderStyle-Wrap="false" SortExpression="AdminComments" ItemStyle-Width="300px">
-                    <ItemTemplate>
-                        <%# GetComments(Eval("AdminComments").ToString()) %>
-                    </ItemTemplate>
-                </asp:TemplateField>
-		    </Columns>
-		    <FooterStyle BackColor="White" />
-		    <RowStyle BackColor="#F7F7F7" VerticalAlign="Top" Font-Names="Arial" Font-Size="14px" />
-		    <EditRowStyle VerticalAlign="Top" />
-		    <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
-		    <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
-            <PagerTemplate>
-                <table>
-                    <tr>
-                        <td>
-                            <asp:PlaceHolder ID="ph" runat="server"></asp:PlaceHolder>
-                        </td>
-                    </tr>
-                </table>
-            </PagerTemplate>		            
-		    <HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
-		    <AlternatingRowStyle BackColor="#D0D0D0" VerticalAlign="Top" />
-	    </asp:GridView>
+		<div style="width: 100%; overflow: auto;">
+			<asp:GridView ID="gv" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
+				EmptyDataText="<br /><strong>No packets found.</strong>" CssClass="filesList"
+				ForeColor="Black" GridLines="None" DataKeyNames="PacketId" BackColor="White" BorderColor="#DEDFDE" PageSize="20" 
+				BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="True" Width="100%" OnDataBound="gv_DataBound"
+				OnPageIndexChanging="gv_PageIndexChanging" ShowHeader="True" OnSorting="gv_Sorting" PagerSettings-PageButtonCount="5"
+				OnRowDeleting="gv_RowDeleting" OnRowEditing="gv_RowEditing" OnRowDataBound="gv_RowDataBound">
+				<Columns>
+					<asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="100px"> 
+						<ItemTemplate>
+							<asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Packet" CommandName="Edit" Text="Edit" /> 
+							&nbsp;
+							<asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Packet" CommandName="Delete" Text="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("Name").ToString()) + "\");  return false;" %>' /> 
+						</ItemTemplate> 
+					</asp:TemplateField> 
+					<asp:TemplateField HeaderText="ID <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="PacketId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
+						<ItemTemplate>
+							<%# Eval("PacketId") %>
+						</ItemTemplate>
+					</asp:TemplateField>
+					<asp:TemplateField HeaderText="Packet Name <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Packet Name' />" HeaderStyle-Wrap="false" SortExpression="Name">
+						<ItemTemplate>
+							<asp:LinkButton ID="lnkPreview" runat="server" CommandName="Preview" CommandArgument='<%# Eval("PacketId") %>' OnCommand="lnkPreview_Command"><%# Eval("Name") %></asp:LinkButton>
+						</ItemTemplate>
+					</asp:TemplateField>
+					<asp:TemplateField HeaderText="Comments <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Comments' />" HeaderStyle-Wrap="false" SortExpression="AdminComments" ItemStyle-Width="300px">
+						<ItemTemplate>
+							<%# GetComments(Eval("AdminComments").ToString()) %>
+						</ItemTemplate>
+					</asp:TemplateField>
+				</Columns>
+				<FooterStyle BackColor="White" />
+				<RowStyle BackColor="#F7F7F7" VerticalAlign="Top" Font-Names="Arial" Font-Size="14px" />
+				<EditRowStyle VerticalAlign="Top" />
+				<SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
+				<PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+				<PagerTemplate>
+					<table>
+						<tr>
+							<td>
+								<asp:PlaceHolder ID="ph" runat="server"></asp:PlaceHolder>
+							</td>
+						</tr>
+					</table>
+				</PagerTemplate>		            
+				<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
+				<AlternatingRowStyle BackColor="#D0D0D0" VerticalAlign="Top" />
+			</asp:GridView>
+		</div>
     </asp:Panel>
     <div id="changeOwnershipDialog" class="nocontent">
         <div id="changeOwnership-content" class="dialog-content">
@@ -207,12 +209,12 @@
                 <fieldset>
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID"></asp:DropDownList>
+                        <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
+                        <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
                     </div>
                 </fieldset>

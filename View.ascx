@@ -35,7 +35,7 @@
                     <div style="width: 100%;">
                         <span class="SearchText"><strong><%= LocalizeString("SearchTerms") %></strong> </span>
                         <br style="clear: none" />
-                        <asp:TextBox ID="tbKeywords" runat="server" style="min-width: 300px; width: calc(100% - 150px);" autofocus placeholder="Search Terms ..."></asp:TextBox>
+                        <asp:TextBox ID="tbKeywords" runat="server" style="min-width: 300px; width: calc(100% - 110px);" autofocus placeholder="Search Terms ..."></asp:TextBox>
                         <asp:LinkButton Width="100px" CssClass="dnnPrimaryAction" ID="btnSearch" runat="server" Text="Go!" OnClick="btnSearch_Click" ValidationGroup="Search" style="margin-left: 5px;" />
                     </div>
                     <asp:Panel ID="pnlInstructions" runat="server" style="text-align: center">
@@ -43,7 +43,7 @@
                         <asp:Label ID="lblInstructions" runat="server" Text='To view all documents, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>
                     </asp:Panel>
                 </div>
-                <div style="display: inline">
+                <div style="display: inline; padding: 5px;">
                     <div style="display: inline-block" id="pnlCategory" runat="server">
                         <span class="SearchText"><strong><asp:Label ID="lblCategory" runat="server" Text="Category"></asp:Label>:</strong></span><br style="clear: none"/> 
                         <asp:DropDownList ID="ddCategory" runat="server" DataTextField="CategoryName" DataValueField="CategoryId" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
@@ -55,7 +55,7 @@
                             <span class="SearchText"><strong><%= LocalizeString("ShowDescriptions") %></strong></span>&nbsp;
                         </div>
                         <div style="display: inline-block">
-                            <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 120px">
+                            <div class="toggleButton" id="cbShowDescriptionToggleButton" runat="server" style="width: 110px;">
                                 <label><asp:CheckBox ID="cbShowDescription" AutoPostBack="true" Checked="true" runat="server" OnCheckedChanged="cbShowDescription_CheckedChanged" /><span></span></label>
                             </div>
                         </div>

@@ -2046,6 +2046,8 @@
     <Content Include="GetDocuments.ascx" />
     <EmbeddedResource Include="AjaxControls\ModalUpdateProgress.js" />
     <EmbeddedResource Include="AjaxControls\ProgressBar.js" />
+    <Content Include="Scripts\jquery-confirm.css" />
+    <Content Include="Scripts\jquery-confirm.js" />
     <Content Include="Scripts\jquery.auto-complete.css" />
     <Content Include="Scripts\jquery.auto-complete.js" />
     <Content Include="Scripts\jquery.blockUI.js" />

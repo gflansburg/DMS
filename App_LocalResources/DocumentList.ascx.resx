@@ -231,7 +231,7 @@
   <data name="lblCurrentOwner.Text" xml:space="preserve">
     <value>Current Owner</value>
   </data>
-  <data name="DeleteAll.Text" xml:space="preserve">
+  <data name="DeletingAll.Text" xml:space="preserve">
     <value>Deleteing Documents</value>
   </data>
   <data name="Deleting.Text" xml:space="preserve">
@@ -344,5 +344,35 @@
   </data>
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="ConfirmDelete.Text" xml:space="preserve">
+    <value>Are you sure you want to delete '{0}'?</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteAll.Text" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
+  <data name="DeleteFile.Text" xml:space="preserve">
+    <value>Delete File</value>
+  </data>
+  <data name="DeleteLink.Text" xml:space="preserve">
+    <value>Delete Link</value>
+  </data>
+  <data name="ConfirmDeleteAll.Text" xml:space="preserve">
+    <value>Are you sure you wish to delete all the documents in this repository?</value>
+  </data>
+  <data name="ConfirmDeleteFile.Text" xml:space="preserve">
+    <value>Are you sure you want to this</value>
+  </data>
+  <data name="ConfirmDeleteTag.Text" xml:space="preserve">
+    <value>Are you sure you wish to delete this tag?</value>
+  </data>
+  <data name="DeleteTag.Text" xml:space="preserve">
+    <value>Delete Tag</value>
+  </data>
+  <data name="History.Text" xml:space="preserve">
+    <value>History</value>
   </data>
 </root>

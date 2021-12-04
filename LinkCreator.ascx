@@ -32,7 +32,7 @@
     <fieldset>
         <div class="dnnFormItem">
             <dnn:Label ID="lblCustomHeader" runat="server" ControlName="tbCustomHeader" Suffix=":" /> 
-            <asp:TextBox ID="tbCustomHeader" runat="server" Width="100%" autofocus ValidationGroup="LinkCreator"></asp:TextBox>
+            <asp:TextBox ID="tbCustomHeader" runat="server" autofocus ValidationGroup="LinkCreator"></asp:TextBox>
         </div>
         <asp:Panel ID="pnlIncludePrivate" runat="server" Visible="false">
             <div class="dnnFormItem">
@@ -50,7 +50,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblDocuments" runat="server" ControlName="ddDocuments" Suffix=":" /> 
-            <asp:DropDownList ID="ddDocuments" runat="server" Width="100%" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="LinkCreator"></asp:DropDownList>
+            <asp:DropDownList ID="ddDocuments" runat="server" style="width: calc(100% - 330px);" DataTextField="DocumentName" DataValueField="DocumentID" ValidationGroup="LinkCreator"></asp:DropDownList>
             <asp:LinkButton ID="btnAddDocument" runat="server" OnClick="btnAddDocument_Click" Text="Add Document" ValidationGroup="LinkCreator" CssClass="dnnPrimaryAction" style="line-height: 20px;" />
             <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddDocuments" InitialValue="0" Display="Dynamic" ErrorMessage=" Document Required" Font-Bold="true" ForeColor="Red" ValidationGroup="LinkCreator"></asp:RequiredFieldValidator>
         </div>

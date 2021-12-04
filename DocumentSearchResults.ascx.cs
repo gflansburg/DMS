@@ -344,7 +344,6 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("    data: { q: strQueryString, pid: " + PortalId.ToString() + " },");
             sb.AppendLine("    async: true,");
             sb.AppendLine("    success: function () {");
-            sb.AppendLine("      //alert(\"Data Saved: \" + msg);");
             sb.AppendLine("    }");
             sb.AppendLine("  });");
             sb.AppendLine("}");

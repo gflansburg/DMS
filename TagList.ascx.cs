@@ -117,6 +117,30 @@ namespace Gafware.Modules.DMS
 
         protected void Page_PreRender(object sender, EventArgs e)
         {
+            System.Web.UI.HtmlControls.HtmlGenericControl scriptConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptJS");
+            if (scriptConfirm == null)
+            {
+                scriptConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("script")
+                {
+                    ID = "JQueryConfirmScriptJS"
+                };
+                scriptConfirm.Attributes.Add("language", "javascript");
+                scriptConfirm.Attributes.Add("type", "text/javascript");
+                scriptConfirm.Attributes.Add("src", ControlPath + "Scripts/jquery-confirm.js");
+                this.Page.Header.Controls.Add(scriptConfirm);
+            }
+            System.Web.UI.HtmlControls.HtmlGenericControl cssConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptCSS");
+            if (cssConfirm == null)
+            {
+                cssConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("link")
+                {
+                    ID = "JQueryConfirmScriptCSS"
+                };
+                cssConfirm.Attributes.Add("type", "text/css");
+                cssConfirm.Attributes.Add("rel", "stylesheet");
+                cssConfirm.Attributes.Add("href", ControlPath + "Scripts/jquery-confirm.css");
+                this.Page.Header.Controls.Add(cssConfirm);
+            }
             System.Web.UI.HtmlControls.HtmlGenericControl script2 = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptBlockUI");
             if (script2 == null)
             {
@@ -180,6 +204,33 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("  initTagListJavascript();");
                 sb.AppendLine("});");
                 sb.AppendLine("var dateFormatOptions = { day: 'numeric', month: 'numeric', year: 'numeric' };");
+                sb.AppendLine("function confirmDelete(control, tagName, documentCount) {");
+                sb.AppendLine("  $.confirm({");
+                sb.AppendLine("    title: \"" + LocalizeString("Delete") + " '\" + tagName + \"'\",");
+                sb.AppendLine("    content: (\"" + LocalizeString("ConfirmDelete") + "\").replaceAll('{0}', tagName),");
+                sb.AppendLine("    buttons: {");
+                sb.AppendLine("      yes: function() {");
+                sb.AppendLine("        if(documentCount === 0) {");
+                sb.AppendLine("          eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("        } else {");
+                sb.AppendLine("          $.confirm({");
+                sb.AppendLine("            title: \"" + LocalizeString("Delete") + " '\" + tagName + \"'\",");
+                sb.AppendLine("            content: (\"" + LocalizeString("ConfirmReallyDelete") + "\").replaceAll('{0}', tagName),");
+                sb.AppendLine("            buttons: {");
+                sb.AppendLine("              yes: function() {");
+                sb.AppendLine("                eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("              },");
+                sb.AppendLine("              no: function() {");
+                sb.AppendLine("              }");
+                sb.AppendLine("            }");
+                sb.AppendLine("          });");
+                sb.AppendLine("        }");
+                sb.AppendLine("      },");
+                sb.AppendLine("      no: function() {");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
                 sb.AppendLine("function MyEndRequest(sender, args) {");
                 sb.AppendLine("  initTagListJavascript();");
                 sb.AppendLine("  hideBlockingScreen();");
@@ -578,12 +629,6 @@ namespace Gafware.Modules.DMS
             Generic.ApplyPaging(gv);
         }
 
-        protected string GetDeleteJavascript(int documentCount)
-        {
-            //return "if (confirm(\"Are you sure you want to delete this tag?\")) { " + (documentCount == 0 ? "return true;" : "alert(\"Tags cannot be deleted until the tag is no longer associated with any documents.  Delete all document-tag associations first.\");  return false;") + " } return false;";
-            return "if (confirm(\"Are you sure you want to delete this tag?\")) { " + (documentCount == 0 ? "return true;" : "return confirm('This tag is associated with documents.  Are you sure you still want to delete this tag?');") + " } return false;";
-        }
-
         private void BindData()
         {
             Components.Tag tag = Components.DocumentController.GetTag(TagID);
@@ -645,6 +690,11 @@ namespace Gafware.Modules.DMS
             {
                 lnk.ForeColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
             }
+        }
+
+        protected string JSEncode(string text)
+        {
+            return Generic.JSEncode(text);
         }
     }
 }

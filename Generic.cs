@@ -779,6 +779,16 @@ namespace Gafware.Modules.DMS
             return ToggleButtonCssString("No", "Yes", new Unit("100px"), String.Empty, System.Drawing.Color.Blue);
         }
 
+        public static string ToggleButtonCssString(string offText, string onText)
+        {
+            return ToggleButtonCssString(offText, onText, new Unit("100px"), String.Empty, System.Drawing.Color.Blue);
+        }
+
+        public static string ToggleButtonCssString(string offText, string onText, System.Drawing.Color backColor)
+        {
+            return ToggleButtonCssString(offText, onText, new Unit("100px"), String.Empty, backColor);
+        }
+
         public static string ToggleButtonCssString(System.Drawing.Color backColor)
         {
             return ToggleButtonCssString("No", "Yes", new Unit("100px"), String.Empty, backColor);

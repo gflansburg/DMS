@@ -172,12 +172,13 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("    var autoCompleteBox = $find('" + tbTags.ClientID + "');");
             sb.AppendLine("    var count = autoCompleteBox.get_entries().get_count();");
             sb.AppendLine("    if(count < 2) {");
-            sb.AppendLine("      alert('" + LocalizeString("OneTagError") + "');");
+            sb.AppendLine("      $.alert({ title: 'Tag Error', content: '" + LocalizeString("OneTagError") + "' });");
+            //sb.AppendLine("      alert('" + LocalizeString("OneTagError") + "');");
             sb.AppendLine("      eventArgs.set_cancel(true);");
             sb.AppendLine("    } else {");
             sb.AppendLine("      var hid = document.getElementById('" + hidTagToRemove.ClientID + "');");
             sb.AppendLine("      hid.value = eventArgs.get_entry().get_text();");
-            sb.AppendLine("      setTimeout(function() { " + Page.ClientScript.GetPostBackEventReference(lnkRemoveTag, String.Empty) + "; }, 10);");
+            sb.AppendLine("      " + Page.ClientScript.GetPostBackEventReference(lnkRemoveTag, String.Empty) + ";");
             sb.AppendLine("    }");
             sb.AppendLine("  } else {");
             sb.AppendLine("    eventArgs.set_cancel(true);");
@@ -263,6 +264,65 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("function MyDocControlEndRequest(sender, args) {");
             sb.AppendLine("  initDocumentControlJavascript();");
             sb.AppendLine("  hideBlockingScreen();");
+            sb.AppendLine("}");
+            sb.AppendLine("function tbTags_EntryAdded(sender, eventArgs) {");
+            sb.AppendLine("  $telerik.$(eventArgs.get_entry().get_token()).find('a').attr(\"title\", \"" + LocalizeString("DeleteTag") + "\");");
+            sb.AppendLine("}");
+            sb.AppendLine("function tbTags_EntryRemoving(sender, eventArgs) {");
+            sb.AppendLine("  eventArgs.set_cancel(true);");
+            sb.AppendLine("  var tag = eventArgs.get_entry().get_text();");
+            sb.AppendLine("  $.confirm({");
+            sb.AppendLine("    title: '" + LocalizeString("DeleteTag") + "',");
+            sb.AppendLine("    content: '" + LocalizeString("ConfirmDeleteTag") + "',");
+            sb.AppendLine("    buttons: {");
+            sb.AppendLine("      yes: function() {");
+            sb.AppendLine("         $('#" + hidTagToRemove.ClientID + "').val(tag);");
+            sb.AppendLine("         " + Page.ClientScript.GetPostBackEventReference(lnkRemoveTag, String.Empty) + ";");
+            sb.AppendLine("      },");
+            sb.AppendLine("      no: function() {");
+            sb.AppendLine("      }");
+            sb.AppendLine("    }");
+            sb.AppendLine("  });");
+            sb.AppendLine("  return false;");
+            sb.AppendLine("}");
+            sb.AppendLine("function confirmDeleteAll(control) {");
+            sb.AppendLine("  $.confirm({");
+            sb.AppendLine("    title: '" + LocalizeString("DeleteAll") + "',");
+            sb.AppendLine("    content: '" + LocalizeString("ConfirmDeleteAll") + "',");
+            sb.AppendLine("    buttons: {");
+            sb.AppendLine("      yes: function() {");
+            sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+            sb.AppendLine("      },");
+            sb.AppendLine("      no: function() {");
+            sb.AppendLine("      }");
+            sb.AppendLine("    }");
+            sb.AppendLine("  });");
+            sb.AppendLine("}");
+            sb.AppendLine("function confirmDeleteFile(control, fileType) {");
+            sb.AppendLine("  $.confirm({");
+            sb.AppendLine("    title: (fileType === 'url' ? \"" + LocalizeString("DeleteLink") + "\" : \"" + LocalizeString("DeleteFile") + "\"),");
+            sb.AppendLine("    content: \"" + LocalizeString("ConfirmDeleteFile") + " \" + (fileType === 'url' ? \"" + LocalizeString("DeleteLink") + "\" : \"" + LocalizeString("DeleteFile") + "\") + \"?\",");
+            sb.AppendLine("    buttons: {");
+            sb.AppendLine("      yes: function() {");
+            sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+            sb.AppendLine("      },");
+            sb.AppendLine("      no: function() {");
+            sb.AppendLine("      }");
+            sb.AppendLine("    }");
+            sb.AppendLine("  });");
+            sb.AppendLine("}");
+            sb.AppendLine("function confirmDelete(control, docName) {");
+            sb.AppendLine("  $.confirm({");
+            sb.AppendLine("    title: \"" + LocalizeString("Delete") + " '\" + docName + \"'\",");
+            sb.AppendLine("    content: (\"" + LocalizeString("ConfirmDelete") + "\").replaceAll('{0}', docName),");
+            sb.AppendLine("    buttons: {");
+            sb.AppendLine("      yes: function() {");
+            sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+            sb.AppendLine("      },");
+            sb.AppendLine("      no: function() {");
+            sb.AppendLine("      }");
+            sb.AppendLine("    }");
+            sb.AppendLine("  });");
             sb.AppendLine("}");
             sb.AppendLine("function editVersion(a) {");
             sb.AppendLine("  var ary = a.text.split('.');");
@@ -567,6 +627,30 @@ namespace Gafware.Modules.DMS
 
         protected void Page_PreRender(object sender, EventArgs e)
         {
+            System.Web.UI.HtmlControls.HtmlGenericControl scriptConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptJS");
+            if (scriptConfirm == null)
+            {
+                scriptConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("script")
+                {
+                    ID = "JQueryConfirmScriptJS"
+                };
+                scriptConfirm.Attributes.Add("language", "javascript");
+                scriptConfirm.Attributes.Add("type", "text/javascript");
+                scriptConfirm.Attributes.Add("src", ControlPath + "Scripts/jquery-confirm.js");
+                this.Page.Header.Controls.Add(scriptConfirm);
+            }
+            System.Web.UI.HtmlControls.HtmlGenericControl cssConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptCSS");
+            if (cssConfirm == null)
+            {
+                cssConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("link")
+                {
+                    ID = "JQueryConfirmScriptCSS"
+                };
+                cssConfirm.Attributes.Add("type", "text/css");
+                cssConfirm.Attributes.Add("rel", "stylesheet");
+                cssConfirm.Attributes.Add("href", ControlPath + "Scripts/jquery-confirm.css");
+                this.Page.Header.Controls.Add(cssConfirm);
+            }
             System.Web.UI.HtmlControls.HtmlGenericControl script = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptSortElements");
             if (script == null)
             {
@@ -611,7 +695,7 @@ namespace Gafware.Modules.DMS
                     ID = "ComponentCSSDocumentControl"
                 };
                 css.Attributes.Add("type", "text/css");
-                css.InnerHtml = Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + Generic.ToggleButtonCssString("Inactive", "Active", new Unit("120px"), ".itemStatus", System.Drawing.ColorTranslator.FromHtml("#" + Theme));
+                css.InnerHtml = Generic.ToggleButtonCssString(LocalizeString("No"), LocalizeString("Yes"), new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + Generic.ToggleButtonCssString("Inactive", "Active", new Unit("120px"), ".itemStatus", System.Drawing.ColorTranslator.FromHtml("#" + Theme));
                 this.Page.Header.Controls.Add(css);
             }
             System.Web.UI.HtmlControls.HtmlGenericControl css2 = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentStyleAutoComplete");
@@ -711,7 +795,8 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    $('#" + progressBar.ClientID + "').width($('#progress').text());");
                 sb.AppendLine("    doPolling($('#" + hidProcessName.ClientID + "').val());");
                 sb.AppendLine("  } else if ($('#" + hidFileDeleteStatus.ClientID + "').val() === 'Finished') {");
-                sb.AppendLine("    $(\"<div title='Bulk Import'><div style='padding: 10px; text-align: center;'>\" + $('#" + hidFilesDeleted.ClientID + "').val() + \" Document(s) Deleted.</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
+                sb.AppendLine("    $.alert({ title: '" + LocalizeString("DeleteAll") + "', content: $('#" + hidFilesDeleted.ClientID + "').val() + ' Document(s) Deleted.' });");
+                //sb.AppendLine("    $(\"<div title='Delete All'><div style='padding: 10px; text-align: center;'>\" + $('#" + hidFilesDeleted.ClientID + "').val() + \" Document(s) Deleted.</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
                 sb.AppendLine("    $('#" + hidFileDeleteStatus.ClientID + "').val('Idle');");
                 sb.AppendLine("  }");
                 sb.AppendLine("}");
@@ -879,7 +964,7 @@ namespace Gafware.Modules.DMS
                     gvHistory.EmptyDataText = LocalizeString("NoHistory");
                     gv.EmptyDataText = LocalizeString("NoDocuments");
                     gv.PageSize = PageSize;
-                    deleteAllWindow.Title = deleteAllWindow.ToolTip = LocalizeString("DeleteAll");
+                    deleteAllWindow.Title = deleteAllWindow.ToolTip = LocalizeString("DeletingAll");
                     searchBox.Style["background"] = string.Format("url({0}Images/results-background-{1}.jpg) no-repeat", ControlPath, Theme);
                     lblCategory.Text = CategoryName;
                     //pnlDetails.Style.Add("display", "none");
@@ -1215,6 +1300,7 @@ namespace Gafware.Modules.DMS
                 lblDetails.Text = !String.IsNullOrEmpty(doc.DocumentDetails) ? doc.DocumentDetails : "&nbsp;";
                 lblDocumentID.Text = doc.DocumentId.ToString();
                 lblDocumentName.Text = !String.IsNullOrEmpty(doc.DocumentName) ? doc.DocumentName : (DocumentID == 0 && ViewMode == ViewMode.Edit ? LocalizeString("NewDocument") : "&nbsp;");
+                btnDelete.OnClientClick = "confirmDelete(this, \"" + JSEncode(lblDocumentName.Text) + "\");  return false;";
                 lblExpirationDate.Text = doc.ExpirationDate.HasValue ? doc.ExpirationDate.Value.ToString("MM/dd/yyyy") : "&nbsp;";
                 //lblIPAddress.Text = !String.IsNullOrEmpty(doc.IPAddress) ? doc.IPAddress : "&nbsp;";
                 lblIsSearchable.Text = LocalizeString(doc.IsSearchable ? "Yes" : "No");
@@ -1453,7 +1539,7 @@ namespace Gafware.Modules.DMS
                 if (!HasTag(tbTag.Text))
                 {
                     tbTags.Entries.Add(new Telerik.Web.UI.AutoCompleteBoxEntry(tbTag.Text));
-                    AddTag(tbTag.Text, false);
+                    AddTag(tbTag.Text);
                 }
             }
             else if (ddTags.SelectedIndex > 0)
@@ -1468,7 +1554,7 @@ namespace Gafware.Modules.DMS
             tbTag.Text = String.Empty;
         }
 
-        private void AddTag(string tagName, bool setFocus)
+        private void AddTag(string tagName)
         {
             List<Components.DocumentTag> tags = Components.DocumentController.GetAllTagsForDocument(DocumentID);
             Components.DocumentTag docTag = tags.Find(p => p.Tag.TagName.Equals(tagName, StringComparison.OrdinalIgnoreCase));
@@ -1501,7 +1587,6 @@ namespace Gafware.Modules.DMS
                 {
                     tbTags.Entries.Add(new Telerik.Web.UI.AutoCompleteBoxEntry(tag2.Tag.TagName));
                 }
-                //TelerikAjaxUtility.GetCurrentRadAjaxManager().ResponseScripts.Add("$(\"#" + pnlSaveMessage.ClientID + "\").show(); " + (setFocus ? "setCaretAtEnd(document.GetElementById('" + tbTags.ClientID + "')); " : String.Empty ) + "setTimeout(function() { $(\"#" + pnlSaveMessage.ClientID + "\").fadeOut(\"slow\", function () { $(\"#" + pnlSaveMessage.ClientID + "\").hide(); }); }, 2000);");
                 pnlFiles.Visible = (DocumentID != 0 /*&& tags.Count > 0*/);
             }
         }
@@ -1547,7 +1632,7 @@ namespace Gafware.Modules.DMS
 
         protected void tbTags_EntryAdded(object sender, Telerik.Web.UI.AutoCompleteEntryEventArgs e)
         {
-            AddTag(e.Entry.Text, false);
+            AddTag(e.Entry.Text);
         }
 
         protected void tbTags_EntryRemoved(object sender, Telerik.Web.UI.AutoCompleteEntryEventArgs e)
@@ -1579,12 +1664,12 @@ namespace Gafware.Modules.DMS
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 Components.DMSFile file = (Components.DMSFile)e.Row.DataItem;
-                ImageButton btn = (ImageButton)e.Row.FindControl("btnDelete");
+                LinkButton btn = (LinkButton)e.Row.FindControl("btnDelete");
                 if (btn != null)
                 {
                     btn.Attributes.Add("onMouseOver", "MM_swapImage('" + btn.ClientID + "','','" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "',1)");
                 }
-                ImageButton historyButton = (ImageButton)e.Row.FindControl("historyButton");
+                LinkButton historyButton = (LinkButton)e.Row.FindControl("historyButton");
                 if (historyButton != null)
                 {
                     historyButton.Attributes.Add("onMouseOver", "MM_swapImage('" + historyButton.ClientID + "','','" + ResolveUrl(ControlPath + "Images/Icons/HistoryIcon2.gif") + "',1)");
@@ -2016,7 +2101,7 @@ namespace Gafware.Modules.DMS
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                ImageButton btn = (ImageButton)e.Row.FindControl("btnDelete");
+                LinkButton btn = (LinkButton)e.Row.FindControl("btnDelete");
                 if (btn != null)
                 {
                     btn.Attributes.Add("onMouseOver", "MM_swapImage('" + btn.ClientID + "','','" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "',1)");
@@ -2194,6 +2279,11 @@ namespace Gafware.Modules.DMS
         protected void btnBack2_Click(object sender, EventArgs e)
         {
             btnBack_Click(sender, e);
+        }
+
+        protected string JSEncode(string text)
+        {
+            return Generic.JSEncode(text);
         }
     }
 }

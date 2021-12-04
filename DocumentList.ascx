@@ -17,7 +17,7 @@
         display: none;
     }
     .dms .dnnFormItem .toggleButton {
-        top: 0;
+        top: -2px !important;
         left: -8px !important;
     }
 </style>
@@ -35,7 +35,7 @@
             </div>
             <div id="pnlControl" runat="server" style="float: right; text-align: right; margin: 0px 1px 5px 0px;">
                 <asp:Panel ID="pnlDetails3" runat="server">
-                    <asp:LinkButton ID="btnEdit" runat="server" Text="Edit Document" OnClick="btnEdit_Click" CausesValidation="false" CssClass="dnnPrimaryAction" /> <asp:LinkButton ID="btnDelete" runat="server" Text="Delete Document" CssClass="dnnSecondaryAction" OnClientClick="return confirm('Are you sure you wish to delete this document?');" OnClick="btnDelete_Click" CausesValidation="false" />
+                    <asp:LinkButton ID="btnEdit" runat="server" Text="Edit Document" OnClick="btnEdit_Click" CausesValidation="false" CssClass="dnnPrimaryAction" /> <asp:LinkButton ID="btnDelete" runat="server" Text="Delete Document" CssClass="dnnSecondaryAction" OnClick="btnDelete_Click" CausesValidation="false" />
                 </asp:Panel>
                 <asp:Panel ID="pnlEdit" runat="server" Visible="false">
                     <asp:LinkButton ID="btnSave" runat="server" Text="Save Document" OnClick="btnSave_Click" CausesValidation="true" CssClass="dnnPrimaryAction" ValidationGroup="DocumentControl" /> <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CssClass="dnnSecondaryAction" OnClick="btnCancel_Click" CausesValidation="false" />
@@ -56,7 +56,7 @@
                 <asp:Panel ID="pnlOwnerEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblOwner3" runat="server" ResourceKey="lblOwner2" ControlName="ddOwner2" Suffix=":" /> 
-                        <asp:DropDownList ID="ddOwner2" runat="server" DataTextField="DisplayName" DataValueField="UserId" ValidationGroup="DocumentControl"></asp:DropDownList>
+                        <asp:DropDownList ID="ddOwner2" runat="server" DataTextField="DisplayName" DataValueField="UserId" ValidationGroup="DocumentControl" style="width: auto;"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddOwner2" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
                     </div>
                 </asp:Panel>
@@ -242,50 +242,52 @@
             <div style="margin: 5px 0px 5px 4px;">
                 <span style="font-size: 12pt; font-weight: bold;"><%= LocalizeString("PacketListings") %></span>
             </div>
-            <asp:GridView ID="gvPackets" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" ForeColor="Black" GridLines="None" 
-                DataKeyNames="PacketId" BackColor="White" BorderColor="#DEDFDE" PageSize="20" BorderStyle="None" BorderWidth="1px" 
-                AllowPaging="False" AllowSorting="False" Width="100%" ShowHeader="True" CssClass="filesList" OnRowDataBound="gvPackets_RowDataBound">
-		        <Columns>
-                    <asp:TemplateField HeaderText="ID" HeaderStyle-Wrap="false" SortExpression="DocumentID" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
-                        <ItemTemplate>
-                            <%# Eval("PacketID") %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Packet Name" HeaderStyle-Wrap="false" SortExpression="Name">
-                        <ItemTemplate>
-                            <asp:LinkButton ID="lnkPacketView" CommandArgument='<%# Eval("PacketID") %>' CommandName="EditPacket" OnCommand="lnkPacketView_Command" runat="server"><%# Eval("Name") %></asp:LinkButton>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Comments" HeaderStyle-Wrap="false" SortExpression="AdminComments" ItemStyle-Width="300px">
-                        <ItemTemplate>
-                            <%# GetComments(Eval("AdminComments").ToString()) %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-		        </Columns>
-		        <FooterStyle BackColor="White" />
-		        <RowStyle BackColor="#F7F7F7" VerticalAlign="Top" Font-Names="Arial" Font-Size="14px" />
-		        <EditRowStyle VerticalAlign="Top" />
-		        <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
-		        <HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
-		        <AlternatingRowStyle BackColor="White" VerticalAlign="Top" />
-	        </asp:GridView>
+			<div style="width: 100%; overflow: auto;">
+				<asp:GridView ID="gvPackets" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" ForeColor="Black" GridLines="None" 
+					DataKeyNames="PacketId" BackColor="White" BorderColor="#DEDFDE" PageSize="20" BorderStyle="None" BorderWidth="1px" 
+					AllowPaging="False" AllowSorting="False" Width="100%" ShowHeader="True" CssClass="filesList" OnRowDataBound="gvPackets_RowDataBound">
+					<Columns>
+						<asp:TemplateField HeaderText="ID" HeaderStyle-Wrap="false" SortExpression="DocumentID" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
+							<ItemTemplate>
+								<%# Eval("PacketID") %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Packet Name" HeaderStyle-Wrap="false" SortExpression="Name">
+							<ItemTemplate>
+								<asp:LinkButton ID="lnkPacketView" CommandArgument='<%# Eval("PacketID") %>' CommandName="EditPacket" OnCommand="lnkPacketView_Command" runat="server"><%# Eval("Name") %></asp:LinkButton>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Comments" HeaderStyle-Wrap="false" SortExpression="AdminComments" ItemStyle-Width="300px">
+							<ItemTemplate>
+								<%# GetComments(Eval("AdminComments").ToString()) %>
+							</ItemTemplate>
+						</asp:TemplateField>
+					</Columns>
+					<FooterStyle BackColor="White" />
+					<RowStyle BackColor="#F7F7F7" VerticalAlign="Top" Font-Names="Arial" Font-Size="14px" />
+					<EditRowStyle VerticalAlign="Top" />
+					<SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
+					<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
+				<AlternatingRowStyle BackColor="White" VerticalAlign="Top" />
+				</asp:GridView>
+			</div>
             <br style="clear: both;" />
         </asp:Panel>
         <asp:Panel ID="pnlTags" runat="server">
             <div style="margin: 5px 0px 5px 0px;">
                 <span style="font-size: 12pt; font-weight: bold;"><%= LocalizeString("Tags") %></span>
             </div>
-            <div style="background-color:#CCC; padding: 5px; margin: 0 0 5px 0px; width: 99%; position: relative">	
-                <strong><%= LocalizeString("NewDocumentTag") %></strong>
+            <div style="background-color:#CCC; padding: 5px; margin: 0 0 5px 0px; width: 100%; position: relative; vertical-align: middle;">	
+                <span style="vertical-align: middle; height: 35px; line-height: 35px;"><strong><%= LocalizeString("NewDocumentTag") %></strong></span>
                 <asp:DropDownList ID="ddTags" DataTextField="TagName" DataValueField="TagID" CssClass="offset" runat="server" ValidationGroup="DocumentTags"></asp:DropDownList>
-                <strong><%= LocalizeString("Or") %></strong> 
+                <span style="vertical-align: middle; height: 35px; line-height: 35px;"> <strong><%= LocalizeString("Or") %></strong> </span>
                 <telerik:RadTextBox ID="tbTag" ValidationGroup="DocumentTags" runat="server" EmptyMessage="Create New Tag" Style="top: 3px; position: relative"></telerik:RadTextBox>
                 <asp:LinkButton ID="btnAddTag" runat="server" Text="Add Tag" ValidationGroup="DocumentTags" CssClass="dnnSecondaryAction" OnClick="btnAddTag_Click" style="top: -1px; position: relative; left: 40px;" />
                 <span ID="pnlSaveMessage" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; display: none;">Saved</span>
                 <asp:HiddenField ID="hidTagToRemove" runat="server" /><asp:LinkButton ID="lnkRemoveTag" runat="server" style="display: none;" OnClick="lnkRemoveTag_Click" />
             </div>
             <br style="clear: both; line-height: 0px;" />
-            <telerik:RadAutoCompleteBox ID="tbTags" runat="server" Delimiter=",;" Width="100%" DataTextField="TagName" DataValueField="TagName" Filter="StartsWith" AllowCustomEntry="True" OnEntryRemoved="tbTags_EntryRemoved" OnEntryAdded="tbTags_EntryAdded"></telerik:RadAutoCompleteBox>
+            <telerik:RadAutoCompleteBox ID="tbTags" runat="server" Delimiter=",;" Width="100%" DataTextField="TagName" DataValueField="TagName" Filter="StartsWith" AllowCustomEntry="True" OnClientEntryAdded="tbTags_EntryAdded" OnClientEntryRemoving="tbTags_EntryRemoving" OnEntryAdded="tbTags_EntryAdded"></telerik:RadAutoCompleteBox>
             <br style="clear: both;" />
         </asp:Panel>
         <asp:Panel ID="pnlFiles" runat="server">
@@ -296,72 +298,74 @@
                 <a id="btnNewFile" runat="server" class="dnnSecondaryAction"><%= LocalizeString("NewFile") %></a> <a id="btnNewLink" runat="server" class="dnnSecondaryAction"><%= LocalizeString("NewLink") %></a>
             </div>
             <br style="clear: both; line-height: 0px;" />
-            <asp:GridView ID="gvFiles" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3"  ForeColor="Black" Width="100%"
-                GridLines="None" DataKeyNames="FileId" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" BorderWidth="1px" AllowPaging="False" AllowSorting="False"
-                ShowHeader="True" OnRowDeleting="gvFiles_RowDeleting" OnRowDataBound="gvFiles_RowDataBound" CssClass="filesList">
-	            <Columns>
-                    <asp:TemplateField ItemStyle-VerticalAlign="Middle" ItemStyle-Width="84px" ItemStyle-Wrap="false">
-                        <ItemTemplate>
-                            <asp:ImageButton ID="btnDelete" CommandName="Delete" runat="server" Style="padding-top: 5px;" ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/DeleteIcon1.gif" onmouseout="MM_swapImgRestore()" OnClientClick='<%# "return confirm(\"Are you sure you wish to delete this " + (Eval("FileType").ToString().Equals("url", StringComparison.OrdinalIgnoreCase) ?  "link" : "file") + "?\");" %>' />
-                            <asp:ImageButton ID="historyButton" CommandName="History" CssClass="history" CommandArgument='<%# Eval("FileId") %>' OnCommand="historyButton_Command" runat="server" Style="padding-top: 5px;" ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/HistoryIcon1.gif" onmouseout="MM_swapImgRestore()" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField ItemStyle-CssClass="itemStatus" ItemStyle-VerticalAlign="Middle" ItemStyle-Width="120px" HeaderText="Status" ItemStyle-HorizontalAlign="Center">
-                        <ItemTemplate>
-                            <div class="toggleButton" id="cbActiveToggleButton" runat="server" data-uid='<%# Eval("FileId") %>'>
-                                <label><asp:CheckBox ID="cbActive" Checked='<%# ((int)Eval("StatusId")) == 1 %>' AutoPostBack="false" runat="server" onclick='<%# "toggleStatus(this," + Eval("FileId").ToString() + ")" %>' /><span></span></label>
-                            </div>
-                            <asp:Panel ID="pnlSaveMessage" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; display: none;" data-uid='<%# Eval("FileId") %>'>Saved</asp:Panel>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Name" HeaderStyle-Wrap="false" ItemStyle-Wrap="true" SortExpression="FileName" ItemStyle-VerticalAlign="Middle" ItemStyle-CssClass="dont-break-out">
-                        <ItemTemplate>
-                            <%# GetUrl(Container.DataItem) %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Version" HeaderStyle-Wrap="false" SortExpression="Version" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
-                        <ItemTemplate>
-                            <%# GetVersion(Container.DataItem) %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="File Type" HeaderStyle-Wrap="false" SortExpression="FileType" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
-                        <ItemTemplate>
-                            <%# Eval("FileType") %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="File Size" HeaderStyle-Wrap="false" SortExpression="Filesize" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
-                        <ItemTemplate>
-                            <%# GetFilesize(Container.DataItem) %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Uploader" HeaderStyle-Wrap="false" SortExpression="CreatedByUser.DisplayName" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Middle">
-                        <ItemTemplate>
-                            <%# Eval("CreatedByUser.DisplayName") %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Date Uploaded" HeaderStyle-Wrap="false" SortExpression="CreatedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
-                        <ItemTemplate>
-                            <%# ((DateTime)Eval("CreatedOnDate")).ToString("MM/dd/yyyy") %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Download" HeaderStyle-Wrap="false" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
-                        <ItemTemplate>
-                            <a href="<%# ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx") %>?id=<%# Eval("FileId") %>" title="Download <%# System.IO.Path.GetFileName(Eval("Filename").ToString()) %>" target="_blank" style="color: #<%# Theme %>;"><%# Eval("FileType").ToString().Equals("url") ? String.Empty : "Download" %></a>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-	            </Columns>
-	            <FooterStyle BackColor="White" />
-	            <RowStyle BackColor="#C0C0C0" VerticalAlign="Top" />
-	            <EditRowStyle VerticalAlign="Top" />
-	            <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
-	            <HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
-	            <AlternatingRowStyle BackColor="White" VerticalAlign="Top" />
-            </asp:GridView>
+			<div style="width: 100%; overflow: auto;">
+				<asp:GridView ID="gvFiles" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3"  ForeColor="Black" Width="100%"
+					GridLines="None" DataKeyNames="FileId" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" BorderWidth="1px" AllowPaging="False" AllowSorting="False"
+					ShowHeader="True" OnRowDeleting="gvFiles_RowDeleting" OnRowDataBound="gvFiles_RowDataBound" CssClass="filesList">
+					<Columns>
+						<asp:TemplateField ItemStyle-VerticalAlign="Middle" ItemStyle-Width="84px" ItemStyle-Wrap="false">
+							<ItemTemplate>
+								<asp:LinkButton ID="btnDelete" CommandName="Delete" runat="server" Style="padding-top: 5px;" OnClientClick='<%# "confirmDeleteFile(this, \"" + Eval("FileType").ToString() + "\"); return false;" %>'><asp:Image ID="imgDelete" runat="server" AlternateText='<%= LocalizeString("Delete") %>' ToolTip='<%= LocalizeString("Delete") %>' ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/DeleteIcon1.gif" onmouseout="MM_swapImgRestore()" /></asp:LinkButton>
+								<asp:LinkButton ID="historyButton" CommandName="History" CssClass="history" CommandArgument='<%# Eval("FileId") %>' OnCommand="historyButton_Command" runat="server" Style="padding-top: 5px;"><asp:Image ID="historyImage" runat="server" AlternateText='<%= LocalizeString("History") %>' ToolTip='<%= LocalizeString("History") %>' ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/HistoryIcon1.gif" onmouseout="MM_swapImgRestore()" /></asp:LinkButton>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField ItemStyle-CssClass="itemStatus" ItemStyle-VerticalAlign="Middle" ItemStyle-Width="120px" HeaderText="Status" ItemStyle-HorizontalAlign="Center">
+							<ItemTemplate>
+								<div class="toggleButton" id="cbActiveToggleButton" runat="server" data-uid='<%# Eval("FileId") %>'>
+									<label><asp:CheckBox ID="cbActive" Checked='<%# ((int)Eval("StatusId")) == 1 %>' AutoPostBack="false" runat="server" onclick='<%# "toggleStatus(this," + Eval("FileId").ToString() + ")" %>' /><span></span></label>
+								</div>
+								<asp:Panel ID="pnlSaveMessage" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; display: none;" data-uid='<%# Eval("FileId") %>'>Saved</asp:Panel>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Name" HeaderStyle-Wrap="false" ItemStyle-Wrap="true" SortExpression="FileName" ItemStyle-VerticalAlign="Middle" ItemStyle-CssClass="dont-break-out">
+							<ItemTemplate>
+								<%# GetUrl(Container.DataItem) %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Version" HeaderStyle-Wrap="false" SortExpression="Version" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
+							<ItemTemplate>
+								<%# GetVersion(Container.DataItem) %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="File Type" HeaderStyle-Wrap="false" SortExpression="FileType" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
+							<ItemTemplate>
+								<%# Eval("FileType") %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="File Size" HeaderStyle-Wrap="false" SortExpression="Filesize" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
+							<ItemTemplate>
+								<%# GetFilesize(Container.DataItem) %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Uploader" HeaderStyle-Wrap="false" SortExpression="CreatedByUser.DisplayName" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Middle">
+							<ItemTemplate>
+								<%# Eval("CreatedByUser.DisplayName") %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Date Uploaded" HeaderStyle-Wrap="false" SortExpression="CreatedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
+							<ItemTemplate>
+								<%# ((DateTime)Eval("CreatedOnDate")).ToString("MM/dd/yyyy") %>
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Download" HeaderStyle-Wrap="false" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
+							<ItemTemplate>
+								<a href="<%# ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx") %>?id=<%# Eval("FileId") %>" title="Download <%# System.IO.Path.GetFileName(Eval("Filename").ToString()) %>" target="_blank" style="color: #<%# Theme %>;"><%# Eval("FileType").ToString().Equals("url") ? String.Empty : "Download" %></a>
+							</ItemTemplate>
+						</asp:TemplateField>
+					</Columns>
+					<FooterStyle BackColor="White" />
+					<RowStyle BackColor="#C0C0C0" VerticalAlign="Top" />
+					<EditRowStyle VerticalAlign="Top" />
+					<SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
+					<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
+					<AlternatingRowStyle BackColor="White" VerticalAlign="Top" />
+				</asp:GridView>
+			</div>
         </asp:Panel>
         <asp:Panel ID="pnlLink" runat="server" Visible="false">
             <br />
             <p><strong><%= LocalizeString("LinkURL") %></strong> <span><%= LocalizeString("LinkURLHelp") %></span></p>
-            <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" Width="100%" Rows="3" runat="server"></asp:TextBox>
+            <asp:TextBox ID="tbLinkURL" TextMode="MultiLine" ReadOnly="true" style="width: 100%" Rows="3" runat="server"></asp:TextBox>
         </asp:Panel>
         <asp:HiddenField ID="history" runat="server" Value="0" />
         <asp:LinkButton ID="lnkReload" runat="server" CausesValidation="false" style="display: none;" OnClick="lnkReload_Click">Reload</asp:LinkButton>
@@ -445,7 +449,7 @@
 	                    <Columns>
                             <asp:TemplateField ItemStyle-VerticalAlign="Middle" ItemStyle-Width="84px">
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="btnDelete" CommandName="Delete" runat="server" Style="padding-top: 5px;" ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/DeleteIcon1.gif" onmouseout="MM_swapImgRestore()" OnClientClick='<%# "return confirm(\"Are you sure you wish to delete this " + (IsUrl(Container.DataItem) ?  "link" : "file") + "?\");" %>' />
+                                    <asp:LinkButton ID="btnDelete" CommandName="Delete" runat="server" Style="padding-top: 5px;" OnClientClick='<%# "confirmDeleteFile(this, \"" + Eval("FileType").ToString() + "\"); return false;" %>'><asp:Image ID="imgDelete" runat="server" ToolTip='<%= LocalizeString("Delete") %>' AlternateText='<%= LocalizeString("Delete") %>' ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/DeleteIcon1.gif" onmouseout="MM_swapImgRestore()" /></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Version" HeaderStyle-Wrap="false" SortExpression="Version" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
@@ -492,14 +496,14 @@
         <asp:HiddenField ID="hidFileDeleteStatus" runat="server" Value="Idle" />
         <asp:HiddenField ID="hidProcessName" runat="server" Value="" />
         <div class="searchBox" id="searchBox" runat="server">
-            <div style="width: 190px; float: left; display: inline-block">
+            <div style="width: 190px; float: left; display: inline-block; margin-right: 10px; ">
                 <strong><asp:Label ID="lblCategory" runat="server" Text="Label"></asp:Label></strong><br style="clear: none" />
-                <asp:DropDownList ID="ddCategory" runat="server" DataTextField="CategoryName" DataValueField="CategoryId" AutoPostBack="true" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged"></asp:DropDownList>
+                <asp:DropDownList ID="ddCategory" runat="server" Width="100%" DataTextField="CategoryName" DataValueField="CategoryId" AutoPostBack="true" OnSelectedIndexChanged="ddCategory_SelectedIndexChanged"></asp:DropDownList>
             </div>
-            <div style="margin-left: 10px; text-align: left; padding-right: 30px; display: inline-block; width: calc(100% - 200px)">
+            <div style="text-align: left; display: inline-block; width: calc(100% - 200px); min-width: 295px;">
     	        <strong>Enter search term(s): </strong><br style="clear: none" />
-                <div style="width: 100%;">
-                    <asp:TextBox ID="tbKeywords" style="min-width: 275px; width: calc(100% - 120px)" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
+                <div style="width: 100%; padding: 1px 0">
+                    <asp:TextBox ID="tbKeywords" style="min-width: 295px; width: calc(100% - 105px)" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
 					<asp:LinkButton ID="btnSearch" Width="100px" runat="server" Text="Go!" OnClick="btnSearch_Click" CssClass="dnnPrimaryAction" />
                 </div>
                 <asp:Label ID="lblInstructions" runat="server" Text='To view all documents, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>
@@ -516,48 +520,50 @@
         <div style="float:right;margin-bottom:10px;" id="pnlAdmin" runat="server" visible="false">
             <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
             <asp:LinkButton runat="server" id="newDocumentCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="newDocumentCommandButton_Click"><asp:label runat="server" resourcekey="newDocumentCommandButton" /></asp:LinkButton>
-            <asp:LinkButton runat="server" id="delAllCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="delAllCommandButton_Click" OnClientClick="return confirm('Are you sure you wish to delete all the documents in this repository?');"><asp:label runat="server" resourcekey="delAllCommandButton" /></asp:LinkButton>
+            <asp:LinkButton runat="server" id="delAllCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="delAllCommandButton_Click" OnClientClick="confirmDeleteAll(this); return false;"><asp:label runat="server" resourcekey="delAllCommandButton" /></asp:LinkButton>
             <input type="button" id="changeOwnershipCommandButton" runat="server" value="Change Ownership" class="secondaryButton dmsButton" resourcekey="changeOwnershipCommandButton" />
         </div>
         <div style="clear: both"></div>
-        <asp:GridView ID="gv" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
-            ForeColor="Black" GridLines="None" DataKeyNames="DocumentID" BackColor="White" BorderColor="#DEDFDE" PageSize="20" CssClass="filesList"
-            BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="True" Width="100%" OnDataBound="gv_DataBound" OnRowDataBound="gv_RowDataBound"
-            OnPageIndexChanging="gv_PageIndexChanging" ShowHeader="True" OnSorting="gv_Sorting" PagerSettings-PageButtonCount="5">
-		    <Columns>
-                <asp:TemplateField HeaderText="ID <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="DocumentId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
-                    <ItemTemplate>
-                        <%# Eval("DocumentId") %>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Document Name <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Document Name' />" HeaderStyle-Wrap="false" SortExpression="DocumentName">
-                    <ItemTemplate>
-                        <asp:LinkButton runat="server" ID="lnkDocumentName" CommandArgument='<%# Eval("DocumentId") %>' CommandName="Details" OnCommand="lnkDocumentName_Command"><%# Eval("DocumentName") %></asp:LinkButton>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Last Modified <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Date Last Modified' />" HeaderStyle-Wrap="false" SortExpression="LastModifiedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
-                    <ItemTemplate>
-                        <%# ((DateTime)Eval("LastModifiedOnDate")).ToString("MM/dd/yyyy") %>
-                    </ItemTemplate>
-                </asp:TemplateField>
-		    </Columns>
-		    <FooterStyle BackColor="White" />
-		    <RowStyle BackColor="#F7F7F7" VerticalAlign="Top" />
-		    <EditRowStyle VerticalAlign="Top" />
-		    <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
-		    <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
-            <PagerTemplate>
-                <table class="pager">
-                    <tr>
-                        <td>
-                            <asp:PlaceHolder ID="ph" runat="server"></asp:PlaceHolder>
-                        </td>
-                    </tr>
-                </table>
-            </PagerTemplate>		            
-		    <HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
-		    <AlternatingRowStyle BackColor="#D0D0D0" VerticalAlign="Top" />
-	    </asp:GridView>
+		<div style="width: 100%; overflow: auto;">
+			<asp:GridView ID="gv" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
+				ForeColor="Black" GridLines="None" DataKeyNames="DocumentID" BackColor="White" BorderColor="#DEDFDE" PageSize="20" CssClass="filesList"
+				BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="True" Width="100%" OnDataBound="gv_DataBound" OnRowDataBound="gv_RowDataBound"
+				OnPageIndexChanging="gv_PageIndexChanging" ShowHeader="True" OnSorting="gv_Sorting" PagerSettings-PageButtonCount="5">
+				<Columns>
+					<asp:TemplateField HeaderText="ID <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="DocumentId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+						<ItemTemplate>
+							<%# Eval("DocumentId") %>
+						</ItemTemplate>
+					</asp:TemplateField>
+					<asp:TemplateField HeaderText="Document Name <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Document Name' />" HeaderStyle-Wrap="false" SortExpression="DocumentName">
+						<ItemTemplate>
+							<asp:LinkButton runat="server" ID="lnkDocumentName" CommandArgument='<%# Eval("DocumentId") %>' CommandName="Details" OnCommand="lnkDocumentName_Command"><%# Eval("DocumentName") %></asp:LinkButton>
+						</ItemTemplate>
+					</asp:TemplateField>
+					<asp:TemplateField HeaderText="Last Modified <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Date Last Modified' />" HeaderStyle-Wrap="false" SortExpression="LastModifiedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+						<ItemTemplate>
+							<%# ((DateTime)Eval("LastModifiedOnDate")).ToString("MM/dd/yyyy") %>
+						</ItemTemplate>
+					</asp:TemplateField>
+				</Columns>
+				<FooterStyle BackColor="White" />
+				<RowStyle BackColor="#F7F7F7" VerticalAlign="Top" />
+				<EditRowStyle VerticalAlign="Top" />
+				<SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
+				<PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+				<PagerTemplate>
+					<table class="pager">
+						<tr>
+							<td>
+								<asp:PlaceHolder ID="ph" runat="server"></asp:PlaceHolder>
+							</td>
+						</tr>
+					</table>
+				</PagerTemplate>		            
+				<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
+				<AlternatingRowStyle BackColor="#D0D0D0" VerticalAlign="Top" />
+			</asp:GridView>
+		</div>
     </asp:Panel>
     <div id="changeOwnershipDialog" class="nocontent">
         <div id="changeOwnership-content" class="dialog-content">
@@ -565,12 +571,12 @@
                 <fieldset>
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID"></asp:DropDownList>
+                        <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID" Width="100%" style="float:right; min-width: auto;" ValidationGroup="NewOwnership"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
                     </div>
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
+                        <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID"  Width="100%" style="float:right; min-width: auto;" ValidationGroup="NewOwnership"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
                     </div>
                 </fieldset>

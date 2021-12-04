@@ -16,6 +16,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 using Gafware.Modules.DMS.Components;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -84,6 +85,10 @@ namespace Gafware.Modules.DMS
         #region Base Method Implementations
         public void Page_Load()
         {
+            if(!IsPostBack)
+            {
+                lblSaveLocalFile.HelpText = string.Format(LocalizeString("SaveLocalFileHelp"), PortalId, TabModuleId);
+            }
             if (Request.QueryString["ctl"].ToLower() == "editsettings" && !IsAdmin())
             {
                 base.Response.Redirect(_navigationManager.NavigateURL(), true);
@@ -115,7 +120,7 @@ namespace Gafware.Modules.DMS
             {
                 if (Page.IsPostBack == false)
                 {
-                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString() + "</style>";
+                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(LocalizeString("No"), LocalizeString("Yes")) + "</style>";
                     //Check for existing settings and use those on this page
                     ddlRole.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
                     ddlRole.DataBind();

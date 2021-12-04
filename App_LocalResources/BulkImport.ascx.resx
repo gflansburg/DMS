@@ -189,4 +189,10 @@
   <data name="Importing.Text" xml:space="preserve">
     <value>Importing...</value>
   </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

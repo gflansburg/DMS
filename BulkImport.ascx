@@ -17,7 +17,7 @@
         opacity: 0.6;
     }
     .dms .dnnFormItem .toggleButton {
-        top: 0;
+        top: -2px !important;
         left: -8px !important;
     }
 </style>
@@ -61,7 +61,7 @@
         <asp:Panel ID="pnlSeperator" runat="server" Visible="false">
             <div class="dnnFormItem">
                 <dnn:Label ID="lblSeperator" runat="server" ControlName="lstSeperator" Suffix=":" /> 
-                <asp:DropDownList ID="lstSeperator" runat="server">
+                <asp:DropDownList ID="lstSeperator" runat="server" style="width: auto;">
                     <asp:ListItem Value=" - " Text="-" Selected="True" />
                     <asp:ListItem Value=" | " Text="|" />
                     <asp:ListItem Value=", " Text="," />
@@ -74,7 +74,7 @@
         <asp:Panel ID="pnlLevel" runat="server" Visible="false">
             <div class="dnnFormItem">
                 <dnn:Label ID="lblLevel" runat="server" ControlName="lstLevel" Suffix=":" /> 
-                <asp:DropDownList ID="lstLevel" runat="server">
+                <asp:DropDownList ID="lstLevel" runat="server" style="width: auto;">
                     <asp:ListItem Value="0" Text="Root" />
                     <asp:ListItem Value="1" Text="1" />
                     <asp:ListItem Value="2" Text="2" />
@@ -113,7 +113,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblOwner" runat="server" ControlName="ddOwner" Suffix=":" /> 
-            <asp:DropDownList ID="ddOwner" runat="server" DataTextField="DisplayName" DataValueField="UserId" ValidationGroup="BulkImport"></asp:DropDownList>
+            <asp:DropDownList ID="ddOwner" runat="server" DataTextField="DisplayName" DataValueField="UserId" ValidationGroup="BulkImport" style="width: auto;"></asp:DropDownList>
             <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="BulkImport"></asp:RequiredFieldValidator>
         </div>
         <div class="dnnFormItem">
@@ -125,7 +125,7 @@
         <asp:Panel ID="pnlSecurityRole" runat="server" Visible="false">
             <div class="dnnFormItem">
                 <dnn:Label ID="lblSecurityRole" runat="server" ControlName="ddlSecurityRole" Suffix=":" /> 
-                <asp:DropDownList ID="ddlSecurityRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" ValidationGroup="BulkImport"></asp:DropDownList>
+                <asp:DropDownList ID="ddlSecurityRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;" ValidationGroup="BulkImport"></asp:DropDownList>
                 <asp:LinkButton ID="btnReloadSecurityRoles" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReloadSecurityRoles_Click" style="padding: 0px 9px 0px 9px; height: 33px;" />
             </div>
         </asp:Panel>
@@ -160,6 +160,7 @@
         <asp:LinkButton ID="btnReset" runat="server" Text="Reset Page" CssClass="dnnSecondaryAction" OnClick="btnReset_Click" />
         <asp:LinkButton ID="lnkFinish" runat="server" OnClick="lnkFinish_Click" style="display: none;"></asp:LinkButton>
     </div>
+    <br style="clear: both;" />
     <telerik:RadWindow runat="server" Width="400px" Height="160px" VisibleStatusbar="false" ShowContentDuringLoad="false" ID="bulkInsertWindow" Modal="true" Behaviors="None" Title="Importing Documents" ToolTip="Importing Documents" Animation="FlyIn" EnableShadow="True" AnimationDuration="200" Skin="Office2010Blue">
         <ContentTemplate>
             <div align="center" style="margin-top: 20px;">

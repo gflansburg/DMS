@@ -17,25 +17,25 @@
         <asp:Panel ID="pnlName" runat="server">
             <div class="dnnFormItem">
                 <dnn:Label ID="lblName" runat="server" ControlName="tbName" Suffix=":" /> 
-                <asp:TextBox ID="tbName" runat="server" MaxLength="255"></asp:TextBox>
+                <asp:TextBox ID="tbName" runat="server" MaxLength="255" Width="100%"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Repository Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red"></asp:RequiredFieldValidator>
             </div>
         </asp:Panel>
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblRole" runat="server" ControlName="ddlRole" Suffix=":" /> 
-            <asp:DropDownList ID="ddlRole" DataValueField="RoleId" DataTextField="RoleName" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddlRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;"></asp:DropDownList>
             <asp:LinkButton ID="btnReload" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReload_Click" />
         </div>
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblCategory" runat="server" ControlName="tbCategory" Suffix=":" /> 
-            <asp:TextBox ID="tbCategory" runat="server" MaxLength="255"></asp:TextBox>
+            <asp:TextBox ID="tbCategory" runat="server" MaxLength="255" Width="100%"></asp:TextBox>
         </div>
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblTheme" runat="server" ControlName="ddlTheme" Suffix=":" /> 
-            <asp:DropDownList ID="ddlTheme" runat="server">
+            <asp:DropDownList ID="ddlTheme" runat="server" style="width: auto;">
                 <asp:listitem text="Red" value="990000"></asp:listitem>
                 <asp:listitem text="Green" value="008000"></asp:listitem>
                 <asp:listitem text="Blue" value="2170CD"></asp:listitem>
@@ -49,7 +49,7 @@
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblThumbnailType" runat="server" ControlName="ddlThumbnailType" Suffix=":" /> 
-            <asp:DropDownList ID="ddlThumbnailType" runat="server">
+            <asp:DropDownList ID="ddlThumbnailType" runat="server" style="width: auto;">
                 <asp:listitem text="Classic" value="classic"></asp:listitem>
                 <asp:listitem text="High Contrast" value="high-contrast"></asp:listitem>
                 <asp:listitem text="Square" value="square"></asp:listitem>
@@ -59,7 +59,7 @@
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblThumbnailSize" runat="server" ControlName="ddlThumbnailSize" Suffix=":" /> 
-            <asp:DropDownList ID="ddlThumbnailSize" runat="server">
+            <asp:DropDownList ID="ddlThumbnailSize" runat="server" style="width: auto;">
                 <asp:listitem text="Large (128px)" value="128"></asp:listitem>
                 <asp:listitem text="Medium (64px)" value="64"></asp:listitem>
                 <asp:listitem text="Small (32px)" value="32"></asp:listitem>
@@ -68,7 +68,7 @@
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblPageSize" runat="server" ControlName="ddlPageSize" Suffix=":" /> 
-            <asp:DropDownList ID="ddlPageSize" runat="server">
+            <asp:DropDownList ID="ddlPageSize" runat="server" style="width: auto;">
                 <asp:listitem text="5" value="5"></asp:listitem>
                 <asp:listitem text="10" value="10"></asp:listitem>
                 <asp:listitem text="20" value="20"></asp:listitem>
@@ -102,31 +102,31 @@
 
         <div class="dnnFormItem" id="pnlInstructions" runat="server" visible="true">
             <dnn:Label ID="lblInstructions" runat="server" ControlName="tbInstructions" Suffix=":" /> 
-            <asp:TextBox ID="tbInstructions" runat="server" MaxLength="255"></asp:TextBox>
+            <asp:TextBox ID="tbInstructions" runat="server" Width="100%" MaxLength="255"></asp:TextBox>
         </div>
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblFileNotifications" runat="server" ControlName="ddFileNotifications" Suffix=":" /> 
-            <asp:DropDownList ID="ddFileNotifications" DataValueField="RoleId" DataTextField="RoleName" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddFileNotifications" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;"></asp:DropDownList>
             <asp:LinkButton ID="btnReload2" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReload2_Click" />
         </div>
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblFileNotificationSubject" runat="server" ControlName="tbFileNotificationSubjexct" Suffix=":" /> 
-            <asp:TextBox ID="tbFileNotificationSubject" runat="server"></asp:TextBox>
+            <asp:TextBox ID="tbFileNotificationSubject" runat="server" Width="100%"></asp:TextBox>
         </div>
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblReplyEmail" runat="server" ControlName="txtReplyEmail" Suffix=":" />
         <span>You can use the following tokens in your email:<br />  [FILENAME] [FILETYPE] [FILETYPENAME] [UPLOADER] [UPLOADDATE] [DOCUMENT]</span>
     </div>
-    <div style="margin-left: 20px; margin-right: 20px"><dnn:TextEditor id="txtReplyEmail" runat="server" Width="100%"></dnn:TextEditor></div>
+    <div style="margin-left: 10px;"><dnn:TextEditor id="txtReplyEmail" runat="server" Width="100%"></dnn:TextEditor></div>
 
 </fieldset>
 
 <h2 style="font-size: 18px; padding: 5px;"><%=LocalizeString("Categories")%></h2>
-<fieldset>
-    <div style="padding:10px">
+
+    <div style="padding:10px; width:calc(100% - 20px); overflow: auto;">
         <cc1:GridViewExtended ID="gv_Categories" runat="server" AutoGenerateColumns="False" DataKeyNames="CategoryId" Width="100%"
             OnRowEditing="gv_Categories_RowEditing" RowStyle-BackColor="#eeeeee" ShowFooterWhenEmpty="True" ShowHeaderWhenEmpty="True"
             RowStyle-Height="18" HeaderStyle-Height="30" GridLines="None" Font-Names="Arial" Font-Size="Small" CellPadding="4" ShowFooter="True" 
@@ -171,20 +171,20 @@
                         <%# Eval("Role.RoleName") %>
                     </ItemTemplate>
                     <EditItemTemplate>
-                        <asp:DropDownList ID="ddlRequiredRole" DataValueField="RoleId" DataTextField="RoleName" runat="server"></asp:DropDownList>
+                        <asp:DropDownList ID="ddlRequiredRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;"></asp:DropDownList>
                     </EditItemTemplate>
                     <FooterTemplate>
-                        <asp:DropDownList ID="ddlRequiredRole2" DataValueField="RoleId" DataTextField="RoleName" runat="server"></asp:DropDownList>
+                        <asp:DropDownList ID="ddlRequiredRole2" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;"></asp:DropDownList>
                     </FooterTemplate>
                 </asp:TemplateField>
             </Columns>
         </cc1:GridViewExtended>
     </div>
-</fieldset>
+
 
 <h2 style="font-size: 18px; padding: 5px;"><%=LocalizeString("DocumentTypes")%></h2>
-<fieldset>
-    <div style="padding:10px">
+
+    <div style="padding:10px; width: calc(100% - 20px); overflow: auto;">
         <cc1:GridViewExtended ID="gv_docTypes" runat="server" AutoGenerateColumns="False" DataKeyNames="FileTypeId" Width="100%"
             OnRowEditing="gv_docTypes_RowEditing" RowStyle-BackColor="#eeeeee" ShowFooterWhenEmpty="True" ShowHeaderWhenEmpty="True"
             RowStyle-Height="18" HeaderStyle-Height="30" GridLines="None" Font-Names="Arial" Font-Size="Small" CellPadding="4" ShowFooter="True" 
@@ -249,7 +249,7 @@
             </Columns>
         </cc1:GridViewExtended>
     </div>
-</fieldset>
+
 
 <asp:Panel ID="pnlUpdateSettings" runat="server" Visible="false">
     <hr />

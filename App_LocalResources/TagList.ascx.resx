@@ -141,4 +141,13 @@
   <data name="btnSave.Text" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="ConfirmDelete.Text" xml:space="preserve">
+    <value>Are you sure you want to delete '{0}'?</value>
+  </data>
+  <data name="ConfirmReallyDelete.Text" xml:space="preserve">
+    <value>'{0}' is associated with documents. Are you sure you still want to delete '{0}'?</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

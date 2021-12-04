@@ -213,4 +213,61 @@
   <data name="ChangeOwnership.Text" xml:space="preserve">
     <value>Change Packet Ownership</value>
   </data>
+  <data name="EditName.Text" xml:space="preserve">
+    <value>Edit Name</value>
+  </data>
+  <data name="SaveName.Text" xml:space="preserve">
+    <value>Save Name</value>
+  </data>
+  <data name="ChangeNameConfirm.Text" xml:space="preserve">
+    <value>Changing the packet name will break exising links to this packet.  Are you sure you wish to rename the packet?</value>
+  </data>
+  <data name="PreviewDocuments.Text" xml:space="preserve">
+    <value>Preview Documents</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="CurrentOwner.Text" xml:space="preserve">
+    <value>-- Current Owner --</value>
+  </data>
+  <data name="NewOwner.Text" xml:space="preserve">
+    <value>-- New Owner --</value>
+  </data>
+  <data name="NoPacketsFound.Text" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No packets found.&lt;/strong&gt;</value>
+  </data>
+  <data name="NoPacketsFoundFor.Text" xml:space="preserve">
+    <value>&lt;br /&gt;&lt;strong&gt;No packets found for</value>
+  </data>
+  <data name="SelectTag.Text" xml:space="preserve">
+    <value>-- Select A Tag --</value>
+  </data>
+  <data name="ChangeName.Text" xml:space="preserve">
+    <value>Change Name</value>
+  </data>
+  <data name="ConfirmDelete.Text" xml:space="preserve">
+    <value>Are you sure you want to delete '{0}'?</value>
+  </data>
+  <data name="ConfirmRemoveDocument.Text" xml:space="preserve">
+    <value>Are you sure you wish to remove this document?</value>
+  </data>
+  <data name="ConfirmRemoveTag.Text" xml:space="preserve">
+    <value>Are you sure you wish to remove this tag?</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="RemoveDocument.Text" xml:space="preserve">
+    <value>Remove Document</value>
+  </data>
+  <data name="RemoveTag.Text" xml:space="preserve">
+    <value>Remove Tag</value>
+  </data>
 </root>

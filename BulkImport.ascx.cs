@@ -56,6 +56,30 @@ namespace Gafware.Modules.DMS
 
         protected void Page_PreRender(object sender, EventArgs e)
         {
+            System.Web.UI.HtmlControls.HtmlGenericControl scriptConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptJS");
+            if (scriptConfirm == null)
+            {
+                scriptConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("script")
+                {
+                    ID = "JQueryConfirmScriptJS"
+                };
+                scriptConfirm.Attributes.Add("language", "javascript");
+                scriptConfirm.Attributes.Add("type", "text/javascript");
+                scriptConfirm.Attributes.Add("src", ControlPath + "Scripts/jquery-confirm.js");
+                this.Page.Header.Controls.Add(scriptConfirm);
+            }
+            System.Web.UI.HtmlControls.HtmlGenericControl cssConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptCSS");
+            if (cssConfirm == null)
+            {
+                cssConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("link")
+                {
+                    ID = "JQueryConfirmScriptCSS"
+                };
+                cssConfirm.Attributes.Add("type", "text/css");
+                cssConfirm.Attributes.Add("rel", "stylesheet");
+                cssConfirm.Attributes.Add("href", ControlPath + "Scripts/jquery-confirm.css");
+                this.Page.Header.Controls.Add(cssConfirm);
+            }
             System.Web.UI.HtmlControls.HtmlGenericControl script2 = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptBlockUI");
             if (script2 == null)
             {
@@ -122,7 +146,8 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    $('#" + progressBar.ClientID + "').width($('#progress').text());");
                 sb.AppendLine("    doPolling($('#" + hidProcessName.ClientID + "').val());");
                 sb.AppendLine("  } else if ($('#" + hidFileImportStatus.ClientID + "').val() === 'Finished') {");
-                sb.AppendLine("    $(\"<div title='Bulk Import'><div style='padding: 10px; text-align: center;'>\" + $('#" + hidFilesImported.ClientID + "').val() + \" Document(s) Imported.</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
+                sb.AppendLine("    $.alert({ title: 'Bulk Import', content: $('#" + hidFilesImported.ClientID + "').val() + ' Document(s) Imported.' });");
+                //sb.AppendLine("    $(\"<div title='Bulk Import'><div style='padding: 10px; text-align: center;'>\" + $('#" + hidFilesImported.ClientID + "').val() + \" Document(s) Imported.</div></div>\").dialog({buttons: [{text:'OK', click: function() { $(this).dialog('close');}}]});");
                 sb.AppendLine("    $('#" + hidFileImportStatus.ClientID + "').val('Idle');");
                 sb.AppendLine("  }");
                 sb.AppendLine("}");
@@ -197,7 +222,7 @@ namespace Gafware.Modules.DMS
                     btnBack.Text = LocalizeString(btnBack.ID);
                     btnImport.Text = LocalizeString(btnImport.ID);
                     btnReset.Text = LocalizeString(btnReset.ID);
-                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
+                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(LocalizeString("No"), LocalizeString("Yes"), new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                     ddlSecurityRole.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
                     ddlSecurityRole.DataBind();
                     ddlSecurityRole.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All Users", "-1"));

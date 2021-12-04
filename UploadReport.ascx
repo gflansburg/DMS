@@ -22,7 +22,7 @@
             <asp:LinkButton ID="btnBack" runat="server" Text="Back" CssClass="dnnSecondaryAction" OnClick="btnBack_Click" CausesValidation="false" />
         </div>
     </div>
-    <div style="border: 1px solid black; width: 900px">
-        <telerik:reportviewer runat="server" id="report1" width="100%" height="700px"></telerik:reportviewer>
+    <div style="border: 1px solid black; padding: 5px; width: 100%; max-width: 905px; height: 705px; overflow: auto;">
+        <telerik:reportviewer runat="server" id="report1" width="900px" height="700px"></telerik:reportviewer>
     </div>
 </div>

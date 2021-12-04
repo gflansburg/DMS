@@ -159,4 +159,10 @@
   <data name="NoDocuments.Text" xml:space="preserve">
     <value>No documents selected.</value>
   </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

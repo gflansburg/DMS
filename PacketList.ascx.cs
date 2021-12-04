@@ -207,7 +207,8 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("      if(msg === 'Success') {");
                 sb.AppendLine("        $(row).highlightFade({ color: 'rgb(255, 241, 168)', end: ($(row)[0].rowIndex % 2) == 0 ? 'White' : '#F7F7F7', speed: 1000, final: ($(row)[0].rowIndex % 2) == 0 ? 'White' : '#F7F7F7' });");
                 sb.AppendLine("      } else {");
-                sb.AppendLine("        alert(msg);");
+                sb.AppendLine("          $.alert({ title: 'Error', content: msg });");
+                //sb.AppendLine("        alert(msg);");
                 sb.AppendLine("      }");
                 sb.AppendLine("    }");
                 sb.AppendLine("  });");
@@ -275,7 +276,31 @@ namespace Gafware.Modules.DMS
             {
                 SaveSelectedDocuments();
             }
-            btnEditName.OnClientClick = (tbName.Enabled ? "if(confirm('Changing the packet name will break exising links to this packet.  Are you sure you wish to rename the packet?')) { document.getElementById('" + hidCancelRename.ClientID + "').value = 'false'; } else { document.getElementById('" + hidCancelRename.ClientID + "').value = 'true'; } return true;" : String.Empty);
+            btnEditName.OnClientClick = (tbName.Enabled ?  "confirmEditName(this); return false;" : "return true;");
+            System.Web.UI.HtmlControls.HtmlGenericControl scriptConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptJS");
+            if (scriptConfirm == null)
+            {
+                scriptConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("script")
+                {
+                    ID = "JQueryConfirmScriptJS"
+                };
+                scriptConfirm.Attributes.Add("language", "javascript");
+                scriptConfirm.Attributes.Add("type", "text/javascript");
+                scriptConfirm.Attributes.Add("src", ControlPath + "Scripts/jquery-confirm.js");
+                this.Page.Header.Controls.Add(scriptConfirm);
+            }
+            System.Web.UI.HtmlControls.HtmlGenericControl cssConfirm = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("JQueryConfirmScriptCSS");
+            if (cssConfirm == null)
+            {
+                cssConfirm = new System.Web.UI.HtmlControls.HtmlGenericControl("link")
+                {
+                    ID = "JQueryConfirmScriptCSS"
+                };
+                cssConfirm.Attributes.Add("type", "text/css");
+                cssConfirm.Attributes.Add("rel", "stylesheet");
+                cssConfirm.Attributes.Add("href", ControlPath + "Scripts/jquery-confirm.css");
+                this.Page.Header.Controls.Add(cssConfirm);
+            }
             System.Web.UI.HtmlControls.HtmlGenericControl script2 = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("ComponentScriptBlockUI");
             if (script2 == null)
             {
@@ -364,6 +389,61 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("  initPacketListJavascript();");
                 sb.AppendLine("  hideBlockingScreen();");
                 sb.AppendLine("}");
+                sb.AppendLine("function confirmEditName(control) {");
+                sb.AppendLine("  $.confirm({");
+                sb.AppendLine("    title: '" + LocalizeString("ChangeName") + "',");
+                sb.AppendLine("    content: '" + LocalizeString("ChangeNameConfirm") + "',");
+                sb.AppendLine("    buttons: {");
+                sb.AppendLine("      yes: function() {");
+                sb.AppendLine("        document.getElementById('" + hidCancelRename.ClientID + "').value = 'false';");
+                sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("      },");
+                sb.AppendLine("      no: function() {");
+                sb.AppendLine("        document.getElementById('" + hidCancelRename.ClientID + "').value = 'true';");
+                sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
+                sb.AppendLine("function confirmDeleteTag(control) {");
+                sb.AppendLine("  $.confirm({");
+                sb.AppendLine("    title: '" + LocalizeString("RemoveTag") + "',");
+                sb.AppendLine("    content: '" + LocalizeString("ConfirmRemoveTag") + "',");
+                sb.AppendLine("    buttons: {");
+                sb.AppendLine("      yes: function() {");
+                sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("      },");
+                sb.AppendLine("      no: function() {");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
+                sb.AppendLine("function confirmDeleteDocument(control) {");
+                sb.AppendLine("  $.confirm({");
+                sb.AppendLine("    title: '" + LocalizeString("RemoveDocument") + "',");
+                sb.AppendLine("    content: '" + LocalizeString("ConfirmRemoveDocument") + "',");
+                sb.AppendLine("    buttons: {");
+                sb.AppendLine("      yes: function() {");
+                sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("      },");
+                sb.AppendLine("      no: function() {");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
+                sb.AppendLine("function confirmDelete(control, packetName) {");
+                sb.AppendLine("  $.confirm({");
+                sb.AppendLine("    title: \"" + LocalizeString("Delete") + " '\" + packetName + \"'\",");
+                sb.AppendLine("    content: (\"" + LocalizeString("ConfirmDelete") + "\").replaceAll('{0}', packetName),");
+                sb.AppendLine("    buttons: {");
+                sb.AppendLine("      yes: function() {");
+                sb.AppendLine("        eval($(control).attr('href').replace('javascript:', ''));");
+                sb.AppendLine("      },");
+                sb.AppendLine("      no: function() {");
+                sb.AppendLine("      }");
+                sb.AppendLine("    }");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
                 sb.AppendLine("function initPacketListJavascript() {");
                 sb.AppendLine("  $('#" + tbLinkURL.ClientID + "').on('focus', function (e) {");
                 sb.AppendLine("    $(this).select();");
@@ -407,7 +487,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    resizable: false,");
                 sb.AppendLine("    appendTo: '.dms',");
                 sb.AppendLine("    dialogClass: 'dialog',");
-                sb.AppendLine("    title: 'Preview Documents',");
+                sb.AppendLine("    title: '" + LocalizeString("PreviewDocuments") + "',");
                 sb.AppendLine("    closeOnEsacpe: true,");
                 sb.AppendLine("    Cancel: function () {");
                 sb.AppendLine("      $(this).dialog('close');");
@@ -461,7 +541,7 @@ namespace Gafware.Modules.DMS
                     //changeOwnershipCommandButton.Value = LocalizeString(changeOwnershipCommandButton.ID);
                     gv.EmptyDataText = LocalizeString("NoDocumentsSelected");
                     gv.PageSize = PageSize;
-                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
+                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(LocalizeString("No"), LocalizeString("Yes"), new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                     BindDropDowns();
                     pnlDetails.Style.Add("display", "none");
                     pnlGrid.Style.Remove("display");
@@ -504,7 +584,7 @@ namespace Gafware.Modules.DMS
         {
             ddOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddOwner.DataBind();
-            ddOwner.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
+            ddOwner.Items.Insert(0, new System.Web.UI.WebControls.ListItem(LocalizeString("All"), "0"));
             if (IsAdmin())
             {
                 ddOwner.SelectedIndex = 0;
@@ -515,12 +595,12 @@ namespace Gafware.Modules.DMS
             }
             ddCurrentOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddCurrentOwner.DataBind();
-            ddCurrentOwner.Items.Insert(0, new ListItem("-- Current Owner --", "0"));
+            ddCurrentOwner.Items.Insert(0, new ListItem(LocalizeString("CurrentOwner"), "0"));
             ddCurrentOwner.SelectedIndex = 0;
 
             ddNewOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddNewOwner.DataBind();
-            ddNewOwner.Items.Insert(0, new ListItem("-- New Owner --", "0"));
+            ddNewOwner.Items.Insert(0, new ListItem(LocalizeString("NewOwner"), "0"));
             ddNewOwner.SelectedIndex = 0;
         }
 
@@ -555,12 +635,12 @@ namespace Gafware.Modules.DMS
                 {
                     dataView.RowFilter = "Name LIKE '" + letterFilter.Filter + "%'";
                 }
-                gv.EmptyDataText = "<br /><strong>No packets found for '" + letterFilter.Filter + "'.</strong>";
+                gv.EmptyDataText = LocalizeString("NoPacketsFoundFor") + " '" + letterFilter.Filter + "'.</strong>";
             }
             else
             {
                 dataView.RowFilter = String.Empty;
-                gv.EmptyDataText = "<br /><strong>No packets found.</strong>";
+                gv.EmptyDataText = LocalizeString("NoPacketsFound");
             }
             gv.DataSource = dataView;
             gv.DataBind();
@@ -791,10 +871,9 @@ namespace Gafware.Modules.DMS
                 pnlFound.Visible = true;
                 pnlNotFound.Visible = false;
                 btnSave.Visible = true;
-                btnCancel.Text = "Cancel";
+                btnCancel.Text = LocalizeString("Cancel");
                 tbName.BackColor = (tbName.Enabled ? System.Drawing.Color.White : System.Drawing.Color.Silver);
-                tbName.Width = new Unit(packet.PacketId > 0 ? "686px" : "780px");
-                btnEditName.Text = (tbName.Enabled ? "Save Name" : "Edit Name");
+                btnEditName.Text = LocalizeString(tbName.Enabled ? "SaveName" : "EditName");
                 ddDocuments.SelectedIndex = 0;
                 ddTags.SelectedIndex = 0;
             }
@@ -824,7 +903,7 @@ namespace Gafware.Modules.DMS
             List<Components.Tag> tags = Components.DocumentController.GetAllTags(PortalId, PortalWideRepository ? 0 : TabModuleId);
             ddTags.DataSource = tags;
             ddTags.DataBind();
-            ddTags.Items.Insert(0, new ListItem("-- Select A Tag --", "0"));
+            ddTags.Items.Insert(0, new ListItem(LocalizeString("SelectTag"), "0"));
             ddTags.SelectedIndex = 0;
         }
 
@@ -980,10 +1059,10 @@ namespace Gafware.Modules.DMS
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 PacketPayload payload = (PacketPayload)e.Row.DataItem;
-                ImageButton deleteButton = (ImageButton)e.Row.FindControl("deleteButton");
-                if (deleteButton != null)
+                Image deleteImage = (Image)e.Row.FindControl("deleteImage");
+                if (deleteImage != null)
                 {
-                    deleteButton.Attributes.Add("onMouseOver", "MM_swapImage('" + deleteButton.ClientID + "','','" + ResolveUrl(ControlPath + "Images/Icons/DeleteIcon2_16px.gif") + "',1)");
+                    deleteImage.Attributes.Add("onMouseOver", "MM_swapImage('" + deleteImage.ClientID + "','','" + ResolveUrl(ControlPath + "Images/Icons/DeleteIcon2_16px.gif") + "',1)");
                 }
                 DropDownList ddFileType = (DropDownList)e.Row.FindControl("ddFileType");
                 Label lblType = (Label)e.Row.FindControl("lblType");
@@ -992,7 +1071,7 @@ namespace Gafware.Modules.DMS
                     List<Components.DMSFile> files = payload.PacketDocument.Document.Files.FindAll(p => p.Status.StatusId == 1);
                     ddFileType.DataSource = files;
                     ddFileType.DataBind();
-                    ddFileType.Items.Insert(0, new ListItem("All", "0"));
+                    ddFileType.Items.Insert(0, new ListItem(LocalizeString("All"), "0"));
                     ddFileType.SelectedIndex = ddFileType.Items.IndexOf(ddFileType.Items.FindByValue(payload.PacketDocument.FileId.ToString()));
                     ddFileType.Visible = (files.Count > 1 && SelectedDocuments.Count == 1);
                     lblType.Visible = (ddFileType.Visible ? false : true);
@@ -1052,22 +1131,56 @@ namespace Gafware.Modules.DMS
             //packet.ShowDescription = (rblShowDescription.SelectedIndex == 0);
             packet.ShowDescription = cbShowDescription.Checked;
             packet.ShowPacketDescription = cbShowPacketDescription.Checked;
-            packet.Documents = new List<Components.PacketDocument>();
-            packet.Tags = new List<Components.PacketTag>();
             int index = 0;
             foreach (PacketPayload payload in SelectedDocuments)
             {
                 if (payload.PayloadType == PayloadType.Document)
                 {
-                    payload.PacketDocument.SortOrder = index;
-                    packet.Documents.Add(payload.PacketDocument);
+                    PacketDocument doc = packet.Documents.Find(d => d.DocumentId == payload.PacketDocument.DocumentId);
+                    if (doc == null)
+                    {
+                        doc = payload.PacketDocument;
+                        packet.Documents.Add(doc);
+                    }
+                    doc.SortOrder = index;
                 }
                 else if (payload.PayloadType == PayloadType.Tag)
                 {
-                    payload.PacketTag.SortOrder = index;
-                    packet.Tags.Add(payload.PacketTag);
+                    PacketTag tag = packet.Tags.Find(t => t.TagId == payload.PacketTag.TagId);
+                    if (tag == null)
+                    {
+                        tag = payload.PacketTag;
+                        packet.Tags.Add(tag);
+                    }
+                    tag.SortOrder = index;
                 }
                 index++;
+            }
+            for (int i = packet.Documents.Count() - 1; i >= 0; i--)
+            {
+                PacketDocument doc = packet.Documents[i];
+                PacketPayload payload = SelectedDocuments.Where(p => p.PayloadType == PayloadType.Document).FirstOrDefault(p => p.PacketDocument.DocumentId == doc.DocumentId);
+                if (payload == null)
+                {
+                    packet.Documents.RemoveAt(i);
+                    if(doc.PacketDocId != 0)
+                    {
+                        PacketController.DeletePacketDoc(doc.PacketDocId);
+                    }
+                }
+            }
+            for (int i = packet.Tags.Count() - 1; i >= 0; i--)
+            {
+                PacketTag tag = packet.Tags[i];
+                PacketPayload payload = SelectedDocuments.Where(p => p.PayloadType == PayloadType.Tag).FirstOrDefault(p => p.PacketTag.TagId == tag.TagId);
+                if (payload == null)
+                {
+                    packet.Tags.RemoveAt(i);
+                    if(tag.PacketTagId != 0)
+                    {
+                        PacketController.DeletePacketTag(tag.PacketTagId);
+                    }
+                }
             }
             if (packet.CreatedByUserID == 0)
             {
@@ -1102,7 +1215,7 @@ namespace Gafware.Modules.DMS
                     SetLinkUrl();
                 }
             }
-            btnEditName.Text = (!tbName.Enabled ? "Save Name" : "Edit Name");
+            btnEditName.Text = LocalizeString(!tbName.Enabled ? "SaveName" : "EditName");
             tbName.Enabled = !tbName.Enabled;
             tbName.BackColor = (tbName.Enabled ? System.Drawing.Color.White : System.Drawing.Color.Silver);
         }
@@ -1137,6 +1250,20 @@ namespace Gafware.Modules.DMS
             {
                 lnk.ForeColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
             }
+        }
+
+        protected string JSEncode(string text)
+        {
+            return Generic.JSEncode(text);
+        }
+
+        protected string GetConfirmDeletePayload(PayloadType payloadType)
+        {
+            if(payloadType == PayloadType.Document)
+            {
+                return "confirmDeleteDocument(this); return false;"; // \"Are you sure you wish to remove this document?\")";
+            }
+            return "confirmDeleteTag(this); return false;"; // (\"Are you sure you wish to remove this tag?\")";
         }
     }
 }

@@ -449,7 +449,7 @@ namespace Gafware.Modules.DMS
                         Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:title\" content=\"" + HttpUtility.HtmlEncode(PortalSettings.ActiveTab.TabName) + "\" />"));
 
                     }
-                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
+                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(LocalizeString("No"), LocalizeString("Yes"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                 }
                 else
                 {
@@ -590,7 +590,8 @@ namespace Gafware.Modules.DMS
             }
             else*/
             {
-                string url = TabController.CurrentPage.FullUrl + "/q/" + System.Web.HttpUtility.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) && PortalSettings.ActiveTab.TabName.Equals("Home", StringComparison.OrdinalIgnoreCase) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
+                //string url = TabController.CurrentPage.FullUrl + "/q/" + System.Web.HttpUtility.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) && PortalSettings.ActiveTab.TabName.Equals("Home", StringComparison.OrdinalIgnoreCase) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
+                string url = TabController.CurrentPage.FullUrl + "/q/" + System.Web.HttpUtility.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
                 Response.Redirect(url, true); // + (Request.QueryString["type"] != null ? "&type=" + Request.QueryString["type"] : String.Empty));
             }
         }

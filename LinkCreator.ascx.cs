@@ -141,6 +141,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("      var fileId = $('#" + hidFileID.ClientID + "').val();");
                 sb.AppendLine("      var cb = $('#" + cbShowDescription.ClientID + "').is(':checked');");
                 sb.AppendLine("      var header = $('#" + tbCustomHeader.ClientID + "').val();");
+                // sb.AppendLine("      $.alert({ content: 'File Count: ' + fileCount + '\\nDoc List: ' + docIds + '\\nFile ID: ' + fileId + '\\nShow Description: ' + cb + '\\nHeader Text: ' + header });");
                 // sb.AppendLine("      alert('File Count: ' + fileCount + '\\nDoc List: ' + docIds + '\\nFile ID: ' + fileId + '\\nShow Description: ' + cb + '\\nHeader Text: ' + header);");
                 sb.AppendLine("      $.ajax({");
                 sb.AppendLine("        url: \"" + ControlPath + "DMSController.asmx/GetLinkUrl\",");
@@ -171,7 +172,8 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("          } else {");
                 sb.AppendLine("            msg = 'Uncaught Error.\\n' + jqXHR.responseText;");
                 sb.AppendLine("          }");
-                sb.AppendLine("          alert(msg);");
+                sb.AppendLine("          $.alert({ title: 'Error', content: msg });");
+                //sb.AppendLine("          alert(msg);");
                 sb.AppendLine("        }");
                 sb.AppendLine("      });");
                 sb.AppendLine("    }, 10);");
@@ -289,7 +291,7 @@ namespace Gafware.Modules.DMS
                     gv.EmptyDataText = LocalizeString("NoDocuments");
                     pnlIncludePrivate.Visible = IsAdmin();
                     gv.HeaderStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
-                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString("No", "Yes", new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
+                    litCSS.Text = "<style type=\"text/css\">" + Generic.ToggleButtonCssString(LocalizeString("No"), LocalizeString("Yes"), new Unit("100px"), System.Drawing.ColorTranslator.FromHtml("#" + Theme)) + "</style>";
                     List<Components.DocumentView> docs = Components.DocumentController.GetAllDocumentsForDropDown(PortalId, PortalWideRepository ? 0 : TabModuleId);
                     List<SearchResult> results = (from doc in docs select new SearchResult { DocumentID = doc.DocumentId, DocumentName = doc.DocumentName }).ToList();
                     ddDocuments.DataSource = results;
