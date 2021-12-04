@@ -158,7 +158,7 @@ namespace Gafware.Modules.DMS
 
         public string GetLinkUrl(string controlPath, int mid, bool showDescription, string documentList, int fileId, string headerText)
         {
-            return string.Concat(controlPath, "/mid/", mid, "/q/", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
+            return string.Concat(controlPath, "/mid/", mid, "/q/", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
         }
 
         [WebMethod]
@@ -309,7 +309,7 @@ namespace Gafware.Modules.DMS
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void GetLinkUrl(bool showDescription, string documentList, int fileId, string headerText, string path)
         {
-            string url = string.Concat(path, "/q/", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription, documentList, fileId, HttpUtility.UrlEncode(headerText))))));
+            string url = string.Concat(path, "/q/", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription, documentList, fileId, HttpUtility.UrlEncode(headerText))))));
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             Context.Response.Write(oSerializer.Serialize(url));
         }

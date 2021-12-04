@@ -416,7 +416,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
+            strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
             return _navigationManager.NavigateURL("GetDocuments", strArrays);
         }
 
@@ -425,7 +425,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}&preview=true", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
+            strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}&preview=true", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
             return _navigationManager.NavigateURL("GetDocuments", strArrays);
         }
 
@@ -483,7 +483,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&searchprivate={3}&headertext=", cbShowDescription.Checked ? "Yes" : "No", strDocList, fileId, cbIncludePrivate.Checked ? "Yes" : "No")))));
+            strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&searchprivate={3}&headertext=", cbShowDescription.Checked ? "Yes" : "No", strDocList, fileId, cbIncludePrivate.Checked ? "Yes" : "No")))));
             return _navigationManager.NavigateURL("GetDocuments", strArrays);
         }
 
@@ -630,7 +630,7 @@ namespace Gafware.Modules.DMS
             {
                 fileId = 0;
             }
-            documentSearchResults.QueryString = string.Concat("q=", HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}&preview=true", cbShowDescription.Checked.ToString(), strDocList, fileId, HttpUtility.UrlEncode(tbCustomHeader.Text)))));
+            documentSearchResults.QueryString = string.Concat("q=", Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}&preview=true", cbShowDescription.Checked.ToString(), strDocList, fileId, HttpUtility.UrlEncode(tbCustomHeader.Text)))));
             preview.Value = "1";
         }
 

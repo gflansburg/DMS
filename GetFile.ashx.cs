@@ -71,7 +71,7 @@ namespace Gafware.Modules.DMS
                             }
                             else
                             {
-                                context.Response.Redirect(string.Format("/login?returnurl={0}", HttpUtility.UrlEncode(string.Format("/DesktopModules/Gafware/DMS/GetFile.ashx?id={0}", context.Request.QueryString["id"]))), true);
+                                context.Response.Redirect(string.Format("/login?returnurl={0}", Generic.UrlEncode(string.Format("/DesktopModules/Gafware/DMS/GetFile.ashx?id={0}", context.Request.QueryString["id"]))), true);
                             }
                         }
                     }
@@ -117,7 +117,7 @@ namespace Gafware.Modules.DMS
                                 }
                                 else
                                 {
-                                    context.Response.Redirect(string.Format("/login?returnurl={0}", HttpUtility.UrlEncode(string.Format("/DesktopModules/Gafware/DMS/GetFile.ashx?vid={0}", context.Request.QueryString["vid"]))), true);
+                                    context.Response.Redirect(string.Format("/login?returnurl={0}", Generic.UrlEncode(string.Format("/DesktopModules/Gafware/DMS/GetFile.ashx?vid={0}", context.Request.QueryString["vid"]))), true);
                                 }
                             }
                         }

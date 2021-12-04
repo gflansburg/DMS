@@ -563,7 +563,7 @@ namespace Gafware.Modules.DMS
                 else if(!UseLocalFile)
                 {
                     pnlDocumentFound.Visible = true;
-                    lnkFileLocation.NavigateUrl = lnkFileLocation.Text = string.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
+                    lnkFileLocation.NavigateUrl = lnkFileLocation.Text = string.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
                     System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
                     if (literal == null)
                     {
@@ -665,13 +665,13 @@ namespace Gafware.Modules.DMS
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 string query = String.Format("id={0}&fileid={1}", file.DocumentId, file.FileId);
                 query = Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(query);
-                query = HttpUtility.UrlEncode(query);
+                query = Generic.UrlEncode(query);
                 query = Generic.StringToHex(query);
                 string strAnchor = string.Format("<a href=\"{0}\" style=\"color: #{1};\">", GetLinkUrl(query), Theme);
                 sb.Append("<div style=\"display: inline-block; text-align: center;\">");
                 sb.Append(strAnchor);
                 //string icon = string.Format("{0}/Images/icons/{2}/{1}.png", ControlPath, file.FileType, ThumbnailType);
-                string icon = String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
+                string icon = String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
                 /*bool portrait = true;
                 bool hasThumbnail = false;
                 file.FileVersion.LoadThumbnail();
@@ -748,7 +748,7 @@ namespace Gafware.Modules.DMS
             string strAnchor = String.Empty;
             string query = String.Format("id={0}&fileid={1}&type={2}&terms={3}", file.DocumentId, file.FileId, file.FileType, Keywords.Replace(" ", "|"));
             query = Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(query);
-            query = HttpUtility.UrlEncode(query);
+            query = Generic.UrlEncode(query);
             query = Generic.JSEncode(query);
             if (file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
             {
@@ -761,11 +761,11 @@ namespace Gafware.Modules.DMS
             }
             else
             {
-                strAnchor = string.Format("<a href=\"{0}\" onmouseup=\"recordDocumentRequest('{1}')\" style=\"color: #{2};\" target=\"_blank\">", String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))), query, Theme);
+                strAnchor = string.Format("<a href=\"{0}\" onmouseup=\"recordDocumentRequest('{1}')\" style=\"color: #{2};\" target=\"_blank\">", String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))), query, Theme);
             }
             sb.Append("<div style=\"display: inline-block; text-align: center;\">");
             sb.Append(strAnchor);
-            string icon = String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
+            string icon = String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
             FileType fileType = DocumentController.GetFileTypeByExt(file.FileType, PortalId, PortalWideRepository ? 0 : TabModuleId);
             if (fileType != null)
             {

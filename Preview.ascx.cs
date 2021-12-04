@@ -87,7 +87,7 @@ namespace Gafware.Modules.DMS
                             byte[] aQuery = Generic.StringToByteArray(strQuery);
                             string strNewQuery = HttpUtility.UrlDecode(System.Text.Encoding.ASCII.GetString(aQuery));
                             Gafware.Modules.DMS.Cryptography.CryptographyUtil.Decrypt(strNewQuery);
-                            documentSearchResults.QueryString = String.Format("q={0}", HttpUtility.UrlEncode(strNewQuery));
+                            documentSearchResults.QueryString = String.Format("q={0}", Generic.UrlEncode(strNewQuery));
                         }
                         catch
                         {

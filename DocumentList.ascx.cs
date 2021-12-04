@@ -1360,7 +1360,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             int moduleId = ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("docids={0}", DocumentID)))));
+            strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("docids={0}", DocumentID)))));
             tbLinkURL.Text = _navigationManager.NavigateURL("GetDocuments", strArrays);
             pnlLink.Visible = (DocumentID > 0);
             pnlTags.Visible = (DocumentID != 0);
@@ -1901,7 +1901,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             int moduleId = ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            strArrays[1] = string.Concat("q=", Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
+            strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
             return _navigationManager.NavigateURL("GetDocuments", strArrays);
         }
 

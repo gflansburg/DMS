@@ -385,7 +385,7 @@ namespace Gafware.Modules.DMS
                                 try
                                 {
                                     Gafware.Modules.DMS.Cryptography.CryptographyUtil.Decrypt(strQuery);
-                                    documentSearchResults.QueryString = String.Format("q={0}", System.Web.HttpUtility.UrlEncode(strQuery));
+                                    documentSearchResults.QueryString = String.Format("q={0}", Generic.UrlEncode(strQuery));
                                     pnlSearch.Visible = pnlSearchResults.Visible = false;
                                 }
                                 catch
@@ -395,7 +395,7 @@ namespace Gafware.Modules.DMS
                                         byte[] aQuery = StringToByteArray(strQuery);
                                         string strNewQuery = System.Web.HttpUtility.UrlDecode(System.Text.Encoding.ASCII.GetString(aQuery));
                                         Gafware.Modules.DMS.Cryptography.CryptographyUtil.Decrypt(strNewQuery);
-                                        documentSearchResults.QueryString = String.Format("q={0}", System.Web.HttpUtility.UrlEncode(strNewQuery));
+                                        documentSearchResults.QueryString = String.Format("q={0}", Generic.UrlEncode(strNewQuery));
                                         pnlSearch.Visible = pnlSearchResults.Visible = false;
                                     }
                                     catch
@@ -570,8 +570,8 @@ namespace Gafware.Modules.DMS
                 if (filter[0].Files.Count > 0)
                 {
                     DMSFile file = filter[0].Files[0];
-                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
-                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(HttpUtility.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:card\" content=\"summary_large_image\">\" />"));
                 }
             }
@@ -590,8 +590,8 @@ namespace Gafware.Modules.DMS
             }
             else*/
             {
-                //string url = TabController.CurrentPage.FullUrl + "/q/" + System.Web.HttpUtility.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) && PortalSettings.ActiveTab.TabName.Equals("Home", StringComparison.OrdinalIgnoreCase) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
-                string url = TabController.CurrentPage.FullUrl + "/q/" + System.Web.HttpUtility.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
+                string url = TabController.CurrentPage.FullUrl + "?q=" + Generic.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) && PortalSettings.ActiveTab.TabName.Equals("Home", StringComparison.OrdinalIgnoreCase) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
+                //string url = TabController.CurrentPage.FullUrl + "?q=" + Generic.UrlEncode(string.IsNullOrEmpty(tbKeywords.Text.Trim()) ? "[All]" : tbKeywords.Text.Trim()) + (!String.IsNullOrEmpty(hidTab.Value) ? "#" + hidTab.Value : String.Empty);
                 Response.Redirect(url, true); // + (Request.QueryString["type"] != null ? "&type=" + Request.QueryString["type"] : String.Empty));
             }
         }
