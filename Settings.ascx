@@ -30,7 +30,7 @@
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblCategory" runat="server" ControlName="tbCategory" Suffix=":" /> 
-            <asp:TextBox ID="tbCategory" runat="server" MaxLength="255" Width="100%"></asp:TextBox>
+            <asp:TextBox ID="tbCategory" runat="server" MaxLength="255"></asp:TextBox>
         </div>
 
         <div class="dnnFormItem">
@@ -102,7 +102,7 @@
 
         <div class="dnnFormItem" id="pnlInstructions" runat="server" visible="true">
             <dnn:Label ID="lblInstructions" runat="server" ControlName="tbInstructions" Suffix=":" /> 
-            <asp:TextBox ID="tbInstructions" runat="server" Width="100%" MaxLength="255"></asp:TextBox>
+            <asp:TextBox ID="tbInstructions" runat="server" MaxLength="255"></asp:TextBox>
         </div>
 
         <div class="dnnFormItem">
@@ -113,7 +113,7 @@
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblFileNotificationSubject" runat="server" ControlName="tbFileNotificationSubjexct" Suffix=":" /> 
-            <asp:TextBox ID="tbFileNotificationSubject" runat="server" Width="100%"></asp:TextBox>
+            <asp:TextBox ID="tbFileNotificationSubject" runat="server"></asp:TextBox>
         </div>
     </div>
     <div class="dnnFormItem">

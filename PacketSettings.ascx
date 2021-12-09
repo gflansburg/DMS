@@ -7,7 +7,7 @@
     <div class="dms" style="padding: 10px;">
         <div class="dnnFormItem" runat="server" id="pnlRepository">
             <dnn:Label ID="lblRepository" runat="server" ControlName="ddlRepository" Suffix=":" /> 
-            <asp:DropDownList ID="ddlRepository" DataValueField="TabModuleId" DataTextField="Name" OnSelectedIndexChanged="ddlRepository_SelectedIndexChanged" style="width: auto;" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddlRepository" DataValueField="TabModuleId" DataTextField="Name" AutoPostBack="true" OnSelectedIndexChanged="ddlRepository_SelectedIndexChanged" style="width: auto;" runat="server"></asp:DropDownList>
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblPacket" runat="server" /> 

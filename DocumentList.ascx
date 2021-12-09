@@ -63,7 +63,7 @@
                 <asp:Panel ID="pnlDocumentNameEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblDocumentName2" runat="server" ControlName="tbDocumentName" Suffix=":" /> 
-                        <asp:TextBox ID="tbDocumentName" runat="server" Width="100%" MaxLength="255"  ValidationGroup="DocumentControl"></asp:TextBox>
+                        <asp:TextBox ID="tbDocumentName" runat="server" MaxLength="255"  ValidationGroup="DocumentControl"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbDocumentName" Display="Dynamic" ErrorMessage="<br />Document Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
                         <asp:CustomValidator ID="valExists" runat="server" ErrorMessage="<br />A document with this name already exists!" Display="Dynamic" CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:CustomValidator>
                     </div>
@@ -83,7 +83,7 @@
                 <asp:Panel ID="pnlDocumentDetailsEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblDetails3" runat="server" ResourceKey="lblDetails2" ControlName="tbDocumentDetails" Suffix=":" /> 
-                        <asp:TextBox ID="tbDocumentDetails" runat="server" TextMode="MultiLine" MaxLength="4000" Rows="1" Width="100%"  ValidationGroup="DocumentControl"></asp:TextBox>
+                        <asp:TextBox ID="tbDocumentDetails" runat="server" TextMode="MultiLine" MaxLength="4000" Rows="1" ValidationGroup="DocumentControl"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="tbDocumentDetails" Display="Dynamic" ErrorMessage="<br />Document Details is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
                     </div>
                 </asp:Panel>
@@ -96,7 +96,7 @@
                 <asp:Panel ID="pnlAdminCommentsEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblAdminComments3" runat="server" ResourceKey="lblAdminComments2" ControlName="tbAdminComments" Suffix=":" /> 
-                        <asp:TextBox ID="tbAdminComments" runat="server" TextMode="MultiLine" MaxLength="2500" Rows="1" Width="100%"  ValidationGroup="DocumentControl"></asp:TextBox>
+                        <asp:TextBox ID="tbAdminComments" runat="server" TextMode="MultiLine" MaxLength="2500" Rows="1" ValidationGroup="DocumentControl"></asp:TextBox>
                     </div>
                 </asp:Panel>
                 <asp:Panel ID="pnlIsPublicDetails" runat="server">
@@ -174,7 +174,7 @@
                     <asp:Panel ID="pnlSecurityRoleEdit" runat="server" Visible="false">
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblSecurityRole3" runat="server" ResourceKey="lblSecurityRole2" ControlName="ddlSecurityRole" Suffix=":" /> 
-                            <asp:DropDownList ID="ddlSecurityRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" ValidationGroup="DocumentControl"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlSecurityRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;" ValidationGroup="DocumentControl"></asp:DropDownList>
                             <asp:LinkButton ID="btnReloadSecurityRoles" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReloadSecurityRoles_Click" style="padding: 0px 9px 0px 9px; height: 33px;" />
                         </div>
                     </asp:Panel>
@@ -449,7 +449,7 @@
 	                    <Columns>
                             <asp:TemplateField ItemStyle-VerticalAlign="Middle" ItemStyle-Width="84px">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="btnDelete" CommandName="Delete" runat="server" Style="padding-top: 5px;" OnClientClick='<%# "confirmDeleteFile(this, \"" + Eval("FileType").ToString() + "\"); return false;" %>'><asp:Image ID="imgDelete" runat="server" ToolTip='<%= LocalizeString("Delete") %>' AlternateText='<%= LocalizeString("Delete") %>' ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/DeleteIcon1.gif" onmouseout="MM_swapImgRestore()" /></asp:LinkButton>
+                                    <asp:LinkButton ID="btnDelete" CommandName="Delete" runat="server" Style="padding-top: 5px;" OnClientClick='<%# "confirmDeleteFile(this, \"file\"); return false;" %>'><asp:Image ID="imgDelete" runat="server" ToolTip='<%= LocalizeString("Delete") %>' AlternateText='<%= LocalizeString("Delete") %>' ImageUrl="~/desktopmodules/Gafware/DMS/images/icons/DeleteIcon1.gif" onmouseout="MM_swapImgRestore()" /></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Version" HeaderStyle-Wrap="false" SortExpression="Version" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">

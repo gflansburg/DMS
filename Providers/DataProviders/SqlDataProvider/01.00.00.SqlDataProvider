@@ -2827,10 +2827,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	DECLARE @temp int
-	SET @temp = (SELECT PortalID FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID)
-
-	IF (@temp IS NULL)
+	IF (NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID))
 	BEGIN
 		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] (PortalID, PortalWideRepository)
 		VALUES (@PortalID, @PortalWideRepository)
