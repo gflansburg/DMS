@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DocumentSearchResults.ascx.cs" Inherits="Gafware.Modules.DMS.DocumentSearchResults" %>
 <asp:Literal ID="litMetaRedirect" runat="server"></asp:Literal>
 <asp:Panel ID="pnlSearchNotFound" runat="server" Visible="false">
-    <div class="SearchResultHeader" id="SearchResultHeader" runat="server"><span class="text_medium"><strong style="color:#FFFFFF;"><asp:Label ID="Label1" runat="server" Text="Document Search Results" /></strong></span></div>
+    <div class="SearchResultHeader" id="SearchResultHeader" runat="server"><span class="text_medium" style="float: left;"><strong style="color:#FFFFFF;"><asp:Label ID="lblHeader" runat="server" Text="Document Search Results" /></strong></span><span style="float: right;" id="pnlAdmin" runat="server"><asp:ImageButton ID="btnAdmin" ImageUrl="Images/settings.png" OnClick="btnAdmin_Click" runat="server" /></span><br style="clear: both;" /></div>
     <br />
     <div style="margin-left: 5px;"><%= LocalizeString("NoDocumentsFound") %></div>
 </asp:Panel>
@@ -18,7 +18,7 @@
     <asp:HyperLink ID="lnkFileLocation" runat="server" Target="_self"></asp:HyperLink>
 </asp:Panel>
 <asp:Panel ID="pnlDocumentsFound" runat="server" Visible="false">
-    <div class="SearchResultHeader" id="SearchResultHeader2" runat="server"><span class="text_medium" style="float: left;"><strong style="color:#FFFFFF;"><asp:Label ID="lblHeader" runat="server" Text="Document Search Results" /></strong></span><span style="float: right;" id="pnlAdmin" runat="server" visible="false"><asp:ImageButton ID="btnAdmin" ImageUrl="Images/settings.png" OnClick="btnAdmin_Click" runat="server" /></span><br style="clear: both;" /></div>
+    <div class="SearchResultHeader" id="SearchResultHeader2" runat="server"><span class="text_medium" style="float: left;"><strong style="color:#FFFFFF;"><asp:Label ID="lblHeader2" runat="server" Text="Document Search Results" /></strong></span><span style="float: right;" id="pnlAdmin2" runat="server"><asp:ImageButton ID="btnAdmin2" ImageUrl="Images/settings.png" OnClick="btnAdmin_Click" runat="server" /></span><br style="clear: both;" /></div>
     <asp:Panel ID="pnlDescription" runat="server" CssClass="PacketDescription" Visible="false"><asp:Label ID="lblDescription" runat="server"></asp:Label></asp:Panel>
     <asp:GridView ID="rptDocuments" runat="server" AutoGenerateColumns="False" CellPadding="3" CellSpacing="3" 
         EmptyDataText="No matching document found." OnRowDataBound="rptDocuments_RowDataBound" OnDataBound="rptDocuments_DataBound"

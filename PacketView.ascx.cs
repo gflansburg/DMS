@@ -61,6 +61,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ModuleId = ModuleId;
                 documentSearchResults.IsAdmin = IsAdmin();
                 documentSearchResults.ControlPath = ControlPath;
+                documentSearchResults.ShowAdmin = true;
                 if (Settings.Contains("RepositoryID"))
                 {
                     documentSearchResults.TabModuleId = Convert.ToInt32(Settings["RepositoryID"].ToString());

@@ -42,13 +42,31 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchResultHeader;
 
         /// <summary>
-        /// Label1 control.
+        /// lblHeader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label lblHeader;
+
+        /// <summary>
+        /// pnlAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlAdmin;
+
+        /// <summary>
+        /// btnAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnAdmin;
 
         /// <summary>
         /// pnlDocumentNotFound control.
@@ -105,31 +123,31 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchResultHeader2;
 
         /// <summary>
-        /// lblHeader control.
+        /// lblHeader2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHeader;
+        protected global::System.Web.UI.WebControls.Label lblHeader2;
 
         /// <summary>
-        /// pnlAdmin control.
+        /// pnlAdmin2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlAdmin;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlAdmin2;
 
         /// <summary>
-        /// btnAdmin control.
+        /// btnAdmin2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnAdmin;
+        protected global::System.Web.UI.WebControls.ImageButton btnAdmin2;
 
         /// <summary>
         /// pnlDescription control.

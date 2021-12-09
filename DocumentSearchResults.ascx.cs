@@ -354,7 +354,7 @@ namespace Gafware.Modules.DMS
         {
             if (!IsPostBack)
             {
-                pnlAdmin.Visible = ShowAdmin && IsAdmin;
+                pnlAdmin.Visible = pnlAdmin2.Visible = (ShowAdmin && IsAdmin);
                 rptDocuments.PageSize = (PageSize == 0 ? 10 : PageSize);
                 if(PageSize == 0)
                 {
@@ -362,7 +362,7 @@ namespace Gafware.Modules.DMS
                 }
                 lnkFileLocation.ForeColor = System.Drawing.ColorTranslator.FromHtml("#" + Theme);
                 SearchResultHeader.Style["background"] = SearchResultHeader2.Style["background"] = String.Format("url({0}Images/category-header-{1}.png) no-repeat;", ControlPath, Theme);
-                Label1.Style["color"] = lblHeader.Style["color"] = "white !important";
+                lblHeader.Style["color"] = lblHeader2.Style["color"] = "white !important";
                 BindData();
             }
             else
