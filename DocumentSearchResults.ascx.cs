@@ -305,7 +305,7 @@ namespace Gafware.Modules.DMS
             }
             set
             {
-                lblHeader.Text = (String.IsNullOrEmpty(value) ? LocalizeString("ResultsHeader") : value);
+                lblHeader.Text = lblHeader2.Text = (String.IsNullOrEmpty(value) ? LocalizeString("ResultsHeader") : value);
             }
         }
 

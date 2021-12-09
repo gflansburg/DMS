@@ -7,16 +7,16 @@
     <div class="dms" style="padding: 10px;">
         <div class="dnnFormItem" runat="server" id="pnlRepository">
             <dnn:Label ID="lblRepository" runat="server" ControlName="ddlRepository" Suffix=":" /> 
-            <asp:DropDownList ID="ddlRepository" DataValueField="TabModuleId" DataTextField="Name" OnSelectedIndexChanged="ddlRepository_SelectedIndexChanged" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddlRepository" DataValueField="TabModuleId" DataTextField="Name" OnSelectedIndexChanged="ddlRepository_SelectedIndexChanged" style="width: auto;" runat="server"></asp:DropDownList>
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblPacket" runat="server" /> 
-            <asp:DropDownList ID="ddlPacket" DataValueField="PacketId" DataTextField="Name" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddlPacket" DataValueField="PacketId" DataTextField="Name" style="width: auto;" runat="server"></asp:DropDownList>
             <asp:LinkButton ID="btnReload" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReload_Click" />
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblTheme" runat="server" ControlName="ddlTheme" Suffix=":" /> 
-            <asp:DropDownList ID="ddlTheme" runat="server">
+            <asp:DropDownList ID="ddlTheme" runat="server" style="width: auto;">
                 <asp:listitem text="Red" value="990000"></asp:listitem>
                 <asp:listitem text="Green" value="008000"></asp:listitem>
                 <asp:listitem text="Blue" value="2170CD"></asp:listitem>
@@ -29,7 +29,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblThumbnailType" runat="server" ControlName="ddlThumbnailType" Suffix=":" /> 
-            <asp:DropDownList ID="ddlThumbnailType" runat="server">
+            <asp:DropDownList ID="ddlThumbnailType" runat="server" style="width: auto;">
                 <asp:listitem text="Classic" value="classic"></asp:listitem>
                 <asp:listitem text="High Contrast" value="high-contrast"></asp:listitem>
                 <asp:listitem text="Square" value="square"></asp:listitem>
@@ -38,7 +38,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblThumbnailSize" runat="server" ControlName="ddlThumbnailSize" Suffix=":" /> 
-            <asp:DropDownList ID="ddlThumbnailSize" runat="server">
+            <asp:DropDownList ID="ddlThumbnailSize" runat="server" style="width: auto;">
                 <asp:listitem text="Large (128px)" value="128"></asp:listitem>
                 <asp:listitem text="Medium (64px)" value="64"></asp:listitem>
                 <asp:listitem text="Small (32px)" value="32"></asp:listitem>
@@ -46,7 +46,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblPageSize" runat="server" ControlName="ddlPageSize" Suffix=":" /> 
-            <asp:DropDownList ID="ddlPageSize" runat="server">
+            <asp:DropDownList ID="ddlPageSize" runat="server" style="width: auto;">
                 <asp:listitem text="Show All" value="0"></asp:listitem>
                 <asp:listitem text="5" value="5"></asp:listitem>
                 <asp:listitem text="10" value="10"></asp:listitem>
