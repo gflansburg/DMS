@@ -1236,7 +1236,13 @@ namespace Gafware.Modules.DMS
                         }
                         if (System.IO.File.Exists(tempPdf))
                         {
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            { 
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
@@ -1291,7 +1297,13 @@ namespace Gafware.Modules.DMS
                             {
                                 file.FileVersion.SaveThumbnail(isLandscape);
                             }
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            { 
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
@@ -1327,7 +1339,13 @@ namespace Gafware.Modules.DMS
                             {
                                 file.FileVersion.SaveThumbnail(isLandscape);
                             }
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            { 
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
@@ -1360,7 +1378,13 @@ namespace Gafware.Modules.DMS
                             {
                                 file.FileVersion.SaveThumbnail();
                             }
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            {
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }*/
@@ -1432,7 +1456,13 @@ namespace Gafware.Modules.DMS
                             }
                             if (System.IO.File.Exists(tempFile))
                             {
-                                System.IO.File.Delete(tempFile);
+                                try
+                                { 
+                                    System.IO.File.Delete(tempFile);
+                                }
+                                catch
+                                {
+                                }
                             }
                         }
                     }
@@ -1440,6 +1470,7 @@ namespace Gafware.Modules.DMS
             }
             file.FileVersion.Contents = null;
             file.FileVersion.Thumbnail = null;
+            GC.Collect();
         }
 
         public static void CreateThumbnail(HttpRequest request, string controlPath, string fileName, int fileVersionId)
@@ -1487,7 +1518,13 @@ namespace Gafware.Modules.DMS
                         {
                             DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                         }
-                        System.IO.File.Delete(tempPdf);
+                        try
+                        { 
+                            System.IO.File.Delete(tempPdf);
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
                 else if (System.IO.Path.GetExtension(fileName).Equals(".xls", StringComparison.OrdinalIgnoreCase) || System.IO.Path.GetExtension(fileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
@@ -1512,7 +1549,13 @@ namespace Gafware.Modules.DMS
                         {
                             DocumentController.SaveThumbnail(fileVersionId, isLandscape, thumbnail);
                         }
-                        System.IO.File.Delete(tempPdf);
+                        try
+                        { 
+                            System.IO.File.Delete(tempPdf);
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
                 else if (System.IO.Path.GetExtension(fileName).Equals(".mp3", StringComparison.OrdinalIgnoreCase))
@@ -1695,7 +1738,13 @@ namespace Gafware.Modules.DMS
                         }
                         if (System.IO.File.Exists(tempPdf))
                         {
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            {
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
@@ -1750,7 +1799,13 @@ namespace Gafware.Modules.DMS
                             {
                                 file.FileVersion.SaveThumbnail(isLandscape);
                             }
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            {
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
@@ -1786,7 +1841,13 @@ namespace Gafware.Modules.DMS
                             {
                                 file.FileVersion.SaveThumbnail(isLandscape);
                             }
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            { 
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
@@ -1819,7 +1880,13 @@ namespace Gafware.Modules.DMS
                             {
                                 file.FileVersion.SaveThumbnail();
                             }
-                            System.IO.File.Delete(tempPdf);
+                            try
+                            {
+                                System.IO.File.Delete(tempPdf);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }*/
@@ -1891,7 +1958,13 @@ namespace Gafware.Modules.DMS
                             }
                             if (System.IO.File.Exists(tempFile))
                             {
-                                System.IO.File.Delete(tempFile);
+                                try
+                                { 
+                                    System.IO.File.Delete(tempFile);
+                                }
+                                catch
+                                {
+                                }
                             }
                         }
                     }
@@ -1899,11 +1972,21 @@ namespace Gafware.Modules.DMS
             }
             file.FileVersion.Contents = null;
             file.FileVersion.Thumbnail = null;
+            GC.Collect();
         }
 
         public static string MapPath(string virtualPath, DotNetNuke.Entities.Portals.PortalInfo portal)
         {
-            return (HttpContext.Current.Request != null ? HttpContext.Current.Request.MapPath(virtualPath) : virtualPath.Replace("/", "\\").Replace("~", portal.HomeDirectoryMapPath).Replace("\\\\", "\\"));
+            string path = (HttpContext.Current != null && HttpContext.Current.Request != null ? HttpContext.Current.Request.MapPath(virtualPath) : virtualPath.Replace("/", "\\"));
+            if(path.Contains("~"))
+            {
+                path = path.Replace("~", portal.HomeDirectoryMapPath.Substring(0, portal.HomeDirectoryMapPath.IndexOf("\\Portals"))).Replace("\\\\", "\\");
+            }
+            else if(!path.Contains(":\\"))
+            {
+                path = (portal.HomeDirectoryMapPath.Substring(0, portal.HomeDirectoryMapPath.IndexOf("\\Portals")) + path).Replace("\\\\", "\\");
+            }
+            return path;
         }
     }
 }

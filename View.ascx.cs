@@ -289,11 +289,7 @@ namespace Gafware.Modules.DMS
                 documentSearchResults.ControlPath = ControlPath;
                 if (!IsPostBack)
                 {
-                    //if (IsAdmin())
-                    //{
-                    //FixThumnails();
-                    //FixTitles();
-                    //}
+                    //DMSJob.ProcessDocuments(null);
                     btnSearch.Text = LocalizeString(btnSearch.ID);
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"keywords\" content=\"" + PortalSettings.ActiveTab.KeyWords + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:url\" content=\"" + PortalSettings.ActiveTab.FullUrl + "\" />"));
@@ -572,7 +568,7 @@ namespace Gafware.Modules.DMS
                     DMSFile file = filter[0].Files[0];
                     Page.Header.Controls.Add(new LiteralControl("<meta property=\"og:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
                     Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:image\" content=\"" + String.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetIcon.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId))))) + "\" />"));
-                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:card\" content=\"summary_large_image\">\" />"));
+                    Page.Header.Controls.Add(new LiteralControl("<meta name=\"twitter:card\" content=\"summary_large_image\" />"));
                 }
             }
         }
