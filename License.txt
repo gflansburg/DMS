@@ -3,7 +3,7 @@
 	<p class="Owner">
 		Gafware  <a href=https://www.gafware.com>https://www.gafware.com</a></br>
 		Copyright (c) 2021</br>	
-		by Gafware</br>
+		by Glenn Flansburg</br>
 	</p>
     <p>
         Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
