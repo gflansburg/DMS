@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -213,6 +213,36 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    }");
                 sb.AppendLine("  });");
                 sb.AppendLine("}");
+                sb.AppendLine("function toggleNewGroup(cb) {");
+                sb.AppendLine("  if(cb.checked) {");
+                sb.AppendLine("    $('#" + pnlNewOwner.ClientID + "').hide();");
+                sb.AppendLine("    $('#" + pnlNewGroup.ClientID + "').show();");
+                sb.AppendLine("  } else {");
+                sb.AppendLine("    $('#" + pnlNewOwner.ClientID + "').show();");
+                sb.AppendLine("    $('#" + pnlNewGroup.ClientID + "').hide();");
+                sb.AppendLine("  }");
+                sb.AppendLine("}");
+                sb.AppendLine("function newOwnerRequired(source, arguments) {");
+                sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner2.ClientID + "').is(':checked') === true);");
+                sb.AppendLine("}");
+                sb.AppendLine("function newGroupRequired(source, arguments) {");
+                sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner2.ClientID + "').is(':checked') === false);");
+                sb.AppendLine("}");
+                sb.AppendLine("function toggleCurrentGroup(cb) {");
+                sb.AppendLine("  if(cb.checked) {");
+                sb.AppendLine("    $('#" + pnlCurrentOwner.ClientID + "').hide();");
+                sb.AppendLine("    $('#" + pnlCurrentGroup.ClientID + "').show();");
+                sb.AppendLine("  } else {");
+                sb.AppendLine("    $('#" + pnlCurrentOwner.ClientID + "').show();");
+                sb.AppendLine("    $('#" + pnlCurrentGroup.ClientID + "').hide();");
+                sb.AppendLine("  }");
+                sb.AppendLine("}");
+                sb.AppendLine("function currentOwnerRequired(source, arguments) {");
+                sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner3.ClientID + "').is(':checked') === true);");
+                sb.AppendLine("}");
+                sb.AppendLine("function currentGroupRequired(source, arguments) {");
+                sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner3.ClientID + "').is(':checked') === false);");
+                sb.AppendLine("}");
                 sb.AppendLine("function previewDocument() {");
                 sb.AppendLine("  var url = $('textarea#" + tbLinkURL.ClientID + "');");
                 sb.AppendLine("  var win = window.open(url.val(), \"preview\", \"width=800,height=600, resize=yes,menubar=yes,status=yes, location=yes,toolbar=yes,scrollbars=yes\", true);");
@@ -253,7 +283,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)");
                 sb.AppendLine("        if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }");
                 sb.AppendLine("}");
-                sb.AppendLine("MM_preloadImages('" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2_16px.gif") + "');");
+                sb.AppendLine("MM_preloadImages('" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2_16px.gif") + "','" + ResolveUrl("~" + ControlPath + "Images/Icons/EditIcon2_16px.gif") + "');");
                 sb.AppendLine("jQuery(document).ready(function () {");
                 sb.AppendLine("  initNameKeyDown();");
                 sb.AppendLine("  initTableDnD();");
@@ -458,8 +488,16 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("  });");
                 sb.AppendLine("  $(\"#" + changeOwnershipCommandButton.ClientID + "\").click(function(e) {");
                 sb.AppendLine("    e.preventDefault();");
-                sb.AppendLine("    $('#" + ddCurrentOwner.ClientID + "').prop('selectedIndex', 0);");
                 sb.AppendLine("    $('#" + ddNewOwner.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + ddNewGroup.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + cbIsGroupOwner2.ClientID + "').prop('checked', false);");
+                sb.AppendLine("    $('#" + pnlNewOwner.ClientID + "').show();");
+                sb.AppendLine("    $('#" + pnlNewGroup.ClientID + "').hide();");
+                sb.AppendLine("    $('#" + ddCurrentOwner.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + ddCurrentGroup.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + cbIsGroupOwner3.ClientID + "').prop('checked', false);");
+                sb.AppendLine("    $('#" + pnlCurrentOwner.ClientID + "').show();");
+                sb.AppendLine("    $('#" + pnlCurrentGroup.ClientID + "').hide();");
                 sb.AppendLine("    $('#changeOwnershipDialog .FormInstructions').hide();");
                 sb.AppendLine("    $('#changeOwnershipDialog').dialog('open');");
                 sb.AppendLine("    $('#changeOwnership-content').scrollTop(0);");
@@ -469,7 +507,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    bgiframe: true,");
                 sb.AppendLine("    modal: true,");
                 sb.AppendLine("    width: 485,");
-                sb.AppendLine("    height: 300,");
+                sb.AppendLine("    height: 400,");
                 sb.AppendLine("    appendTo: 'form',");
                 sb.AppendLine("    dialogClass: 'dialog',");
                 sb.AppendLine("    title: '" + LocalizeString("ChangeOwnership") + "',");
@@ -598,10 +636,30 @@ namespace Gafware.Modules.DMS
             ddCurrentOwner.Items.Insert(0, new ListItem(LocalizeString("CurrentOwner"), "0"));
             ddCurrentOwner.SelectedIndex = 0;
 
+            ddCurrentGroup.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
+            ddCurrentGroup.DataBind();
+            ddCurrentGroup.Items.Insert(0, new ListItem(LocalizeString("CurrentGroup"), "0"));
+            ddCurrentGroup.SelectedIndex = 0;
+
             ddNewOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddNewOwner.DataBind();
             ddNewOwner.Items.Insert(0, new ListItem(LocalizeString("NewOwner"), "0"));
             ddNewOwner.SelectedIndex = 0;
+
+            ddNewGroup.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
+            ddNewGroup.DataBind();
+            ddNewGroup.Items.Insert(0, new ListItem(LocalizeString("NewGroup"), "0"));
+            ddNewGroup.SelectedIndex = 0;
+
+            ddOwner2.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
+            ddOwner2.DataBind();
+            ddOwner2.Items.Insert(0, new ListItem(LocalizeString("SelectOwner"), "0"));
+            ddOwner2.SelectedIndex = 0;
+
+            ddGroup.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
+            ddGroup.DataBind();
+            ddGroup.Items.Insert(0, new ListItem(LocalizeString("SelectGroup"), "0"));
+            ddGroup.SelectedIndex = 0;
         }
 
         public System.Data.DataView CreateDataTable(bool bReload)
@@ -612,7 +670,10 @@ namespace Gafware.Modules.DMS
                 List<Packet> packets = PacketController.GetAllPacketsForUser(UserId, PortalId, PortalWideRepository ? 0 : TabModuleId);
                 if (Convert.ToInt32(ddOwner.SelectedValue) > 0)
                 {
-                    packets = packets.FindAll(p => p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue));
+                    //DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, Convert.ToInt32(ddOwner.SelectedValue));
+                    //packets = packets.FindAll(p => (!p.IsGroupOwner && p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue)) || (p.IsGroupOwner && user != null && user.IsInRole(Components.UserController.GetRoleById(PortalId, p.CreatedByUserID).RoleName)));
+                    int userId = Convert.ToInt32(ddOwner.SelectedValue);
+                    packets = packets.FindAll(p => (!p.IsGroupOwner && p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue)) || (p.IsGroupOwner && DocumentController.UserIsInRole(userId, p.CreatedByUserID)));
                 }
                 System.Data.DataTable dtResult = Generic.ListToDataTable(packets);
                 dataView = new System.Data.DataView(dtResult);
@@ -726,19 +787,10 @@ namespace Gafware.Modules.DMS
         {
             if (!String.IsNullOrEmpty(comments))
             {
-                float width = Generic.GetWidthOfString(comments, gv.RowStyle.Font);
-#if DEBUG
-                if (width > 400)
-#else
-                if (width > 510)
-#endif
+                if (Generic.GetWidthOfString(comments, gv.RowStyle.Font) > 390)
                 {
                     string temp = comments;
-#if DEBUG
-                    while ((width = Generic.GetWidthOfString(temp + "...", gv.RowStyle.Font)) > 400)
-#else
-                    while ((width = Generic.GetWidthOfString(temp + "...", gv.RowStyle.Font)) > 510)
-#endif
+                    while ((Generic.GetWidthOfString(temp + "...", gv.RowStyle.Font)) > 390)
                     {
                         temp = temp.Substring(0, temp.Length - 1);
                     }
@@ -746,7 +798,7 @@ namespace Gafware.Modules.DMS
                 }
                 return comments;
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public bool IsDMSUser()
@@ -799,7 +851,8 @@ namespace Gafware.Modules.DMS
 
         protected void btnSaveChange_Click(object sender, EventArgs e)
         {
-            PacketController.ChangeOwnership(Convert.ToInt32(ddCurrentOwner.SelectedValue), Convert.ToInt32(ddNewOwner.SelectedValue), PortalId);
+            PacketController.ChangeOwnership(cbIsGroupOwner3.Checked ? Convert.ToInt32(ddCurrentGroup.SelectedValue) : Convert.ToInt32(ddCurrentOwner.SelectedValue), cbIsGroupOwner3.Checked, cbIsGroupOwner2.Checked ? Convert.ToInt32(ddNewGroup.SelectedValue) : Convert.ToInt32(ddNewOwner.SelectedValue), cbIsGroupOwner2.Checked, PortalId);
+            BindData();
         }
 
         protected void lnkPreview_Command(object sender, CommandEventArgs e)
@@ -833,6 +886,20 @@ namespace Gafware.Modules.DMS
                     packet.Documents = new List<Components.PacketDocument>();
                     packet.Name = Generic.GetRandomKeyNoDuplication(PortalId);
                     packet.Tags = new List<Components.PacketTag>();
+                    packet.IsGroupOwner = false;
+                }
+                pnlOwnerEdit.Visible = !packet.IsGroupOwner;
+                pnlGroupEdit.Visible = packet.IsGroupOwner;
+                cbIsGroupOwner.Checked = packet.IsGroupOwner;
+                if (packet.IsGroupOwner)
+                {
+                    ddGroup.SelectedIndex = ddGroup.Items.IndexOf(ddGroup.Items.FindByValue(packet.CreatedByUserID.ToString()));
+                    ddOwner2.SelectedIndex = 0;
+                }
+                else
+                {
+                    ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(packet.CreatedByUserID.ToString()));
+                    ddGroup.SelectedIndex = 0;
                 }
                 tbAdminComments.Text = packet.AdminComments.Trim();
                 tbCustomHeader.Text = packet.CustomHeader.Trim();
@@ -1011,9 +1078,19 @@ namespace Gafware.Modules.DMS
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("type=", "documents");
             strArrays[2] = string.Concat("p=", Generic.UrlEncode(tbName.Text));
-            tbLinkURL.Text = _navigationManager.NavigateURL("GetDocuments", strArrays);
+            tbLinkURL.Text = GetDocumentsLink(strArrays);
             hidBaseUrl.Value = GetUrl();
             hidFileCount.Value = GetActualFileCount.ToString();
+        }
+
+        private string GetDocumentsLink(string[] strArrays)
+        {
+            string url = _navigationManager.NavigateURL("GetDocuments", strArrays);
+            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && ForceHttps)
+            {
+                url = string.Format("https://{0}", url.Substring(7));
+            }
+            return url;
         }
 
         protected string GetUrl()
@@ -1023,7 +1100,7 @@ namespace Gafware.Modules.DMS
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("type=", "documents");
             strArrays[2] = string.Concat("p=", String.Empty);
-            return _navigationManager.NavigateURL("GetDocuments", strArrays);
+            return GetDocumentsLink(strArrays);
         }
 
         protected int GetFileCount
@@ -1116,6 +1193,12 @@ namespace Gafware.Modules.DMS
             Components.Packet packet = Components.PacketController.GetPacket(PacketID);
             if (packet == null)
             {
+                packet = Components.PacketController.GetPacketByName(tbName.Text.Trim(), PortalId, PortalWideRepository ? 0 : TabModuleId);
+                if(packet != null)
+                {
+                    CustomFieldValidator1.IsValid = false;
+                    return;
+                }
                 packet = new Components.Packet();
                 packet.ShowDescription = true;
                 packet.PortalId = PortalId;
@@ -1124,6 +1207,20 @@ namespace Gafware.Modules.DMS
                 packet.Documents = new List<Components.PacketDocument>();
                 packet.Tags = new List<Components.PacketTag>();
             }
+            else
+            {
+                if (!packet.Name.Equals(tbName.Text.Trim()))
+                {
+                    Components.Packet packet2 = Components.PacketController.GetPacketByName(tbName.Text.Trim(), PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    if (packet2 != null && packet2.PacketId != packet.PacketId)
+                    {
+                        CustomFieldValidator1.IsValid = false;
+                        return;
+                    }
+                }
+            }
+            packet.IsGroupOwner = cbIsGroupOwner.Checked;
+            packet.CreatedByUserID = Convert.ToInt32(cbIsGroupOwner.Checked ? ddGroup.SelectedValue : ddOwner2.SelectedValue);
             packet.AdminComments = tbAdminComments.Text.Trim();
             packet.CustomHeader = tbCustomHeader.Text.Trim();
             packet.Description = tbDescription.Text.Trim();
@@ -1205,6 +1302,13 @@ namespace Gafware.Modules.DMS
                 {
                     if (!packet.Name.Equals(tbName.Text.Trim()))
                     {
+                        Components.Packet packet2 = Components.PacketController.GetPacketByName(tbName.Text.Trim(), PortalId, PortalWideRepository ? 0 : TabModuleId);
+                        if (packet2 != null && packet2.PacketId != packet.PacketId)
+                        {
+                            CustomFieldValidator1.IsValid = false;
+                            return;
+                        }
+                        packet.Name = tbName.Text.Trim();
                         Components.PacketController.SavePacket(packet);
                         CreateDataTable(true);
                     }
@@ -1264,6 +1368,16 @@ namespace Gafware.Modules.DMS
                 return "confirmDeleteDocument(this); return false;"; // \"Are you sure you wish to remove this document?\")";
             }
             return "confirmDeleteTag(this); return false;"; // (\"Are you sure you wish to remove this tag?\")";
+        }
+
+        protected void cbIsGroupOwner_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlOwnerEdit.Visible = !cbIsGroupOwner.Checked;
+            pnlGroupEdit.Visible = cbIsGroupOwner.Checked;
+            if (!cbIsGroupOwner.Checked && ddOwner2.SelectedIndex == 0)
+            {
+                ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(UserId.ToString()));
+            }
         }
     }
 }

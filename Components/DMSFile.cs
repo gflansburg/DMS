@@ -41,6 +41,10 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public new int CreatedByUserID { get; set; }
         /// <summary>
+        /// Is owner a group
+        /// </summary>
+        public bool IsGroupOwner { get; set; }
+        /// <summary>
         /// Upload directory
         /// </summary>
         public string UploadDirectory { get; set; }
@@ -108,7 +112,25 @@ namespace Gafware.Modules.DMS.Components
         {
             get
             {
-                return DotNetNuke.Entities.Users.UserController.GetUserById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                if (CreatedByUserID > 0 && !IsGroupOwner)
+                {
+                    return DotNetNuke.Entities.Users.UserController.GetUserById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Group owner
+        /// </summary>
+        public DotNetNuke.Security.Roles.RoleInfo Group
+        {
+            get
+            {
+                if (CreatedByUserID > 0 && IsGroupOwner)
+                {
+                    return DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                }
+                return null;
             }
         }
         /// <summary>
@@ -121,6 +143,10 @@ namespace Gafware.Modules.DMS.Components
                 return DocumentController.GetFileVersions(FileId);
             }
         }
+        /// <summary>
+        /// Message
+        /// </summary>
+        public string Message { get; set; }
 
         public override void Fill(IDataReader dr)
         {
@@ -132,6 +158,7 @@ namespace Gafware.Modules.DMS.Components
             StatusId = Null.SetNullInteger(dr["StatusID"]);
             DocumentId = Null.SetNullInteger(dr["DocumentID"]);
             CreatedByUserID = Null.SetNullInteger(dr["UploaderID"]);
+            IsGroupOwner = Null.SetNullBoolean(dr["IsGroupOwner"]);
             UploadDirectory = Null.SetNullString(dr["UploadDirectory"]);
             FileType = Null.SetNullString(dr["FileType"]);
             Filename = Null.SetNullString(dr["FileName"]);

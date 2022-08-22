@@ -33,6 +33,13 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public new int CreatedByUserID { get; set; }
         /// <summary>
+        /// Is a group owner
+        /// </summary>
+        public bool IsGroupOwner { get; set; }
+        /// <summary>
+        /// Webpage URL
+        /// </summary>
+        /// <summary>
         /// Webpage URL
         /// </summary>
         public string WebPageUrl { get; set; }
@@ -49,9 +56,13 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public int Filesize { get; set; }
         /// <summary>
-        /// Is Lasscape Thumbnail
+        /// Is Landscape Thumbnail
         /// </summary>
         public bool IsLandscape { get; private set; }
+        /// <summary>
+        /// Has Thumbnail
+        /// </summary>
+        public bool HasThumbnail { get; private set; }
         /// <summary>
         /// Thumbnail
         /// </summary>
@@ -67,7 +78,25 @@ namespace Gafware.Modules.DMS.Components
         {
             get
             {
-                return DotNetNuke.Entities.Users.UserController.GetUserById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                if (CreatedByUserID > 0 && !IsGroupOwner)
+                {
+                    return DotNetNuke.Entities.Users.UserController.GetUserById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Group owner
+        /// </summary>
+        public DotNetNuke.Security.Roles.RoleInfo Group
+        {
+            get
+            {
+                if (CreatedByUserID > 0 && IsGroupOwner)
+                {
+                    return DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                }
+                return null;
             }
         }
 
@@ -79,11 +108,13 @@ namespace Gafware.Modules.DMS.Components
             FileVersionId = Null.SetNullInteger(dr["FileVersionID"]);
             Version = Null.SetNullInteger(dr["Version"]);
             CreatedByUserID = Null.SetNullInteger(dr["UploaderID"]);
+            IsGroupOwner = Null.SetNullBoolean(dr["IsGroupOwner"]);
             WebPageUrl = Null.SetNullString(dr["WebpageURL"]);
             CreatedOnDate = Null.SetNullDateTime(dr["DateUploaded"]);
             IPAddress = Null.SetNullString(dr["IPAddress"]);
             Filesize = Null.SetNullInteger(dr["Filesize"]);
             IsLandscape = Null.SetNullBoolean(dr["IsLandscape"]);
+            HasThumbnail = Null.SetNullBoolean(dr["HasThumbnail"]);
         }
 
         public override int KeyID

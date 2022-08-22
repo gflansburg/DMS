@@ -75,6 +75,7 @@ namespace Gafware.Modules.DMS
                     catch
                     {
                     }
+                    Thumbnail thumb = new Thumbnail(portal, portalSettings, "/DesktopModules/Gafware/DMS");
                     foreach (Document doc in documents)
                     {
                         if (doc != null)
@@ -84,10 +85,21 @@ namespace Gafware.Modules.DMS
                             {
                                 if (!file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase) && file.StatusId == 1)
                                 {
-                                    Generic.CreateThumbnail(portal, "/DesktopModules/Gafware/DMS", file);
+                                    try
+                                    {
+                                        if (portalSettings.UseThumbnails && !file.FileVersion.HasThumbnail)
+                                        {
+                                            item.AddLogNote("Creating thumbnail for " + file.Filename + "<br />\r\n");
+                                            thumb.CreateThumbnail(file);
+                                        }
+                                    }
+                                    catch(Exception)
+                                    {
+                                        item.AddLogNote("Unable to create thumbnail for " + file.Filename + "<br />\r\n");
+                                    }
                                     if ((!doc.ActivationDate.HasValue || DateTime.Now >= doc.ActivationDate.Value) && (!doc.ExpirationDate.HasValue || DateTime.Now <= (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))))
                                     {
-                                        if (!System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
+                                        if (portalSettings.SaveLocalFile && !System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
                                         {
                                             if (!done)
                                             {
@@ -118,7 +130,7 @@ namespace Gafware.Modules.DMS
                                     }
                                     else if ((doc.ActivationDate.HasValue && DateTime.Now < doc.ActivationDate.Value) || (doc.ExpirationDate.HasValue && DateTime.Now > (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))) || file.StatusId == 2)
                                     {
-                                        if (System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
+                                        if (portalSettings.SaveLocalFile && System.IO.File.Exists(MapPath("~/" + file.UploadDirectory + "/" + file.Filename, portal)))
                                         {
                                             if (!done)
                                             {

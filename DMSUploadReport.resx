@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="DNN.ParameterValues" xml:space="preserve">
-    <value>{"@StartDate":"05/05/2018","@EndDate":"06/05/2018","@PortalID":"0"}</value>
+    <value>{"@StartDate":"05/05/2018","@EndDate":"06/05/2018","@PortalID":"0","@TabModuleID":"0"}</value>
   </metadata>
 </root>

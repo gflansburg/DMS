@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -150,7 +150,7 @@ namespace Gafware.Modules.DMS
                 string[] strArrays = new string[1];
                 int moduleId = base.ModuleId;
                 strArrays[0] = string.Concat("mid=", base.ModuleId.ToString());
-                string url = _navigationManager.NavigateURL("GetDocuments", strArrays);
+                string url = GetDocumentsLink(strArrays);
                 sb.AppendLine("        data: { showDescription: cb, documentList: docIds, fileId: fileId, headerText: header, path: '" + url + "' },");
                 sb.AppendLine("        success: function (result) {");
                 sb.AppendLine("          $('#" + tbLinkURL.ClientID + "').val(result);");
@@ -212,7 +212,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)");
                 sb.AppendLine("        if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }");
                 sb.AppendLine("}");
-                sb.AppendLine("MM_preloadImages('" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "');");
+                sb.AppendLine("MM_preloadImages('" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2.gif") + "');");
                 sb.AppendLine("$(document).ready(function() {");
                 sb.AppendLine("  var prm = Sys.WebForms.PageRequestManager.getInstance();");
                 sb.AppendLine("  prm.add_endRequest(MyEndRequest);");
@@ -248,6 +248,16 @@ namespace Gafware.Modules.DMS
                 literal.InnerHtml = sb.ToString();
                 this.Page.Header.Controls.Add(literal);
             }
+        }
+
+        private string GetDocumentsLink(string[] strArrays)
+        {
+            string url = _navigationManager.NavigateURL("GetDocuments", strArrays);
+            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && ForceHttps)
+            {
+                url = string.Format("https://{0}", url.Substring(7));
+            }
+            return url;
         }
 
         public class SearchResult
@@ -417,7 +427,7 @@ namespace Gafware.Modules.DMS
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
-            return _navigationManager.NavigateURL("GetDocuments", strArrays);
+            return GetDocumentsLink(strArrays);
         }
 
         public string GetPreviewUrl(bool showDescription, string documentList, int fileId, string headerText)
@@ -426,7 +436,7 @@ namespace Gafware.Modules.DMS
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}&preview=true", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
-            return _navigationManager.NavigateURL("GetDocuments", strArrays);
+            return GetDocumentsLink(strArrays);
         }
 
         private void SetLinkUrl()
@@ -484,7 +494,7 @@ namespace Gafware.Modules.DMS
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&searchprivate={3}&headertext=", cbShowDescription.Checked ? "Yes" : "No", strDocList, fileId, cbIncludePrivate.Checked ? "Yes" : "No")))));
-            return _navigationManager.NavigateURL("GetDocuments", strArrays);
+            return GetDocumentsLink(strArrays);
         }
 
         protected int GetFileCount
@@ -550,7 +560,7 @@ namespace Gafware.Modules.DMS
                 ImageButton deleteButton = (ImageButton)e.Row.FindControl("deleteButton");
                 if (deleteButton != null)
                 {
-                    deleteButton.Attributes.Add("onMouseOver", "MM_swapImage('" + deleteButton.ClientID + "','','" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "',1)");
+                    deleteButton.Attributes.Add("onMouseOver", "MM_swapImage('" + deleteButton.ClientID + "','','" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2.gif") + "',1)");
                 }
                 DropDownList ddFileType = (DropDownList)e.Row.FindControl("ddFileType");
                 if (ddFileType != null)

@@ -57,6 +57,10 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public new int CreatedByUserID { get; set; }
         /// <summary>
+        /// Is owner a group
+        /// </summary>
+        public bool IsGroupOwner { get; set; }
+        /// <summary>
         /// Tags
         /// </summary>
         public List<PacketTag> Tags { get; set; }
@@ -86,7 +90,25 @@ namespace Gafware.Modules.DMS.Components
         {
             get
             {
-                return DotNetNuke.Entities.Users.UserController.GetUserById(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId, CreatedByUserID);
+                if (CreatedByUserID > 0 && !IsGroupOwner)
+                {
+                    return DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, CreatedByUserID);
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Group owner
+        /// </summary>
+        public DotNetNuke.Security.Roles.RoleInfo Group
+        {
+            get
+            {
+                if (CreatedByUserID > 0 && IsGroupOwner)
+                {
+                    return DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(PortalId, CreatedByUserID);
+                }
+                return null;
             }
         }
 
@@ -96,6 +118,7 @@ namespace Gafware.Modules.DMS.Components
 
             PacketId = Null.SetNullInteger(dr["PacketID"]);
             CreatedByUserID = Null.SetNullInteger(dr["UserID"]);
+            IsGroupOwner = Null.SetNullBoolean(dr["IsGroupOwner"]);
             Name = Null.SetNullString(dr["Name"]);
             ShowDescription = Null.SetNullBoolean(dr["ShowDescription"]);
             ShowPacketDescription = Null.SetNullBoolean(dr["ShowPacketDescription"]);

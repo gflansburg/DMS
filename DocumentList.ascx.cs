@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -38,6 +38,7 @@ using DotNetNuke.Abstractions.Portals;
 using Ghostscript.NET.Rasterizer;
 using System.IO;
 using Gafware.Modules.DMS.ThumbDBLib;
+using OfficeOpenXml;
 
 public static class ImageExtensions
 {
@@ -255,7 +256,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("    var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)");
             sb.AppendLine("        if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }");
             sb.AppendLine("}");
-            sb.AppendLine("MM_preloadImages('" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "','" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/HistoryIcon2.gif") + "');");
+            sb.AppendLine("MM_preloadImages('" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2.gif") + "','" + ResolveUrl("~/" + ControlPath + "Images/Icons/HistoryIcon2.gif") + "');");
             sb.AppendLine("jQuery(document).ready(function() {");
             sb.AppendLine("  var prm = Sys.WebForms.PageRequestManager.getInstance();");
             sb.AppendLine("  prm.add_endRequest(MyDocControlEndRequest);");
@@ -264,6 +265,16 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("function MyDocControlEndRequest(sender, args) {");
             sb.AppendLine("  initDocumentControlJavascript();");
             sb.AppendLine("  hideBlockingScreen();");
+
+            sb.AppendLine("   $('.hidMessage').each(function(i, item) {");
+            sb.AppendLine("    var text = $(this).val()");
+            sb.AppendLine("    if(text != '') {");
+            sb.AppendLine("      var fileId = $(this).attr('data-uid');");
+            sb.AppendLine("      var msg2 = $(\".statusMessage[data-uid='\" + fileId + \"']\");");
+            sb.AppendLine("      msg2.text(text); msg2.show(); setTimeout(function () { msg2.fadeOut(\"slow\", function () { msg2.hide(); }); }, 2000);");
+            sb.AppendLine("    }");
+            sb.AppendLine("   });");
+
             sb.AppendLine("}");
             sb.AppendLine("function tbTags_EntryAdded(sender, eventArgs) {");
             sb.AppendLine("  $telerik.$(eventArgs.get_entry().get_token()).find('a').attr(\"title\", \"" + LocalizeString("DeleteTag") + "\");");
@@ -504,7 +515,37 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("function showHistory() {");
             sb.AppendLine("  $('#historyDialog').dialog('open');");
             sb.AppendLine("}");
-            string url = _navigationManager.NavigateURL("GetDocuments");
+            sb.AppendLine("function toggleNewGroup(cb) {");
+            sb.AppendLine("  if(cb.checked) {");
+            sb.AppendLine("    $('#" + pnlNewOwner.ClientID + "').hide();");
+            sb.AppendLine("    $('#" + pnlNewGroup.ClientID + "').show();");
+            sb.AppendLine("  } else {");
+            sb.AppendLine("    $('#" + pnlNewOwner.ClientID + "').show();");
+            sb.AppendLine("    $('#" + pnlNewGroup.ClientID + "').hide();");
+            sb.AppendLine("  }");
+            sb.AppendLine("}");
+            sb.AppendLine("function newOwnerRequired(source, arguments) {");
+            sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner2.ClientID + "').is(':checked') === true);");
+            sb.AppendLine("}");
+            sb.AppendLine("function newGroupRequired(source, arguments) {");
+            sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner2.ClientID + "').is(':checked') === false);");
+            sb.AppendLine("}");
+            sb.AppendLine("function toggleCurrentGroup(cb) {");
+            sb.AppendLine("  if(cb.checked) {");
+            sb.AppendLine("    $('#" + pnlCurrentOwner.ClientID + "').hide();");
+            sb.AppendLine("    $('#" + pnlCurrentGroup.ClientID + "').show();");
+            sb.AppendLine("  } else {");
+            sb.AppendLine("    $('#" + pnlCurrentOwner.ClientID + "').show();");
+            sb.AppendLine("    $('#" + pnlCurrentGroup.ClientID + "').hide();");
+            sb.AppendLine("  }");
+            sb.AppendLine("}");
+            sb.AppendLine("function currentOwnerRequired(source, arguments) {");
+            sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner3.ClientID + "').is(':checked') === true);");
+            sb.AppendLine("}");
+            sb.AppendLine("function currentGroupRequired(source, arguments) {");
+            sb.AppendLine("  arguments.IsValid = (arguments.Value > 0 || $('#" + cbIsGroupOwner3.ClientID + "').is(':checked') === false);");
+            sb.AppendLine("}");
+            string url = GetNaviateUrl("GetDocuments");
             sb.AppendLine("function toggleStatus(cb, fileId) {");
             sb.AppendLine("  $.ajax({");
             sb.AppendLine("    url: \"" + ControlPath + "DMSController.asmx/ToggleStatus\",");
@@ -545,11 +586,13 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("      } else {");
             sb.AppendLine("        error = 'Uncaught Error. ' + jqXHR.responseText;");
             sb.AppendLine("      }");
-            sb.AppendLine("      cb.checked = !cb.checked;");
-            sb.AppendLine("      var msg = $(\".statusMessage[data-uid='\" + fileId + \"']\");");
-            sb.AppendLine("      msg.text(error); msg.show(); setTimeout(function () { msg.fadeOut(\"slow\", function () { msg.hide(); }); }, 2000);");
+            sb.AppendLine("      __doPostBack(cb.id, fileId);");
+            //sb.AppendLine("      cb.checked = !cb.checked;");
+            //sb.AppendLine("      var msg = $(\".statusMessage[data-uid='\" + fileId + \"']\");");
+            //sb.AppendLine("      msg.text(error); msg.show(); setTimeout(function () { msg.fadeOut(\"slow\", function () { msg.hide(); }); }, 2000);");
             sb.AppendLine("    }");
             sb.AppendLine("  });");
+            //sb.AppendLine("      __doPostBack(cb.id, fileId);");
             sb.AppendLine("}");
             sb.AppendLine("function saveVersion() {");
             sb.AppendLine("  var major = $('#" + tbMajor.ClientID + "').val();");
@@ -846,10 +889,25 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    e.preventDefault();");
                 sb.AppendLine("    $('#changeOwnershipDialog').dialog('close');");
                 sb.AppendLine("  });");
+
+                sb.AppendLine("  $(\"#" + exportCommandButton.ClientID + "\").click(function(e) {");
+                sb.AppendLine("    e.preventDefault();");
+                sb.AppendLine("    window.open('" + ControlPath + "ExportToExcel.ashx', '_blank');");
+                sb.AppendLine("    hideBlockingScreen();");
+                sb.AppendLine("  });");
+
                 sb.AppendLine("  $(\"#" + changeOwnershipCommandButton.ClientID + "\").click(function(e) {");
                 sb.AppendLine("    e.preventDefault();");
-                sb.AppendLine("    $('#" + ddCurrentOwner.ClientID + "').prop('selectedIndex', 0);");
                 sb.AppendLine("    $('#" + ddNewOwner.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + ddNewGroup.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + cbIsGroupOwner2.ClientID + "').prop('checked', false);");
+                sb.AppendLine("    $('#" + pnlNewOwner.ClientID + "').show();");
+                sb.AppendLine("    $('#" + pnlNewGroup.ClientID + "').hide();");
+                sb.AppendLine("    $('#" + ddCurrentOwner.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + ddCurrentGroup.ClientID + "').prop('selectedIndex', 0);");
+                sb.AppendLine("    $('#" + cbIsGroupOwner3.ClientID + "').prop('checked', false);");
+                sb.AppendLine("    $('#" + pnlCurrentOwner.ClientID + "').show();");
+                sb.AppendLine("    $('#" + pnlCurrentGroup.ClientID + "').hide();");
                 sb.AppendLine("    $('#changeOwnershipDialog .FormInstructions').hide();");
                 sb.AppendLine("    $('#changeOwnershipDialog').dialog('open');");
                 sb.AppendLine("    $('#changeOwnership-content').scrollTop(0);");
@@ -859,7 +917,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    bgiframe: true,");
                 sb.AppendLine("    modal: true,");
                 sb.AppendLine("    width: 485,");
-                sb.AppendLine("    height: 300,");
+                sb.AppendLine("    height: 400,");
                 sb.AppendLine("    appendTo: 'form',");
                 sb.AppendLine("    dialogClass: 'dialog',");
                 sb.AppendLine("     resizable: false,");
@@ -970,15 +1028,19 @@ namespace Gafware.Modules.DMS
                     //pnlDetails.Style.Add("display", "none");
                     //pnlGrid.Style.Remove("display");
                     BindDropDowns();
-                    foreach(Category category in categories)
+                    if (Request.QueryString["uid"] != null && Generic.IsNumber(Request.QueryString["uid"]) && IsAdmin())
+                    {
+                        ddOwner.SelectedValue = Request.QueryString["uid"];
+                    }
+                    foreach (Category category in categories)
                     {
                         TemplateField field = new TemplateField();
-                        field.HeaderText = category.CategoryName + " <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by " + category.CategoryName + "' />";
+                        field.HeaderText = category.CategoryName + " <img src='" + ControlPath + "Images/sortneutral.png' border='0' alt='Sort by " + category.CategoryName + "' />";
                         field.HeaderStyle.Wrap = false;
                         field.SortExpression = category.CategoryName;
                         field.ItemStyle.Width = new Unit("100px");
-                        field.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-                        field.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                        field.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
+                        field.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
                         field.ItemTemplate = new CategoryTemplate(category.CategoryName, ListItemType.Item);
                         gv.Columns.Add(field);
                     }
@@ -1051,15 +1113,30 @@ namespace Gafware.Modules.DMS
             ddCurrentOwner.Items.Insert(0, new ListItem(LocalizeString("CurrentOwner"), "0"));
             ddCurrentOwner.SelectedIndex = 0;
 
+            ddCurrentGroup.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
+            ddCurrentGroup.DataBind();
+            ddCurrentGroup.Items.Insert(0, new ListItem(LocalizeString("CurrentGroup"), "0"));
+            ddCurrentGroup.SelectedIndex = 0;
+
             ddNewOwner.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddNewOwner.DataBind();
             ddNewOwner.Items.Insert(0, new ListItem(LocalizeString("NewOwner"), "0"));
             ddNewOwner.SelectedIndex = 0;
 
+            ddNewGroup.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
+            ddNewGroup.DataBind();
+            ddNewGroup.Items.Insert(0, new ListItem(LocalizeString("NewGroup"), "0"));
+            ddNewGroup.SelectedIndex = 0;
+
             ddOwner2.DataSource = Components.UserController.GetUsers(UserRole, PortalId);
             ddOwner2.DataBind();
             ddOwner2.Items.Insert(0, new ListItem(LocalizeString("SelectOwner"), "0"));
             ddOwner2.SelectedIndex = 0;
+
+            ddGroup.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId);
+            ddGroup.DataBind();
+            ddGroup.Items.Insert(0, new ListItem(LocalizeString("SelectGroup"), "0"));
+            ddGroup.SelectedIndex = 0;
 
             ddTags.DataSource = Components.DocumentController.GetAllTags(PortalId, PortalWideRepository ? 0 : TabModuleId);
             ddTags.DataBind();
@@ -1076,7 +1153,13 @@ namespace Gafware.Modules.DMS
         {
             get
             {
-                return new ModuleActionCollection();
+                return new ModuleActionCollection()
+                {
+                    {
+                        GetNextActionID(), Localization.GetString("ActivityReport", LocalResourceFile), "", "", ControlPath + "Images/report.png",
+                        EditUrl("ActivityReport"), false, SecurityAccessLevel.Admin, true, false
+                    },
+                };
             }
         }
 
@@ -1086,7 +1169,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[1];
             int moduleId = base.ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
-            response.Redirect(_navigationManager.NavigateURL("DocumentList", strArrays));
+            response.Redirect(GetDocumentsLink(strArrays));
         }
 
         public bool IsDMSUser()
@@ -1180,7 +1263,7 @@ namespace Gafware.Modules.DMS
 
         protected void ddOwner_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CreateDataTable(true);
+            CreateDataTable(true, true);
         }
 
         private void BindData()
@@ -1188,17 +1271,42 @@ namespace Gafware.Modules.DMS
             CreateDataTable(true);
         }
 
-        public System.Data.DataView CreateDataTable(bool bReload)
+        public System.Data.DataView CreateDataTable(bool bReload, bool useRaw = false)
         {
             System.Data.DataView dataView = (System.Data.DataView)Session["gv"];
             if (dataView == null || bReload)
             {
-                List<Gafware.Modules.DMS.Components.DocumentView> docs = DocumentController.GetDocumentList(Convert.ToInt32(ddCategory.SelectedValue), tbKeywords.Text.Trim(), UserId, PortalId, PortalWideRepository ? 0 : TabModuleId);
+                List<Gafware.Modules.DMS.Components.DocumentView> docs = null;
+                if (Session["gvRaw"] != null && useRaw)
+                {
+                    docs = (List<Components.DocumentView>)Session["gvRaw"];
+                }
+                else
+                {
+                    docs = DocumentController.GetDocumentList(Convert.ToInt32(ddCategory.SelectedValue), tbKeywords.Text.Trim(), UserId, PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    Session["gvRaw"] = docs;
+                }
                 if (Convert.ToInt32(ddOwner.SelectedValue) > 0)
                 {
-                    docs = docs.FindAll(p => p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue));
+                    //DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, Convert.ToInt32(ddOwner.SelectedValue));
+                    //docs = docs.FindAll(p => (!p.IsGroupOwner && p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue)) || (p.IsGroupOwner && user != null && user.IsInRole(Components.UserController.GetRoleById(PortalId, p.CreatedByUserID).RoleName)));
+                    int userId = Convert.ToInt32(ddOwner.SelectedValue);
+                    docs = docs.FindAll(p => (!p.IsGroupOwner && p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue)) || (p.IsGroupOwner && DocumentController.UserIsInRole(userId, p.CreatedByUserID)));
                 }
                 System.Data.DataTable dtResult = Generic.DocumentListToDataTable(docs, PortalId, PortalWideRepository ? 0 : TabModuleId);
+                dtResult.Columns.Remove("CreatedByUserId");
+                dtResult.Columns.Remove("IsGroupOwner");
+                dtResult.Columns.Remove("KeyID");
+                dtResult.Columns.Remove("ContentItemId");
+                dtResult.Columns.Remove("Content");
+                dtResult.Columns.Remove("ContentKey");
+                dtResult.Columns.Remove("ContentTypeId");
+                dtResult.Columns.Remove("Indexed");
+                dtResult.Columns.Remove("ModuleID");
+                dtResult.Columns.Remove("TabID");
+                dtResult.Columns.Remove("ContentTitle");
+                dtResult.Columns.Remove("StateID");
+                dtResult.Columns.Remove("LastModifiedByUserID");
                 dataView = new System.Data.DataView(dtResult);
                 gv.PageIndex = 0;
             }
@@ -1280,14 +1388,16 @@ namespace Gafware.Modules.DMS
 
         protected void btnSaveChange_Click(object sender, EventArgs e)
         {
-            DocumentController.ChangeOwnership(Convert.ToInt32(ddCurrentOwner.SelectedValue), Convert.ToInt32(ddNewOwner.SelectedValue), PortalId);
+            DocumentController.ChangeOwnership(cbIsGroupOwner3.Checked ? Convert.ToInt32(ddCurrentGroup.SelectedValue) : Convert.ToInt32(ddCurrentOwner.SelectedValue), cbIsGroupOwner3.Checked, cbIsGroupOwner2.Checked ? Convert.ToInt32(ddNewGroup.SelectedValue) : Convert.ToInt32(ddNewOwner.SelectedValue), cbIsGroupOwner2.Checked, PortalId);
+            BindData();
         }
 
         private void BindDocData()
         {
             DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.Instance.GetUserById(PortalId, UserId);
             Components.Document doc = Components.DocumentController.GetDocument(DocumentID);
-            if (DocumentID == 0 || (doc != null && doc.DocumentId > 0 && (doc.CreatedByUserID == UserId || user.IsInRole("Administrator") || user.IsSuperUser)))
+            DotNetNuke.Security.Roles.RoleInfo groupOwner = (doc != null && doc.DocumentId > 0 && doc.IsGroupOwner ? Components.UserController.GetRoleById(PortalId, doc.CreatedByUserID) : null);
+            if (DocumentID == 0 || (doc != null && doc.DocumentId > 0 && ((!doc.IsGroupOwner && doc.CreatedByUserID == UserId) || (doc.IsGroupOwner && user.IsInRole(groupOwner.RoleName)) || user.IsInRole("Administrator") || user.IsSuperUser)))
             {
                 if (doc == null)
                 {
@@ -1307,12 +1417,33 @@ namespace Gafware.Modules.DMS
                 lblUseCategorySecurityRoles.Text = LocalizeString(doc.UseCategorySecurityRoles ? "Yes" : "No");
                 lblSecurityRole.Text = (doc.SecurityRole != null ? doc.SecurityRole.RoleName : LocalizeString("Unknown"));
                 lblIsPublic.Text = LocalizeString(doc.IsPublic ? "Yes" : "No");
-                lblOwner.Text = doc.CreatedByUser != null && !String.IsNullOrEmpty(doc.CreatedByUser.LastName) ? doc.CreatedByUser.FirstName + " " + doc.CreatedByUser.LastName : "&nbsp;";
-                ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(doc.CreatedByUserID.ToString()));
+                if (doc.IsGroupOwner)
+                {
+                    lblOwner.Text = doc.Group != null && !String.IsNullOrEmpty(doc.Group.RoleName) ? doc.Group.RoleName : "&nbsp;";
+                }
+                else
+                {
+                    lblOwner.Text = doc.CreatedByUser != null && !String.IsNullOrEmpty(doc.CreatedByUser.LastName) ? doc.CreatedByUser.FirstName + " " + doc.CreatedByUser.LastName : "&nbsp;";
+                }
+                if (doc.IsGroupOwner)
+                {
+                    pnlOwnerEdit2.Visible = false;
+                    pnlGroupEdit.Visible = true;
+                    ddGroup.SelectedIndex = ddGroup.Items.IndexOf(ddGroup.Items.FindByValue(doc.CreatedByUserID.ToString()));
+                    ddOwner2.SelectedIndex = 0;
+                }
+                else
+                {
+                    pnlOwnerEdit2.Visible = true;
+                    pnlGroupEdit.Visible = false;
+                    ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(doc.CreatedByUserID.ToString()));
+                    ddGroup.SelectedIndex = 0;
+                }
                 dtActivation.SelectedDate = doc.ActivationDate;
                 dtExpiration.SelectedDate = doc.ExpirationDate;
                 if (doc.DocumentId > 0)
                 {
+                    cbIsGroupOwner.Checked = doc.IsGroupOwner;
                     cbIsPublic.Checked = doc.IsPublic;
                     cbIsSearchable.Checked = doc.IsSearchable;
                     cbUseCategorySecurityRoles.Checked = doc.UseCategorySecurityRoles;
@@ -1320,6 +1451,7 @@ namespace Gafware.Modules.DMS
                 }
                 else
                 {
+                    cbIsGroupOwner.Checked = false;
                     cbIsPublic.Checked = true;
                     cbIsSearchable.Checked = true;
                     cbUseCategorySecurityRoles.Checked = true;
@@ -1341,6 +1473,8 @@ namespace Gafware.Modules.DMS
                 TagsFilesEnabled = (DocumentID != 0);
                 if (DocumentID == 0)
                 {
+                    pnlOwnerEdit2.Visible = true;
+                    pnlGroupEdit.Visible = false;
                     ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(UserId.ToString()));
                     lblOwner.Text = user.DisplayName;
                 }
@@ -1349,7 +1483,7 @@ namespace Gafware.Modules.DMS
             }
             else
             {
-                DocumentID = 0;
+                ViewState["DocumentID"] = 0;
                 pnlNotFound.Visible = true;
                 pnlFound.Visible = false;
             }
@@ -1361,15 +1495,45 @@ namespace Gafware.Modules.DMS
             int moduleId = ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("docids={0}", DocumentID)))));
-            tbLinkURL.Text = _navigationManager.NavigateURL("GetDocuments", strArrays);
+            tbLinkURL.Text = GetDocumentsLink(strArrays);
             pnlLink.Visible = (DocumentID > 0);
             pnlTags.Visible = (DocumentID != 0);
             pnlBack.Visible = (DocumentID > 0);
             pnlBack2.Visible = (DocumentID == 0);
             pnlControl.Visible = (DocumentID > 0);
-            pnlControl2.Visible = (DocumentID == 0 && pnlNotFound.Visible == false);
+            pnlControl2.Visible = (DocumentID == 0 && !pnlNotFound.Visible);
             pnlFiles.Visible = (DocumentID != 0 /*&& doc.Tags.Count > 0*/);
             pnlPackets.Visible = (DocumentID != 0 && (user.IsSuperUser || user.IsInRole("Administrator")));
+        }
+
+        private string GetNaviateUrl(string filename)
+        {
+            string url= _navigationManager.NavigateURL(filename);
+            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && ForceHttps)
+            {
+                url = string.Format("https://{0}", url.Substring(7));
+            }
+            return url;
+        }
+
+        private string GetDocumentsLink(string[] strArrays)
+        {
+            string url = _navigationManager.NavigateURL("GetDocuments", strArrays);
+            if(url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && ForceHttps)
+            {
+                url = string.Format("https://{0}", url.Substring(7));
+            }
+            return url;
+        }
+
+        private string GetPacketsLink(string[] strArrays)
+        {
+            string url = _navigationManager.NavigateURL("PacketsList", strArrays);
+            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && ForceHttps)
+            {
+                url = string.Format("https://{0}", url.Substring(7));
+            }
+            return url;
         }
 
         protected void btnEdit_Click(object sender, EventArgs e)
@@ -1396,7 +1560,8 @@ namespace Gafware.Modules.DMS
                 }
                 doc.ActivationDate = dtActivation.SelectedDate;
                 doc.AdminComments = tbAdminComments.Text;
-                doc.CreatedByUserID = Convert.ToInt32(ddOwner2.SelectedValue);
+                doc.IsGroupOwner = cbIsGroupOwner.Checked;
+                doc.CreatedByUserID = Convert.ToInt32(cbIsGroupOwner.Checked ? ddGroup.SelectedValue : ddOwner2.SelectedValue);
                 doc.DocumentDetails = tbDocumentDetails.Text;
                 doc.ExpirationDate = dtExpiration.SelectedDate;
                 doc.IsSearchable = cbIsSearchable.Checked;
@@ -1404,27 +1569,43 @@ namespace Gafware.Modules.DMS
                 doc.SecurityRoleId = Convert.ToInt32(ddlSecurityRole.SelectedValue);
                 doc.IsPublic = cbIsPublic.Checked;
                 doc.DocumentName = tbDocumentName.Text;
-                doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                doc.IPAddress = Generic.GetIPAddress();
                 Components.DocumentController.SaveDocument(doc);
+                DotNetNuke.Entities.Portals.PortalInfo portal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(PortalId);
+                Repository repository = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                Thumbnail thumb = new Thumbnail(portal, repository, ControlPath);
                 foreach (Components.DMSFile file in doc.Files)
                 {
-                    if(cbReplacePDFTitle2.Checked)
+                    if (cbReplacePDFTitle2.Checked && System.IO.Path.GetExtension(file.Filename).Equals(".pdf", StringComparison.OrdinalIgnoreCase) && file.StatusId == 1)
                     {
                         FileVersion fileVersion = file.FileVersion;
                         fileVersion.LoadContents();
                         fileVersion.FileVersionId = 0;
                         fileVersion.Version++;
-                        fileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                        fileVersion.IPAddress = Generic.GetIPAddress();
                         fileVersion.CreatedByUserID = UserId;
+                        fileVersion.IsGroupOwner = false;
                         fileVersion.CreatedOnDate = DateTime.Now;
                         Components.DocumentController.SaveFileVersion(fileVersion);
                         file.FileVersionId = fileVersion.FileVersionId;
                         fileVersion.SaveContents();
                         file.Filesize = fileVersion.Filesize;
                         Components.DocumentController.SaveFile(file);
-                        Generic.ReplacePDFTitle(file, doc.DocumentName);
+                        try
+                        {
+                            Generic.ReplacePDFTitle(file, doc.DocumentName);
+                        }
+                        catch(Exception)
+                        {
+                        }
                     }
-                    Generic.CreateThumbnail(Request, ControlPath, file);
+                    try
+                    {
+                        thumb.CreateThumbnail(Request, file);
+                    }
+                    catch(Exception)
+                    {
+                    }
                 }
                 doc.Files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
                 gvFiles.DataSource = doc.Files;
@@ -1667,7 +1848,7 @@ namespace Gafware.Modules.DMS
                 LinkButton btn = (LinkButton)e.Row.FindControl("btnDelete");
                 if (btn != null)
                 {
-                    btn.Attributes.Add("onMouseOver", "MM_swapImage('" + btn.ClientID + "','','" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "',1)");
+                    btn.Attributes.Add("onMouseOver", "MM_swapImage('" + btn.ClientID + "','','" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2.gif") + "',1)");
                 }
                 LinkButton historyButton = (LinkButton)e.Row.FindControl("historyButton");
                 if (historyButton != null)
@@ -1703,8 +1884,9 @@ namespace Gafware.Modules.DMS
                 fileVersion.FileVersionId = 0;
                 fileVersion.Version++;
             }
-            fileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+            fileVersion.IPAddress = Generic.GetIPAddress();
             fileVersion.CreatedByUserID = UserId;
+            fileVersion.IsGroupOwner = false;
             fileVersion.CreatedOnDate = DateTime.Now;
             fileVersion.Filesize = 0;
             fileVersion.WebPageUrl = tbURL.Text.Split(',')[0];
@@ -1713,6 +1895,8 @@ namespace Gafware.Modules.DMS
             file.Filesize = fileVersion.Filesize;
             Components.DocumentController.SaveFile(file);
             ToggleStatus(file, true);
+            doc.LastModifiedOnDate = DateTime.Now;
+            Components.DocumentController.SaveDocument(doc);
             doc.Files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
             gvFiles.DataSource = doc.Files;
             gvFiles.DataBind();
@@ -1797,8 +1981,9 @@ namespace Gafware.Modules.DMS
                 file.FileVersion.FileVersionId = 0;
                 file.FileVersion.Version++;
             }
-            file.FileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+            file.FileVersion.IPAddress = Generic.GetIPAddress();
             file.FileVersion.CreatedByUserID = UserId;
+            file.FileVersion.IsGroupOwner = false;
             file.FileVersion.CreatedOnDate = DateTime.Now;
             file.FileVersion.Filesize = upDocument.PostedFile.ContentLength;
             Components.DocumentController.SaveFileVersion(file.FileVersion);
@@ -1816,12 +2001,29 @@ namespace Gafware.Modules.DMS
                 upDocument.PostedFile.SaveAs(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, file.UploadDirectory.Replace("/", "\\"), file.Filename));
             }*/
             ToggleStatus(file, true);
-            if (cbReplacePDFTitle.Checked)
+            doc.LastModifiedOnDate = DateTime.Now;
+            Components.DocumentController.SaveDocument(doc);
+            if (cbReplacePDFTitle.Checked && System.IO.Path.GetExtension(file.Filename).Equals(".pdf", StringComparison.OrdinalIgnoreCase) && file.StatusId == 1)
             {
-                Generic.ReplacePDFTitle(file, doc.DocumentName);
+                try
+                {
+                    Generic.ReplacePDFTitle(file, doc.DocumentName);
+                }
+                catch(Exception)
+                {
+                }
             }
             cbReplacePDFTitle.Checked = false;
-            Generic.CreateThumbnail(Request, ControlPath, file);
+            try
+            {
+                DotNetNuke.Entities.Portals.PortalInfo portal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(PortalId);
+                Repository repository = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                Thumbnail thumb = new Thumbnail(portal, repository, ControlPath);
+                thumb.CreateThumbnail(Request, file);
+            }
+            catch(Exception)
+            {
+            }
             doc.Files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
             gvFiles.DataSource = doc.Files;
             gvFiles.DataBind();
@@ -1835,7 +2037,7 @@ namespace Gafware.Modules.DMS
             {
                 NotificationTypeID = notificationType.NotificationTypeId,
                 Subject = NewFileSubject,
-                Body = TokenMsg(NewFileMsg, file.Filename, file.FileType, fileTypeShort, file.FileVersion.CreatedByUser.DisplayName, file.FileVersion.CreatedOnDate.ToString("d"), doc.DocumentName).ToString(),
+                Body = TokenMsg(NewFileMsg, file.Filename, file.FileType, fileTypeShort, file.FileVersion.IsGroupOwner ? file.FileVersion.Group.RoleName : file.FileVersion.CreatedByUser.DisplayName, file.FileVersion.CreatedOnDate.ToString("d"), doc.DocumentName).ToString(),
                 IncludeDismissAction = true,
                 SenderUserID = adminUser.UserID
             };
@@ -1902,7 +2104,7 @@ namespace Gafware.Modules.DMS
             int moduleId = ModuleId;
             strArrays[0] = string.Concat("mid=", moduleId.ToString());
             strArrays[1] = string.Concat("q=", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
-            return _navigationManager.NavigateURL("GetDocuments", strArrays);
+            return GetDocumentsLink(strArrays);
         }
 
         protected string GetUrl(object item)
@@ -1927,12 +2129,12 @@ namespace Gafware.Modules.DMS
                             }
                             else
                             {
-                                return "<a class=\"document\" data-uid=\"" + file.FileId.ToString() + "\"href='" + ResolveUrl("~/desktopmodules/Gafware/DMS/GetFile.ashx") + "?id=" + file.FileId.ToString() + "' target='_blank' style=\"color: #" + Theme + ";\">" + file.Filename + "</a>";
+                                return "<a class=\"document\" data-uid=\"" + file.FileId.ToString() + "\"href='" + ResolveUrl("~" + ControlPath + "GetFile.ashx") + "?id=" + file.FileId.ToString() + "' target='_blank' style=\"color: #" + Theme + ";\">" + file.Filename + "</a>";
                             }
                         }
                         else
                         {
-                            return "<a class=\"document\" data-uid=\"" + file.FileId.ToString() + "\"href='" + ResolveUrl("~/desktopmodules/Gafware/DMS/GetFile.ashx") + "?id=" + file.FileId.ToString() + "' target='_blank' style=\"color: #" + Theme + ";\">" + file.Filename + "</a>";
+                            return "<a class=\"document\" data-uid=\"" + file.FileId.ToString() + "\"href='" + ResolveUrl("~" + ControlPath + "GetFile.ashx") + "?id=" + file.FileId.ToString() + "' target='_blank' style=\"color: #" + Theme + ";\">" + file.Filename + "</a>";
                         }
                     }
                 }
@@ -2056,7 +2258,7 @@ namespace Gafware.Modules.DMS
             string[] strArrays = new string[2];
             strArrays[0] = string.Concat("mid=", ModuleId.ToString());
             strArrays[1] = string.Concat("id=", e.CommandArgument);
-            response.Redirect(_navigationManager.NavigateURL("PacketList", strArrays));
+            response.Redirect(GetPacketsLink(strArrays));
         }
 
         protected void rptCategory_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -2064,16 +2266,24 @@ namespace Gafware.Modules.DMS
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 Components.Category item = (Components.Category)e.Item.DataItem;
-                Components.DocumentCategory category = Components.DocumentController.GetAllCategoriesForDocument(DocumentID).Find(c => c.CategoryId == item.CategoryId);
-                Label lbl = (Label)e.Item.FindControl("lblCategory");
-                if (lbl != null)
+                if (item != null)
                 {
-                    lbl.Text = (category != null ? "Yes" : "No");
-                }
-                CheckBox cbCategory = (CheckBox)e.Item.FindControl("cbCategory");
-                if (cbCategory != null)
-                {
-                    cbCategory.Checked = (category != null ? true : (DocumentID == 0 ? true : false));
+                    Components.DocumentCategory category = Components.DocumentController.GetAllCategoriesForDocument(DocumentID).Find(c => c.CategoryId == item.CategoryId);
+                    Label lbl = (Label)e.Item.FindControl("lblCategory");
+                    if (lbl != null)
+                    {
+                        lbl.Text = (category != null ? "Yes" : "No");
+                    }
+                    CheckBox cbCategory = (CheckBox)e.Item.FindControl("cbCategory");
+                    if (cbCategory != null)
+                    {
+                        cbCategory.Checked = (category != null ? true : (DocumentID == 0 ? true : false));
+                    }
+                    Label lblCategoryRole = (Label)e.Item.FindControl("lblCategoryRole");
+                    if (lblCategoryRole != null)
+                    {
+                        lblCategoryRole.Text = string.Format("Security Role: {0}", item.Role.RoleName);
+                    }
                 }
             }
         }
@@ -2104,7 +2314,7 @@ namespace Gafware.Modules.DMS
                 LinkButton btn = (LinkButton)e.Row.FindControl("btnDelete");
                 if (btn != null)
                 {
-                    btn.Attributes.Add("onMouseOver", "MM_swapImage('" + btn.ClientID + "','','" + ResolveUrl("~/desktopmodules/Gafware/DMS/images/Icons/DeleteIcon2.gif") + "',1)");
+                    btn.Attributes.Add("onMouseOver", "MM_swapImage('" + btn.ClientID + "','','" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2.gif") + "',1)");
                 }
                 Components.FileVersion fileVersion = (Components.FileVersion)e.Row.DataItem;
                 e.Row.Cells[1].Attributes.Add("data-version", fileVersion.Version.ToString());
@@ -2237,6 +2447,9 @@ namespace Gafware.Modules.DMS
                         {
                             ToggleStatus(file, file.StatusId == 1);
                         }
+                        Components.Document doc = Components.DocumentController.GetDocument(DocumentID);
+                        doc.LastModifiedOnDate = DateTime.Now;
+                        Components.DocumentController.SaveDocument(doc);
                         List<Components.DMSFile> files = Components.DocumentController.GetAllFilesForDocument(DocumentID);
                         gvFiles.DataSource = files;
                         gvFiles.DataBind();
@@ -2284,6 +2497,89 @@ namespace Gafware.Modules.DMS
         protected string JSEncode(string text)
         {
             return Generic.JSEncode(text);
+        }
+
+        protected void cbActive_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Request["__EVENTARGUMENT"]) && Generic.IsNumber(Request["__EVENTARGUMENT"]))
+                {
+                    int fileId = Convert.ToInt32(Request["__EVENTARGUMENT"]);
+                    Components.DMSFile file = Components.DocumentController.GetFile(fileId);
+                    if (file != null && HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        Components.Document document = Components.DocumentController.GetDocument(file.DocumentId);
+                        DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserByName(PortalId, HttpContext.Current.User.Identity.Name);
+                        List<DMSController.Inactive> inactive = new List<DMSController.Inactive>();
+                        DotNetNuke.Security.Roles.RoleInfo groupOwner = (document != null && document.DocumentId > 0 && document.IsGroupOwner ? Components.UserController.GetRoleById(PortalId, document.CreatedByUserID) : null);
+                        if (document != null && (((!document.IsGroupOwner && document.CreatedByUserID == user.UserID) || (document.IsGroupOwner && user.IsInRole(groupOwner.RoleName))) || user.IsSuperUser || user.IsInRole("Administrator")))
+                        {
+                            DMSController controller = new DMSController();
+                            string url = GetNaviateUrl("GetDocuments");
+                            CheckBox cb = sender as CheckBox;
+                            inactive = controller.ToggleStatus(file, cb.Checked, ControlPath, ModuleId, url);
+
+                        }
+                        document.LastModifiedOnDate = DateTime.Now;
+                        Components.DocumentController.SaveDocument(document);
+                        List<DMSFile> files = Components.DocumentController.GetAllFilesForDocument(file.DocumentId);
+                        foreach(DMSFile f in files)
+                        {
+                            if(f.FileId == fileId)
+                            {
+                                f.Message = LocalizeString("Saved");
+                                break;
+                            }
+                        }
+                        foreach(DMSController.Inactive i in inactive)
+                        {
+                            foreach(DMSFile f in files)
+                            {
+                                if(f.FileId == i.FileId)
+                                {
+                                    f.Message = LocalizeString("Saved");
+                                    break;
+                                }
+                            }
+                        }
+                        gvFiles.DataSource = files;
+                        gvFiles.DataBind();
+                    }
+                    else
+                    {
+                    }
+                }
+                else
+                {
+                }
+            }
+            catch(Exception)
+            {
+            }
+        }
+
+        protected void cbIsGroupOwner_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlOwnerEdit2.Visible = !cbIsGroupOwner.Checked;
+            pnlGroupEdit.Visible = cbIsGroupOwner.Checked;
+            if(!cbIsGroupOwner.Checked && ddOwner2.SelectedIndex == 0)
+            {
+                ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(UserId.ToString()));
+            }
+        }
+
+        protected void activityReportCommandButton_Click(object sender, EventArgs e)
+        {
+            HttpResponse response = base.Response;
+            string[] strArrays = new string[ddOwner.SelectedIndex > 0 ? 2 : 1];
+            int moduleId = base.ModuleId;
+            strArrays[0] = string.Concat("mid=", moduleId.ToString());
+            if(ddOwner.SelectedIndex > 0)
+            {
+                strArrays[1] = string.Concat("uid=", ddOwner.SelectedValue);
+            }
+            response.Redirect(_navigationManager.NavigateURL("ActivityReport", strArrays));
         }
     }
 }

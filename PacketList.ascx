@@ -40,11 +40,28 @@
                     <asp:LinkButton ID="btnEditName" CssClass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Edit Name" OnClick="btnEditName_Click" style="line-height: 20px;" />
                     <asp:HiddenField ID="hidCancelRename" runat="server" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
+                    <asp:CustomValidator ID="CustomFieldValidator1" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />This Packet Name is already in use." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:CustomValidator>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblDescription" runat="server" ControlName="tbDescription" Suffix=":" /> 
                     <asp:TextBox ID="tbDescription" runat="server" TextMode="MultiLine" Rows="1" ValidationGroup="PacketEditor"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="tbDescription" Display="Dynamic" ErrorMessage="<br />Description is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblIsGroupOwner" runat="server" ResourceKey="lblIsGroupOwner" ControlName="cbIsGroupOwner" Suffix=":" /> 
+                    <div class="toggleButton" id="cbIsGroupOwnerToggleButton" runat="server">
+                        <label for='<%= cbIsGroupOwner.ClientID %>'><asp:CheckBox ID="cbIsGroupOwner" AutoPostBack="true" runat="server" OnCheckedChanged="cbIsGroupOwner_CheckedChanged" /><span></span></label>
+                    </div>
+                </div>
+                <div class="dnnFormItem" runat="server" id="pnlOwnerEdit">
+                    <dnn:Label ID="lblOwner" runat="server" ResourceKey="lblOwner" ControlName="ddOwner2" Suffix=":" /> 
+                    <asp:DropDownList ID="ddOwner2" runat="server" DataTextField="DisplayName" DataValueField="UserId" ValidationGroup="DocumentControl" style="width: auto;"></asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="ddOwner2" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
+                </div>
+                <div class="dnnFormItem" runat="server" id="pnlGroupEdit" visible="false">
+                    <dnn:Label ID="lblGroup" runat="server" ResourceKey="lblGroup" ControlName="ddGroup" Suffix=":" /> 
+                    <asp:DropDownList ID="ddGroup" runat="server" DataTextField="RoleName" DataValueField="RoleId" ValidationGroup="DocumentControl" style="width: auto;"></asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="ddGroup" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Group is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblShowPacketDescription" runat="server" ControlName="cbShowPacketDescription" Suffix=":" /> 
@@ -148,9 +165,9 @@
             <asp:Panel ID="pnlOwner" runat="server" style="margin-bottom: 10px;"><span style="vertical-align: middle;"><%= LocalizeString("Owner") %></span> <asp:DropDownList ID="ddOwner" DataValueField="UserId" DataTextField="DisplayName" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddOwner_SelectedIndexChanged" style="margin-bottom: 0 !important; vertical-align: middle;"></asp:DropDownList></asp:Panel>
         </div>
         <div style="float:right;margin-bottom:10px;" id="pnlAdmin" runat="server">
-            <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
-            <asp:LinkButton runat="server" id="newPacketCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="newPacketCommandButton_Click"><asp:label runat="server" resourcekey="newPacketCommandButton" /></asp:LinkButton>
-            <input type="button" id="changeOwnershipCommandButton" runat="server" value="Change Ownership" class="secondaryButton dmsButton" resourcekey="changeOwnershipCommandButton" />
+            <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton backButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
+            <asp:LinkButton runat="server" id="newPacketCommandButton" causesvalidation="False" CssClass="secondaryButton addButton" OnClick="newPacketCommandButton_Click"><asp:label runat="server" resourcekey="newPacketCommandButton" /></asp:LinkButton>
+            <asp:LinkButton runat="server" id="changeOwnershipCommandButton" causesvalidation="False" CssClass="secondaryButton ownerButton"><asp:label runat="server" resourcekey="changeOwnershipCommandButton" /></asp:LinkButton>
         </div>
         <br style="clear: both" />
 		<div style="width: 100%; overflow: auto;">
@@ -161,11 +178,11 @@
 				OnPageIndexChanging="gv_PageIndexChanging" ShowHeader="True" OnSorting="gv_Sorting" PagerSettings-PageButtonCount="5"
 				OnRowDeleting="gv_RowDeleting" OnRowEditing="gv_RowEditing" OnRowDataBound="gv_RowDataBound">
 				<Columns>
-					<asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="100px"> 
+                        <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="50px" HeaderText="Actions" HeaderStyle-Wrap="false" ItemStyle-Wrap="false"> 
 						<ItemTemplate>
-							<asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Packet" CommandName="Edit" Text="Edit" /> 
-							&nbsp;
-							<asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Packet" CommandName="Delete" Text="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("Name").ToString()) + "\");  return false;" %>' /> 
+                            <asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Packet" CommandName="Edit"><asp:Image runat="server" ID="editImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/EditIcon1_16px.gif" AlternateText="Edit Packet" ToolTip="Edit Packet" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/Gafware/DMS/Images/icons/EditIcon2_16px.gif',1)" /></asp:LinkButton>
+                            &nbsp;
+                            <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Packet" CommandName="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("Name").ToString()) + "\");  return false;" %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete Packet" ToolTip="Delete Packet" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon2_16px.gif',1)" /></asp:LinkButton>
 						</ItemTemplate> 
 					</asp:TemplateField> 
 					<asp:TemplateField HeaderText="ID <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="PacketId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
@@ -199,7 +216,7 @@
 					</table>
 				</PagerTemplate>		            
 				<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
-				<AlternatingRowStyle BackColor="#D0D0D0" VerticalAlign="Top" />
+				<AlternatingRowStyle BackColor="White" VerticalAlign="Top" />
 			</asp:GridView>
 		</div>
     </asp:Panel>
@@ -208,14 +225,40 @@
             <div class="dms body_padding">
                 <fieldset>
                     <div class="dnnFormItem">
-                        <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
+                        <dnn:Label ID="lblIsGroupOwner3" runat="server" ControlName="cbIsGroupOwner3" Suffix=":" /> 
+                        <div class="toggleButton" id="cbIsGroupOwner3ToggleButton" runat="server">
+                            <label for='<%= cbIsGroupOwner3.ClientID %>'><asp:CheckBox ID="cbIsGroupOwner3" AutoPostBack="false" runat="server" onclick="toggleCurrentGroup(this);" /><span></span></label>
+                        </div>
                     </div>
                     <div class="dnnFormItem">
-                        <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
+                        <div id="pnlCurrentOwner" runat="server">
+                            <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
+                            <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="CustomValidator1" runat="server" ClientValidationFunction="currentOwnerRequired" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
+                        <div id="pnlCurrentGroup" runat="server" style="display: none;">
+                            <dnn:Label ID="lblCurrentGroup" runat="server" ControlName="ddCurrentGroup" Suffix=":" /> 
+                            <asp:DropDownList ID="ddCurrentGroup" runat="server" DataTextField="RoleName" Width="100%" style="float: right; min-width: auto;" DataValueField="RoleId" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="CustomValidator2" runat="server" ClientValidationFunction="currentGroupRequired" ControlToValidate="ddCurrentGroup" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Group is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblIsGroupOwner2" runat="server" ControlName="cbIsGroupOwner2" Suffix=":" /> 
+                        <div class="toggleButton" id="cbIsGroupOwner2ToggleButton" runat="server">
+                            <label for='<%= cbIsGroupOwner2.ClientID %>'><asp:CheckBox ID="cbIsGroupOwner2" AutoPostBack="false" runat="server" onclick="toggleNewGroup(this);" /><span></span></label>
+                        </div>
+                    </div>
+                    <div class="dnnFormItem">
+                        <div id="pnlNewOwner" runat="server">
+                            <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
+                            <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="RequiredFieldValidator2" runat="server" ClientValidationFunction="newOwnerRequired" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
+                        <div id="pnlNewGroup" runat="server" style="display: none;">
+                            <dnn:Label ID="lblNewGroup" runat="server" ControlName="ddNewGroup" Suffix=":" /> 
+                            <asp:DropDownList ID="ddNewGroup" runat="server" DataTextField="RoleName" Width="100%" style="float: right; min-width: auto;" DataValueField="RoleId" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="RequiredFieldValidator8" runat="server" ClientValidationFunction="newGroupRequired" ControlToValidate="ddNewGroup" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Group is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
                     </div>
                 </fieldset>
                 <div style="float: right; text-align: right; margin: 5px 1px 0px 0px;">

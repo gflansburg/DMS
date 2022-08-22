@@ -780,7 +780,19 @@
 }
 
 .dms input[type="button"].dmsButton,
-.dms a.dmsButton {
+.dms a.dmsButton,
+.dms a.linkCreateButton,
+.dms a.packetButton,
+.dms a.docButton,
+.dms a.reportButton,
+.dms a.ownerButton,
+.dms a.addButton,
+.dms a.backButton,
+.dms a.settingsButton,
+.dms a.deleteButton,
+.dms a.importButton,
+.dms a.tagButton,
+.dms a.excelButton {
     text-decoration: none;
     background-color: #D00;
     -webkit-box-shadow: #909499 2px 2px 8px !important;
@@ -788,13 +800,97 @@
 }
 
 .dms a.dmsButton:hover span,
+.dms a.excelButton:hover span,
+.dms a.tagButton:hover span,
+.dms a.linkCreateButton:hover span,
+.dms a.packetButton:hover span,
+.dms a.docButton:hover span,
+.dms a.reportButton:hover span,
+.dms a.ownerButton:hover span,
+.dms a.backButton:hover span,
+.dms a.settingsButton:hover span,
+.dms a.addButton:hover span,
+.dms a.deleteButton:hover span,
+.dms a.importButton:hover span,
 .dms input[type="button"].dmsButton:hover
-.dms a.dmsButton:hover {
+.dms a.dmsButton:hover,
+.dms a.ownerButton:hover,
+.dms a.linkCreateButton:hover,
+.dms a.packetButton:hover,
+.dms a.docButton:hover,
+.dms a.tagButton:hover,
+.dms a.reportButton:hover,
+.dms a.settingsButton:hover,
+.dms a.addButton:hover,
+.dms a.backButton:hover,
+.dms a.deleteButton:hover,
+.dms a.importButton:hover,
+.dms a.excelButton:hover {
     background-color: #D00 !important;
 }
 
-.dms .dmsButton span {
+.dms a.dmsButton span {
     background: #8a8a8a url(Images/dms.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.excelButton span {
+    background: #8a8a8a url(Images/excel-file-icon.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.deleteButton span {
+    background: #8a8a8a url(Images/delete.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.addButton span {
+    background: #8a8a8a url(Images/add.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.ownerButton span {
+    background: #8a8a8a url(Images/owner.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.tagButton span {
+    background: #8a8a8a url(Images/tag.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.reportButton span {
+    background: #8a8a8a url(Images/report.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.backButton span {
+    background: #8a8a8a url(Images/back.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.settingsButton span {
+    background: #8a8a8a url(Images/settings.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.importButton span {
+    background: #8a8a8a url(Images/import.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.linkCreateButton span {
+    background: #8a8a8a url(Images/link.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.packetButton span {
+    background: #8a8a8a url(Images/packet.png) no-repeat left center !important;
+    padding-left: 21px;
+}
+
+.dms a.docButton span {
+    background: #8a8a8a url(Images/document.png) no-repeat left center !important;
     padding-left: 21px;
 }
 
@@ -804,9 +900,21 @@
     height: 34px !important;
 }
 
-.dms .dmsButton span,
+.dms a.dmsButton span,
+.dms a.excelButton span,
+.dms a.linkCreateButton span,
+.dms a.packetButton span,
+.dms a.docButton span,
+.dms a.ownerButton span,
+.dms a.addButton span,
+.dms a.backButton span,
+.dms a.settingsButton span,
+.dms a.deleteButton span,
+.dms a.tagButton span,
+.dms a.reportButton span,
+.dms a.importButton span,
 .dms input[type="button"].dmsButton {
-    background-size: 16px !important;
+    background-size: 14px !important;
     text-decoration: underline;
     font-size: 12px;
     color: white;

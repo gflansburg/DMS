@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -231,6 +231,31 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("    }");
                 sb.AppendLine("  });");
                 sb.AppendLine("}");
+                sb.AppendLine("function MM_swapImgRestore() { //v3.0");
+                sb.AppendLine("    var i, x, a = document.MM_sr; for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;");
+                sb.AppendLine("}");
+                sb.AppendLine("function MM_preloadImages() { //v3.0");
+                sb.AppendLine("    var d = document; if (d.images)");
+                sb.AppendLine("    {");
+                sb.AppendLine("        if (!d.MM_p) d.MM_p = new Array();");
+                sb.AppendLine("        var i, j = d.MM_p.length, a = MM_preloadImages.arguments; for (i = 0; i < a.length; i++)");
+                sb.AppendLine("            if (a[i].indexOf(\"#\") != 0) { d.MM_p[j] = new Image; d.MM_p[j++].src = a[i]; }");
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+                sb.AppendLine("function MM_findObj(n, d) { //v4.01");
+                sb.AppendLine("    var p, i, x; if (!d) d = document; if ((p = n.indexOf(\"?\")) > 0 && parent.frames.length)");
+                sb.AppendLine("    {");
+                sb.AppendLine("        d = parent.frames[n.substring(p + 1)].document; n = n.substring(0, p);");
+                sb.AppendLine("    }");
+                sb.AppendLine("    if (!(x = d[n]) && d.all) x = d.all[n]; for (i = 0; !x && i < d.forms.length; i++) x = d.forms[i][n];");
+                sb.AppendLine("    for (i = 0; !x && d.layers && i < d.layers.length; i++) x = MM_findObj(n, d.layers[i].document);");
+                sb.AppendLine("    if (!x && d.getElementById) x = d.getElementById(n); return x;");
+                sb.AppendLine("}");
+                sb.AppendLine("function MM_swapImage() { //v3.0");
+                sb.AppendLine("    var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)");
+                sb.AppendLine("        if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }");
+                sb.AppendLine("}");
+                sb.AppendLine("MM_preloadImages('" + ResolveUrl("~" + ControlPath + "Images/Icons/DeleteIcon2_16px.gif") + "','" + ResolveUrl("~" + ControlPath + "Images/Icons/EditIcon2_16px.gif") + "');");
                 sb.AppendLine("function MyEndRequest(sender, args) {");
                 sb.AppendLine("  initTagListJavascript();");
                 sb.AppendLine("  hideBlockingScreen();");
@@ -385,13 +410,11 @@ namespace Gafware.Modules.DMS
                 {
                     btnSave.Text = LocalizeString(btnSave.ID);
                     btnCancel.Text = LocalizeString(btnCancel.ID);
-                    btnBack.Text = LocalizeString(btnBack.ID);
-                    btnAddNewTag.Text = LocalizeString(btnAddNewTag.ID);
                     gv.PageSize = PageSize;
                     foreach (Category category in categories)
                     {
                         TemplateField field = new TemplateField();
-                        field.HeaderText = category.CategoryName + " <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by " + category.CategoryName + "' />";
+                        field.HeaderText = category.CategoryName + " <img src='" + ControlPath + "Images/sortneutral.png' border='0' alt='Sort by " + category.CategoryName + "' />";
                         field.HeaderStyle.Wrap = false;
                         field.SortExpression = category.CategoryName;
                         field.ItemStyle.Width = new Unit("100px");

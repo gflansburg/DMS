@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -226,6 +226,7 @@ namespace Gafware.Modules.DMS
             foreach(Document doc in docs)
             {
                 doc.Files = DocumentController.GetAllFilesForDocument(doc.DocumentId);
+
                 foreach (DMSFile file in doc.Files)
                 {
                     if (file.FileType.Equals("pdf", StringComparison.OrdinalIgnoreCase))
@@ -234,7 +235,10 @@ namespace Gafware.Modules.DMS
                         {
                             file.FileVersion.Thumbnail = null;
                             file.FileVersion.SaveThumbnail(false);
-                            Generic.CreateThumbnail(this.Request, ControlPath, file);
+                            DotNetNuke.Entities.Portals.PortalInfo portal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(PortalId);
+                            Repository repository = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                            Thumbnail thumb = new Thumbnail(portal, repository, ControlPath);
+                            thumb.CreateThumbnail(Request, file);
                         }
                         catch
                         {
@@ -498,6 +502,8 @@ namespace Gafware.Modules.DMS
             {
                 SetSearchText();
                 docs = DocumentController.Search(categoryID, searchTerms, Private, PortalId, PortalWideRepository ? 0 : TabModuleId, UserId);
+                //DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId);
+                //docs = docs.FindAll(doc => (Generic.UserHasAccess(doc) && ((doc.IsSearchable && doc.IsPublic) || (doc.CreatedByUserID == UserId || (user != null && (user.IsSuperUser || user.IsInRole("Administrator")))))));
             }
             AddFilter(docs, searchTerms);
         }
@@ -610,31 +616,31 @@ namespace Gafware.Modules.DMS
                 var actions = new ModuleActionCollection
                 {
                     {
-                        GetNextActionID(), Localization.GetString("DocumentList", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("DocumentList", LocalResourceFile), "", "", ControlPath + "Images/document.png",
                         EditUrl("DocumentList"), false, SecurityAccessLevel.Edit, true, false
                     },
                     {
-                        GetNextActionID(), Localization.GetString("PacketList", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("PacketList", LocalResourceFile), "", "", ControlPath + "Images/packet.png",
                         EditUrl("PacketList"), false, SecurityAccessLevel.Admin, true, false
                     },
                     {
-                        GetNextActionID(), Localization.GetString("TagList", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("TagList", LocalResourceFile), "", "", ControlPath + "Images/tag.png",
                         EditUrl("TagList"), false, SecurityAccessLevel.Admin, true, false
                     },
                     {
-                        GetNextActionID(), Localization.GetString("LinkCreator", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("LinkCreator", LocalResourceFile), "", "", ControlPath + "Images/link.png",
                         EditUrl("LinkCreator"), false, SecurityAccessLevel.Edit, true, false
                     },
                     {
-                        GetNextActionID(), Localization.GetString("UploadReport", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("UploadReport", LocalResourceFile), "", "", ControlPath + "Images/report.png",
                         EditUrl("UploadReport"), false, SecurityAccessLevel.Admin, true, false
                     },
                     {
-                        GetNextActionID(), Localization.GetString("BulkImport", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("BulkImport", LocalResourceFile), "", "", ControlPath + "Images/import.png",
                         EditUrl("BulkImport"), false, SecurityAccessLevel.Admin, true, false
                     },
                     {
-                        GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), "", "", ControlPath + "Images/dms.png",
+                        GetNextActionID(), Localization.GetString("Settings", LocalResourceFile), "", "", ControlPath + "Images/settings.png",
                         EditUrl("EditSettings"), false, SecurityAccessLevel.Admin, true, false
                     }
                 };

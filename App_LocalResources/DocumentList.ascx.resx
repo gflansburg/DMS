@@ -375,4 +375,37 @@
   <data name="History.Text" xml:space="preserve">
     <value>History</value>
   </data>
+  <data name="lblGroup.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="lblIsGroupOwner.Text" xml:space="preserve">
+    <value>Group Owner</value>
+  </data>
+  <data name="SelectGroup.Text" xml:space="preserve">
+    <value>-- Select Group --</value>
+  </data>
+  <data name="CurrentGroup.Text" xml:space="preserve">
+    <value>-- Current Group --</value>
+  </data>
+  <data name="lblCurrentGroup.Text" xml:space="preserve">
+    <value>Current Group</value>
+  </data>
+  <data name="lblIsGroupOwner2.Text" xml:space="preserve">
+    <value>Group Owner</value>
+  </data>
+  <data name="lblIsGroupOwner3.Text" xml:space="preserve">
+    <value>Group Owner</value>
+  </data>
+  <data name="lblNewGroup.Text" xml:space="preserve">
+    <value>New Group</value>
+  </data>
+  <data name="NewGroup.Text" xml:space="preserve">
+    <value>-- New Group --</value>
+  </data>
+  <data name="exportCommandButton.Text" xml:space="preserve">
+    <value>Export To Excel</value>
+  </data>
+  <data name="activityReportCommandButton.Text" xml:space="preserve">
+    <value>Activity Report</value>
+  </data>
 </root>

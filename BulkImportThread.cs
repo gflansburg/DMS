@@ -151,7 +151,7 @@ namespace Gafware.Modules.DMS
                     doc.SecurityRoleId = SecurityRoleId;
                     doc.IsPublic = IsPublic;
                     doc.DocumentName = documentName;
-                    doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                    doc.IPAddress = Generic.GetIPAddress();
                     Components.DocumentController.SaveDocument(doc);
                 }
                 foreach (int categoryId in Categories)
@@ -195,7 +195,7 @@ namespace Gafware.Modules.DMS
                         doc.SecurityRoleId = SecurityRoleId;
                         doc.IsPublic = IsPublic;
                         doc.DocumentName = documentName;
-                        doc.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                        doc.IPAddress = Generic.GetIPAddress();
                         Components.DocumentController.SaveDocument(doc);
                         foreach (int categoryId in Categories)
                         {
@@ -222,8 +222,8 @@ namespace Gafware.Modules.DMS
                         string keywords = string.Join(", ", (from tag in doc.Tags select tag.Tag.TagName).ToList());
                         using (Spire.Pdf.PdfDocument pdfDoc = new Spire.Pdf.PdfDocument(file))
                         {
-                            pdfDoc.XmpMetaData.SetTitle(doc.DocumentName);
-                            pdfDoc.XmpMetaData.SetKeywords(keywords);
+                            pdfDoc.DocumentInformation.Title = doc.DocumentName;
+                            pdfDoc.DocumentInformation.Keywords = keywords;
                             pdfDoc.SaveToFile(tempPdf);
                             if(System.IO.File.Exists(tempPdf))
                             {
@@ -285,7 +285,7 @@ namespace Gafware.Modules.DMS
                         dmsFile.FileVersion.FileVersionId = 0;
                         dmsFile.FileVersion.Version++;
                     }
-                    dmsFile.FileVersion.IPAddress = Request.ServerVariables["REMOTE_ADDR"];
+                    dmsFile.FileVersion.IPAddress = Generic.GetIPAddress();
                     dmsFile.FileVersion.CreatedByUserID = OwnerId;
                     dmsFile.FileVersion.CreatedOnDate = DateTime.Now;
                     dmsFile.FileVersion.Filesize = (int)stream.Length;
@@ -293,11 +293,22 @@ namespace Gafware.Modules.DMS
                     dmsFile.FileVersionId = dmsFile.FileVersion.FileVersionId;
                     Components.DocumentController.SaveFile(dmsFile);
                     dmsFile.FileVersion.SaveContents(stream);
-                    Generic.CreateThumbnail(Request, ControlPath, file, dmsFile.FileVersionId);
+                    Components.Repository repository = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                    if (repository != null)
+                    {
+                        CreateThumbnail(repository, file, dmsFile.FileVersionId);
+                    }
                     Progress = (int)(((double)FilesImported * 100.0) / (double)FileCount);
                     FilesImported++;
                 }
             }
+        }
+
+        private void CreateThumbnail(Components.Repository repository, string file, int fileVersionId)
+        {
+            DotNetNuke.Entities.Portals.PortalInfo portal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(PortalId);
+            Thumbnail thumb = new Thumbnail(portal, repository, ControlPath);
+            thumb.CreateThumbnail(Request, file, fileVersionId);
         }
 
         private void AddTag(Document doc, string tagName)

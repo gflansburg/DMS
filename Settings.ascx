@@ -23,6 +23,13 @@
         </asp:Panel>
 
         <div class="dnnFormItem">
+            <dnn:Label ID="lblForceHttps" runat="server" ControlName="chkForceHttps" Suffix=":" /> 
+            <div class="toggleButton" id="chkForceHttpsToggleButton" runat="server">
+                <label for='<%= chkForceHttps.ClientID %>'><asp:CheckBox ID="chkForceHttps" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+            </div>
+        </div>
+
+        <div class="dnnFormItem">
             <dnn:Label ID="lblRole" runat="server" ControlName="ddlRole" Suffix=":" /> 
             <asp:DropDownList ID="ddlRole" DataValueField="RoleId" DataTextField="RoleName" runat="server" style="width: auto;"></asp:DropDownList>
             <asp:LinkButton ID="btnReload" runat="server" CssClass="dnnPrimaryAction" Text="Refresh List" OnClick="btnReload_Click" />
@@ -46,6 +53,64 @@
                 <asp:listitem text="Gray" value="808080"></asp:listitem>
             </asp:DropDownList>
         </div>
+
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblUseThumbnails" runat="server" ControlName="chkUseThumbnails" Suffix=":" /> 
+            <div class="toggleButton" id="chkUseThumbnailsToggleButton" runat="server">
+                <label for='<%= chkUseThumbnails.ClientID %>'><asp:CheckBox ID="chkUseThumbnails" AutoPostBack="true" runat="server" OnCheckedChanged="chkUseThumbnails_CheckedChanged" /><span style="top: -7px; left: -7px;"></span></label>
+            </div>
+        </div>
+
+        <asp:Panel ID="pnlCreateThumbnails" runat="server">
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreatePDF" runat="server" ControlName="chkCreatePDF" Suffix=":" /> 
+                <div class="toggleButton" id="chkCreatePDFToggleButton" runat="server">
+                    <label for='<%= chkCreatePDF.ClientID %>'><asp:CheckBox ID="chkCreatePDF" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreateWord" runat="server" ControlName="chkCreateWord" Suffix=":" /> 
+                <div class="toggleButton" id="chkCreateWordToggleButton" runat="server">
+                    <label for='<%= chkCreateWord.ClientID %>'><asp:CheckBox ID="chkCreateWord" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreateExcel" runat="server" ControlName="chkCreateExcel" Suffix=":" /> 
+                <div class="toggleButton" id="chkCreateExcelToggleButton" runat="server">
+                    <label for='<%= chkCreateExcel.ClientID %>'><asp:CheckBox ID="chkCreateExcel" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreatePowerPoint" runat="server" ControlName="chkCreatePowerPoint" Suffix=":" /> 
+                <div class="toggleButton" id="chkCreatePowerPointToggleButton" runat="server">
+                    <label for='<%= chkCreatePowerPoint.ClientID %>'><asp:CheckBox ID="chkCreatePowerPoint" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreateImage" runat="server" ControlName="chkCreateImage" Suffix=":" /> 
+                <div class="toggleButton" id="chkCreateImageToggleButton" runat="server">
+                    <label for='<%= chkCreateImage.ClientID %>'><asp:CheckBox ID="chkCreateImage" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreateAudio" runat="server" ControlName="chkCreateAudio" Suffix=":" /> 
+                <div class="toggleButton" id="lblCreateAudioToggleButton" runat="server">
+                    <label for='<%= chkCreateAudio.ClientID %>'><asp:CheckBox ID="chkCreateAudio" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+
+            <div class="dnnFormItem">
+                <dnn:Label ID="lblCreateVideo" runat="server" ControlName="chkCreateVideo" Suffix=":" /> 
+                <div class="toggleButton" id="chkCreateVideoToggleButton" runat="server">
+                    <label for='<%= chkCreateVideo.ClientID %>'><asp:CheckBox ID="chkCreateVideo" AutoPostBack="false" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+                </div>
+            </div>
+        </asp:Panel>
 
         <div class="dnnFormItem">
             <dnn:Label ID="lblThumbnailType" runat="server" ControlName="ddlThumbnailType" Suffix=":" /> 

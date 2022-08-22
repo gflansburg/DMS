@@ -4981,6 +4981,110 @@
       <name>sortElements.js</name>
     </file>
     <file>
+      <path>Images/icons/extra/</path>
+      <name>catalog.json</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-archive.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-classic-open.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-classic.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-favorite.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-flat.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-git.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-hidden-open.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-hidden.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-idea.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-image.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-lock.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-music.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-neon-open.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-neon.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-network-open.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-network.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-open.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-photo.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-plain-open.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-plain.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-svn.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-trash.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-tree.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder-video.svg</name>
+    </file>
+    <file>
+      <path>Images/icons/extra/</path>
+      <name>folder.svg</name>
+    </file>
+    <file>
       <path>Backup/DMS/Images/icons/</path>
       <name>aac.png</name>
     </file>
@@ -5321,110 +5425,6 @@
       <name>_page.png</name>
     </file>
     <file>
-      <path>Images/icons/extra/</path>
-      <name>catalog.json</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-archive.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-classic-open.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-classic.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-favorite.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-flat.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-git.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-hidden-open.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-hidden.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-idea.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-image.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-lock.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-music.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-neon-open.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-neon.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-network-open.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-network.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-open.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-photo.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-plain-open.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-plain.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-svn.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-trash.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-tree.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder-video.svg</name>
-    </file>
-    <file>
-      <path>Images/icons/extra/</path>
-      <name>folder.svg</name>
-    </file>
-    <file>
       <path>Backup/DMS/Images/</path>
       <name>category-header.png</name>
     </file>
@@ -5475,6 +5475,14 @@
     <file>
       <path>Backup/DMS/Images/</path>
       <name>ui-icons_222222_256x240.png</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Documentation/</path>
+      <name>Documentation.css</name>
+    </file>
+    <file>
+      <path>Backup/DMS/Documentation/</path>
+      <name>Documentation.html</name>
     </file>
     <file>
       <path>Images/icons/classic/</path>
@@ -7097,14 +7105,6 @@
       <name>zsh.svg</name>
     </file>
     <file>
-      <path>Backup/DMS/Documentation/</path>
-      <name>Documentation.css</name>
-    </file>
-    <file>
-      <path>Backup/DMS/Documentation/</path>
-      <name>Documentation.html</name>
-    </file>
-    <file>
       <path>Backup/DMS/App_LocalResources/</path>
       <name>DocumentList.ascx.resx</name>
     </file>
@@ -7313,6 +7313,54 @@
       <name>View.ascx</name>
     </file>
     <file>
+      <path>Scripts/</path>
+      <name>add_bookmark.jquery.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery-confirm.css</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery-confirm.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.auto-complete.css</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.auto-complete.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.blockUI.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.custom-file-input.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.highlightFade.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>jquery.tablednd_0_5.js</name>
+    </file>
+    <file>
+      <path>Scripts/</path>
+      <name>sortElements.js</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>add.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>back.png</name>
+    </file>
+    <file>
       <path>Images/</path>
       <name>category-header-008000.png</name>
     </file>
@@ -7346,7 +7394,19 @@
     </file>
     <file>
       <path>Images/</path>
+      <name>delete.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
       <name>dms.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>document.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>excel-file-icon.png</name>
     </file>
     <file>
       <path>Images/</path>
@@ -7358,7 +7418,15 @@
     </file>
     <file>
       <path>Images/</path>
+      <name>link.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
       <name>loading.gif</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>owner.png</name>
     </file>
     <file>
       <path>Images/</path>
@@ -7375,6 +7443,10 @@
     <file>
       <path>Images/</path>
       <name>progress_bar.gif</name>
+    </file>
+    <file>
+      <path>Images/</path>
+      <name>report.png</name>
     </file>
     <file>
       <path>Images/</path>
@@ -7422,6 +7494,10 @@
     </file>
     <file>
       <path>Images/</path>
+      <name>tag.png</name>
+    </file>
+    <file>
+      <path>Images/</path>
       <name>ui-bg_flat_0_aaaaaa_40x100.png</name>
     </file>
     <file>
@@ -7447,46 +7523,6 @@
     <file>
       <path>Documentation/</path>
       <name>Documentation.html</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>add_bookmark.jquery.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery-confirm.css</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery-confirm.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.auto-complete.css</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.auto-complete.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.blockUI.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.custom-file-input.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.highlightFade.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>jquery.tablednd_0_5.js</name>
-    </file>
-    <file>
-      <path>Scripts/</path>
-      <name>sortElements.js</name>
     </file>
     <file>
       <path>App_LocalResources/</path>
@@ -7546,6 +7582,10 @@
     </file>
     <file>
       <path />
+      <name>ActivityReport.ascx</name>
+    </file>
+    <file>
+      <path />
       <name>BulkImport.ascx</name>
     </file>
     <file>
@@ -7563,6 +7603,10 @@
     <file>
       <path />
       <name>DocumentSearchResults.ascx</name>
+    </file>
+    <file>
+      <path />
+      <name>ExportToExcel.ashx</name>
     </file>
     <file>
       <path />

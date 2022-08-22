@@ -83,7 +83,7 @@ namespace Gafware.Modules.DMS
             }
         }
 
-        private List<Inactive> ToggleStatus(Components.DMSFile file, bool bActive, string path, int mid, string url)
+        public List<Inactive> ToggleStatus(Components.DMSFile file, bool bActive, string path, int mid, string url)
         {
             List<Inactive> inactive = new List<Inactive>();
             DotNetNuke.Entities.Portals.PortalSettings portal = DotNetNuke.Entities.Portals.PortalSettings.Current;
@@ -120,11 +120,27 @@ namespace Gafware.Modules.DMS
             }
             file.StatusId = (bActive ? 1 : 2);
             Components.DocumentController.SaveFile(file);
+            Components.Document doc = Components.DocumentController.GetDocument(file.DocumentId);
+            if (doc != null)
+            {
+                doc.LastModifiedOnDate = DateTime.Now;
+                Components.DocumentController.SaveDocument(doc);
+            }
             if (!file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
             {
                 if (bActive)
                 {
-                    Components.Document doc = Components.DocumentController.GetDocument(file.DocumentId);
+                    try
+                    {
+                        DotNetNuke.Entities.Portals.PortalInfo portalInfo = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(PortalId);
+                        Components.DMSPortalSettings portalSettings = Components.DocumentController.GetPortalSettings(PortalId);
+                        Components.Repository repository = Components.DocumentController.GetRepository(PortalId, portalSettings.PortalWideRepository ? 0 : doc.TabModuleId);
+                        Thumbnail thumb = new Thumbnail(portalInfo, repository, path);
+                        thumb.CreateThumbnail(HttpContext.Current.Request, file);
+                    }
+                    catch (Exception)
+                    {
+                    }
                     if (doc != null && (!doc.ActivationDate.HasValue || DateTime.Now >= doc.ActivationDate.Value) && (!doc.ExpirationDate.HasValue || DateTime.Now <= (doc.ExpirationDate.Value + new TimeSpan(23, 59, 59))))
                     {
                         file.FileVersion.LoadContents();
@@ -186,39 +202,47 @@ namespace Gafware.Modules.DMS
             Response response = new Response();
             response.Status = Status.Failed;
             response.Inactive = new List<Inactive>();
-            Components.DMSFile file = Components.DocumentController.GetFile(fileId);
-            if (file != null && HttpContext.Current.User.Identity.IsAuthenticated)
+            try
             {
-                Components.Document document = Components.DocumentController.GetDocument(file.DocumentId);
-                var name = HttpContext.Current.User.Identity.Name;
-                if (document != null && (document.CreatedByUserID == User.UserID || User.IsSuperUser || User.IsInRole("Administrator")))
+                Components.DMSFile file = Components.DocumentController.GetFile(fileId);
+                if (file != null && HttpContext.Current.User.Identity.IsAuthenticated)
                 {
-                    response.Inactive = ToggleStatus(file, bActive, path, mid, url);
-                    response.Status = Status.Success;
-                    if (file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
+                    Components.Document document = Components.DocumentController.GetDocument(file.DocumentId);
+                    var name = HttpContext.Current.User.Identity.Name;
+                    DotNetNuke.Security.Roles.RoleInfo groupOwner = (document.IsGroupOwner ? Components.UserController.GetRoleById(PortalId, document.CreatedByUserID) : null);
+                    if (document != null && ((!document.IsGroupOwner && document.CreatedByUserID == User.UserID) || (document.IsGroupOwner && User.IsInRole(groupOwner.RoleName)) || User.IsSuperUser || User.IsInRole("Administrator")))
                     {
-                        response.DocumentUrl = file.WebPageUrl;
-                    }
-                    else
-                    {
-                        if (file.StatusId == 1)
+                        response.Inactive = ToggleStatus(file, bActive, path, mid, url);
+                        response.Status = Status.Success;
+                        if (file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
                         {
-                            response.DocumentUrl = GetLinkUrl(url, mid, false, file.DocumentId.ToString(), file.FileId, String.Empty);
+                            response.DocumentUrl = file.WebPageUrl;
                         }
                         else
                         {
-                            response.DocumentUrl = path + "GetFile.ashx" + "?id=" + file.FileId.ToString();
+                            if (file.StatusId == 1)
+                            {
+                                response.DocumentUrl = GetLinkUrl(url, mid, false, file.DocumentId.ToString(), file.FileId, String.Empty);
+                            }
+                            else
+                            {
+                                response.DocumentUrl = path + "GetFile.ashx" + "?id=" + file.FileId.ToString();
+                            }
                         }
+                    }
+                    else
+                    {
+                        response.Error = "Unauthorized";
                     }
                 }
                 else
                 {
-                    response.Error = "Unauthorized";
+                    response.Error = "Not Logged In";
                 }
             }
-            else
+            catch(Exception ex)
             {
-                response.Error = "Not Logged In";
+                response.Error = ex.Message;
             }
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             Context.Response.Write(oSerializer.Serialize(response));
@@ -253,6 +277,15 @@ namespace Gafware.Modules.DMS
                         response.Version = GetVersion(nVersion);
                         Components.DocumentController.SaveFileVersion(version);
                         file = Components.DocumentController.GetFile(version.FileId);
+                        if (file != null)
+                        {
+                            Components.Document doc = Components.DocumentController.GetDocument(file.DocumentId);
+                            if (doc != null)
+                            {
+                                doc.LastModifiedOnDate = DateTime.Now;
+                                Components.DocumentController.SaveDocument(doc);
+                            }
+                        }
                         if (file != null && file.FileVersionId != response.OrigFileVersionId)
                         {
                             response.NewFile = true;
@@ -354,18 +387,7 @@ namespace Gafware.Modules.DMS
                 string terms = queryString["terms"] ?? String.Empty;
                 if (!String.IsNullOrEmpty(id) && Generic.IsNumber(id))
                 {
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    sb.AppendLine("<datum>");
-                    sb.AppendLine(String.Format("  <Time>{0}</Time>", DateTime.Now));
-                    sb.AppendLine(String.Format("  <IP>{0}</IP>", HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"]));
-                    sb.AppendLine(String.Format("  <Doc_ID>{0}</Doc_ID>", id));
-                    sb.AppendLine(String.Format("  <File_ID>{0}</File_ID>", fileId));
-                    sb.AppendLine(String.Format("  <File_Type>{0}</File_Type>", type));
-                    sb.AppendLine(String.Format("  <Search_Terms>{0}</Search_Terms>", terms));
-                    sb.AppendLine("</datum>");
-                    string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "Gafware_DMS_" + pid + "_");
-
-                    WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
+                    RecordDocumentRequest(pid, Convert.ToInt32(id), !String.IsNullOrEmpty(fileId) && Generic.IsNumber(fileId) ? Convert.ToInt32(fileId) : 0, type, terms);
                 }
             }
             catch (Exception)
@@ -373,7 +395,29 @@ namespace Gafware.Modules.DMS
             }
         }
 
-        private string GetNewLogFilename(string strDirectory, DateTime date, string strFilePrefix)
+        public static void RecordDocumentRequest(int portalId, int documentId, int fileId, string fileType, string searchTerms)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.AppendLine("  <datum>");
+            sb.AppendLine(String.Format("    <Time>{0}</Time>", DateTime.Now));
+            sb.AppendLine(String.Format("    <IP>{0}</IP>", Generic.GetIPAddress()));
+            sb.AppendLine(String.Format("    <Browser_Type>{0}</Browser_Type>", HttpContext.Current.Request.Browser.Type));
+            sb.AppendLine(String.Format("    <Browser_Name>{0}</Browser_Name>", HttpContext.Current.Request.Browser.Browser));
+            sb.AppendLine(String.Format("    <Browser_Version>{0}</Browser_Version>", HttpContext.Current.Request.Browser.Version));
+            sb.AppendLine(String.Format("    <Platform>{0}</Platform>", HttpContext.Current.Request.Browser.Platform));
+            sb.AppendLine(String.Format("    <Is_Mobile>{0}</Is_Mobile>", HttpContext.Current.Request.Browser.IsMobileDevice));
+            sb.AppendLine(String.Format("    <Is_Crawler>{0}</Is_Crawler>", HttpContext.Current.Request.Browser.Crawler));
+            sb.AppendLine(String.Format("    <Portal_ID>{0}</Portal_ID>", portalId));
+            sb.AppendLine(String.Format("    <Doc_ID>{0}</Doc_ID>", documentId));
+            sb.AppendLine(String.Format("    <File_ID>{0}</File_ID>", fileId));
+            sb.AppendLine(String.Format("    <File_Type>{0}</File_Type>", fileType));
+            sb.AppendLine(String.Format("    <Search_Terms>{0}</Search_Terms>", HttpUtility.HtmlEncode(searchTerms)));
+            sb.AppendLine("  </datum>");
+            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "Gafware_DMS_" + portalId + "_");
+            WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
+        }
+
+        private static string GetNewLogFilename(string strDirectory, DateTime date, string strFilePrefix)
         {
             int fileCount = 1;
             bool validFilename = false;
@@ -403,7 +447,7 @@ namespace Gafware.Modules.DMS
             return strFileName;
         }
 
-        private void WriteToDocLog(string strDirectory, string strLogName, string strNewText)
+        private static void WriteToDocLog(string strDirectory, string strLogName, string strNewText)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             System.IO.FileStream fs = new System.IO.FileStream(strDirectory + "\\" + strLogName, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None);

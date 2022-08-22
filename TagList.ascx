@@ -44,8 +44,8 @@
                 <uc1:LetterFilter ID="filter" runat="server" OnClick="filter_OnClick" />
             </div>
             <div style="float:right; margin:0px 1px 5px 0px;">
-                <asp:LinkButton runat="server" id="btnBack" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="btnBack_Click"><asp:label runat="server" resourcekey="btnBack" /></asp:LinkButton>
-                <asp:LinkButton runat="server" id="btnAddNewTag" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="btnAddNewTag_Click"><asp:label runat="server" resourcekey="btnAddNewTag" /></asp:LinkButton>
+                <asp:LinkButton runat="server" id="btnBack" causesvalidation="False" CssClass="secondaryButton backButton" OnClick="btnBack_Click"><asp:label runat="server" resourcekey="btnBack" /></asp:LinkButton>
+                <asp:LinkButton runat="server" id="btnAddNewTag" causesvalidation="False" CssClass="secondaryButton addButton" OnClick="btnAddNewTag_Click"><asp:label runat="server" resourcekey="btnAddNewTag" /></asp:LinkButton>
             </div>
             <br style="clear: both" />
             <div style="width: 100%; overflow: auto;">
@@ -69,13 +69,13 @@
                     <RowStyle VerticalAlign="Top" Font-Names="Arial" Font-Size="Small" BackColor="#F7F7F7" />
                     <FooterStyle Font-Names="Arial" Font-Size="X-Small" BackColor="White" />
                     <HeaderStyle BackColor="#666666" HorizontalAlign="Left" VerticalAlign="Middle" Wrap="False" Font-Size="Small" Font-Names="Arial" ForeColor="White" Font-Bold="False" Font-Underline="false" />
-                    <AlternatingRowStyle BackColor="#E0E0E0" />
+                    <AlternatingRowStyle BackColor="White" />
                     <Columns>
-                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="100px"> 
+                        <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="50px" HeaderText="Actions" HeaderStyle-Wrap="false" ItemStyle-Wrap="false"> 
                             <ItemTemplate>
-                                <asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Tag" CommandName="Edit" Text="Edit" /> 
+                                <asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Tag" CommandName="Edit"><asp:Image runat="server" ID="editImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/EditIcon1_16px.gif" AlternateText="Edit Tag" ToolTip="Edit Tag" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/Gafware/DMS/Images/icons/EditIcon2_16px.gif',1)" /></asp:LinkButton>
                                 &nbsp;
-                                <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Tag" CommandName="Delete" Text="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("TagName").ToString()) + "\", " + Eval("DocumentCount").ToString() + "); return false;" %>' /> 
+                                <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Tag" CommandName="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("TagName").ToString()) + "\", " + Eval("DocumentCount").ToString() + "); return false;" %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete Tag" ToolTip="Delete Tag" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon2_16px.gif',1)" /></asp:LinkButton>
                             </ItemTemplate> 
                         </asp:TemplateField> 
                         <asp:TemplateField HeaderText="Tag Name <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Full Name' />" SortExpression="TagName"> 

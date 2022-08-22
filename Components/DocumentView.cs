@@ -24,6 +24,18 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public string DocumentName { get; set; }
         /// <summary>
+        /// Document details
+        /// </summary>
+        public string DocumentDetails { get; set; }
+        /// <summary>
+        /// IsPublic
+        /// </summary>
+        public bool IsPublic { get; set; }
+        /// <summary>
+        /// Is searchable
+        /// </summary>
+        public bool IsSearchable { get; set; }
+        /// <summary>
         /// Portal Id
         /// </summary>
         public int PortalId { get; set; }
@@ -51,6 +63,32 @@ namespace Gafware.Modules.DMS.Components
         /// Creator ID
         /// </summary>
         new public int CreatedByUserID { get; set; }
+        /// <summary>
+        /// Is owner a group
+        /// </summary>
+        public bool IsGroupOwner { get; set; }
+        /// <summary>
+        /// Created on date
+        /// </summary>
+        public new DateTime CreatedOnDate { get; set; }
+        /// <summary>
+        /// Owner
+        /// </summary>
+        public string Owner
+        {
+            get
+            {
+                if (CreatedByUserID > 0 && !IsGroupOwner)
+                {
+                    return DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, CreatedByUserID).DisplayName;
+                }
+                if (CreatedByUserID > 0 && IsGroupOwner)
+                {
+                    return DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(PortalId, CreatedByUserID).RoleName;
+                }
+                return string.Empty;
+            }
+        }
 
         public override void Fill(IDataReader dr)
         {
@@ -58,10 +96,15 @@ namespace Gafware.Modules.DMS.Components
 
             DocumentId = Null.SetNullInteger(dr["DocumentID"]);
             CreatedByUserID = Null.SetNullInteger(dr["CreatorID"]);
+            IsGroupOwner = Null.SetNullBoolean(dr["IsGroupOwner"]);
             DocumentName = Null.SetNullString(dr["DocumentName"]);
+            DocumentDetails = Null.SetNullString(dr["DocumentDetails"]);
+            IsPublic = Null.SetNullBoolean(dr["IsPublic"]);
+            IsSearchable = Null.SetNullBoolean(dr["IsSearchable"]);
             PortalId = Null.SetNullInteger(dr["PortalID"]);
             TabModuleId = Null.SetNullInteger(dr["TabModuleID"]);
             LastModifiedOnDate = Null.SetNullDateTime(dr["DateLastModified"]);
+            CreatedOnDate = Null.SetNullDateTime(dr["DateCreated"]);
             ActivationDate = (dr["ActivationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ActivationDate"]));
             ExpirationDate = (dr["ExpirationDate"] == DBNull.Value ? (DateTime?)null : Null.SetNullDateTime(dr["ExpirationDate"]));
             /*List<DocumentCategory> categories = DocumentController.GetAllCategoriesForDocument(DocumentId);

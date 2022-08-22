@@ -60,6 +60,15 @@ BEGIN
 		[ThumbnailType] [nvarchar](50) NOT NULL,
 		[ThumbnailSize] [int] NOT NULL,
 		[PageSize] [int] NOT NULL,
+		[ForceHttps] [bit] NOT NULL,
+		[UseThumbnails] [bit] NOT NULL,
+		[CreatePDF] [bit] NOT NULL,
+		[CreateWord] [bit] NOT NULL,
+		[CreateExcel] [bit] NOT NULL,
+		[CreatePowerPoint] [bit] NOT NULL,
+		[CreateImage] [bit] NOT NULL,
+		[CreateAudio] [bit] NOT NULL,
+		[CreateVideo] [bit] NOT NULL,
 	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_Repository] PRIMARY KEY CLUSTERED 
 	(
 		[RepositoryID] ASC
@@ -76,6 +85,15 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CategoryName]  DEFAULT ('Category') FOR [CategoryName]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_PageSize]  DEFAULT ((20)) FOR [PageSize]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_ForceHttps]  DEFAULT ((0)) FOR [ForceHttps]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_UseThumbnails]  DEFAULT ((1)) FOR [UseThumbnails]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreatePDF]  DEFAULT ((1)) FOR [CreatePDF]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreateWord]  DEFAULT ((1)) FOR [CreateWord]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreateExcel]  DEFAULT ((1)) FOR [CreateExcel]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreatePowerPoint]  DEFAULT ((1)) FOR [CreatePowerPoint]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreateImage]  DEFAULT ((1)) FOR [CreateImage]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreateAudio]  DEFAULT ((1)) FOR [CreateAudio]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Repository_CreateVideo]  DEFAULT ((1)) FOR [CreateVideo]
 END
 GO
 
@@ -127,6 +145,7 @@ BEGIN
 		[Version] [int] NOT NULL,
 		[DateUploaded] [datetime] NOT NULL,
 		[UploaderID] [int] NOT NULL,
+		[IsGroupOwner] [bit] NOT NULL,
 		[WebpageURL] [varchar](255) NULL,
 		[IPAddress] [varchar](16) NOT NULL,
 		[Filesize] [int] NOT NULL,
@@ -145,6 +164,8 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_Filesize]  DEFAULT ((0)) FOR [Filesize]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_IsLandscape]  DEFAULT ((0)) FOR [IsLandscape]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_FileVersion_IsGroupOwner]  DEFAULT ((0)) FOR [IsGroupOwwner]
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_FileVersion_FileID_Version ON {databaseOwner}{objectQualifier}Gafware_DMS_FileVersion
 		(
@@ -259,8 +280,8 @@ BEGIN
 	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document](
 		[DocumentID] [int] IDENTITY(1,1) NOT NULL,
 		[CreatorID] [int] NULL,
+		[IsGroupOwner] [bit] NOT NULL,
 		[DocumentName] [nvarchar](255) NULL,
-		[ShortDescription] [nvarchar](1250) NULL,
 		[DocumentDetails] [nvarchar](4000) NULL,
 		[AdminComments] [nvarchar](2500) NULL,
 		[IsPublic] [bit] NOT NULL,
@@ -284,6 +305,7 @@ BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_UseCategoryRoles]  DEFAULT ((1)) FOR [UseCategoryRoles]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_SecurityRoleID]  DEFAULT ((-1)) FOR [SecurityRoleID]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Document] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Document_IsGroupOwner]  DEFAULT ((0)) FOR [IsGroupOwwner]
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_Document_PortalID_TabModuleID_DocumentName ON {databaseOwner}{objectQualifier}Gafware_DMS_Document
 		(
@@ -344,6 +366,7 @@ BEGIN
 	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet](
 		[PacketID] [int] IDENTITY(1,1) NOT NULL,
 		[UserID] [int] NOT NULL,
+		[IsGroupOwner] [bit] NOT NULL,
 		[Name] [nvarchar](50) NOT NULL,
 		[ShowDescription] [bit] NOT NULL,
 		[ShowPacketDescription] [bit] NOT NULL,
@@ -360,6 +383,7 @@ BEGIN
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_PortalID]  DEFAULT ((0)) FOR [PortalID]
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_TabModuleID]  DEFAULT ((0)) FOR [TabModuleID]
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_Packet_IsGroupOwner]  DEFAULT ((0)) FOR [IsGroupOwwner]
 
 	CREATE NONCLUSTERED INDEX IX_{objectQualifier}Gafware_DMS_Packet_PortalID_TabModuleID_Name ON {databaseOwner}{objectQualifier}Gafware_DMS_Packet
 		(
@@ -535,7 +559,9 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangeDocumentOwnership]
 	-- Add the parameters for the stored procedure here
 	@CurrentOwnerID int,
+	@IsCurrentGroupOwner bit,
 	@NewOwnerID int,
+	@IsNewGroupOwner bit,
 	@PortalID int
 AS
 BEGIN
@@ -545,15 +571,15 @@ BEGIN
 
     -- Insert statements for procedure here
 	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
-	SET	CreatorID = @NewOwnerID
-	WHERE CreatorID = @CurrentOwnerID AND PortalID = @PortalID
-	
+	SET	CreatorID = @NewOwnerID, IsGroupOwner = @IsNewGroupOwner
+	WHERE CreatorID = @CurrentOwnerID AND IsGroupOwner = @IsCurrentGroupOwner AND PortalID = @PortalID AND IsGroupOwner = 0
+
 	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion]
-	SET {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion].UploaderID = @NewOwnerID
+	SET {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion].UploaderID = @NewOwnerID, {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion].IsGroupOwner = @IsNewGroupOwner
 	FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] fv
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_File] f ON f.FileID = fv.FileID
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON d.DocumentID = f.DocumentID
-	WHERE fv.UploaderID = @CurrentOwnerID AND d.PortalID = @PortalID
+	WHERE fv.UploaderID = @CurrentOwnerID AND fv.IsGroupOwner = @IsCurrentGroupOwner AND d.PortalID = @PortalID
 END
 GO
 
@@ -566,7 +592,9 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_ChangePacketOwnership]
 	-- Add the parameters for the stored procedure here
 	@CurrentOwnerID int,
+	@IsCurrentGroupOwner bit,
 	@NewOwnerID int,
+	@IsNewGroupOwner bit,
 	@PortalID int
 AS
 BEGIN
@@ -576,8 +604,8 @@ BEGIN
 
     -- Insert statements for procedure here
 	UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet]
-	SET	UserID = @NewOwnerID
-	WHERE UserID = @CurrentOwnerID AND PortalID = @PortalID
+	SET	UserID = @NewOwnerID, IsGroupOwner = @IsNewGroupOwner
+	WHERE UserID = @CurrentOwnerID AND IsGroupOwner = @IsCurrentGroupOwner AND PortalID = @PortalID
 END
 GO
 
@@ -924,7 +952,11 @@ BEGIN
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] ON {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[DocumentID] = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[DocumentID]
 	INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] ON {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[CategoryID] = {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory].[CategoryID]
 	WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_PacketDoc].[PacketID] = @PacketID
-	AND (@UserID = 0 OR (({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsSearchable] = 1 AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsPublic] = 1) OR {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID) OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
+	AND (@UserID = 0 
+	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsSearchable] = 1 AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsPublic] = 1) 
+	OR (({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsGroupOwner] = 0 AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID) 
+	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsGroupOwner] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID]) = 1)) 
+	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
 	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[SecurityRoleID]) = 1))
 	ORDER BY {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentName
 END
@@ -972,7 +1004,11 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] WHERE CreatorID = @UserID AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY DocumentName
+	SELECT {databaseOwner}[{objectQualifier}Gafware_DMS_Document].* FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] 
+	INNER JOIN {databaseOwner}[{objectQualifier}Users] AS Users ON Users.UserID = @UserID
+	WHERE (((IsGroupOwner = 0 AND CreatorID = @UserID) OR (IsGroupOwner = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, CreatorID) = 1))
+	OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalID)) = 1)
+	AND PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end ORDER BY DocumentName
 END
 GO
 
@@ -1000,11 +1036,13 @@ BEGIN
 	  ,fv.[Version]
       ,fv.[DateUploaded]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
       ,fv.[WebpageURL]
       ,fv.[IPAddress]
       ,fv.[Filesize]
 	  ,fv.[FileVersionID]
 	  ,fv.[IsLandscape]
+	  ,CAST((CASE WHEN fv.[Thumbnail] IS NOT NULL THEN 1 ELSE 0 END) AS bit) AS [HasThumbnail]
     FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
     INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] fv ON fv.FileID = f.FileID
 	WHERE f.[FileID] = @FileID
@@ -1038,6 +1076,7 @@ BEGIN
 	  ,fv.[Version]
       ,fv.[DateUploaded]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
       ,fv.[WebpageURL]
       ,fv.[IPAddress]
       ,fv.[Filesize]
@@ -1046,7 +1085,7 @@ BEGIN
   INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON f.DocumentID = d.DocumentID
   CROSS APPLY
   (
-	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[IsGroupOwner], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
 	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
 	WHERE   v.FileID = f.FileID
 	ORDER BY v.[Version] DESC
@@ -1082,6 +1121,7 @@ BEGIN
 	  ,fv.[Version]
       ,fv.[DateUploaded]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
       ,fv.[WebpageURL]
       ,fv.[IPAddress]
       ,fv.[Filesize]
@@ -1089,7 +1129,7 @@ BEGIN
   FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
   CROSS APPLY
   (
-	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[IsGroupOwner], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
 	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
 	WHERE   v.FileID = f.FileID
 	ORDER BY v.[Version] DESC
@@ -1127,6 +1167,7 @@ BEGIN
 	  ,fv.[Version]
       ,fv.[DateUploaded]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
       ,fv.[WebpageURL]
       ,fv.[IPAddress]
       ,fv.[Filesize]
@@ -1135,12 +1176,12 @@ BEGIN
   INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON f.DocumentID = d.DocumentID
   CROSS APPLY
   (
-	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[IsGroupOwner], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
 	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
 	WHERE   v.FileID = f.FileID
 	ORDER BY v.[Version] DESC
   ) fv
-  WHERE fv.[UploaderID] = @UserID AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then d.TabModuleID else @TabModuleID end
+  WHERE fv.[UploaderID] = @UserID AND fv.[IsGroupOwner] = 0 AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then d.TabModuleID else @TabModuleID end
   ORDER BY f.[FileID]
 END
 GO
@@ -1229,7 +1270,8 @@ BEGIN
     -- Insert statements for procedure here
 	SELECT p.* FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] p
 	INNER JOIN {databaseOwner}[{objectQualifier}Users] AS Users ON Users.UserID = @UserID
-	WHERE (p.UserID = @UserID OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, (SELECT RoleID FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleName = 'Administrators' AND PortalID = @PortalID)) = 1) 
+	WHERE (((IsGroupOwner = 0 AND p.UserID = @UserID) OR (IsGroupOwner = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, p.UserID) = 1)) 
+	OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalID)) = 1) 
 	AND p.PortalID = @PortalID AND p.TabModuleID = case when @TabModuleID = 0 then p.TabModuleID else @TabModuleID end
 	ORDER BY p.PacketID
 END
@@ -1254,7 +1296,7 @@ BEGIN
     -- Insert statements for procedure here
 	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
 	WHERE (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = {databaseOwner}[{objectQualifier}Gafware_DMS_Document].DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0
-	AND ((IsSearchable = 1 AND IsPublic = 1) OR CreatorID = @UserID)
+	AND ((IsSearchable = 1 AND IsPublic = 1) OR ((IsGroupOwner = 0 AND CreatorID = @UserID) OR (IsGroupOwner = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, CreatorID) = 1)))
 	AND (ActivationDate IS NULL OR GETDATE() >= ActivationDate)
 	AND (ExpirationDate IS NULL OR GETDATE() <= ExpirationDate)
 	AND PortalID = @PortalID
@@ -1472,9 +1514,9 @@ BEGIN
 
     -- Insert statements for procedure here
     DECLARE @sql nvarchar(max)
-	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[ShortDescription],Doc.[DocumentDetails]' +
+	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[DocumentDetails]' +
 				',Doc.[AdminComments],Doc.[IsPublic],Doc.[ActivationDate],Doc.[ExpirationDate]' +
-				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress]' +
+				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress],Doc.[IsGroupOwner]' +
 				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], Doc.[IsSearchable], Doc.[PortalID], Doc.[TabModuleID] ' +
 				'FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] AS Doc ' + 
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] AS DocTag ON DocTag.DocumentID = Doc.DocumentID ' +
@@ -1484,10 +1526,11 @@ BEGIN
 	BEGIN
 		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCam ON DocCam.[DocumentID] = Doc.[DocumentID] AND DocCam.[CategoryID] = ' + CAST(@CategoryID as nvarchar(10)) + ' '
 	END
-	SET @sql = @sql + 'WHERE (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) +  ', (SELECT RoleID FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleName = ''Administrators'' AND PortalID = ' + CAST(@PortalID as nvarchar(10)) +  ')) = 1) AND Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end + ' '
+	SET @sql = @sql + 'WHERE (((Doc.IsGroupOwner = 0 AND Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ') OR (Doc.IsGroupOwner = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.CreatorID) = 1)) OR Users.IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) +  ', (SELECT RoleID FROM {databaseOwner}[{objectQualifier}Roles] WHERE RoleName = ''Administrators'' AND PortalID = ' + CAST(@PortalID as nvarchar(10)) +  ')) = 1) AND Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end + ' '
 	--SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
 	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 	BEGIN
+		SET @Keywords = (SELECT LTRIM(RTRIM(@Keywords)))
 		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 		BEGIN
 			DECLARE @SearchTermID int
@@ -1532,7 +1575,6 @@ BEGIN
 	[DocumentID] [int] NOT NULL,
 	[CreatorID] [int] NULL,
 	[DocumentName] [nvarchar](255) NULL,
-	[ShortDescription] [nvarchar](1250) NULL,
 	[DocumentDetails] [nvarchar](4000) NULL,
 	[AdminComments] [nvarchar](2500) NULL,
 	[IsPublic] [bit] NOT NULL,
@@ -1541,6 +1583,7 @@ BEGIN
 	[DateCreated] [datetime] NULL,
 	[DateLastModified] [datetime] NULL,
 	[IPAddress] [nvarchar](16) NULL,
+	[IsGroupOwner] [bit] NOT NULL,
 	[UseCategoryRoles] [bit] NOT NULL,
 	[SecurityRoleID] [int] NOT NULL,
 	[IsSearchable] [bit] NOT NULL,
@@ -1632,6 +1675,7 @@ BEGIN
 	  ,fv.[Version]
       ,fv.[DateUploaded]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
       ,fv.[WebpageURL]
       ,fv.[IPAddress]
       ,fv.[Filesize]
@@ -1639,7 +1683,7 @@ BEGIN
     FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
     CROSS APPLY
     (
-	  SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	  SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[IsGroupOwner], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
 	  FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
 	  WHERE   v.FileID = f.FileID
 	  ORDER BY v.[Version] DESC
@@ -1898,28 +1942,31 @@ SELECT d.[DocumentName]
       ,d.[IsSearchable]
 	  ,d.[CreatorID]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
 	  ,f.[FileType]
       ,f.[FileName]
       ,fv.[WebpageURL]
       ,fv.[DateUploaded]
       ,s.StatusName AS FileStatus
-	  ,u.DisplayName AS Uploader
-	  ,c.DisplayName AS Creator
+	  ,case when fv.IsGroupOwner = 0 then u.DisplayName else ur.RoleName end AS Uploader
+	  ,case when d.IsGroupOwner = 0 then c.DisplayName else r.RoleName end AS Creator
 	  ,d.DocumentID
   FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
   CROSS APPLY
   (
-	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[IsGroupOwner], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
 	FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
 	WHERE   v.FileID = f.FileID
 	ORDER BY v.[Version] DESC
   ) fv
   INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Document] d ON d.DocumentID = f.DocumentID
   INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Status] s ON s.StatusID = f.StatusID
-  INNER JOIN {databaseOwner}[{objectQualifier}Users] c ON c.UserID = d.CreatorID
-  INNER JOIN {databaseOwner}[{objectQualifier}Users] u ON u.UserID = fv.UploaderID
+  LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] c ON d.IsGroupOwner = 0 AND c.UserID = d.CreatorID
+  LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Roles] r ON d.IsGroupOwner = 1 AND r.RoleID = d.CreatorID AND r.PortalID = d.PortalID
+  LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] u ON u.UserID = fv.UploaderID AND fv.IsGroupOwner = 0
+  LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Roles] ur ON ur.RoleID = fv.UploaderID AND fv.IsGroupOwner = 1 AND ur.PortalID = d.PortalID
   WHERE fv.DateUploaded BETWEEN @StartDate AND @EndDate AND d.PortalID = @PortalID AND d.TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
-  ORDER BY d.DocumentName, fv.DateUploaded DESC
+  ORDER BY fv.DateUploaded DESC, d.DocumentName
 END
 GO
 
@@ -2011,8 +2058,8 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveDocument]
 	@DocumentID int,
 	@CreatorID int,
+	@IsGroupOwner bit,
 	@DocumentName nvarchar(255),
-	@ShortDescription nvarchar(1250),
 	@DocumentDetails nvarchar(4000),
 	@AdminComments nvarchar(2500),
 	@IsPublic bit,
@@ -2033,9 +2080,9 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@DocumentID IS NULL OR @DocumentID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Document] (CreatorID, DocumentName, ShortDescription, DocumentDetails, AdminComments, IsPublic, ActivationDate,
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Document] (CreatorID, IsGroupOwner, DocumentName, DocumentDetails, AdminComments, IsPublic, ActivationDate,
 		ExpirationDate, IPAddress, IsSearchable, UseCategoryRoles, SecurityRoleID, PortalID, TabModuleID, DateCreated, DateLastModified)
-		VALUES (@CreatorID, @DocumentName, @ShortDescription, @DocumentDetails, @AdminComments, @IsPublic, @ActivationDate, @ExpirationDate,
+		VALUES (@CreatorID, @IsGroupOwner, @DocumentName, @DocumentDetails, @AdminComments, @IsPublic, @ActivationDate, @ExpirationDate,
 		@IPAddress, @IsSearchable, @UseCategoryRoles, @SecurityRoleID, @PortalID, @TabModuleID, GETDATE(), GETDATE())
 		SET @DocumentID = @@IDENTITY
 	END
@@ -2043,8 +2090,8 @@ BEGIN
 	BEGIN
 		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Document]
 		SET	CreatorID = @CreatorID,
+			IsGroupOwner = @IsGroupOwner,
 			DocumentName = @DocumentName,
-			ShortDescription = @ShortDescription,
 			DocumentDetails = @DocumentDetails,
 			AdminComments = @AdminComments,
 			IsPublic = @IsPublic,
@@ -2229,6 +2276,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePacket]
 	@PacketID int,
 	@UserID int,
+	@IsGroupOwner bit,
 	@Name nvarchar(50),
 	@ShowDescription bit,
 	@ShowPacketDescription bit,
@@ -2246,14 +2294,15 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@PacketID IS NULL OR @PacketID = 0)
 	BEGIN
-	    INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] (UserID, [Name], ShowDescription, ShowPacketDescription, [Description], AdminComments, CustomHeader, PortalID, TabModuleID)
-	    VALUES (@UserID, @Name, @ShowDescription, @ShowPacketDescription, @Description, @AdminComments, @CustomHeader, @PortalID, @TabModuleID)
+	    INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Packet] (UserID, IsGroupOwner, [Name], ShowDescription, ShowPacketDescription, [Description], AdminComments, CustomHeader, PortalID, TabModuleID)
+	    VALUES (@UserID, @IsGroupOwner, @Name, @ShowDescription, @ShowPacketDescription, @Description, @AdminComments, @CustomHeader, @PortalID, @TabModuleID)
 	    SET @PacketID = @@IDENTITY
 	END
 	ELSE
 	BEGIN
 	    UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_Packet]
 	    SET UserID = @UserID,
+			IsGroupOwner = @IsGroupOwner,
 			[Name] = @Name,
 	        ShowDescription = @ShowDescription,
 	        ShowPacketDescription = @ShowPacketDescription,
@@ -2442,10 +2491,10 @@ BEGIN
 	
     -- Insert statements for procedure here
     DECLARE @sql nvarchar(max)
-	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[DocumentName],Doc.[ShortDescription],Doc.[DocumentDetails]' +
+	SET @sql =	'SELECT DISTINCT Doc.[DocumentID],Doc.[CreatorID],Doc.[IsGroupOwner],Doc.[DocumentName],Doc.[DocumentDetails]' +
 				',Doc.[AdminComments],Doc.[IsPublic],Doc.[ActivationDate],Doc.[ExpirationDate]' +
 				',Doc.[DateCreated],Doc.[DateLastModified],Doc.[IPAddress],Doc.[PortalID],Doc.[TabModuleID]' +
-				',Doc.[UseCategoryRoles], Doc.[SecurityRoleID], Doc.[IsSearchable] ' +
+				',Doc.[UseCategoryRoles],Doc.[SecurityRoleID],Doc.[IsSearchable] ' +
 				'FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Document] AS Doc ' + 
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentTag] AS DocTag ON DocTag.DocumentID = Doc.DocumentID ' +
 				'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Tag] AS Tag ON Tag.TagID = DocTag.TagID '
@@ -2458,15 +2507,17 @@ BEGIN
 		SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_DocumentCategory] AS DocCat ON DocCat.[DocumentID] = Doc.[DocumentID] '
 	END
 	SET @sql = @sql + 'INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_Category] Cat ON Cat.[CategoryID] = DocCat.[CategoryID] '
+	SET @sql = @sql + 'LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] [User] ON [User].[UserID] = ' + CAST(@UserID as nvarchar(10)) + ' '
 	SET @sql = @sql + 'WHERE Doc.PortalID =  ' + CAST(@PortalID as nvarchar(10)) +  case when @TabModuleID = 0 then '' else ' AND Doc.TabModuleID =  ' + CAST(@TabModuleID as nvarchar(10)) end +  ' AND (Doc.ActivationDate IS NULL OR getdate() >= Doc.ActivationDate) AND (Doc.ExpirationDate IS NULL OR getdate() <= Doc.ExpirationDate) '
 	IF (@Private = 0)
 	BEGIN
-		SET @sql = @sql + 'AND ((Doc.[IsSearchable] = 1 AND Doc.[IsPublic] = 1) OR Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ') '
+		SET @sql = @sql + 'AND ((Doc.[IsSearchable] = 1 AND Doc.[IsPublic] = 1) OR ((Doc.IsGroupOwner = 0 AND Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ') OR (Doc.IsGroupOwner = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.CreatorID) = 1)) OR ([User].IsSuperUser = 1 OR {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', {databaseOwner}[{objectQualifier}AdministratorRoleId](' + CAST(@PortalID as nvarchar(10)) + ')) = 1)) '
 	END
 	SET @sql = @sql + 'AND (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] WHERE {databaseOwner}[{objectQualifier}Gafware_DMS_File].DocumentID = Doc.DocumentID AND {databaseOwner}[{objectQualifier}Gafware_DMS_File].StatusID = 1) > 0 '
-	SET @sql = @sql + 'AND (Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ' OR (Doc.[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) OR (Doc.[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.[SecurityRoleID]) = 1)) '
+	SET @sql = @sql + 'AND (((Doc.IsGroupOwner = 0 AND Doc.[CreatorID] = ' + CAST(@UserID as nvarchar(10)) + ') OR (Doc.IsGroupOwner = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.CreatorID) = 1)) OR (Doc.[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Cat.[RoleID]) = 1) OR (Doc.[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](' + CAST(@UserID as nvarchar(10)) + ', Doc.[SecurityRoleID]) = 1)) '
 	IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 	BEGIN
+		SET @Keywords = (SELECT LTRIM(RTRIM(@Keywords)))
 		IF(@Keywords IS NOT NULL AND LEN(@Keywords) > 0)
 		BEGIN
 			DECLARE @SearchTermID int
@@ -2510,8 +2561,8 @@ BEGIN
 	CREATE TABLE #x(
 	[DocumentID] [int] NOT NULL,
 	[CreatorID] [int] NULL,
+	[IsGroupOwner] [bit] NOT NULL,
 	[DocumentName] [nvarchar](255) NULL,
-	[ShortDescription] [nvarchar](1250) NULL,
 	[DocumentDetails] [nvarchar](4000) NULL,
 	[AdminComments] [nvarchar](2500) NULL,
 	[IsPublic] [bit] NOT NULL,
@@ -2678,6 +2729,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveFileVersion]
 	@Version int,
 	@DateUploaded datetime,
 	@UploaderID int,
+	@IsGroupOwner bit,
 	@WebpageURL nvarchar(255),
 	@IPAddress nvarchar(16),
 	@Filesize int
@@ -2690,8 +2742,8 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@FileVersionID IS NULL OR @FileVersionID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] (FileID, [Version], DateUploaded, UploaderID, WebpageURL, IPAddress, Filesize)
-		VALUES (@FileID, @Version, @DateUploaded, @UploaderID, @WebpageURL, @IPAddress, @Filesize)
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] (FileID, [Version], DateUploaded, UploaderID, IsGroupOwner, WebpageURL, IPAddress, Filesize)
+		VALUES (@FileID, @Version, @DateUploaded, @UploaderID, @IsGroupOwner, @WebpageURL, @IPAddress, @Filesize)
 		SET @FileVersionID = @@IDENTITY
 	END
 	ELSE
@@ -2701,6 +2753,7 @@ BEGIN
 			[Version] = @Version,
 			DateUploaded = @DateUploaded,
 			UploaderID = @UploaderID,
+			IsGroupOwner = @IsGroupOwner,
 			WebpageURL = @WebpageURL,
 			IPAddress = @IPAddress,
 			Filesize = @Filesize
@@ -2744,7 +2797,25 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] WHERE FileVersionID = @FileVersionID
+	SELECT f.[FileID]
+      ,f.[StatusID]
+      ,f.[DocumentID]
+      ,f.[UploadDirectory]
+      ,f.[FileType]
+      ,f.[FileName]
+	  ,fv.[Version]
+      ,fv.[DateUploaded]
+      ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
+      ,fv.[WebpageURL]
+      ,fv.[IPAddress]
+      ,fv.[Filesize]
+	  ,fv.[FileVersionID]
+	  ,fv.[IsLandscape]
+	  ,CAST((CASE WHEN fv.[Thumbnail] IS NOT NULL THEN 1 ELSE 0 END) AS bit) AS [HasThumbnail]
+    FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
+    INNER JOIN {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] fv ON fv.FileID = f.FileID
+	WHERE fv.FileVersionID = @FileVersionID
 END
 GO
 
@@ -2886,6 +2957,15 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SaveRepository]
 	@ThumbnailType nvarchar(50),
 	@ThumbnailSize int,
 	@PageSize int,
+	@ForceHttps bit,
+	@UseThumbnails bit,
+	@CreatePDF bit,
+	@CreateWord bit,
+	@CreateExcel bit,
+	@CreatePowerPoint bit,
+	@CreateImage bit,
+	@CreateAudio bit,
+	@CreateVideo bit,
 	@Name nvarchar(255)
 AS
 BEGIN
@@ -2896,8 +2976,8 @@ BEGIN
     -- Insert statements for procedure here
 	IF (@RepositoryID IS NULL OR @RepositoryID = 0)
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize, PageSize, [Name])
-		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize, @PageSize, @Name)
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] (PortalID, TabModuleID, UserRoleID, FileNotificationsRoleID, NewFileSubject, NewFileBody, CategoryName, SaveLocalFile, ShowTips, ShowInstructions, Instructions, Theme, ThumbnailType, ThumbnailSize, PageSize, ForceHttps, UseThumbnails, CreatePDF, CreateWord, CreateExcel, CreatePowerPoint, CreateImage, CreateAudio, CreateVideo, [Name])
+		VALUES (@PortalID, @TabModuleID, @UserRoleID, @FileNotificationsRoleID, @NewFileSubject, @NewFileBody, @CategoryName, @SaveLocalFile, @ShowTips, @ShowInstructions, @Instructions, @Theme, @ThumbnailType, @ThumbnailSize, @PageSize, @ForceHttps, @UseThumbnails, @CreatePDF, @CreateWord, @CreateExcel, @CreatePowerPoint, @CreateImage, @CreateAudio, @CreateVideo, @Name)
 		SET @RepositoryID = @@IDENTITY
 	END
 	ELSE
@@ -2916,6 +2996,15 @@ BEGIN
 			ThumbnailType = @ThumbnailType,
 			ThumbnailSize = @ThumbnailSize,
 			PageSize = @PageSize,
+			ForceHttps = @ForceHttps,
+			UseThumbnails = @UseThumbnails,
+			CreatePDF = @CreatePDF,
+			CreateWord = @CreateWord,
+			CreateExcel = @CreateExcel,
+			CreatePowerPoint = @CreatePowerPoint,
+			CreateImage = @CreateImage,
+			CreateAudio = @CreateAudio,
+			CreateVideo = @CreateVideo,
 			[Name] = @Name
 		WHERE RepositoryID = @RepositoryID
 	END
@@ -2945,7 +3034,7 @@ BEGIN
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Adobe PDFs', 'PDF', 'pdf', @PortalID, @TabModuleID)
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Images', 'Image', 'jpg,jpe,jpeg,png,gif,bmp', @PortalID, @TabModuleID)
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Videos', 'Video', 'mp4,mov,avi,wmv', @PortalID, @TabModuleID)
-	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Music', 'Music', 'mp3,wma', @PortalID, @TabModuleID)
+	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Audio', 'Audio', 'mp3,wma', @PortalID, @TabModuleID)
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Text Files', 'Text', 'txt', @PortalID, @TabModuleID)
 	INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_FileTypes](FileTypeName, FileTypeShortName, FileTypeExt, PortalID, TabModuleID) VALUES('Web Pages', 'HTML', 'htm,html', @PortalID, @TabModuleID)
 END
@@ -2978,6 +3067,7 @@ BEGIN
 	  ,fv.[Version]
       ,fv.[DateUploaded]
       ,fv.[UploaderID]
+	  ,fv.[IsGroupOwner]
       ,fv.[WebpageURL]
       ,fv.[IPAddress]
       ,fv.[Filesize]
@@ -2985,7 +3075,7 @@ BEGIN
     FROM {databaseOwner}[{objectQualifier}Gafware_DMS_File] f
     CROSS APPLY
     (
-	  SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
+	  SELECT  TOP 1 v.[Version], v.[DateUploaded], v.[UploaderID], v.[IsGroupOwner], v.[WebpageURL], v.[IPAddress], v.[FileVersionID], v.[Filesize]
 	  FROM    {databaseOwner}[{objectQualifier}Gafware_DMS_FileVersion] v
 	  WHERE   v.FileID = f.FileID
 	  ORDER BY v.[Version] DESC
@@ -3042,6 +3132,26 @@ BEGIN
 	AND ((({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsSearchable] = 1 AND {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[IsPublic] = 1) OR {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[CreatorID] = @UserID) OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 1 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Category].[RoleID]) = 1) 
 	OR ({databaseOwner}[{objectQualifier}Gafware_DMS_Document].[UseCategoryRoles] = 0 AND {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}Gafware_DMS_Document].[SecurityRoleID]) = 1))
 	ORDER BY DocumentName
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Gafware_DMS_UserIsInRole]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_UserIsInRole]
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_UserIsInRole]
+	@UserID int,
+	@RoleID int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, @RoleID) AS [UserIsInRole]
 END
 GO
 

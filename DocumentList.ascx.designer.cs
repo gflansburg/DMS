@@ -186,6 +186,42 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.Panel pnlOwnerEdit;
 
         /// <summary>
+        /// lblIsGroupOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsGroupOwner;
+
+        /// <summary>
+        /// cbIsGroupOwnerToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbIsGroupOwnerToggleButton;
+
+        /// <summary>
+        /// cbIsGroupOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbIsGroupOwner;
+
+        /// <summary>
+        /// pnlOwnerEdit2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlOwnerEdit2;
+
+        /// <summary>
         /// lblOwner3 control.
         /// </summary>
         /// <remarks>
@@ -211,6 +247,42 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator9;
+
+        /// <summary>
+        /// pnlGroupEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlGroupEdit;
+
+        /// <summary>
+        /// lblGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblGroup;
+
+        /// <summary>
+        /// ddGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddGroup;
+
+        /// <summary>
+        /// RequiredFieldValidator6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
 
         /// <summary>
         /// pnlDocumentNameEdit control.
@@ -1347,13 +1419,31 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.LinkButton delAllCommandButton;
 
         /// <summary>
+        /// activityReportCommandButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton activityReportCommandButton;
+
+        /// <summary>
+        /// exportCommandButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton exportCommandButton;
+
+        /// <summary>
         /// changeOwnershipCommandButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton changeOwnershipCommandButton;
+        protected global::System.Web.UI.WebControls.LinkButton changeOwnershipCommandButton;
 
         /// <summary>
         /// gv control.
@@ -1363,6 +1453,42 @@ namespace Gafware.Modules.DMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gv;
+
+        /// <summary>
+        /// lblIsGroupOwner3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsGroupOwner3;
+
+        /// <summary>
+        /// cbIsGroupOwner3ToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbIsGroupOwner3ToggleButton;
+
+        /// <summary>
+        /// cbIsGroupOwner3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbIsGroupOwner3;
+
+        /// <summary>
+        /// pnlCurrentOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlCurrentOwner;
 
         /// <summary>
         /// lblCurrentOwner control.
@@ -1383,13 +1509,85 @@ namespace Gafware.Modules.DMS
         protected global::System.Web.UI.WebControls.DropDownList ddCurrentOwner;
 
         /// <summary>
-        /// RequiredFieldValidator1 control.
+        /// CustomValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        protected global::System.Web.UI.WebControls.CustomValidator CustomValidator1;
+
+        /// <summary>
+        /// pnlCurrentGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlCurrentGroup;
+
+        /// <summary>
+        /// lblCurrentGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblCurrentGroup;
+
+        /// <summary>
+        /// ddCurrentGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddCurrentGroup;
+
+        /// <summary>
+        /// CustomValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator CustomValidator2;
+
+        /// <summary>
+        /// lblIsGroupOwner2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblIsGroupOwner2;
+
+        /// <summary>
+        /// cbIsGroupOwner2ToggleButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbIsGroupOwner2ToggleButton;
+
+        /// <summary>
+        /// cbIsGroupOwner2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbIsGroupOwner2;
+
+        /// <summary>
+        /// pnlNewOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlNewOwner;
 
         /// <summary>
         /// lblNewOwner control.
@@ -1416,7 +1614,43 @@ namespace Gafware.Modules.DMS
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        protected global::System.Web.UI.WebControls.CustomValidator RequiredFieldValidator2;
+
+        /// <summary>
+        /// pnlNewGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlNewGroup;
+
+        /// <summary>
+        /// lblNewGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblNewGroup;
+
+        /// <summary>
+        /// ddNewGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddNewGroup;
+
+        /// <summary>
+        /// RequiredFieldValidator8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator RequiredFieldValidator8;
 
         /// <summary>
         /// btnCancelChange control.

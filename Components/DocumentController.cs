@@ -258,9 +258,9 @@ namespace Gafware.Modules.DMS.Components
             return DataProvider.Instance().GetThumbnail(fileId);
         }
 
-        public static void ChangeOwnership(int currentOwnerId, int newOwnerId, int portalId)
+        public static void ChangeOwnership(int currentOwnerId, bool isCurrentGroupOwner, int newOwnerId, bool isNewGroupOwner, int portalId)
         {
-            DataProvider.Instance().ChanngeDocumentOwnership(currentOwnerId, newOwnerId, portalId);
+            DataProvider.Instance().ChangeDocumentOwnership(currentOwnerId, isCurrentGroupOwner, newOwnerId, isNewGroupOwner, portalId);
         }
 
         public static string ConnectionString
@@ -348,6 +348,11 @@ namespace Gafware.Modules.DMS.Components
         public static void AddDefaultFileExtensions(int portalId, int tabModuleId)
         {
             DataProvider.Instance().AddDefaultFileExtensions(portalId, tabModuleId);
+        }
+
+        public static bool UserIsInRole(int userId, int roleId)
+        {
+            return DataProvider.Instance().UserIsInRole(userId, roleId);
         }
         #endregion
     }

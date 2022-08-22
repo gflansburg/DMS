@@ -265,8 +265,7 @@ namespace Gafware.Modules.DMS
             // 
             // DNN
             // 
-            this.DNN.ConnectionString = "Data Source=localhost;Initial Catalog=DNNCommunity;Persist Security Info=True;Use" +
-    "r ID=DNN;Password=Basilisk1";
+            this.DNN.ConnectionString = "Data Source=localhost;Integrated Security=SSPI;Persist Security Info=False";
             this.DNN.Name = "DNN";
             this.DNN.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@StartDate", System.Data.DbType.DateTime, "= Parameters.StartDate.Value"));
             this.DNN.Parameters.Add(new Telerik.Reporting.SqlDataSourceParameter("@EndDate", System.Data.DbType.DateTime, "= Parameters.EndDate.Value"));
@@ -387,6 +386,7 @@ namespace Gafware.Modules.DMS
             tableGroup10.GroupKeepTogether = true;
             tableGroup10.Name = "Group1";
             tableGroup10.ReportItem = this.textBox19;
+            tableGroup10.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.DateUploaded", Telerik.Reporting.SortDirection.Desc));
             tableGroup10.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.DocumentName", Telerik.Reporting.SortDirection.Asc));
             this.crosstab1.RowGroups.Add(tableGroup2);
             this.crosstab1.RowGroups.Add(tableGroup10);

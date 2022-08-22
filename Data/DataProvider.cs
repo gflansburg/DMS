@@ -194,9 +194,9 @@ namespace Gafware.Modules.DMS.Data
 
         public abstract byte[] GetThumbnail(int fileVersionId);
 
-        public abstract void ChanngeDocumentOwnership(int currentOwnerId, int newOwnerId, int portalId);
+        public abstract void ChangeDocumentOwnership(int currentOwnerId, bool isCurrentGroupOwner, int newOwnerId, bool isNewGroupOwner, int portalId);
 
-        public abstract void ChanngePacketOwnership(int currentOwnerId, int newOwnerId, int portalId);
+        public abstract void ChangePacketOwnership(int currentOwnerId, bool isCurrentGroupOwner, int newOwnerId, bool isNewGroupOwner, int portalId);
 
         public abstract IDataReader GetUsers(int roleId, int portalId);
 
@@ -235,6 +235,8 @@ namespace Gafware.Modules.DMS.Data
         public abstract int SavePortalSettings(DMSPortalSettings objPortal);
 
         public abstract void AddDefaultFileExtensions(int portalId, int tabModuleId);
+
+        public abstract bool UserIsInRole(int userId, int roleId);
 
         #endregion
 

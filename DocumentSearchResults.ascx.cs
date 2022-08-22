@@ -348,6 +348,14 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("  });");
             sb.AppendLine("}");
             Page.ClientScript.RegisterStartupScript(GetType(), "RecordDocumentRequest", sb.ToString(), true);
+            if (GetFileCount == 1 && IsLink)
+            {
+                DMSFile file = GetFirstActiveFile(SelectedDocuments.FindAll(p => (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59)))));
+                if (file != null)
+                {
+                    DMSController.RecordDocumentRequest(PortalId, file.DocumentId, file.FileId, file.FileType, Keywords);
+                }
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -518,11 +526,11 @@ namespace Gafware.Modules.DMS
             if (GetFileCount == 1 && IsLink)
             {
                 DMSFile file = GetFirstActiveFile(SelectedDocuments.FindAll(p => (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59)))));
-                if(file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
+                if (file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase))
                 {
                     pnlDocumentFound.Visible = true;
                     lnkFileLocation.NavigateUrl = lnkFileLocation.Text = file.WebPageUrl;
-                    System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
+                    /*System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
                     if (literal == null)
                     {
                         literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
@@ -536,14 +544,18 @@ namespace Gafware.Modules.DMS
                     else
                     {
                         literal.Attributes["content"] = string.Format("2; URL={0}", file.WebPageUrl);
+                    }*/
+                    if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
                     }
                     Title = file.WebPageUrl;
                 }
-                else if(System.IO.File.Exists(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, file.UploadDirectory.Replace("/", "\\"), file.Filename)) && UseLocalFile)
+                else if (System.IO.File.Exists(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, file.UploadDirectory.Replace("/", "\\"), file.Filename)) && UseLocalFile)
                 {
                     pnlDocumentFound.Visible = true;
                     lnkFileLocation.NavigateUrl = lnkFileLocation.Text = string.Format("{0}{1}/{2}", portal.HomeDirectory, file.UploadDirectory.Replace("\\", "/"), file.Filename);
-                    System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
+                    /*System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
                     if (literal == null)
                     {
                         literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
@@ -557,14 +569,18 @@ namespace Gafware.Modules.DMS
                     else
                     {
                         literal.Attributes["content"] = String.Format("2; URL={0}", lnkFileLocation.NavigateUrl);
+                    }*/
+                    if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
                     }
                     Title = file.Filename;
                 }
-                else if(!UseLocalFile)
+                else if (!UseLocalFile)
                 {
                     pnlDocumentFound.Visible = true;
                     lnkFileLocation.NavigateUrl = lnkFileLocation.Text = string.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
-                    System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
+                    /*System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
                     if (literal == null)
                     {
                         literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
@@ -578,6 +594,10 @@ namespace Gafware.Modules.DMS
                     else
                     {
                         literal.Attributes["content"] = string.Format("2; URL={0}", lnkFileLocation.NavigateUrl);
+                    }*/
+                    if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
                     }
                     Title = file.Filename;
                 }
@@ -597,7 +617,10 @@ namespace Gafware.Modules.DMS
             }
             else if (GetFileCount > 1 || (GetFileCount == 1 && !IsLink))
             {
-                rptDocuments.DataSource = SelectedDocuments.FindAll(p => (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0).OrderBy(o => o.SortOrder).ToList();
+                DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId);
+                //rptDocuments.DataSource = SelectedDocuments.FindAll(p => (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0).OrderBy(o => o.SortOrder).ToList();
+                List<PacketDocument> docs = SelectedDocuments.FindAll(p => (p.Document.IsPublic || ((!p.Document.IsGroupOwner && p.Document.CreatedByUserID == UserId) || (p.Document.IsGroupOwner && user != null && user.IsInRole(Components.UserController.GetRoleById(PortalId, p.Document.CreatedByUserID).RoleName))) || (user != null && (user.IsSuperUser || user.IsInRole("Administrator")))) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0).OrderBy(o => o.SortOrder).ToList();
+                rptDocuments.DataSource = docs;
                 rptDocuments.DataBind();
                 pnlDocumentsFound.Visible = true;
                 Title = "Documents";
@@ -746,7 +769,7 @@ namespace Gafware.Modules.DMS
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string strAnchor = String.Empty;
-            string query = String.Format("id={0}&fileid={1}&type={2}&terms={3}", file.DocumentId, file.FileId, file.FileType, Keywords.Replace(" ", "|"));
+            string query = String.Format("id={0}&fileid={1}&type={2}&terms={3}", file.DocumentId, file.FileId, file.FileType, Generic.UrlEncode(Keywords));
             query = Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(query);
             query = Generic.UrlEncode(query);
             query = Generic.JSEncode(query);
@@ -838,7 +861,8 @@ namespace Gafware.Modules.DMS
         List<DMSFile> GetActiveFilesForDocument(PacketDocument doc)
         {
             DotNetNuke.Entities.Portals.PortalSettings portal = DotNetNuke.Entities.Portals.PortalSettings.Current;
-            return doc.Document.Files.FindAll(p => p.StatusId == 1 && (!UseLocalFile || (UseLocalFile && System.IO.File.Exists(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, p.UploadDirectory.Replace("/", "\\"), p.Filename)))));
+            //return doc.Document.Files.FindAll(p => p.StatusId == 1 && (p.FileType == "url" || !UseLocalFile || (UseLocalFile && System.IO.File.Exists(string.Format("{0}{1}\\{2}", portal.HomeDirectoryMapPath, p.UploadDirectory.Replace("/", "\\"), p.Filename)))));
+            return doc.Document.Files.FindAll(p => p.StatusId == 1);
         }
 
         protected int GetFileCount
@@ -846,7 +870,9 @@ namespace Gafware.Modules.DMS
             get
             {
                 int count = 0;
-                List<PacketDocument> docs = SelectedDocuments.FindAll(p => ((p.Document.IsPublic && p.Document.IsSearchable) || p.Document.CreatedByUserID == UserId) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))));
+                DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId);
+                //List<PacketDocument> docs = SelectedDocuments.FindAll(p => ((p.Document.IsPublic && p.Document.IsSearchable) || p.Document.CreatedByUserID == UserId) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0);
+                List<PacketDocument> docs = SelectedDocuments.FindAll(p => (p.Document.IsPublic || ((!p.Document.IsGroupOwner && p.Document.CreatedByUserID == UserId) || (p.Document.IsGroupOwner && user != null && user.IsInRole(Components.UserController.GetRoleById(PortalId, p.Document.CreatedByUserID).RoleName))) || (user != null && (user.IsSuperUser || user.IsInRole("Administrator")))) && (!p.Document.ActivationDate.HasValue || DateTime.Now >= p.Document.ActivationDate.Value) && (!p.Document.ExpirationDate.HasValue || DateTime.Now <= (p.Document.ExpirationDate.Value + new TimeSpan(23, 59, 59))) && GetActiveFilesForDocument(p).Count > 0);
                 foreach (PacketDocument doc in docs)
                 {
                     count += doc.Document.Files.FindAll(p => p.StatusId == 1 && (doc.FileId == 0 || p.FileId == doc.FileId)).Count;

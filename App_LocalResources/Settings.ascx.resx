@@ -234,4 +234,31 @@
   <data name="SaveLocalFileHelp.Text" xml:space="preserve">
     <value>Save a copy of the file to the local file system. Useful when allowing Google to crawl and index the files for Google search. Be sure to make the folder browsable and add an exception entry into Robots.txt.&lt;br/&gt;Virtal Path: /Portals/{0}/Files/{1}/</value>
   </data>
+  <data name="lblForceHttps.Text" xml:space="preserve">
+    <value>Force HTTPS</value>
+  </data>
+  <data name="lblUseThumbnails.Text" xml:space="preserve">
+    <value>User Thumbnails</value>
+  </data>
+  <data name="lblCreateAudio.Text" xml:space="preserve">
+    <value>Create Audio Thumbnails</value>
+  </data>
+  <data name="lblCreateExcel.Text" xml:space="preserve">
+    <value>Create Excel Thumbnails</value>
+  </data>
+  <data name="lblCreateImage.Text" xml:space="preserve">
+    <value>Create Image Thumbnails</value>
+  </data>
+  <data name="lblCreatePDF.Text" xml:space="preserve">
+    <value>Create PDF Thumbnails</value>
+  </data>
+  <data name="lblCreatePowerPoint.Text" xml:space="preserve">
+    <value>Create PowerPoint Thumbnails</value>
+  </data>
+  <data name="lblCreateVideo.Text" xml:space="preserve">
+    <value>Create Video Thumbnails</value>
+  </data>
+  <data name="lblCreateWord.Text" xml:space="preserve">
+    <value>Create Word Thumbnails</value>
+  </data>
 </root>

@@ -270,4 +270,37 @@
   <data name="RemoveTag.Text" xml:space="preserve">
     <value>Remove Tag</value>
   </data>
+  <data name="lblGroup.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="lblIsGroupOwner.Text" xml:space="preserve">
+    <value>Group Owner</value>
+  </data>
+  <data name="lblOwner.Text" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="SelectGroup.Text" xml:space="preserve">
+    <value>-- Select Group --</value>
+  </data>
+  <data name="SelectOwner.Text" xml:space="preserve">
+    <value>-- Select Owner --</value>
+  </data>
+  <data name="NewGroup.Text" xml:space="preserve">
+    <value>-- New Group --</value>
+  </data>
+  <data name="lblIsGroupOwner2.Text" xml:space="preserve">
+    <value>Group Owner</value>
+  </data>
+  <data name="lblNewGroup.Text" xml:space="preserve">
+    <value>New Group</value>
+  </data>
+  <data name="lblCurrentGroup.Text" xml:space="preserve">
+    <value>Current Group</value>
+  </data>
+  <data name="lblIsGroupOwner3.Text" xml:space="preserve">
+    <value>Group Owner</value>
+  </data>
+  <data name="CurrentGroup.Text" xml:space="preserve">
+    <value>-- Current Group --</value>
+  </data>
 </root>

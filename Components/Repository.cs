@@ -83,6 +83,42 @@ namespace Gafware.Modules.DMS.Components
         /// Tumbnail Size
         /// </summary>
         public int ThumbnailSize { get; set; }
+        /// <summary>
+        /// Force HTTPS
+        /// </summary>
+        public bool ForceHttps { get; set; }
+        /// <summary>
+        /// Use Thumbnails
+        /// </summary>
+        public bool UseThumbnails { get; set; }
+        /// <summary>
+        /// Create PDF Thumbnails
+        /// </summary>
+        public bool CreatePDF { get; set; }
+        /// <summary>
+        /// Create Word Thumbnails
+        /// </summary>
+        public bool CreateWord { get; set; }
+        /// <summary>
+        /// Create Excel Thumbnails
+        /// </summary>
+        public bool CreateExcel { get; set; }
+        /// <summary>
+        /// Create PowerPoint Thumbnails
+        /// </summary>
+        public bool CreatePowerPoint { get; set; }
+        /// <summary>
+        /// Create Images Thumbnails
+        /// </summary>
+        public bool CreateImage { get; set; }
+        /// <summary>
+        /// Create Audio Thumbnails
+        /// </summary>
+        public bool CreateAudio { get; set; }
+        /// <summary>
+        /// Create Video Thumbnails
+        /// </summary>
+        public bool CreateVideo { get; set; }
 
         public Repository()
         {
@@ -91,6 +127,7 @@ namespace Gafware.Modules.DMS.Components
             ShowTips = true;
             ShowInstructions = true;
             PageSize = 20;
+            UseThumbnails = true;
         }
 
         public override void Fill(IDataReader dr)
@@ -114,6 +151,15 @@ namespace Gafware.Modules.DMS.Components
             ThumbnailType = Null.SetNullString(dr["ThumbnailType"]);
             ThumbnailSize = Null.SetNullInteger(dr["ThumbnailSize"]);
             PageSize = Null.SetNullInteger(dr["PageSize"]);
+            ForceHttps = Null.SetNullBoolean(dr["ForceHttps"]);
+            UseThumbnails = Null.SetNullBoolean(dr["UseThumbnails"]);
+            CreatePDF = Null.SetNullBoolean(dr["CreatePDF"]);
+            CreateWord = Null.SetNullBoolean(dr["CreateWord"]);
+            CreateExcel = Null.SetNullBoolean(dr["CreateExcel"]);
+            CreatePowerPoint = Null.SetNullBoolean(dr["CreatePowerPoint"]);
+            CreateImage = Null.SetNullBoolean(dr["CreateImage"]);
+            CreateAudio = Null.SetNullBoolean(dr["CreateAudio"]);
+            CreateVideo = Null.SetNullBoolean(dr["CreateVideo"]);
         }
 
         public override int KeyID

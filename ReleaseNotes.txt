@@ -1,7 +1,7 @@
 ﻿<h3>Document Management System</h3>
 <p class="Contributor">
 	Gafware <br />
-	<a href="mailto:support@gafware.com">support@gafware.com</a><br />
+	<a href="mailto:glenn@gafware.com">glenn@gafware.com</a><br />
 	<a href=https://www.gafware.com>https://www.gafware.com</a><br />
 </p>
 <hr/>

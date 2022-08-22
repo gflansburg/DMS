@@ -55,9 +55,20 @@
                 </asp:Panel>
                 <asp:Panel ID="pnlOwnerEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
+                        <dnn:Label ID="lblIsGroupOwner" runat="server" ResourceKey="lblIsGroupOwner" ControlName="cbIsGroupOwner" Suffix=":" /> 
+                        <div class="toggleButton" id="cbIsGroupOwnerToggleButton" runat="server">
+                            <label for='<%= cbIsGroupOwner.ClientID %>'><asp:CheckBox ID="cbIsGroupOwner" AutoPostBack="true" runat="server" OnCheckedChanged="cbIsGroupOwner_CheckedChanged" /><span></span></label>
+                        </div>
+                    </div>
+                    <div class="dnnFormItem" runat="server" id="pnlOwnerEdit2">
                         <dnn:Label ID="lblOwner3" runat="server" ResourceKey="lblOwner2" ControlName="ddOwner2" Suffix=":" /> 
                         <asp:DropDownList ID="ddOwner2" runat="server" DataTextField="DisplayName" DataValueField="UserId" ValidationGroup="DocumentControl" style="width: auto;"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="ddOwner2" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
+                    </div>
+                    <div class="dnnFormItem" runat="server" id="pnlGroupEdit" visible="false">
+                        <dnn:Label ID="lblGroup" runat="server" ResourceKey="lblGroup" ControlName="ddGroup" Suffix=":" /> 
+                        <asp:DropDownList ID="ddGroup" runat="server" DataTextField="RoleName" DataValueField="RoleId" ValidationGroup="DocumentControl" style="width: auto;"></asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="ddGroup" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Group is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="DocumentControl"></asp:RequiredFieldValidator>
                     </div>
                 </asp:Panel>
                 <asp:Panel ID="pnlDocumentNameEdit" runat="server" Visible="false">
@@ -191,8 +202,11 @@
                         <asp:Panel ID="pnlCategoryEdit" runat="server" Visible="<%# ViewMode == Gafware.Modules.DMS.ViewMode.Edit %>">
                             <div class="dnnFormItem">
                                 <div class="dnnLabel"><label id="label3"><span id="lblCategory3" runat="server"><%# Eval("CategoryName") %>:</span></label></div>
-                                <div class="toggleButton" id="cbCategoryToggleButton" runat="server">
+                                <div class="toggleButton" id="cbCategoryToggleButton" runat="server" style="display: inline-block;">
                                     <label><asp:CheckBox ID="cbCategory" Checked="true" AutoPostBack="false" runat="server" /><span></span></label>
+                                </div>
+                                <div style="display: inline-block;">
+                                    <asp:Label ID="lblCategoryRole" runat="server" Text=""></asp:Label>
                                 </div>
                             </div>
                         </asp:Panel>
@@ -247,7 +261,7 @@
 					DataKeyNames="PacketId" BackColor="White" BorderColor="#DEDFDE" PageSize="20" BorderStyle="None" BorderWidth="1px" 
 					AllowPaging="False" AllowSorting="False" Width="100%" ShowHeader="True" CssClass="filesList" OnRowDataBound="gvPackets_RowDataBound">
 					<Columns>
-						<asp:TemplateField HeaderText="ID" HeaderStyle-Wrap="false" SortExpression="DocumentID" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
+						<asp:TemplateField HeaderText="ID" HeaderStyle-Wrap="false" SortExpression="DocumentID" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="50px">
 							<ItemTemplate>
 								<%# Eval("PacketID") %>
 							</ItemTemplate>
@@ -312,9 +326,10 @@
 						<asp:TemplateField ItemStyle-CssClass="itemStatus" ItemStyle-VerticalAlign="Middle" ItemStyle-Width="120px" HeaderText="Status" ItemStyle-HorizontalAlign="Center">
 							<ItemTemplate>
 								<div class="toggleButton" id="cbActiveToggleButton" runat="server" data-uid='<%# Eval("FileId") %>'>
-									<label><asp:CheckBox ID="cbActive" Checked='<%# ((int)Eval("StatusId")) == 1 %>' AutoPostBack="false" runat="server" onclick='<%# "toggleStatus(this," + Eval("FileId").ToString() + ")" %>' /><span></span></label>
+									<label><asp:CheckBox ID="cbActive" Checked='<%# ((int)Eval("StatusId")) == 1 %>' AutoPostBack="false" runat="server" OnCheckedChanged="cbActive_CheckedChanged" onclick='<%# "toggleStatus(this," + Eval("FileId").ToString() + ")" %>' /><span></span></label>
 								</div>
 								<asp:Panel ID="pnlSaveMessage" runat="server" CssClass="statusMessage" style="color: red; font-weight:bold; display: none;" data-uid='<%# Eval("FileId") %>'>Saved</asp:Panel>
+                                <input type="hidden" class="hidMessage" data-uid='<%# Eval("FileId") %>' id="hidMessage" runat="server" value='<%# Eval("Message") %>' />
 							</ItemTemplate>
 						</asp:TemplateField>
 						<asp:TemplateField HeaderText="Name" HeaderStyle-Wrap="false" ItemStyle-Wrap="true" SortExpression="FileName" ItemStyle-VerticalAlign="Middle" ItemStyle-CssClass="dont-break-out">
@@ -339,7 +354,7 @@
 						</asp:TemplateField>
 						<asp:TemplateField HeaderText="Uploader" HeaderStyle-Wrap="false" SortExpression="CreatedByUser.DisplayName" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Middle">
 							<ItemTemplate>
-								<%# Eval("CreatedByUser.DisplayName") %>
+                                <%# ((bool)Eval("IsGroupOwner") ? Eval("Group.RoleName") : Eval("CreatedByUser.DisplayName")) %>
 							</ItemTemplate>
 						</asp:TemplateField>
 						<asp:TemplateField HeaderText="Date Uploaded" HeaderStyle-Wrap="false" SortExpression="CreatedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
@@ -354,7 +369,7 @@
 						</asp:TemplateField>
 					</Columns>
 					<FooterStyle BackColor="White" />
-					<RowStyle BackColor="#C0C0C0" VerticalAlign="Top" />
+					<RowStyle BackColor="#F7F7F7" VerticalAlign="Top" />
 					<EditRowStyle VerticalAlign="Top" />
 					<SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
 					<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
@@ -462,9 +477,9 @@
                                     <%# GetFilesize(Container.DataItem) %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Uploader" HeaderStyle-Wrap="false" SortExpression="CreatedByUser.DisplayName" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Middle">
+                            <asp:TemplateField HeaderText="Uploader" HeaderStyle-Wrap="false" SortExpression="CreatedByUserID" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Middle">
                                 <ItemTemplate>
-                                    <%# Eval("CreatedByUser.DisplayName") %>
+                                    <%# ((bool)Eval("IsGroupOwner") ? Eval("Group.RoleName") : Eval("CreatedByUser.DisplayName")) %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Date Uploaded" HeaderStyle-Wrap="false" SortExpression="CreatedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
@@ -479,7 +494,7 @@
                             </asp:TemplateField>
 	                    </Columns>
 	                    <FooterStyle BackColor="White" />
-	                    <RowStyle BackColor="#C0C0C0" VerticalAlign="Top" />
+	                    <RowStyle BackColor="#F7F7F7" VerticalAlign="Top" />
 	                    <EditRowStyle VerticalAlign="Top" />
 	                    <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" VerticalAlign="Top" />
 	                    <HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
@@ -518,10 +533,12 @@
             <asp:Panel ID="pnlOwner" runat="server" style="margin-bottom: 10px;"><span style="vertical-align: middle;"><%= LocalizeString("Owner") %></span> <asp:DropDownList ID="ddOwner" DataValueField="UserId" DataTextField="DisplayName" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddOwner_SelectedIndexChanged" style="margin-bottom: 0 !important; vertical-align: middle;"></asp:DropDownList></asp:Panel>
         </div>
         <div style="float:right;margin-bottom:10px;" id="pnlAdmin" runat="server" visible="false">
-            <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
-            <asp:LinkButton runat="server" id="newDocumentCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="newDocumentCommandButton_Click"><asp:label runat="server" resourcekey="newDocumentCommandButton" /></asp:LinkButton>
-            <asp:LinkButton runat="server" id="delAllCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="delAllCommandButton_Click" OnClientClick="confirmDeleteAll(this); return false;"><asp:label runat="server" resourcekey="delAllCommandButton" /></asp:LinkButton>
-            <input type="button" id="changeOwnershipCommandButton" runat="server" value="Change Ownership" class="secondaryButton dmsButton" resourcekey="changeOwnershipCommandButton" />
+            <asp:LinkButton runat="server" id="backCommandButton" causesvalidation="False" CssClass="secondaryButton backButton" OnClick="backCommandButton_Click"><asp:label runat="server" resourcekey="backCommandButton" /></asp:LinkButton>
+            <asp:LinkButton runat="server" id="newDocumentCommandButton" causesvalidation="False" CssClass="secondaryButton addButton" OnClick="newDocumentCommandButton_Click"><asp:label runat="server" resourcekey="newDocumentCommandButton" /></asp:LinkButton>
+            <asp:LinkButton runat="server" id="delAllCommandButton" causesvalidation="False" CssClass="secondaryButton deleteButton" OnClick="delAllCommandButton_Click" OnClientClick="confirmDeleteAll(this); return false;"><asp:label runat="server" resourcekey="delAllCommandButton" /></asp:LinkButton>
+            <asp:linkbutton runat="server" id="activityReportCommandButton" causesvalidation="False" CssClass="secondaryButton reportButton" OnClick="activityReportCommandButton_Click"><asp:label runat="server" resourcekey="activityReportCommandButton" /></asp:linkbutton>
+            <asp:LinkButton runat="server" id="exportCommandButton" causesvalidation="False" CssClass="secondaryButton excelButton"><asp:label runat="server" resourcekey="exportCommandButton" /></asp:LinkButton>
+            <asp:LinkButton runat="server" id="changeOwnershipCommandButton" causesvalidation="False" CssClass="secondaryButton ownerButton"><asp:label runat="server" resourcekey="changeOwnershipCommandButton" /></asp:LinkButton>
         </div>
         <div style="clear: both"></div>
 		<div style="width: 100%; overflow: auto;">
@@ -530,7 +547,7 @@
 				BorderStyle="None" BorderWidth="1px" AllowPaging="True" AllowSorting="True" Width="100%" OnDataBound="gv_DataBound" OnRowDataBound="gv_RowDataBound"
 				OnPageIndexChanging="gv_PageIndexChanging" ShowHeader="True" OnSorting="gv_Sorting" PagerSettings-PageButtonCount="5">
 				<Columns>
-					<asp:TemplateField HeaderText="ID <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="DocumentId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+					<asp:TemplateField HeaderText="ID <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="DocumentId" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
 						<ItemTemplate>
 							<%# Eval("DocumentId") %>
 						</ItemTemplate>
@@ -540,7 +557,7 @@
 							<asp:LinkButton runat="server" ID="lnkDocumentName" CommandArgument='<%# Eval("DocumentId") %>' CommandName="Details" OnCommand="lnkDocumentName_Command"><%# Eval("DocumentName") %></asp:LinkButton>
 						</ItemTemplate>
 					</asp:TemplateField>
-					<asp:TemplateField HeaderText="Last Modified <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Date Last Modified' />" HeaderStyle-Wrap="false" SortExpression="LastModifiedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+					<asp:TemplateField HeaderText="Last Modified <img src='/DesktopModules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Date Last Modified' />" HeaderStyle-Wrap="false" SortExpression="LastModifiedOnDate" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left">
 						<ItemTemplate>
 							<%# ((DateTime)Eval("LastModifiedOnDate")).ToString("MM/dd/yyyy") %>
 						</ItemTemplate>
@@ -561,7 +578,7 @@
 					</table>
 				</PagerTemplate>		            
 				<HeaderStyle BackColor="#666666" Font-Bold="False" ForeColor="White" HorizontalAlign="Left" Font-Size="10pt" VerticalAlign="Top" Font-Underline="false" />
-				<AlternatingRowStyle BackColor="#D0D0D0" VerticalAlign="Top" />
+				<AlternatingRowStyle BackColor="White" VerticalAlign="Top" />
 			</asp:GridView>
 		</div>
     </asp:Panel>
@@ -570,14 +587,40 @@
             <div class="dms body_padding">
                 <fieldset>
                     <div class="dnnFormItem">
-                        <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID" Width="100%" style="float:right; min-width: auto;" ValidationGroup="NewOwnership"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
+                        <dnn:Label ID="lblIsGroupOwner3" runat="server" ControlName="cbIsGroupOwner3" Suffix=":" /> 
+                        <div class="toggleButton" id="cbIsGroupOwner3ToggleButton" runat="server">
+                            <label for='<%= cbIsGroupOwner3.ClientID %>'><asp:CheckBox ID="cbIsGroupOwner3" AutoPostBack="false" runat="server" onclick="toggleCurrentGroup(this);" /><span></span></label>
+                        </div>
                     </div>
                     <div class="dnnFormItem">
-                        <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
-                        <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" DataValueField="UserID"  Width="100%" style="float:right; min-width: auto;" ValidationGroup="NewOwnership"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:RequiredFieldValidator>
+                        <div id="pnlCurrentOwner" runat="server">
+                            <dnn:Label ID="lblCurrentOwner" runat="server" ControlName="ddCurrentOwner" Suffix=":" /> 
+                            <asp:DropDownList ID="ddCurrentOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="CustomValidator1" runat="server" ClientValidationFunction="currentOwnerRequired" ControlToValidate="ddCurrentOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
+                        <div id="pnlCurrentGroup" runat="server" style="display: none;">
+                            <dnn:Label ID="lblCurrentGroup" runat="server" ControlName="ddCurrentGroup" Suffix=":" /> 
+                            <asp:DropDownList ID="ddCurrentGroup" runat="server" DataTextField="RoleName" Width="100%" style="float: right; min-width: auto;" DataValueField="RoleId" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="CustomValidator2" runat="server" ClientValidationFunction="currentGroupRequired" ControlToValidate="ddCurrentGroup" InitialValue="0" Display="Dynamic" ErrorMessage="<br />Current Group is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="lblIsGroupOwner2" runat="server" ControlName="cbIsGroupOwner2" Suffix=":" /> 
+                        <div class="toggleButton" id="cbIsGroupOwner2ToggleButton" runat="server">
+                            <label for='<%= cbIsGroupOwner2.ClientID %>'><asp:CheckBox ID="cbIsGroupOwner2" AutoPostBack="false" runat="server" onclick="toggleNewGroup(this);" /><span></span></label>
+                        </div>
+                    </div>
+                    <div class="dnnFormItem">
+                        <div id="pnlNewOwner" runat="server">
+                            <dnn:Label ID="lblNewOwner" runat="server" ControlName="ddNewOwner" Suffix=":" /> 
+                            <asp:DropDownList ID="ddNewOwner" runat="server" DataTextField="DisplayName" Width="100%" style="float: right; min-width: auto;" DataValueField="UserID" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="RequiredFieldValidator2" runat="server" ClientValidationFunction="newOwnerRequired" ControlToValidate="ddNewOwner" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Owner is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
+                        <div id="pnlNewGroup" runat="server" style="display: none;">
+                            <dnn:Label ID="lblNewGroup" runat="server" ControlName="ddNewGroup" Suffix=":" /> 
+                            <asp:DropDownList ID="ddNewGroup" runat="server" DataTextField="RoleName" Width="100%" style="float: right; min-width: auto;" DataValueField="RoleId" ValidationGroup="NewOwnership"></asp:DropDownList>
+                            <asp:CustomValidator ID="RequiredFieldValidator8" runat="server" ClientValidationFunction="newGroupRequired" ControlToValidate="ddNewGroup" InitialValue="0" Display="Dynamic" ErrorMessage="<br />New Group is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="NewOwnership"></asp:CustomValidator>
+                        </div>
                     </div>
                 </fieldset>
                 <div style="float: right; text-align: right; margin: 5px 1px 0px 0px;">

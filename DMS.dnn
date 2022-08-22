@@ -8,7 +8,7 @@
         <name>Glenn Flansburg</name>
         <organization>Gafware</organization>
         <url>https://www.gafware.com</url>
-        <email>support@gafware.com</email>
+        <email>glenn@gafware.com</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
@@ -73,7 +73,7 @@
                     <controlType>Edit</controlType>
                     <iconFile />
                     <helpUrl />
-                    <viewOrder>0</viewOrder>
+                    <viewOrder>1</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
@@ -84,7 +84,7 @@
                     <controlType>Edit</controlType>
                     <iconFile />
                     <helpUrl />
-                    <viewOrder>0</viewOrder>
+                    <viewOrder>2</viewOrder>
                     <supportsPopUps>False</supportsPopUps>
                   </moduleControl>
                   <moduleControl>
@@ -96,7 +96,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>1</viewOrder>
+                    <viewOrder>3</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>PacketList</controlKey>
@@ -107,7 +107,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>2</viewOrder>
+                    <viewOrder>4</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>TagList</controlKey>
@@ -118,7 +118,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>0</viewOrder>
+                    <viewOrder>5</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>LinkCreator</controlKey>
@@ -129,7 +129,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>3</viewOrder>
+                    <viewOrder>6</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>BulkImport</controlKey>
@@ -140,18 +140,29 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>3</viewOrder>
+                    <viewOrder>7</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>UploadReport</controlKey>
                     <controlSrc>DesktopModules/Gafware/DMS/UploadReport.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Upload Report</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>4</viewOrder>
+                    <viewOrder>8</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ActivityReport</controlKey>
+                    <controlSrc>DesktopModules/Gafware/DMS/ActivityReport.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle>Activity Report</controlTitle>
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>True</supportsPopUps>
+                    <viewOrder>9</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>GetDocuments</controlKey>
@@ -162,7 +173,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>5</viewOrder>
+                    <viewOrder>10</viewOrder>
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Preview</controlKey>
@@ -173,7 +184,7 @@
                     <iconFile />
                     <helpUrl />
                     <supportsPopUps>True</supportsPopUps>
-                    <viewOrder>5</viewOrder>
+                    <viewOrder>11</viewOrder>
                   </moduleControl>
                 </moduleControls>
               </moduleDefinition>
@@ -216,10 +227,6 @@
               <path>bin</path>
             </assembly>
             <assembly>
-              <name>Spire.License.dll</name>
-              <path>bin</path>
-            </assembly>
-            <assembly>
               <name>Spire.Pdf.dll</name>
               <path>bin</path>
             </assembly>
@@ -229,6 +236,34 @@
             </assembly>
             <assembly>
               <name>Spire.XLS.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>EPPlus.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>EPPlus.Interfaces.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>EPPlus.System.Drawing.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.IO.RecyclableMemoryStream.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>PdfSharp.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>PdfSharp.Charting.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.ComponentModel.Annotations.dll</name>
               <path>bin</path>
             </assembly>
             <assembly>
@@ -272,7 +307,7 @@
         <name>Glenn Flansburg</name>
         <organization>Gafware</organization>
         <url>https://www.gafware.com</url>
-        <email>support@gafware.com</email>
+        <email>glenn@gafware.com</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

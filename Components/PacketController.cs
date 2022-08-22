@@ -104,9 +104,9 @@ namespace Gafware.Modules.DMS.Components
             return objPacketTag.PacketTagId;
         }
 
-        public static void ChangeOwnership(int currentOwnerId, int newOwnerId, int portalId)
+        public static void ChangeOwnership(int currentOwnerId, bool isCurrentGroupOwner, int newOwnerId, bool isNewGroupOwner, int portalId)
         {
-            DataProvider.Instance().ChanngePacketOwnership(currentOwnerId, newOwnerId, portalId);
+            DataProvider.Instance().ChangePacketOwnership(currentOwnerId, isCurrentGroupOwner, newOwnerId, isNewGroupOwner, portalId);
         }
 
         public static void MovePacket(int documentId, int tagId, int newSortOrder)

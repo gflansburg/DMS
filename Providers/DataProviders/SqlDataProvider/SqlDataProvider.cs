@@ -229,7 +229,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SaveDocument(Document objDocument)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveDocument", objDocument.DocumentId, objDocument.CreatedByUserID, objDocument.DocumentName, objDocument.ShortDescription, objDocument.DocumentDetails, objDocument.AdminComments, objDocument.IsPublic, objDocument.ActivationDate, objDocument.ExpirationDate, objDocument.IPAddress, objDocument.IsSearchable, objDocument.UseCategorySecurityRoles, objDocument.SecurityRoleId, objDocument.PortalId, objDocument.TabModuleId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveDocument", objDocument.DocumentId, objDocument.CreatedByUserID, objDocument.IsGroupOwner, objDocument.DocumentName, objDocument.DocumentDetails, objDocument.AdminComments, objDocument.IsPublic, objDocument.ActivationDate, objDocument.ExpirationDate, objDocument.IPAddress, objDocument.IsSearchable, objDocument.UseCategorySecurityRoles, objDocument.SecurityRoleId, objDocument.PortalId, objDocument.TabModuleId));
         }
 
         public override IDataReader GetAllTagsForDocument(int documentId)
@@ -294,7 +294,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SavePacket(Packet objPacket)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SavePacket", objPacket.PacketId, objPacket.CreatedByUserID, objPacket.Name, objPacket.ShowDescription, objPacket.ShowPacketDescription, objPacket.Description, objPacket.AdminComments, objPacket.CustomHeader, objPacket.PortalId, objPacket.TabModuleId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SavePacket", objPacket.PacketId, objPacket.CreatedByUserID, objPacket.IsGroupOwner, objPacket.Name, objPacket.ShowDescription, objPacket.ShowPacketDescription, objPacket.Description, objPacket.AdminComments, objPacket.CustomHeader, objPacket.PortalId, objPacket.TabModuleId));
         }
 
         public override IDataReader GetAllDocumentsForPacket(int packetId, int userId)
@@ -452,14 +452,14 @@ namespace Gafware.Modules.DMS.Data
             return null;
         }
 
-        public override void ChanngeDocumentOwnership(int currentOwnerId, int newOwnerId, int portalId)
+        public override void ChangeDocumentOwnership(int currentOwnerId, bool isCurrentGroupOwner, int newOwnerId, bool isNewGroupOwner, int portalId)
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "ChangeDocumentOwnership", currentOwnerId, newOwnerId, portalId);
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "ChangeDocumentOwnership", currentOwnerId, isCurrentGroupOwner, newOwnerId, isNewGroupOwner, portalId);
         }
 
-        public override void ChanngePacketOwnership(int currentOwnerId, int newOwnerId, int portalId)
+        public override void ChangePacketOwnership(int currentOwnerId, bool isCurrentGroupOwner, int newOwnerId, bool isNewGroupOwner, int portalId)
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "ChangePacketOwnership", currentOwnerId, newOwnerId, portalId);
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "ChangePacketOwnership", currentOwnerId, isCurrentGroupOwner, newOwnerId, isNewGroupOwner, portalId);
         }
 
         public override string GetConnectionString()
@@ -539,7 +539,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SaveFileVersion(FileVersion objFileVersion)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveFileVersion", objFileVersion.FileVersionId, objFileVersion.FileId, objFileVersion.Version, objFileVersion.CreatedOnDate, objFileVersion.CreatedByUserID, objFileVersion.WebPageUrl, objFileVersion.IPAddress, objFileVersion.Filesize));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveFileVersion", objFileVersion.FileVersionId, objFileVersion.FileId, objFileVersion.Version, objFileVersion.CreatedOnDate, objFileVersion.CreatedByUserID, objFileVersion.IsGroupOwner, objFileVersion.WebPageUrl, objFileVersion.IPAddress, objFileVersion.Filesize));
         }
 
         public override IDataReader GetFileTypeByExt(string fileTypeExt, int portalId, int tabModuleId)
@@ -559,7 +559,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SaveRepository(Components.Repository objRepository)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveRepository", objRepository.RepositoryId, objRepository.PortalId, objRepository.TabModuleId, objRepository.UserRoleId, objRepository.FileNotificationsRoleId, objRepository.NewFileSubject, objRepository.NewFileMsg, objRepository.CategoryName, objRepository.SaveLocalFile, objRepository.ShowTips, objRepository.ShowInstructions, objRepository.Instructions, objRepository.Theme, objRepository.ThumbnailType, objRepository.ThumbnailSize, objRepository.PageSize, objRepository.Name));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SaveRepository", objRepository.RepositoryId, objRepository.PortalId, objRepository.TabModuleId, objRepository.UserRoleId, objRepository.FileNotificationsRoleId, objRepository.NewFileSubject, objRepository.NewFileMsg, objRepository.CategoryName, objRepository.SaveLocalFile, objRepository.ShowTips, objRepository.ShowInstructions, objRepository.Instructions, objRepository.Theme, objRepository.ThumbnailType, objRepository.ThumbnailSize, objRepository.PageSize, objRepository.ForceHttps, objRepository.UseThumbnails, objRepository.CreatePDF, objRepository.CreateWord, objRepository.CreateExcel, objRepository.CreatePowerPoint, objRepository.CreateImage, objRepository.CreateAudio, objRepository.CreateVideo, objRepository.Name));
         }
 
         public override IDataReader GetPortalSettings(int portalId)
@@ -575,6 +575,11 @@ namespace Gafware.Modules.DMS.Data
         public override void AddDefaultFileExtensions(int portalId, int tabModuleId)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "AddDefaultFileExtensions", portalId, tabModuleId);
+        }
+
+        public override bool UserIsInRole(int userId, int roleId)
+        {
+            return Convert.ToBoolean(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "UserIsInRole", userId, roleId));
         }
         #endregion
 

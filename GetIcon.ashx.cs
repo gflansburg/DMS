@@ -55,7 +55,7 @@ namespace Gafware.Modules.DMS
                             context.Response.AppendHeader("expires", "0");
                             context.Response.AppendHeader("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
                             context.Response.AppendHeader("content-control", "no-cache, no-store, must-revalidate, max-age=0");
-                            if (file.FileVersion.Thumbnail != null && file.FileVersion.Thumbnail.Length > 0)
+                            if (repository.UseThumbnails && file.FileVersion.Thumbnail != null && file.FileVersion.Thumbnail.Length > 0)
                             {
                                 context.Response.ContentType = "image/png";
                                 context.Response.AppendHeader("content-disposition", "inline;filename=\"" + System.IO.Path.GetFileNameWithoutExtension(file.Filename) + ".png\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");
@@ -98,7 +98,7 @@ namespace Gafware.Modules.DMS
                                 context.Response.AppendHeader("expires", "0");
                                 context.Response.AppendHeader("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
                                 context.Response.AppendHeader("content-control", "no-cache, no-store, must-revalidate, max-age=0");
-                                if (fileVersion.Thumbnail != null && fileVersion.Thumbnail.Length > 0)
+                                if (repository.UseThumbnails && fileVersion.Thumbnail != null && fileVersion.Thumbnail.Length > 0)
                                 {
                                     context.Response.ContentType = "image/png";
                                     context.Response.AppendHeader("content-disposition", "inline;filename=\"" + System.IO.Path.GetFileNameWithoutExtension(file.Filename) + ".png\";creation-date=\"" + DateTimeParser.ToRFC822(file.CreatedOnDate) + "\"");

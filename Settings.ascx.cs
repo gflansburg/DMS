@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -138,10 +138,21 @@ namespace Gafware.Modules.DMS
 
                     ddlPageSize.SelectedIndex = ddlPageSize.Items.IndexOf(ddlPageSize.Items.FindByValue(PageSize.ToString()));
 
+                    chkForceHttps.Checked = ForceHttps;
                     tbFileNotificationSubject.Text = NewFileSubject;
                     txtReplyEmail.Text = NewFileMsg;
                     tbName.Text = RepositoryName;
                     pnlName.Visible = !PortalWideRepository;
+
+                    chkUseThumbnails.Checked = UseThumbnails;
+                    pnlCreateThumbnails.Visible = UseThumbnails;
+                    chkCreatePDF.Checked = CreatePDF;
+                    chkCreateWord.Checked = CreateWord;
+                    chkCreateExcel.Checked = CreateExcel;
+                    chkCreatePowerPoint.Checked = CreatePowerPoint;
+                    chkCreateImage.Checked = CreateImage;
+                    chkCreateAudio.Checked = CreateAudio;
+                    chkCreateVideo.Checked = CreateVideo;
 
                     tbCategory.Text = CategoryName;
                     if(DocumentController.GetAllCategories(PortalId, PortalWideRepository ? 0 : TabModuleId).Count == 0)
@@ -211,8 +222,23 @@ namespace Gafware.Modules.DMS
                 repository.ThumbnailType = ddlThumbnailType.SelectedValue;
                 repository.ThumbnailSize = Convert.ToInt32(ddlThumbnailSize.SelectedValue);
                 repository.PageSize = Convert.ToInt32(ddlPageSize.SelectedValue);
+                repository.ForceHttps = chkForceHttps.Checked;
+                repository.UseThumbnails = chkUseThumbnails.Checked;
+                repository.CreatePDF = chkCreatePDF.Checked;
+                repository.CreateWord = chkCreateWord.Checked;
+                repository.CreateExcel = chkCreateExcel.Checked;
+                repository.CreatePowerPoint = chkCreatePowerPoint.Checked;
+                repository.CreateImage = chkCreateImage.Checked;
+                repository.CreateAudio = chkCreateAudio.Checked;
+                repository.CreateVideo = chkCreateVideo.Checked;
                 repository.Name = (chkPortalWideRepository.Checked ? "All Portal Repositories" : tbName.Text);
-                Components.DocumentController.SaveRepository(repository);
+                try
+                {
+                    Components.DocumentController.SaveRepository(repository);
+                }
+                catch(Exception)
+                {
+                }
                 DMSPortalSettings settings = Components.DocumentController.GetPortalSettings(PortalId);
                 if(settings == null)
                 {
@@ -739,6 +765,11 @@ namespace Gafware.Modules.DMS
             gv_docTypes.DataSource = DocumentController.GetAllFileTypes(PortalId, chkPortalWideRepository.Checked ? 0 : TabModuleId);
             gv_docTypes.DataBind();
             pnlName.Visible = !chkPortalWideRepository.Checked;
+        }
+
+        protected void chkUseThumbnails_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlCreateThumbnails.Visible = chkUseThumbnails.Checked;
         }
     }
 }

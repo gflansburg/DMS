@@ -20,13 +20,13 @@
     <asp:Panel ID="pnlMain" runat="server">
         <asp:HiddenField ID="hidTab" runat="server" />
         <div style="float:right;margin-bottom:10px;" id="pnlAdmin" runat="server" visible="false">
-            <asp:linkbutton runat="server" id="viewDocumentsCommandButton" causesvalidation="False" OnClick="ViewDocumentsCommandButtonClicked" CssClass="secondaryButton dmsButton"><asp:label runat="server" resourcekey="viewDocumentsCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="viewPacketsCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="viewPacketsCommandButton_Click"><asp:label runat="server" resourcekey="viewPacketsCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="viewTagsCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="viewTagsCommandButton_Click"><asp:label runat="server" resourcekey="viewTagsCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="linkCreatorCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="linkCreatorCommandButton_Click"><asp:label runat="server" resourcekey="linkCreatorCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="uploadReportCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="uploadReportCommandButton_Click"><asp:label runat="server" resourcekey="uploadReportCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="bulkImportCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="bulkImportCommandButton_Click"><asp:label runat="server" resourcekey="bulkImportCommandButton" /></asp:linkbutton>
-            <asp:linkbutton runat="server" id="settingsCommandButton" causesvalidation="False" CssClass="secondaryButton dmsButton" OnClick="settingsCommandButton_Click"><asp:label runat="server" resourcekey="settingsCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="viewDocumentsCommandButton" causesvalidation="False" OnClick="ViewDocumentsCommandButtonClicked" CssClass="secondaryButton docButton"><asp:label runat="server" resourcekey="viewDocumentsCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="viewPacketsCommandButton" causesvalidation="False" CssClass="secondaryButton packetButton" OnClick="viewPacketsCommandButton_Click"><asp:label runat="server" resourcekey="viewPacketsCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="viewTagsCommandButton" causesvalidation="False" CssClass="secondaryButton tagButton" OnClick="viewTagsCommandButton_Click"><asp:label runat="server" resourcekey="viewTagsCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="linkCreatorCommandButton" causesvalidation="False" CssClass="secondaryButton linkCreateButton" OnClick="linkCreatorCommandButton_Click"><asp:label runat="server" resourcekey="linkCreatorCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="uploadReportCommandButton" causesvalidation="False" CssClass="secondaryButton reportButton" OnClick="uploadReportCommandButton_Click"><asp:label runat="server" resourcekey="uploadReportCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="bulkImportCommandButton" causesvalidation="False" CssClass="secondaryButton importButton" OnClick="bulkImportCommandButton_Click"><asp:label runat="server" resourcekey="bulkImportCommandButton" /></asp:linkbutton>
+            <asp:linkbutton runat="server" id="settingsCommandButton" causesvalidation="False" CssClass="secondaryButton settingsButton" OnClick="settingsCommandButton_Click"><asp:label runat="server" resourcekey="settingsCommandButton" /></asp:linkbutton>
         </div>
         <div style="clear: both"></div>
         <asp:Panel ID="pnlSearch" runat="server">

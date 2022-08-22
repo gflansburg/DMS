@@ -25,10 +25,6 @@ namespace Gafware.Modules.DMS.Components
         /// </summary>
         public string DocumentName { get; set; }
         /// <summary>
-        /// Short description
-        /// </summary>
-        public string ShortDescription { get; set; }
-        /// <summary>
         /// Document details
         /// </summary>
         public string DocumentDetails { get; set; }
@@ -91,9 +87,27 @@ namespace Gafware.Modules.DMS.Components
         {
             get
             {
-                if (CreatedByUserID > 0)
+                if (CreatedByUserID > 0 && !IsGroupOwner)
                 {
                     return DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, CreatedByUserID);
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Is owner a group id
+        /// </summary>
+        public bool IsGroupOwner { get; set; }
+        /// <summary>
+        /// Group owner
+        /// </summary>
+        public DotNetNuke.Security.Roles.RoleInfo Group
+        {
+            get
+            {
+                if(CreatedByUserID > 0 && IsGroupOwner)
+                {
+                    return DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(PortalId, CreatedByUserID);
                 }
                 return null;
             }
@@ -203,8 +217,8 @@ namespace Gafware.Modules.DMS.Components
 
             DocumentId = Null.SetNullInteger(dr["DocumentID"]);
             CreatedByUserID = Null.SetNullInteger(dr["CreatorID"]);
+            IsGroupOwner = Null.SetNullBoolean(dr["IsGroupOwner"]);
             DocumentName = Null.SetNullString(dr["DocumentName"]);
-            ShortDescription = Null.SetNullString(dr["ShortDescription"]);
             DocumentDetails = Null.SetNullString(dr["DocumentDetails"]);
             AdminComments = Null.SetNullString(dr["AdminComments"]);
             IsPublic = Null.SetNullBoolean(dr["IsPublic"]);

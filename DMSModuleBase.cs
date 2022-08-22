@@ -1,5 +1,5 @@
 ﻿/*
-' Copyright (c) 2021  Gafware
+' Copyright (c) 2021 Gafware
 '  All rights reserved.
 ' 
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
@@ -59,6 +59,87 @@ namespace Gafware.Modules.DMS
             {
                 Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
                 return (portal != null ? portal.NewFileMsg : "A [FILETYPENAME] file named '[FILENAME]' as been uploaded to the Document Management System by [UPLOADER] to the document named '[DOCUMENT]'");
+            }
+        }
+
+        public bool ForceHttps
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.ForceHttps : false);
+            }
+        }
+
+        public bool UseThumbnails
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.UseThumbnails : true);
+            }
+        }
+
+        public bool CreatePDF
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreatePDF : true);
+            }
+        }
+
+        public bool CreateWord
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreateWord : true);
+            }
+        }
+
+        public bool CreateExcel
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreateExcel : true);
+            }
+        }
+
+        public bool CreatePowerPoint
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreatePowerPoint : true);
+            }
+        }
+
+        public bool CreateImage
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreateImage : true);
+            }
+        }
+
+        public bool CreateAudio
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreateAudio : true);
+            }
+        }
+
+        public bool CreateVideo
+        {
+            get
+            {
+                Components.Repository portal = Components.DocumentController.GetRepository(PortalId, PortalWideRepository ? 0 : TabModuleId);
+                return (portal != null ? portal.CreateVideo : true);
             }
         }
 

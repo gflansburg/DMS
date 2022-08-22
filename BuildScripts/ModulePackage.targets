@@ -70,10 +70,16 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Telerik.Reporting.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Telerik.ReportViewer.WebForms.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.Doc.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.License.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.Pdf.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.Presentation.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.XLS.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\EPPlus.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\EPPlus.Interfaces.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\EPPlus.System.Drawing.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IO.RecyclableMemoryStream.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\PdfSharp.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\PdfSharp.Charting.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\System.ComponentModel.Annotations.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Ghostscript.NET.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Id3.Net.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\JetBrains.Annotations.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
@@ -113,11 +119,17 @@
     
     <Copy SourceFiles="$(MSBuildDnnBinPath)\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.Doc.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.License.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.Pdf.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.Presentation.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Spire.XLS.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\EPPlus.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\EPPlus.Interfaces.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\EPPlus.System.Drawing.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Ghostscript.NET.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IO.RecyclableMemoryStream.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\PdfSharp.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\PdfSharp.Charting.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\System.ComponentModel.Annotations.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Id3.Net.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\JetBrains.Annotations.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.WindowsAPICodePack.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
