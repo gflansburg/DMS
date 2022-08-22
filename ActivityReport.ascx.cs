@@ -223,7 +223,7 @@ namespace Gafware.Modules.DMS
             List<Components.DocumentActivity> docs = new List<DocumentActivity>();
             DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.Instance.GetUserById(PortalId, ReportUserId == 0 ? UserId : ReportUserId);
             DataSet ds = new DataSet();
-            string[] files = System.IO.Directory.GetFiles(MapPath("~/Portals/_default/Logs"), string.Format("Gafware_DMS_{0}_{1}_*.xml", PortalId, date.ToString("MM_dd_yyyy")));
+            string[] files = System.IO.Directory.GetFiles(MapPath("~/Portals/_default/Logs"), string.Format("OUHR_DMS_{0}_{1}_*.xml", PortalId, date.ToString("MM_dd_yyyy")));
             foreach (string filename in files)
             {
                 ds.ReadXml(filename, XmlReadMode.Auto);
@@ -238,7 +238,7 @@ namespace Gafware.Modules.DMS
                             Components.DMSFile file = Components.DocumentController.GetFile(Convert.ToInt32(row["File_ID"]));
                             if (file != null)
                             {
-                                docs.Add(new DocumentActivity()
+                                DocumentActivity activity = new DocumentActivity()
                                 {
                                     DocumentId = doc.DocumentId,
                                     DocumentName = doc.DocumentName,
@@ -250,7 +250,32 @@ namespace Gafware.Modules.DMS
                                     FileId = file.FileId,
                                     Filename = (file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase) ? file.WebPageUrl : file.Filename),
                                     FileType = file.FileType
-                                });
+                                };
+                                if (ds.Tables[0].Columns.Contains("Browser_Type"))
+                                {
+                                    activity.BrowserType = row["Browser_Type"].ToString();
+                                }
+                                if (ds.Tables[0].Columns.Contains("Browser_Name"))
+                                {
+                                    activity.BrowserName = row["Browser_Name"].ToString();
+                                }
+                                if (ds.Tables[0].Columns.Contains("Browser_Version"))
+                                {
+                                    activity.BrowserVersion = string.Concat("v", row["Browser_Version"].ToString());
+                                }
+                                if (ds.Tables[0].Columns.Contains("Platform"))
+                                {
+                                    activity.Platform = row["Platform"].ToString();
+                                }
+                                if (ds.Tables[0].Columns.Contains("Is_Mobile"))
+                                {
+                                    activity.IsMobile = Generic.ToBoolean(row["Is_Mobile"].ToString());
+                                }
+                                if (ds.Tables[0].Columns.Contains("Is_Crawler"))
+                                {
+                                    activity.IsCrawler = Generic.ToBoolean(row["Is_Crawler"].ToString());
+                                }
+                                docs.Add(activity);
                             }
                         }
                     }

@@ -54,5 +54,29 @@ namespace Gafware.Modules.DMS.Components
         /// Search terms
         /// </summary>
         public string SearchTerms { get; set; }
+        /// <summary>
+        /// Browser type
+        /// </summary>
+        public string BrowserType { get; set; }
+        /// <summary>
+        /// Browser name
+        /// </summary>
+        public string BrowserName { get; set; }
+        /// <summary>
+        /// Browser version
+        /// </summary>
+        public string BrowserVersion { get; set; }
+        /// <summary>
+        /// Browser OS
+        /// </summary>
+        public string Platform { get; set; }
+        /// <summary>
+        /// Is browser mobile?
+        /// </summary>
+        public bool IsMobile { get; set; }
+        /// <summary>
+        /// Is browser a web crawler?
+        /// </summary>
+        public bool IsCrawler { get; set; }
     }
 }
