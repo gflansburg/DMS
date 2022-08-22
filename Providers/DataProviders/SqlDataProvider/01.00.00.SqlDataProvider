@@ -2930,7 +2930,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID AND TabModuleID = @TabModuleID
+	SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID AND TabModuleID = case when @TabModuleID = 0 then TabModuleID else @TabModuleID end
 END
 GO
 
