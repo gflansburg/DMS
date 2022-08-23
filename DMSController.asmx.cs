@@ -401,10 +401,11 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("  <datum>");
             sb.AppendLine(String.Format("    <Time>{0}</Time>", DateTime.Now));
             sb.AppendLine(String.Format("    <IP>{0}</IP>", Generic.GetIPAddress()));
+            sb.AppendLine(String.Format("    <User_Agent>{0}</User_Agent>", HttpContext.Current.Request.UserAgent));
             sb.AppendLine(String.Format("    <Browser_Type>{0}</Browser_Type>", HttpContext.Current.Request.Browser.Type));
             sb.AppendLine(String.Format("    <Browser_Name>{0}</Browser_Name>", HttpContext.Current.Request.Browser.Browser));
-            sb.AppendLine(String.Format("    <Browser_Version>{0}</Browser_Version>", HttpContext.Current.Request.Browser.Version));
-            sb.AppendLine(String.Format("    <Platform>{0}</Platform>", HttpContext.Current.Request.Browser.Platform));
+            sb.AppendLine(String.Format("    <Browser_Version>{0}</Browser_Version>", GetMobileVersion(HttpContext.Current.Request)));
+            sb.AppendLine(String.Format("    <Platform>{0}</Platform>", GetUserPlatform(HttpContext.Current.Request)));
             sb.AppendLine(String.Format("    <Is_Mobile>{0}</Is_Mobile>", HttpContext.Current.Request.Browser.IsMobileDevice));
             sb.AppendLine(String.Format("    <Is_Crawler>{0}</Is_Crawler>", HttpContext.Current.Request.Browser.Crawler));
             sb.AppendLine(String.Format("    <Portal_ID>{0}</Portal_ID>", portalId));
@@ -417,6 +418,166 @@ namespace Gafware.Modules.DMS
             WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
         }
 
+        private static string GetUserPlatform(HttpRequest request)
+        {
+            var ua = request.UserAgent;
+
+            if (ua.Contains("Android"))
+            {
+                return "Android";
+            }
+
+            if (ua.Contains("iPad"))
+            {
+                return "iPad OS";
+            }
+
+            if (ua.Contains("iPhone"))
+            {
+                return "iPhone OS";
+            }
+
+            if (ua.Contains("Windows Phone"))
+            {
+                return "Windows Phone";
+            }
+
+            if (ua.Contains("Linux") && ua.Contains("KFAPWI"))
+            {
+                return "Kindle Fire";
+            }
+
+            if (ua.Contains("RIM Tablet") || (ua.Contains("BB") && ua.Contains("Mobile")))
+            {
+                return "Black Berry";
+            }
+
+            if (ua.Contains("Mac OS"))
+            {
+                return "Mac OS";
+            }
+
+            if (ua.Contains("Windows NT 5.1") || ua.Contains("Windows NT 5.2"))
+            {
+                return "Windows XP";
+            }
+
+            if (ua.Contains("Windows NT 5"))
+            {
+                return "Windows 2000";
+            }
+
+            if (ua.Contains("Windows NT 4"))
+            {
+                return "Windows NT";
+            }
+
+            if (ua.Contains("Win 9x 4.90"))
+            {
+                return "Windows Me";
+            }
+
+            if (ua.Contains("Windows 98"))
+            {
+                return "Windows 98";
+            }
+
+            if (ua.Contains("Windows 95"))
+            {
+                return "Windows 95";
+            }
+
+            if (ua.Contains("Windows NT 6.0"))
+            {
+                return "Windows Vista";
+            }
+
+            if (ua.Contains("Windows NT 6.1"))
+            {
+                return "Windows 7";
+            }
+
+            if (ua.Contains("Windows NT 6.2"))
+            {
+                return "Windows 8";
+            }
+
+            if (ua.Contains("Windows NT 6.3"))
+            {
+                return "Windows 8.1";
+            }
+
+            if (ua.Contains("Windows NT 10"))
+            {
+                return "Windows 10";
+            }
+
+            if (ua.Contains("Windows NT 11"))
+            {
+                return "Windows 11";
+            }
+
+            //fallback to basic platform:
+            return request.Browser.Platform + (ua.Contains("Mobile") ? " Mobile " : "");
+        }
+
+        private static string GetMobileVersion(HttpRequest request)
+        {
+            var ua = request.UserAgent;
+
+            if (ua.Contains("Android"))
+            {
+                return GetMobileVersion(ua, "Android");
+            }
+
+            if (ua.Contains("iPad"))
+            {
+                return GetMobileVersion(ua, "OS");
+            }
+
+            if (ua.Contains("iPhone"))
+            {
+                return GetMobileVersion(ua, "OS");
+            }
+
+            if (ua.Contains("Windows Phone"))
+            {
+                return GetMobileVersion(ua, "Windows Phone");
+            }
+
+            //fallback to basic version:
+            return request.Browser.Version;
+        }
+
+        private static string GetMobileVersion(string userAgent, string device)
+        {
+            var temp = userAgent.Substring(userAgent.IndexOf(device) + device.Length).TrimStart();
+            var version = string.Empty;
+
+            foreach (var character in temp)
+            {
+                var validCharacter = false;
+                int test = 0;
+
+                if (Int32.TryParse(character.ToString(), out test))
+                {
+                    version += character;
+                    validCharacter = true;
+                }
+
+                if (character == '.' || character == '_')
+                {
+                    version += '.';
+                    validCharacter = true;
+                }
+
+                if (validCharacter == false)
+                    break;
+            }
+
+            return version;
+        }
+        
         private static string GetNewLogFilename(string strDirectory, DateTime date, string strFilePrefix)
         {
             int fileCount = 1;

@@ -78,5 +78,9 @@ namespace Gafware.Modules.DMS.Components
         /// Is browser a web crawler?
         /// </summary>
         public bool IsCrawler { get; set; }
+        /// <summary>
+        /// Browser User Agent
+        /// </summary>
+        public string UserAgent { get; set; }
     }
 }

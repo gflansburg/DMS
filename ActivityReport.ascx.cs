@@ -223,7 +223,7 @@ namespace Gafware.Modules.DMS
             List<Components.DocumentActivity> docs = new List<DocumentActivity>();
             DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.Instance.GetUserById(PortalId, ReportUserId == 0 ? UserId : ReportUserId);
             DataSet ds = new DataSet();
-            string[] files = System.IO.Directory.GetFiles(MapPath("~/Portals/_default/Logs"), string.Format("OUHR_DMS_{0}_{1}_*.xml", PortalId, date.ToString("MM_dd_yyyy")));
+            string[] files = System.IO.Directory.GetFiles(MapPath("~/Portals/_default/Logs"), string.Format("Gafware_DMS_{0}_{1}_*.xml", PortalId, date.ToString("MM_dd_yyyy")));
             foreach (string filename in files)
             {
                 ds.ReadXml(filename, XmlReadMode.Auto);
@@ -251,6 +251,10 @@ namespace Gafware.Modules.DMS
                                     Filename = (file.FileType.Equals("url", StringComparison.OrdinalIgnoreCase) ? file.WebPageUrl : file.Filename),
                                     FileType = file.FileType
                                 };
+                                if (ds.Tables[0].Columns.Contains("User_Agent"))
+                                {
+                                    activity.UserAgent = row["User_Agent"].ToString();
+                                }
                                 if (ds.Tables[0].Columns.Contains("Browser_Type"))
                                 {
                                     activity.BrowserType = row["Browser_Type"].ToString();
@@ -263,10 +267,6 @@ namespace Gafware.Modules.DMS
                                 {
                                     activity.BrowserVersion = string.Concat("v", row["Browser_Version"].ToString());
                                 }
-                                if (ds.Tables[0].Columns.Contains("Platform"))
-                                {
-                                    activity.Platform = row["Platform"].ToString();
-                                }
                                 if (ds.Tables[0].Columns.Contains("Is_Mobile"))
                                 {
                                     activity.IsMobile = Generic.ToBoolean(row["Is_Mobile"].ToString());
@@ -274,6 +274,21 @@ namespace Gafware.Modules.DMS
                                 if (ds.Tables[0].Columns.Contains("Is_Crawler"))
                                 {
                                     activity.IsCrawler = Generic.ToBoolean(row["Is_Crawler"].ToString());
+                                }
+                                if (ds.Tables[0].Columns.Contains("Platform"))
+                                {
+                                    activity.Platform = row["Platform"].ToString();
+                                    if(activity.Platform.Equals("Unknown", StringComparison.OrdinalIgnoreCase) && activity.IsMobile)
+                                    {
+                                        if (activity.BrowserName.Equals("Safari", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            activity.Platform = "iOS";
+                                        }
+                                        else if(activity.BrowserName.Equals("Chrome", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            activity.Platform = "Android";
+                                        }
+                                    }
                                 }
                                 docs.Add(activity);
                             }
