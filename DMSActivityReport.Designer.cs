@@ -54,26 +54,26 @@ namespace Gafware.Modules.DMS
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.716D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox1.StyleName = "Office.TableHeader";
-            this.textBox1.Value = "Time";
+            this.textBox1.Value = "Date/Time";
             // 
             // textBox2
             // 
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.582D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.353D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox2.StyleName = "Office.TableHeader";
             this.textBox2.Value = "Filename";
             // 
             // textBox11
             // 
             this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.645D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox11.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.916D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox11.StyleName = "Office.TableHeader";
             this.textBox11.Value = "File Type";
             // 
             // textBox13
             // 
             this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.854D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox13.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.812D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox13.StyleName = "Office.TableHeader";
             this.textBox13.Value = "IP Address";
             // 
@@ -94,9 +94,9 @@ namespace Gafware.Modules.DMS
             // table1
             // 
             this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.716D)));
-            this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(2.582D)));
-            this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.645D)));
-            this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.854D)));
+            this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(2.353D)));
+            this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.916D)));
+            this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.812D)));
             this.table1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(1.696D)));
             this.table1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.2D)));
             this.table1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.2D)));
@@ -159,7 +159,7 @@ namespace Gafware.Modules.DMS
             // textBox22
             // 
             this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.582D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox22.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.353D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox22.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
             this.textBox22.StyleName = "Office.TableBody";
             this.textBox22.Value = "Browser:";
@@ -167,14 +167,14 @@ namespace Gafware.Modules.DMS
             // textBox23
             // 
             this.textBox23.Name = "textBox23";
-            this.textBox23.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.645D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox23.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.916D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox23.StyleName = "Office.TableBody";
             this.textBox23.Value = "= Fields.Platform";
             // 
             // textBox27
             // 
             this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.582D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox27.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.353D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox27.Style.BackgroundColor = System.Drawing.Color.Empty;
             this.textBox27.StyleName = "Office.TableBody";
             this.textBox27.Value = "= Fields.FileName";
@@ -182,7 +182,7 @@ namespace Gafware.Modules.DMS
             // textBox21
             // 
             this.textBox21.Name = "textBox21";
-            this.textBox21.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.645D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox21.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.916D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox21.Style.BackgroundColor = System.Drawing.Color.Empty;
             this.textBox21.StyleName = "Office.TableBody";
             this.textBox21.Value = "= Fields.FileType";
@@ -190,7 +190,7 @@ namespace Gafware.Modules.DMS
             // textBox16
             // 
             this.textBox16.Name = "textBox16";
-            this.textBox16.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.854D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox16.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.812D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox16.Style.BackgroundColor = System.Drawing.Color.Empty;
             this.textBox16.StyleName = "Office.TableBody";
             this.textBox16.Value = "= Fields.IPAddress";
@@ -213,12 +213,12 @@ namespace Gafware.Modules.DMS
             // 
             // textBox5
             // 
-            this.textBox5.Format = "{0:MM/dd/yyyy\\nhh:mm tt}";
+            this.textBox5.Format = "";
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.716D), Telerik.Reporting.Drawing.Unit.Inch(0.6D));
             this.textBox5.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox5.StyleName = "Office.TableBody";
-            this.textBox5.Value = "= Fields.Time";
+            this.textBox5.Value = "= Fields.Time.ToString(\"MM/dd/yyyy\") + \r\nFields.Time.ToString(\"hh:mm tt\")";
             // 
             // textBox4
             // 
@@ -231,7 +231,7 @@ namespace Gafware.Modules.DMS
             // textBox7
             // 
             this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.854D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox7.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.812D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
             this.textBox7.Style.BackgroundColor = System.Drawing.Color.Empty;
             this.textBox7.StyleName = "Office.TableBody";
             this.textBox7.Value = "= Fields.BrowserName";

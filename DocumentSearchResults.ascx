@@ -15,7 +15,7 @@
 <asp:Panel ID="pnlDocumentFound" runat="server" Visible="false">
     <h3><%= LocalizeString("Thanks") %></h3>
 	<%= LocalizeString("ThanksInfo") %><br/>
-    <asp:HyperLink ID="lnkFileLocation" runat="server" Target="_blank"></asp:HyperLink>
+    <asp:HyperLink ID="lnkFileLocation" runat="server" Target="_blank" CssClass="dont-break-out"></asp:HyperLink>
 </asp:Panel>
 <asp:Panel ID="pnlDocumentsFound" runat="server" Visible="false">
     <div class="SearchResultHeader" id="SearchResultHeader2" runat="server"><span class="text_medium" style="float: left;"><strong style="color:#FFFFFF;"><asp:Label ID="lblHeader2" runat="server" Text="Document Search Results" /></strong></span><span style="float: right;" id="pnlAdmin2" runat="server"><asp:ImageButton ID="btnAdmin2" ImageUrl="Images/settings.png" OnClick="btnAdmin_Click" runat="server" /></span><br style="clear: both;" /></div>
