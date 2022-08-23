@@ -140,6 +140,7 @@ namespace Gafware.Modules.DMS
             this.table1.ColumnGroups.Add(tableGroup3);
             this.table1.ColumnGroups.Add(tableGroup4);
             this.table1.ColumnGroups.Add(tableGroup5);
+            this.table1.ColumnHeadersPrintOnEveryPage = true;
             this.table1.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox5,
             this.textBox6,
@@ -254,16 +255,16 @@ namespace Gafware.Modules.DMS
             // textBox9
             // 
             this.textBox9.Name = "ReportNameTextBox";
-            this.textBox9.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
+            this.textBox9.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4.925D), Telerik.Reporting.Drawing.Unit.Inch(0.65D));
             this.textBox9.Style.Color = System.Drawing.Color.SteelBlue;
             this.textBox9.Style.Font.Bold = true;
             this.textBox9.Style.Font.Name = "Segoe UI";
             this.textBox9.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(20D);
-            this.textBox9.Value = "Activity Report";
+            this.textBox9.Value = "Activity Report For All Documents";
             // 
             // pageHeaderSection1
             // 
-            this.pageHeaderSection1.Height = Telerik.Reporting.Drawing.Unit.Inch(0.8D);
+            this.pageHeaderSection1.Height = Telerik.Reporting.Drawing.Unit.Inch(0.9D);
             this.pageHeaderSection1.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox9,
             this.ReportDateTextBox,
@@ -273,9 +274,9 @@ namespace Gafware.Modules.DMS
             // ReportDateTextBox
             // 
             this.ReportDateTextBox.Format = "";
-            this.ReportDateTextBox.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
+            this.ReportDateTextBox.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.65D));
             this.ReportDateTextBox.Name = "ReportDateTextBox";
-            this.ReportDateTextBox.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.491D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
+            this.ReportDateTextBox.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.5D), Telerik.Reporting.Drawing.Unit.Inch(0.25D));
             this.ReportDateTextBox.Style.Color = System.Drawing.Color.SteelBlue;
             this.ReportDateTextBox.Style.Font.Bold = true;
             this.ReportDateTextBox.Style.Font.Name = "Segoe UI";

@@ -415,7 +415,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine(String.Format("    <File_Type>{0}</File_Type>", fileType));
             sb.AppendLine(String.Format("    <Search_Terms>{0}</Search_Terms>", HttpUtility.HtmlEncode(searchTerms)));
             sb.AppendLine("  </datum>");
-            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "OUHR_DMS_" + portalId + "_");
+            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "Gafware_DMS_" + portalId + "_");
             WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
         }
 
@@ -426,13 +426,18 @@ namespace Gafware.Modules.DMS
             Regex regExEdge1 = new Regex(@"Edge/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExEdge2 = new Regex(@"Edg/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExOpera = new Regex(@"OPR/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            Regex regExFxiOS = new Regex(@"fxios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Firefox for iOS 
             if (regExEdge1.IsMatch(ua) || regExEdge2.IsMatch(ua))
             {
                 browser = "Edge";
             }
-            if (regExOpera.IsMatch(ua))
+            else if (regExOpera.IsMatch(ua))
             {
                 browser = "Opera";
+            }
+            else if (regExFxiOS.IsMatch(ua))
+            {
+                browser = "Firefox";
             }
             return browser + (ua.Contains("Mobile") ? " Mobile" : string.Empty);
         }
@@ -546,22 +551,40 @@ namespace Gafware.Modules.DMS
             Regex regExEdge1 = new Regex(@"Edge/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExEdge2 = new Regex(@"Edg/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExOpera = new Regex(@"OPR/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            Regex regExFxiOS = new Regex(@"fxios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Firefox for iOS 
             if (regExEdge1.IsMatch(ua))
             {
                 string[] match = regExEdge1.Split(ua);
-                return match[1];
+                if (match.Length > 1)
+                {
+                    return match[1];
+                }
             }
-            if (regExEdge2.IsMatch(ua))
+            else if (regExEdge2.IsMatch(ua))
             {
                 string[] match = regExEdge2.Split(ua);
-                return match[1];
+                if (match.Length > 1)
+                {
+                    return match[1];
+                }
             }
-            if (regExOpera.IsMatch(ua))
+            else if (regExOpera.IsMatch(ua))
             {
                 string[] match = regExOpera.Split(ua);
-                return match[1];
+                if (match.Length > 1)
+                {
+                    return match[1];
+                }
             }
-
+            else if (regExFxiOS.IsMatch(ua))
+            {
+                Match match = regExFxiOS.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
             //fallback to basic version:
             return request.Browser.Version;
         }

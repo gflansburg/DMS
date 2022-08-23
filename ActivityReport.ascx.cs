@@ -325,13 +325,15 @@ namespace Gafware.Modules.DMS
             dmsRpt.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Letter;
             var title = dmsRpt.Items.Find("ReportNameTextBox", true)[0] as Telerik.Reporting.TextBox;
             DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.Instance.GetUserById(PortalId, ReportUserId == 0 ? UserId : ReportUserId);
-            if (ReportUserId == 0 && IsAdmin() || user.IsSuperUser)
+            if (ReportUserId == 0 && (IsAdmin() || user.IsSuperUser))
             {
                 title.Value = "Activity Report For All Documents";
+                title.Style.Font.Size = new Telerik.Reporting.Drawing.Unit("20pt");
             }
             else
             {
                 title.Value = string.Format("Activity Report For Documents Owned By {0} {1}", user.FirstName, user.LastName);
+                title.Style.Font.Size = new Telerik.Reporting.Drawing.Unit("16pt");
             }
             var table = dmsRpt.Items.Find("table1", true)[0] as Telerik.Reporting.Table;
             table.DataSource = dataSource;
