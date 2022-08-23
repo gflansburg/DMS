@@ -289,6 +289,10 @@ namespace Gafware.Modules.DMS
                                             activity.Platform = "Android";
                                         }
                                     }
+                                    else if (activity.Platform.Equals("Unknown", StringComparison.OrdinalIgnoreCase) && activity.IsCrawler)
+                                    {
+                                        activity.Platform = "Web Crawler";
+                                    }
                                 }
                                 docs.Add(activity);
                             }
