@@ -6,6 +6,7 @@ using System.Web.Services;
 using System.Web.Script.Services;
 using System.ServiceModel.Web;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace Gafware.Modules.DMS
 {
@@ -403,8 +404,8 @@ namespace Gafware.Modules.DMS
             sb.AppendLine(String.Format("    <IP>{0}</IP>", Generic.GetIPAddress()));
             sb.AppendLine(String.Format("    <User_Agent>{0}</User_Agent>", HttpContext.Current.Request.UserAgent));
             sb.AppendLine(String.Format("    <Browser_Type>{0}</Browser_Type>", HttpContext.Current.Request.Browser.Type));
-            sb.AppendLine(String.Format("    <Browser_Name>{0}</Browser_Name>", HttpContext.Current.Request.Browser.Browser));
-            sb.AppendLine(String.Format("    <Browser_Version>{0}</Browser_Version>", GetMobileVersion(HttpContext.Current.Request)));
+            sb.AppendLine(String.Format("    <Browser_Name>{0}</Browser_Name>", GetBrowserName(HttpContext.Current.Request)));
+            sb.AppendLine(String.Format("    <Browser_Version>{0}</Browser_Version>", GetBrowserVersion(HttpContext.Current.Request)));
             sb.AppendLine(String.Format("    <Platform>{0}</Platform>", GetUserPlatform(HttpContext.Current.Request)));
             sb.AppendLine(String.Format("    <Is_Mobile>{0}</Is_Mobile>", HttpContext.Current.Request.Browser.IsMobileDevice));
             sb.AppendLine(String.Format("    <Is_Crawler>{0}</Is_Crawler>", HttpContext.Current.Request.Browser.Crawler));
@@ -414,8 +415,26 @@ namespace Gafware.Modules.DMS
             sb.AppendLine(String.Format("    <File_Type>{0}</File_Type>", fileType));
             sb.AppendLine(String.Format("    <Search_Terms>{0}</Search_Terms>", HttpUtility.HtmlEncode(searchTerms)));
             sb.AppendLine("  </datum>");
-            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "Gafware_DMS_" + portalId + "_");
+            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "OUHR_DMS_" + portalId + "_");
             WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
+        }
+
+        private static string GetBrowserName(HttpRequest request)
+        {
+            var ua = request.UserAgent;
+            string browser = request.Browser.Browser;
+            Regex regExEdge1 = new Regex(@"Edge/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            Regex regExEdge2 = new Regex(@"Edg/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            Regex regExOpera = new Regex(@"OPR/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            if (regExEdge1.IsMatch(ua) || regExEdge2.IsMatch(ua))
+            {
+                browser = "Edge";
+            }
+            if (regExOpera.IsMatch(ua))
+            {
+                browser = "Opera";
+            }
+            return browser + (ua.Contains("Mobile") ? " Mobile" : string.Empty);
         }
 
         private static string GetUserPlatform(HttpRequest request)
@@ -424,22 +443,22 @@ namespace Gafware.Modules.DMS
 
             if (ua.Contains("Android"))
             {
-                return "Android";
+                return string.Format("Android {0}", GetMobileVersion(ua, "Android"));
             }
 
             if (ua.Contains("iPad"))
             {
-                return "iPad OS";
+                return string.Format("iPad OS {0}", GetMobileVersion(ua, "OS"));
             }
 
             if (ua.Contains("iPhone"))
             {
-                return "iPhone OS";
+                return string.Format("iPhone OS {0}", GetMobileVersion(ua, "OS"));
             }
 
             if (ua.Contains("Windows Phone"))
             {
-                return "Windows Phone";
+                return string.Format("Windows Phone {0}", GetMobileVersion(ua, "Windows Phone"));
             }
 
             if (ua.Contains("Linux") && ua.Contains("KFAPWI"))
@@ -518,31 +537,29 @@ namespace Gafware.Modules.DMS
             }
 
             //fallback to basic platform:
-            return request.Browser.Platform + (ua.Contains("Mobile") ? " Mobile " : "");
+            return request.Browser.Platform + (ua.Contains("Mobile") ? " Mobile" : string.Empty);
         }
 
-        private static string GetMobileVersion(HttpRequest request)
+        private static string GetBrowserVersion(HttpRequest request)
         {
             var ua = request.UserAgent;
-
-            if (ua.Contains("Android"))
+            Regex regExEdge1 = new Regex(@"Edge/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            Regex regExEdge2 = new Regex(@"Edg/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            Regex regExOpera = new Regex(@"OPR/(?'version'(?'major'\d+)(?'minor'\.\d+))");
+            if (regExEdge1.IsMatch(ua))
             {
-                return GetMobileVersion(ua, "Android");
+                string[] match = regExEdge1.Split(ua);
+                return match[1];
             }
-
-            if (ua.Contains("iPad"))
+            if (regExEdge2.IsMatch(ua))
             {
-                return GetMobileVersion(ua, "OS");
+                string[] match = regExEdge2.Split(ua);
+                return match[1];
             }
-
-            if (ua.Contains("iPhone"))
+            if (regExOpera.IsMatch(ua))
             {
-                return GetMobileVersion(ua, "OS");
-            }
-
-            if (ua.Contains("Windows Phone"))
-            {
-                return GetMobileVersion(ua, "Windows Phone");
+                string[] match = regExOpera.Split(ua);
+                return match[1];
             }
 
             //fallback to basic version:
@@ -577,7 +594,7 @@ namespace Gafware.Modules.DMS
 
             return version;
         }
-        
+
         private static string GetNewLogFilename(string strDirectory, DateTime date, string strFilePrefix)
         {
             int fileCount = 1;
