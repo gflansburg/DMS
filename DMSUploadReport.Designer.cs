@@ -295,6 +295,7 @@ namespace Gafware.Modules.DMS
             this.crosstab1.Body.SetCellContent(3, 0, this.textBox36);
             tableGroup1.Name = "creator";
             this.crosstab1.ColumnGroups.Add(tableGroup1);
+            this.crosstab1.ColumnHeadersPrintOnEveryPage = true;
             this.crosstab1.DataSource = this.DNN;
             this.crosstab1.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox30,
@@ -390,6 +391,7 @@ namespace Gafware.Modules.DMS
             tableGroup10.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.DocumentName", Telerik.Reporting.SortDirection.Asc));
             this.crosstab1.RowGroups.Add(tableGroup2);
             this.crosstab1.RowGroups.Add(tableGroup10);
+            this.crosstab1.RowHeadersPrintOnEveryPage = true;
             this.crosstab1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(7.208D), Telerik.Reporting.Drawing.Unit.Inch(0.8D));
             this.crosstab1.StyleName = "Office.TableNormal";
             // 
@@ -443,7 +445,7 @@ namespace Gafware.Modules.DMS
             this.ReportNameTextBox.Style.Font.Bold = true;
             this.ReportNameTextBox.Style.Font.Name = "Segoe UI";
             this.ReportNameTextBox.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(20D);
-            this.ReportNameTextBox.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Bottom;
+            this.ReportNameTextBox.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Top;
             this.ReportNameTextBox.Value = "Upload Report";
             // 
             // ReportPageNumberTextBox
@@ -456,7 +458,7 @@ namespace Gafware.Modules.DMS
             this.ReportPageNumberTextBox.Style.Font.Name = "Segoe UI";
             this.ReportPageNumberTextBox.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(10D);
             this.ReportPageNumberTextBox.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
-            this.ReportPageNumberTextBox.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Bottom;
+            this.ReportPageNumberTextBox.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Top;
             this.ReportPageNumberTextBox.Value = "Page: {PageNumber}";
             // 
             // DMSUploadReport
@@ -556,7 +558,7 @@ namespace Gafware.Modules.DMS
             styleRule4,
             styleRule5,
             styleRule6});
-            this.Width = Telerik.Reporting.Drawing.Unit.Inch(6.4D);
+            this.Width = Telerik.Reporting.Drawing.Unit.Inch(7.208D);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

@@ -46,13 +46,15 @@ namespace Gafware.Modules.DMS
             this.pageHeaderSection1 = new Telerik.Reporting.PageHeaderSection();
             this.ReportDateTextBox = new Telerik.Reporting.TextBox();
             this.textBox10 = new Telerik.Reporting.TextBox();
-            this.pageFooterSection1 = new Telerik.Reporting.PageFooterSection();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // textBox1
             // 
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.716D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox1.Style.BackgroundColor = System.Drawing.Color.SteelBlue;
+            this.textBox1.Style.Color = System.Drawing.SystemColors.HighlightText;
+            this.textBox1.Style.Font.Bold = true;
             this.textBox1.StyleName = "Office.TableHeader";
             this.textBox1.Value = "Date/Time";
             // 
@@ -60,6 +62,9 @@ namespace Gafware.Modules.DMS
             // 
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.155D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox2.Style.BackgroundColor = System.Drawing.Color.SteelBlue;
+            this.textBox2.Style.Color = System.Drawing.SystemColors.HighlightText;
+            this.textBox2.Style.Font.Bold = true;
             this.textBox2.StyleName = "Office.TableHeader";
             this.textBox2.Value = "Filename";
             // 
@@ -67,6 +72,9 @@ namespace Gafware.Modules.DMS
             // 
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.916D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox11.Style.BackgroundColor = System.Drawing.Color.SteelBlue;
+            this.textBox11.Style.Color = System.Drawing.SystemColors.HighlightText;
+            this.textBox11.Style.Font.Bold = true;
             this.textBox11.StyleName = "Office.TableHeader";
             this.textBox11.Value = "File Type";
             // 
@@ -74,6 +82,9 @@ namespace Gafware.Modules.DMS
             // 
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.01D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox13.Style.BackgroundColor = System.Drawing.Color.SteelBlue;
+            this.textBox13.Style.Color = System.Drawing.SystemColors.HighlightText;
+            this.textBox13.Style.Font.Bold = true;
             this.textBox13.StyleName = "Office.TableHeader";
             this.textBox13.Value = "IP Address";
             // 
@@ -81,6 +92,9 @@ namespace Gafware.Modules.DMS
             // 
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.696D), Telerik.Reporting.Drawing.Unit.Inch(0.2D));
+            this.textBox3.Style.BackgroundColor = System.Drawing.Color.SteelBlue;
+            this.textBox3.Style.Color = System.Drawing.SystemColors.HighlightText;
+            this.textBox3.Style.Font.Bold = true;
             this.textBox3.StyleName = "Office.TableHeader";
             this.textBox3.Value = "Search Terms";
             // 
@@ -153,6 +167,7 @@ namespace Gafware.Modules.DMS
             tableGroup6.Groupings.Add(new Telerik.Reporting.Grouping(null));
             tableGroup6.Name = "detail";
             this.table1.RowGroups.Add(tableGroup6);
+            this.table1.RowHeadersPrintOnEveryPage = true;
             this.table1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.493D), Telerik.Reporting.Drawing.Unit.Inch(0.8D));
             this.table1.StyleName = "Office.TableNormal";
             // 
@@ -239,52 +254,50 @@ namespace Gafware.Modules.DMS
             // textBox9
             // 
             this.textBox9.Name = "ReportNameTextBox";
-            this.textBox9.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.491D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
+            this.textBox9.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(4D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
+            this.textBox9.Style.Color = System.Drawing.Color.SteelBlue;
             this.textBox9.Style.Font.Bold = true;
             this.textBox9.Style.Font.Name = "Segoe UI";
-            this.textBox9.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(14D);
+            this.textBox9.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(20D);
             this.textBox9.Value = "Activity Report";
             // 
             // pageHeaderSection1
             // 
-            this.pageHeaderSection1.Height = Telerik.Reporting.Drawing.Unit.Inch(1D);
+            this.pageHeaderSection1.Height = Telerik.Reporting.Drawing.Unit.Inch(0.8D);
             this.pageHeaderSection1.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.textBox9,
-            this.ReportDateTextBox});
+            this.ReportDateTextBox,
+            this.textBox10});
             this.pageHeaderSection1.Name = "pageHeaderSection1";
             // 
             // ReportDateTextBox
             // 
             this.ReportDateTextBox.Format = "";
-            this.ReportDateTextBox.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.5D));
+            this.ReportDateTextBox.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
             this.ReportDateTextBox.Name = "ReportDateTextBox";
             this.ReportDateTextBox.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(6.491D), Telerik.Reporting.Drawing.Unit.Inch(0.4D));
+            this.ReportDateTextBox.Style.Color = System.Drawing.Color.SteelBlue;
             this.ReportDateTextBox.Style.Font.Bold = true;
             this.ReportDateTextBox.Style.Font.Name = "Segoe UI";
-            this.ReportDateTextBox.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(14D);
+            this.ReportDateTextBox.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Point(12D);
+            this.ReportDateTextBox.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.ReportDateTextBox.Value = "";
             // 
             // textBox10
             // 
-            this.textBox10.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(4.925D), Telerik.Reporting.Drawing.Unit.Inch(0.606D));
+            this.textBox10.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(4.925D), Telerik.Reporting.Drawing.Unit.Inch(0.006D));
             this.textBox10.Name = "ReportPageNumberTextBox";
             this.textBox10.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.575D), Telerik.Reporting.Drawing.Unit.Inch(0.394D));
             this.textBox10.Style.Font.Name = "Segoe UI";
+            this.textBox10.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
+            this.textBox10.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Top;
             this.textBox10.Value = "Page: {PageNumber}";
-            // 
-            // pageFooterSection1
-            // 
-            this.pageFooterSection1.Height = Telerik.Reporting.Drawing.Unit.Inch(1D);
-            this.pageFooterSection1.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
-            this.textBox10});
-            this.pageFooterSection1.Name = "pageFooterSection1";
             // 
             // DMSActivityReport
             // 
             this.Items.AddRange(new Telerik.Reporting.ReportItemBase[] {
             this.detailSection1,
-            this.pageHeaderSection1,
-            this.pageFooterSection1});
+            this.pageHeaderSection1});
             this.Name = "DMSActivityReport";
             this.PageSettings.Margins = new Telerik.Reporting.Drawing.MarginsU(Telerik.Reporting.Drawing.Unit.Inch(1D), Telerik.Reporting.Drawing.Unit.Inch(1D), Telerik.Reporting.Drawing.Unit.Inch(1D), Telerik.Reporting.Drawing.Unit.Inch(1D));
             this.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Letter;
@@ -345,7 +358,6 @@ namespace Gafware.Modules.DMS
         private Telerik.Reporting.TextBox textBox9;
         private Telerik.Reporting.PageHeaderSection pageHeaderSection1;
         private Telerik.Reporting.TextBox textBox10;
-        private Telerik.Reporting.PageFooterSection pageFooterSection1;
         private Telerik.Reporting.TextBox textBox11;
         private Telerik.Reporting.TextBox textBox13;
         private Telerik.Reporting.TextBox ReportDateTextBox;
