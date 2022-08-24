@@ -248,6 +248,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SerializerHelper.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="TagList.ascx.cs">
       <DependentUpon>TagList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

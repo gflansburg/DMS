@@ -427,6 +427,13 @@ namespace Gafware.Modules.DMS
             Regex regExEdge2 = new Regex(@"Edg/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExOpera = new Regex(@"OPR/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExFxiOS = new Regex(@"fxios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Firefox for iOS 
+            Regex regExCriOS = new Regex(@"crios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Chrome for iOS 
+            Regex regExEdgiOS = new Regex(@"edgios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Edge for iOS 
+            Regex regExEdgA = new Regex(@"edga\/([\w\.-]+)", RegexOptions.IgnoreCase); // Edge for Android
+            Regex regExUC = new Regex(@"ucbrowser\/([\w\.-]+)", RegexOptions.IgnoreCase); // UCBrowser
+            Regex regExBrave = new Regex(@"brave\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
+            Regex regExBC = new Regex(@"brave chrome\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
+
             if (regExEdge1.IsMatch(ua) || regExEdge2.IsMatch(ua))
             {
                 browser = "Edge";
@@ -438,6 +445,26 @@ namespace Gafware.Modules.DMS
             else if (regExFxiOS.IsMatch(ua))
             {
                 browser = "Firefox";
+            }
+            else if (regExCriOS.IsMatch(ua))
+            {
+                browser = "Chrome";
+            }
+            else if (regExEdgiOS.IsMatch(ua) || regExEdgA.IsMatch(ua))
+            {
+                browser = "Edge";
+            }
+            else if (regExUC.IsMatch(ua))
+            {
+                browser = "UC Browser";
+            }
+            else if (regExBC.IsMatch(ua) || regExBrave.IsMatch(ua) || ua.Contains("Brave", StringComparison.OrdinalIgnoreCase))
+            {
+                browser = "Brave";
+            }
+            if (ua.Contains("Googlebot", StringComparison.OrdinalIgnoreCase) && request.Browser.Crawler)
+            {
+                browser = "Googlebot";
             }
             return browser + (ua.Contains("Mobile") ? " Mobile" : string.Empty);
         }
@@ -471,7 +498,7 @@ namespace Gafware.Modules.DMS
                 return "Kindle Fire";
             }
 
-            if (ua.Contains("RIM Tablet") || (ua.Contains("BB") && ua.Contains("Mobile")))
+            if (ua.Contains("RIM Tablet") || ((ua.Contains("BB") || ua.Contains("BlackBerry")) && ua.Contains("Mobile")))
             {
                 return "Black Berry";
             }
@@ -479,6 +506,16 @@ namespace Gafware.Modules.DMS
             if (ua.Contains("Mac OS"))
             {
                 return "Mac OS";
+            }
+
+            if (ua.Contains("Xbox One"))
+            {
+                return "Xbox One";
+            }
+
+            if (ua.Contains("Xbox"))
+            {
+                return "Xbox";
             }
 
             if (ua.Contains("Windows NT 5.1") || ua.Contains("Windows NT 5.2"))
@@ -552,6 +589,13 @@ namespace Gafware.Modules.DMS
             Regex regExEdge2 = new Regex(@"Edg/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExOpera = new Regex(@"OPR/(?'version'(?'major'\d+)(?'minor'\.\d+))");
             Regex regExFxiOS = new Regex(@"fxios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Firefox for iOS 
+            Regex regExCriOS = new Regex(@"crios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Chrome for iOS 
+            Regex regExEdgiOS = new Regex(@"edgios\/([\w\.-]+)", RegexOptions.IgnoreCase); // Edge for iOS 
+            Regex regExEdgA = new Regex(@"edga\/([\w\.-]+)", RegexOptions.IgnoreCase); // Edge for Android
+            Regex regExUC = new Regex(@"ucbrowser\/([\w\.-]+)", RegexOptions.IgnoreCase); // UCBrowser
+            Regex regExBrave = new Regex(@"brave\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
+            Regex regExBC = new Regex(@"brave chrome\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
+            Regex regExSafariiOS = new Regex(@"safari\/([\w\.-]+)", RegexOptions.IgnoreCase); // Safari for iOS 
             if (regExEdge1.IsMatch(ua))
             {
                 string[] match = regExEdge1.Split(ua);
@@ -579,6 +623,69 @@ namespace Gafware.Modules.DMS
             else if (regExFxiOS.IsMatch(ua))
             {
                 Match match = regExFxiOS.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if(nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExCriOS.IsMatch(ua))
+            {
+                Match match = regExCriOS.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExEdgiOS.IsMatch(ua))
+            {
+                Match match = regExEdgiOS.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExEdgA.IsMatch(ua))
+            {
+                Match match = regExEdgA.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExUC.IsMatch(ua))
+            {
+                Match match = regExUC.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExBC.IsMatch(ua))
+            {
+                Match match = regExBC.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExBrave.IsMatch(ua))
+            {
+                Match match = regExBrave.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExSafariiOS.IsMatch(ua) && request.Browser.Browser.Equals("Safari", StringComparison.OrdinalIgnoreCase) && (ua.Contains("iPad") || ua.Contains("iPhone")))
+            {
+                Match match = regExSafariiOS.Match(ua);
                 string[] nameAndVersion = match.Value.Split('/');
                 if (nameAndVersion.Length > 1)
                 {
@@ -617,7 +724,7 @@ namespace Gafware.Modules.DMS
 
             return version;
         }
-
+        
         private static string GetNewLogFilename(string strDirectory, DateTime date, string strFilePrefix)
         {
             int fileCount = 1;
