@@ -433,6 +433,7 @@ namespace Gafware.Modules.DMS
             Regex regExUC = new Regex(@"ucbrowser\/([\w\.-]+)", RegexOptions.IgnoreCase); // UCBrowser
             Regex regExBrave = new Regex(@"brave\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
             Regex regExBC = new Regex(@"brave chrome\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
+            Regex regExSamsung = new Regex(@"samsungbrowser\/([\w\.-]+)", RegexOptions.IgnoreCase); // Samsung Browser
 
             if (regExEdge1.IsMatch(ua) || regExEdge2.IsMatch(ua))
             {
@@ -461,6 +462,10 @@ namespace Gafware.Modules.DMS
             else if (regExBC.IsMatch(ua) || regExBrave.IsMatch(ua) || ua.Contains("Brave", StringComparison.OrdinalIgnoreCase))
             {
                 browser = "Brave";
+            }
+            else if (regExSamsung.IsMatch(ua))
+            {
+                browser = "Samsung";
             }
             if (ua.Contains("Googlebot", StringComparison.OrdinalIgnoreCase) && request.Browser.Crawler)
             {
@@ -595,6 +600,7 @@ namespace Gafware.Modules.DMS
             Regex regExUC = new Regex(@"ucbrowser\/([\w\.-]+)", RegexOptions.IgnoreCase); // UCBrowser
             Regex regExBrave = new Regex(@"brave\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
             Regex regExBC = new Regex(@"brave chrome\/([\w\.-]+)", RegexOptions.IgnoreCase); // Brave
+            Regex regExSamsung = new Regex(@"samsungbrowser\/([\w\.-]+)", RegexOptions.IgnoreCase); // Samsung Browser
             Regex regExSafariiOS = new Regex(@"safari\/([\w\.-]+)", RegexOptions.IgnoreCase); // Safari for iOS 
             if (regExEdge1.IsMatch(ua))
             {
@@ -624,7 +630,7 @@ namespace Gafware.Modules.DMS
             {
                 Match match = regExFxiOS.Match(ua);
                 string[] nameAndVersion = match.Value.Split('/');
-                if(nameAndVersion.Length > 1)
+                if (nameAndVersion.Length > 1)
                 {
                     return nameAndVersion[1];
                 }
@@ -677,6 +683,15 @@ namespace Gafware.Modules.DMS
             else if (regExBrave.IsMatch(ua))
             {
                 Match match = regExBrave.Match(ua);
+                string[] nameAndVersion = match.Value.Split('/');
+                if (nameAndVersion.Length > 1)
+                {
+                    return nameAndVersion[1];
+                }
+            }
+            else if (regExSamsung.IsMatch(ua))
+            {
+                Match match = regExSamsung.Match(ua);
                 string[] nameAndVersion = match.Value.Split('/');
                 if (nameAndVersion.Length > 1)
                 {
