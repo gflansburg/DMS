@@ -10,12 +10,18 @@
 ' 
 */
 
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Web;
 using System.Web.Configuration;
 //using System.Xml;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Search;
+using DotNetNuke.Services.Search.Entities;
 
 namespace Gafware.Modules.DMS.Components
 {
@@ -39,9 +45,76 @@ namespace Gafware.Modules.DMS.Components
     /// -----------------------------------------------------------------------------
 
     //uncomment the interfaces to add the support.
-    public class FeatureController : IUpgradeable
+    public class FeatureController : ModuleSearchBase, IUpgradeable
     {
-
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
+        {
+            List<SearchDocument> searchDocuments = new List<SearchDocument>();
+            PortalInfo portalInfo = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(moduleInfo.PortalID);
+            if (portalInfo != null)
+            {
+                string portalAlias = String.Empty;
+                PortalAliasController portalAliasController = new PortalAliasController();
+                foreach (PortalAliasInfo portalAliasInfo in portalAliasController.GetPortalAliasesByPortalId(moduleInfo.PortalID))
+                {
+                    if (portalAliasInfo.IsPrimary)
+                    {
+                        portalAlias = portalAliasInfo.HTTPAlias;
+                        break;
+                    }
+                }
+                if (!string.IsNullOrEmpty(portalAlias))
+                {
+                    DMSPortalSettings portalSettings = DocumentController.GetPortalSettings(moduleInfo.PortalID);
+                    if (portalSettings != null && portalSettings.EnableDNNSearch)
+                    {
+                        List<Document> documents = DocumentController.GetAllDocuments(moduleInfo.PortalID, portalSettings.PortalWideRepository ? 0 : moduleInfo.TabModuleID).Where(d => d.LastModifiedOnDate.ToUniversalTime() >= beginDateUtc).ToList();
+                        foreach (Document document in documents)
+                        {
+                            SearchDocument searchDocument = new SearchDocument()
+                            {
+                                ModuleId = moduleInfo.ModuleID,
+                                ModuleDefId = moduleInfo.ModuleDefID,
+                                PortalId = moduleInfo.PortalID,
+                                TabId = moduleInfo.TabID,
+                                Title = document.DocumentName,
+                                ModifiedTimeUtc = document.LastModifiedOnDate.ToUniversalTime(),
+                                Description = document.DocumentDetails,
+                                IsActive = (document.IsPublic && document.IsSearchable && (!document.ActivationDate.HasValue || document.ActivationDate <= DateTime.Now) && (!document.ExpirationDate.HasValue || document.ExpirationDate > DateTime.Now)),
+                                Url = string.Format("{0}/ctl/GetDocuments/mid/{1}/q/{2}", moduleInfo.ParentTab.TabPath.Replace("//", "/"), moduleInfo.ModuleID, Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("docids={0}", document.DocumentId))))),
+                                Permissions = "Administrators;",
+                                Tags = document.Tags.Select(t => t.Tag.TagName).ToList(),
+                                UniqueKey = document.DocumentId.ToString(),
+                                RoleId = -1,
+                                AuthorUserId = (document.IsGroupOwner ? -1 : document.CreatedByUserID)
+                            };
+                            if (document.UseCategorySecurityRoles)
+                            {
+                                foreach (DocumentCategory category in document.Categories)
+                                {
+                                    RoleInfo role = Components.UserController.GetRoleById(moduleInfo.PortalID, category.Category.RoleId);
+                                    if (!searchDocument.Permissions.Contains(role.RoleName + ";", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        searchDocument.Permissions += role.RoleName + ";";
+                                    }
+                                }
+                                if (searchDocument.Permissions.EndsWith(";"))
+                                {
+                                    searchDocument.Permissions = searchDocument.Permissions.Substring(0, searchDocument.Permissions.Length - 1);
+                                }
+                            }
+                            else
+                            {
+                                RoleInfo role = Components.UserController.GetRoleById(moduleInfo.PortalID, document.SecurityRoleId);
+                                searchDocument.Permissions += role.RoleName;
+                            }
+                            searchDocuments.Add(searchDocument);
+                        }
+                    }
+                }
+            }
+            return searchDocuments;
+        }
 
         #region Optional Interfaces
 

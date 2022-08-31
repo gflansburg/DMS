@@ -261,4 +261,7 @@
   <data name="lblCreateWord.Text" xml:space="preserve">
     <value>Create Word Thumbnails</value>
   </data>
+  <data name="lblEnableDNNSearch.Text" xml:space="preserve">
+    <value>Enable DNN Search</value>
+  </data>
 </root>

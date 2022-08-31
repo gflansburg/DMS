@@ -569,7 +569,7 @@ namespace Gafware.Modules.DMS.Data
 
         public override int SavePortalSettings(Components.DMSPortalSettings objPortalSettings)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SavePortalSettings", objPortalSettings.PortalId, objPortalSettings.PortalWideRepository));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, NamePrefix + "SavePortalSettings", objPortalSettings.PortalId, objPortalSettings.PortalWideRepository, objPortalSettings.EnableDNNSearch));
         }
 
         public override void AddDefaultFileExtensions(int portalId, int tabModuleId)

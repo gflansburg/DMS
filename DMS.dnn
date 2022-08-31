@@ -49,6 +49,7 @@
             <businessControllerClass>Gafware.Modules.DMS.Components.FeatureController</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Upgradeable" />
+              <supportedFeature type="Searchable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>

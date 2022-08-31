@@ -14,6 +14,13 @@
             </div>
         </div>
 
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblEnableDNNSearch" runat="server" ControlName="chkEnableDNNSearch" Suffix=":" /> 
+            <div class="toggleButton" id="chkEnableDNNSearchToggleButton" runat="server">
+                <label for='<%= chkEnableDNNSearch.ClientID %>'><asp:CheckBox ID="chkEnableDNNSearch" runat="server" /><span style="top: -7px; left: -7px;"></span></label>
+            </div>
+        </div>
+
         <asp:Panel ID="pnlName" runat="server">
             <div class="dnnFormItem">
                 <dnn:Label ID="lblName" runat="server" ControlName="tbName" Suffix=":" /> 

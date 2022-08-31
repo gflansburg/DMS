@@ -232,5 +232,14 @@ namespace Gafware.Modules.DMS
                 return (settings != null ? settings.PortalWideRepository : true);
             }
         }
+
+        public bool EnableDNNSearch
+        {
+            get
+            {
+                Components.DMSPortalSettings settings = Components.DocumentController.GetPortalSettings(PortalId);
+                return (settings != null ? settings.EnableDNNSearch : true);
+            }
+        }
     }
 }

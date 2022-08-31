@@ -13,6 +13,7 @@ BEGIN
 	CREATE TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings](
 		[PortalID] [int] NOT NULL,
 		[PortalWideRepository] [bit] NOT NULL,
+		[EnableDNNSearch] [bit] NOT NULL,
 	 CONSTRAINT [PK_{objectQualifier}Gafware_DMS_PortalSettings] PRIMARY KEY CLUSTERED 
 	(
 		[PortalID] ASC
@@ -20,6 +21,8 @@ BEGIN
 	) ON [PRIMARY]
 
 	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PortalSettings_PortalWideRepository]  DEFAULT ((0)) FOR [PortalWideRepository]
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] ADD  CONSTRAINT [DF_{objectQualifier}Gafware_DMS_PortalSettings_EnableDNNSearch]  DEFAULT ((1)) FOR [EnableDNNSearch]
 END
 GO
 
@@ -2890,7 +2893,8 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Gafware_DMS_SavePortalSettings]
 	@PortalID int,
-	@PortalWideRepository bit
+	@PortalWideRepository bit,
+	@EnableDNNSearch bit
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -2900,13 +2904,14 @@ BEGIN
     -- Insert statements for procedure here
 	IF (NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Gafware_DMS_Repository] WHERE PortalID = @PortalID))
 	BEGIN
-		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] (PortalID, PortalWideRepository)
-		VALUES (@PortalID, @PortalWideRepository)
+		INSERT INTO {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings] (PortalID, PortalWideRepository, EnableDNNSearch)
+		VALUES (@PortalID, @PortalWideRepository, @EnableDNNSearch)
 	END
 	ELSE
 	BEGIN
 		UPDATE {databaseOwner}[{objectQualifier}Gafware_DMS_PortalSettings]
-		SET	PortalWideRepository = @PortalWideRepository
+		SET	PortalWideRepository = @PortalWideRepository,
+			EnableDNNSearch = @EnableDNNSearch
 		WHERE PortalID = @PortalID
 	END
 	SELECT @PortalID AS PortalID

@@ -179,6 +179,7 @@ namespace Gafware.Modules.DMS
                     chkShowTips.Checked = ShowTips;
                     chkShowInstructions.Checked = ShowInstructions;
                     chkPortalWideRepository.Checked = PortalWideRepository;
+                    chkEnableDNNSearch.Checked = EnableDNNSearch;
                     tbInstructions.Text = Instructions;
                     pnlInstructions.Visible = chkShowInstructions.Checked;
                     ddlTheme.SelectedIndex = ddlTheme.Items.IndexOf(ddlTheme.Items.FindByValue(Theme));
@@ -245,6 +246,7 @@ namespace Gafware.Modules.DMS
                     settings.PortalId = PortalId;
                 }
                 settings.PortalWideRepository = chkPortalWideRepository.Checked;
+                settings.EnableDNNSearch = chkEnableDNNSearch.Checked;
                 Components.DocumentController.SavePortalSettings(settings);
                 DotNetNuke.Entities.Portals.PortalSettings portalSettings = DotNetNuke.Entities.Portals.PortalSettings.Current;
                 if (repository.SaveLocalFile)

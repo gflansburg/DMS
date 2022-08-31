@@ -23,7 +23,11 @@ namespace Gafware.Modules.DMS.Components
         /// Portal wide repository
         /// </summary>
         public bool PortalWideRepository { get; set; }
-
+        /// <summary>
+        /// Enable DNN Search
+        /// </summary>
+        public bool EnableDNNSearch { get; set; }
+        
         public DMSPortalSettings()
         {
             PortalWideRepository = true;
@@ -35,6 +39,7 @@ namespace Gafware.Modules.DMS.Components
 
             PortalId = Null.SetNullInteger(dr["PortalID"]);
             PortalWideRepository = Null.SetNullBoolean(dr["PortalWideRepository"]);
+            EnableDNNSearch = Null.SetNullBoolean(dr["EnableDNNSearch"]);
         }
 
         public override int KeyID
