@@ -7,6 +7,7 @@ using System.Web.Script.Services;
 using System.ServiceModel.Web;
 using System.Data;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Gafware.Modules.DMS
 {
@@ -178,21 +179,74 @@ namespace Gafware.Modules.DMS
             return string.Concat(controlPath, "/mid/", mid, "/q/", Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("descriptions={0}&docids={1}&fileid={2}&headertext={3}", showDescription.ToString(), documentList, fileId, HttpUtility.UrlEncode(headerText))))));
         }
 
+        public class DMSResult
+        {
+            public string Error { get; set; }
+            public string Result { get; set; }
+        }
+
         [WebMethod]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public void ReorderPackets(int id, int rowIndex)
+        public void ReorderPackets(string list, int id, int rowIndex)
         {
+            DMSResult result = new DMSResult();
             var oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             try
             {
-                Components.PacketController.MovePacket(id > 0 ? id : 0, id < 0 ? id * -1 : 0, rowIndex);
-                Context.Response.Write(oSerializer.Serialize("Success"));
+                List<PacketList.PacketPayload> selectedDocuments = JsonConvert.DeserializeObject<List<PacketList.PacketPayload>>(list);
+                PacketList.PacketPayload packet = selectedDocuments.Find(d => (id > 0 && d.PayloadType == PacketList.PayloadType.Document && d.PacketDocument.DocumentId == id) || (id < 0 && d.PayloadType == PacketList.PayloadType.Tag && d.PacketTag.TagId == Math.Abs(id)));
+                int oldSortOrder = packet.SortOrder;
+                packet.SortOrder = rowIndex;
+                if(rowIndex < oldSortOrder)
+                {
+                    foreach(PacketList.PacketPayload payload in selectedDocuments)
+                    {
+                        if(payload.PayloadType == PacketList.PayloadType.Document)
+                        {
+                            if (payload.PacketDocument.DocumentId != id && payload.SortOrder >= rowIndex && payload.SortOrder < oldSortOrder)
+                            {
+                                payload.SortOrder++;
+                            }
+                        }
+                        if(payload.PayloadType == PacketList.PayloadType.Tag)
+                        {
+                            if (payload.PacketTag.TagId != Math.Abs(id) && payload.SortOrder >= rowIndex && payload.SortOrder < oldSortOrder)
+                            {
+                                payload.SortOrder++;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (PacketList.PacketPayload payload in selectedDocuments)
+                    {
+                        if (payload.PayloadType == PacketList.PayloadType.Document)
+                        {
+                            if (payload.PacketDocument.DocumentId != id && payload.SortOrder <= rowIndex && payload.SortOrder > oldSortOrder)
+                            {
+                                payload.SortOrder--;
+                            }
+                        }
+                        if (payload.PayloadType == PacketList.PayloadType.Tag)
+                        {
+                            if (payload.PacketTag.TagId != Math.Abs(id) && payload.SortOrder <= rowIndex && payload.SortOrder > oldSortOrder)
+                            {
+                                payload.SortOrder--;
+                            }
+                        }
+                    }
+                }
+                //Components.PacketController.MovePacket(id > 0 ? id : 0, id < 0 ? id * -1 : 0, rowIndex);
+                //result.Result = "Success";
+                result.Result = JsonConvert.SerializeObject(selectedDocuments.OrderBy(d => d.SortOrder));
             }
             catch (Exception ex)
             {
-                Context.Response.Write(oSerializer.Serialize("Failed: " + ex.Message));
+                result.Error = ex.Message;
             }
+            Context.Response.Write(oSerializer.Serialize(result));
         }
 
         [WebMethod]
@@ -415,7 +469,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine(String.Format("    <File_Type>{0}</File_Type>", fileType));
             sb.AppendLine(String.Format("    <Search_Terms>{0}</Search_Terms>", HttpUtility.HtmlEncode(searchTerms)));
             sb.AppendLine("  </datum>");
-            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "Gafware_DMS_" + portalId + "_");
+            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "OUHR_DMS_" + portalId + "_");
             WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
         }
 
@@ -630,7 +684,7 @@ namespace Gafware.Modules.DMS
             {
                 Match match = regExFxiOS.Match(ua);
                 string[] nameAndVersion = match.Value.Split('/');
-                if (nameAndVersion.Length > 1)
+                if(nameAndVersion.Length > 1)
                 {
                     return nameAndVersion[1];
                 }

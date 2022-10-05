@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using System.Collections;
 using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Gafware.Modules.DMS
 {
@@ -98,11 +99,31 @@ namespace Gafware.Modules.DMS
         }
 
         [Serializable]
+        public class PayloadDocument
+        {
+            public int DocumentId { get; set; }
+            public int PacketDocId { get; set; }
+            public int FileId { get; set; }
+            public int FileCount { get; set; }
+            public string DocumentName { get; set; }
+            public DateTime? ActivationDate { get; set; }
+            public DateTime? ExpirationDate { get; set; }
+        }
+
+        [Serializable]
+        public class PayloadTag
+        {
+            public int TagId { get; set; }
+            public int PacketTagId { get; set; }
+            public string TagName { get; set; }
+        }
+
+        [Serializable]
         public class PacketPayload : IComparable<PacketPayload>
         {
             public PayloadType PayloadType { get; set; }
-            public Components.PacketDocument PacketDocument { get; set; }
-            public Components.PacketTag PacketTag { get; set; }
+            public PayloadDocument PacketDocument { get; set; }
+            public PayloadTag PacketTag { get; set; }
             public int SortOrder { get; set; }
 
             public PacketPayload()
@@ -114,24 +135,29 @@ namespace Gafware.Modules.DMS
                 return SortOrder.CompareTo(other.SortOrder);
             }
 
-            public PacketPayload(Components.Document doc, int packetId, int sortOrder)
+            public PacketPayload(Components.Document doc, int sortOrder)
             {
-                this.PacketDocument = new Components.PacketDocument();
-                this.PacketDocument.Document = doc;
-                this.PacketDocument.DocumentId = doc.DocumentId;
-                this.PacketDocument.PacketId = packetId;
-                this.PayloadType = PayloadType.Document;
-                this.SortOrder = sortOrder;
+                PacketDocument = new PayloadDocument()
+                {
+                    DocumentId = doc.DocumentId,
+                    DocumentName = doc.DocumentName,
+                    ActivationDate = doc.ActivationDate,
+                    ExpirationDate = doc.ExpirationDate,
+                    FileCount = doc.Files.FindAll(p => p.Status.StatusId == 1).Count
+            };
+                PayloadType = PayloadType.Document;
+                SortOrder = sortOrder;
             }
 
-            public PacketPayload(Components.Tag tag, int packetId, int sortOrder)
+            public PacketPayload(Components.Tag tag, int sortOrder)
             {
-                this.PacketTag = new Components.PacketTag();
-                this.PacketTag.Tag = tag;
-                this.PacketTag.TagId = tag.TagId;
-                this.PacketTag.PacketId = packetId;
-                this.PayloadType = PayloadType.Tag;
-                this.SortOrder = sortOrder;
+                PacketTag = new PayloadTag()
+                {
+                    TagId = tag.TagId,
+                    TagName = tag.TagName
+                };
+                PayloadType = PayloadType.Tag;
+                SortOrder = sortOrder;
             }
         }
 
@@ -139,15 +165,16 @@ namespace Gafware.Modules.DMS
         {
             get
             {
-                if (ViewState["SelectedDocuments"] == null)
+                string json = selectedDocuments.Value;
+                if(string.IsNullOrEmpty(json))
                 {
-                    ViewState["SelectedDocuments"] = new List<PacketPayload>();
+                    return new List<PacketPayload>();
                 }
-                return (List<PacketPayload>)ViewState["SelectedDocuments"];
+                return JsonConvert.DeserializeObject<List<PacketPayload>>(json);
             }
             set
             {
-                ViewState["SelectedDocuments"] = value;
+                selectedDocuments.Value = JsonConvert.SerializeObject(value);
             }
         }
 
@@ -164,11 +191,13 @@ namespace Gafware.Modules.DMS
                     if (ddFileType != null)
                     {
                         int documentID = Convert.ToInt32(subItemID.Value);
-                        PacketPayload doc = SelectedDocuments.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == documentID);
+                        List<PacketPayload> docs = SelectedDocuments;
+                        PacketPayload doc = docs.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == documentID);
                         if (doc != null)
                         {
                             doc.PacketDocument.FileId = Convert.ToInt32(ddFileType.SelectedValue);
                         }
+                        SelectedDocuments = docs;
                     }
                 }
             }
@@ -197,18 +226,20 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("      row2.css(\"background-color\", \"#F7F7F7\");");
                 sb.AppendLine("    }");
                 sb.AppendLine("  });");
+                sb.AppendLine("  var selectedDocs = $('#" + selectedDocuments.ClientID + "').val();");
                 sb.AppendLine("  $.ajax({");
                 sb.AppendLine("    type: \"POST\",");
                 sb.AppendLine("    dataType: \"json\",");
                 sb.AppendLine("    url: \"" + ControlPath + "DMSController.asmx/ReorderPackets\",");
-                sb.AppendLine("    data: { id: $(row)[0].id, rowIndex: $(row)[0].rowIndex },");
+                sb.AppendLine("    data: { list: selectedDocs, id: $(row)[0].id, rowIndex: $(row)[0].rowIndex },");
                 sb.AppendLine("    async: true,");
                 sb.AppendLine("    success: function (msg) {");
-                sb.AppendLine("      if(msg === 'Success') {");
+                sb.AppendLine("      if(msg.Result.length > 0) {");
                 sb.AppendLine("        $(row).highlightFade({ color: 'rgb(255, 241, 168)', end: ($(row)[0].rowIndex % 2) == 0 ? 'White' : '#F7F7F7', speed: 1000, final: ($(row)[0].rowIndex % 2) == 0 ? 'White' : '#F7F7F7' });");
+                sb.AppendLine("        $('#" + selectedDocuments.ClientID + "').val(msg.Result);");
                 sb.AppendLine("      } else {");
-                sb.AppendLine("          $.alert({ title: 'Error', content: msg });");
-                //sb.AppendLine("        alert(msg);");
+                sb.AppendLine("          $.alert({ title: 'Error', content: msg.Error });");
+                //sb.AppendLine("        alert(msg.Error);");
                 sb.AppendLine("      }");
                 sb.AppendLine("    }");
                 sb.AppendLine("  });");
@@ -250,7 +281,7 @@ namespace Gafware.Modules.DMS
                 sb.AppendLine("}");
                 sb.AppendLine("function nameKeyPress(event) {");
                 sb.AppendLine("  var fileCount = $('input#" + hidFileCount.ClientID + "');");
-                sb.AppendLine("  if (parseInt(fileCount.val(), 10) > 1) {");
+                sb.AppendLine("  if (parseInt(fileCount.val(), 10) > 1 && event.which === 13) {");
                 sb.AppendLine("    setTimeout(\"" + Page.ClientScript.GetPostBackClientHyperlink(lnkCustomHeaderPostback, String.Empty) + ";\", 10);");
                 sb.AppendLine("  }");
                 sb.AppendLine("  return true;");
@@ -545,7 +576,7 @@ namespace Gafware.Modules.DMS
         {
             try
             {
-                if (!IsAdmin())
+                if (!IsDMSUser())
                 {
                     base.Response.Redirect(_navigationManager.NavigateURL(), true);
                 }
@@ -569,6 +600,8 @@ namespace Gafware.Modules.DMS
                 preview.Value = "0";
                 if (!IsPostBack)
                 {
+                    lblInstructions.Text = Instructions.Replace("documents", "packets");
+                    btnSearch.Text = LocalizeString(btnSearch.ID);
                     btnSave.Text = LocalizeString(btnSave.ID);
                     btnEditName.Text = LocalizeString(btnEditName.ID);
                     btnCancel.Text = LocalizeString(btnCancel.ID);
@@ -674,6 +707,10 @@ namespace Gafware.Modules.DMS
                     //packets = packets.FindAll(p => (!p.IsGroupOwner && p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue)) || (p.IsGroupOwner && user != null && user.IsInRole(Components.UserController.GetRoleById(PortalId, p.CreatedByUserID).RoleName)));
                     int userId = Convert.ToInt32(ddOwner.SelectedValue);
                     packets = packets.FindAll(p => (!p.IsGroupOwner && p.CreatedByUserID == Convert.ToInt32(ddOwner.SelectedValue)) || (p.IsGroupOwner && DocumentController.UserIsInRole(userId, p.CreatedByUserID)));
+                }
+                if(!string.IsNullOrEmpty(tbKeywords.Text))
+                {
+                    packets = packets.FindAll(p => p.Name.Contains(tbKeywords.Text, StringComparison.OrdinalIgnoreCase));
                 }
                 System.Data.DataTable dtResult = Generic.ListToDataTable(packets);
                 dataView = new System.Data.DataView(dtResult);
@@ -914,24 +951,7 @@ namespace Gafware.Modules.DMS
                 //rblShowDescription.SelectedIndex = (packet.ShowDescription ? 0 : 1);
                 cbShowDescription.Checked = packet.ShowDescription;
                 cbShowPacketDescription.Checked = packet.ShowPacketDescription;
-                SelectedDocuments.Clear();
-                foreach (Components.PacketDocument doc in packet.Documents)
-                {
-                    PacketPayload payload = new PacketPayload();
-                    payload.PayloadType = PayloadType.Document;
-                    payload.PacketDocument = doc;
-                    payload.SortOrder = doc.SortOrder;
-                    SelectedDocuments.Add(payload);
-                }
-                foreach (Components.PacketTag tag in packet.Tags)
-                {
-                    PacketPayload payload = new PacketPayload();
-                    payload.PayloadType = PayloadType.Tag;
-                    payload.PacketTag = tag;
-                    payload.SortOrder = tag.SortOrder;
-                    SelectedDocuments.Add(payload);
-                }
-                SelectedDocuments = SelectedDocuments.OrderBy(o => o.SortOrder).ToList();
+                LoadSelectedDocuments(packet);
                 gvPackets.DataSource = SelectedDocuments;
                 gvPackets.DataBind();
                 SetLinkUrl();
@@ -951,6 +971,44 @@ namespace Gafware.Modules.DMS
                 btnSave.Visible = false;
                 btnCancel.Text = "Back";
             }
+        }
+
+        private void LoadSelectedDocuments(Packet packet)
+        {
+            packet.Documents = PacketController.GetAllDocumentsForPacket(packet.PacketId, 0);
+            packet.Tags = PacketController.GetAllTagsForPacket(packet.PacketId);
+            List<PacketPayload> docs = new List<PacketPayload>();
+            foreach (Components.PacketDocument doc in packet.Documents)
+            {
+                PacketPayload payload = new PacketPayload();
+                payload.PayloadType = PayloadType.Document;
+                payload.PacketDocument = new PayloadDocument()
+                {
+                    DocumentId = doc.DocumentId,
+                    FileId = doc.FileId,
+                    PacketDocId = doc.PacketDocId,
+                    DocumentName = doc.Document.DocumentName,
+                    ActivationDate = doc.Document.ActivationDate,
+                    ExpirationDate = doc.Document.ExpirationDate,
+                    FileCount = doc.Document.Files.FindAll(p => p.Status.StatusId == 1).Count
+                };
+                payload.SortOrder = doc.SortOrder;
+                docs.Add(payload);
+            }
+            foreach (Components.PacketTag tag in packet.Tags)
+            {
+                PacketPayload payload = new PacketPayload();
+                payload.PayloadType = PayloadType.Tag;
+                payload.PacketTag = new PayloadTag()
+                {
+                    TagId = tag.TagId,
+                    PacketTagId = tag.PacketTagId,
+                    TagName = tag.Tag.TagName
+                };
+                payload.SortOrder = tag.SortOrder;
+                docs.Add(payload);
+            }
+            SelectedDocuments = docs.OrderBy(o => o.SortOrder).ToList();
         }
 
         public class SearchResult
@@ -982,10 +1040,11 @@ namespace Gafware.Modules.DMS
         protected void btnAddDocument_Click(object sender, EventArgs e)
         {
             Components.Document doc = Components.DocumentController.GetDocument(Convert.ToInt32(ddDocuments.SelectedValue));
-            if (doc.DocumentId > 0 && SelectedDocuments.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == doc.DocumentId) == null)
+            List<PacketPayload> docs = SelectedDocuments;
+            if (doc.DocumentId > 0 && docs.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == doc.DocumentId) == null)
             {
-                SelectedDocuments.Add(new PacketPayload(doc, PacketID, SelectedDocuments.Count + 1));
-                gvPackets.DataSource = SelectedDocuments;
+                docs.Add(new PacketPayload(doc, docs.Count + 1));
+                gvPackets.DataSource = SelectedDocuments = docs;
                 gvPackets.DataBind();
                 SetLinkUrl();
             }
@@ -998,18 +1057,19 @@ namespace Gafware.Modules.DMS
             HiddenField subItemID = (HiddenField)row.FindControl("subItemID");
             HiddenField payloadType = (HiddenField)row.FindControl("payloadType");
             PayloadType type = (PayloadType)Enum.Parse(typeof(PayloadType), payloadType.Value);
+            List<PacketPayload> docs = SelectedDocuments;
             if (type == PayloadType.Document)
             {
 
                 int documentID = Convert.ToInt32(subItemID.Value);
-                SelectedDocuments.Remove(SelectedDocuments.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == documentID));
+                docs.Remove(docs.Find(p => p.PayloadType == PayloadType.Document && p.PacketDocument.DocumentId == documentID));
             }
             else
             {
                 int tagID = Convert.ToInt32(subItemID.Value);
-                SelectedDocuments.Remove(SelectedDocuments.Find(p => p.PayloadType == PayloadType.Tag && p.PacketTag.TagId == tagID));
+                docs.Remove(SelectedDocuments.Find(p => p.PayloadType == PayloadType.Tag && p.PacketTag.TagId == tagID));
             }
-            gvPackets.DataSource = SelectedDocuments;
+            gvPackets.DataSource = SelectedDocuments = docs;
             gvPackets.DataBind();
             SetLinkUrl();
         }
@@ -1054,11 +1114,10 @@ namespace Gafware.Modules.DMS
                 int fileCount = GetFileCount;
                 if (fileCount > 0)
                 {
-                    List<PacketPayload> items = SelectedDocuments.FindAll(p => p.PayloadType == PayloadType.Document && ((!p.PacketDocument.Document.ActivationDate.HasValue || DateTime.Now > p.PacketDocument.Document.ActivationDate.Value) && (!p.PacketDocument.Document.ExpirationDate.HasValue || DateTime.Now <= p.PacketDocument.Document.ExpirationDate.Value)));
+                    List<PacketPayload> items = SelectedDocuments.FindAll(p => p.PayloadType == PayloadType.Document && ((!p.PacketDocument.ActivationDate.HasValue || DateTime.Now > p.PacketDocument.ActivationDate.Value) && (!p.PacketDocument.ExpirationDate.HasValue || DateTime.Now <= p.PacketDocument.ExpirationDate.Value)));
                     foreach (PacketPayload payload in items)
                     {
-                        int rowCount = payload.PacketDocument.Document.Files.FindAll(p => p.Status.StatusId == 1).Count;
-                        if (rowCount == fileCount)
+                        if (payload.PacketDocument.FileCount == fileCount)
                         {
                             return true;
                         }
@@ -1108,10 +1167,10 @@ namespace Gafware.Modules.DMS
             get
             {
                 int count = 0;
-                List<PacketPayload> items = SelectedDocuments.FindAll(p => p.PayloadType == PayloadType.Document && ((!p.PacketDocument.Document.ActivationDate.HasValue || DateTime.Now > p.PacketDocument.Document.ActivationDate.Value) && (!p.PacketDocument.Document.ExpirationDate.HasValue || DateTime.Now <= p.PacketDocument.Document.ExpirationDate.Value)));
+                List<PacketPayload> items = SelectedDocuments.FindAll(p => p.PayloadType == PayloadType.Document && ((!p.PacketDocument.ActivationDate.HasValue || DateTime.Now > p.PacketDocument.ActivationDate.Value) && (!p.PacketDocument.ExpirationDate.HasValue || DateTime.Now <= p.PacketDocument.ExpirationDate.Value)));
                 foreach (PacketPayload payload in items)
                 {
-                    count += payload.PacketDocument.Document.Files.FindAll(p => p.Status.StatusId == 1).Count;
+                    count += payload.PacketDocument.FileCount;
                 }
                 return count;
             }
@@ -1122,10 +1181,11 @@ namespace Gafware.Modules.DMS
             get
             {
                 int count = 0;
-                List<PacketPayload> items = SelectedDocuments.FindAll(p => p.PayloadType == PayloadType.Document && ((!p.PacketDocument.Document.ActivationDate.HasValue || DateTime.Now > p.PacketDocument.Document.ActivationDate.Value) && (!p.PacketDocument.Document.ExpirationDate.HasValue || DateTime.Now <= p.PacketDocument.Document.ExpirationDate.Value)));
+                List<PacketPayload> items = SelectedDocuments.FindAll(p => p.PayloadType == PayloadType.Document && ((!p.PacketDocument.ActivationDate.HasValue || DateTime.Now > p.PacketDocument.ActivationDate.Value) && (!p.PacketDocument.ExpirationDate.HasValue || DateTime.Now <= p.PacketDocument.ExpirationDate.Value)));
                 foreach (PacketPayload payload in items)
                 {
-                    count += payload.PacketDocument.Document.Files.FindAll(p => p.Status.StatusId == 1 && (payload.PacketDocument.FileId == 0 || p.FileId == payload.PacketDocument.FileId)).Count;
+                    Document doc = DocumentController.GetDocument(payload.PacketDocument.DocumentId);
+                    count += doc.Files.FindAll(p => p.Status.StatusId == 1 && (payload.PacketDocument.FileId == 0 || p.FileId == payload.PacketDocument.FileId)).Count;
                 }
                 return count;
             }
@@ -1145,7 +1205,7 @@ namespace Gafware.Modules.DMS
                 Label lblType = (Label)e.Row.FindControl("lblType");
                 if (payload.PayloadType == PayloadType.Document)
                 {
-                    List<Components.DMSFile> files = payload.PacketDocument.Document.Files.FindAll(p => p.Status.StatusId == 1);
+                    List<Components.DMSFile> files = DocumentController.GetAllFilesForDocument(payload.PacketDocument.DocumentId).FindAll(p => p.Status.StatusId == 1);
                     ddFileType.DataSource = files;
                     ddFileType.DataBind();
                     ddFileType.Items.Insert(0, new ListItem(LocalizeString("All"), "0"));
@@ -1154,7 +1214,8 @@ namespace Gafware.Modules.DMS
                     lblType.Visible = (ddFileType.Visible ? false : true);
                 }
                 lblType.Text = payload.PayloadType.ToString();
-                e.Row.Attributes["id"] = (payload.PayloadType == PayloadType.Document ? payload.PacketDocument.PacketDocId : payload.PacketTag.PacketTagId * -1).ToString();
+                //e.Row.Attributes["id"] = (payload.PayloadType == PayloadType.Document ? payload.PacketDocument.PacketDocId : payload.PacketTag.PacketTagId * -1).ToString();
+                e.Row.Attributes["id"] = (payload.PayloadType == PayloadType.Document ? payload.PacketDocument.DocumentId : payload.PacketTag.TagId * -1).ToString();
             }
         }
 
@@ -1236,7 +1297,12 @@ namespace Gafware.Modules.DMS
                     PacketDocument doc = packet.Documents.Find(d => d.DocumentId == payload.PacketDocument.DocumentId);
                     if (doc == null)
                     {
-                        doc = payload.PacketDocument;
+                        doc = new PacketDocument()
+                        {
+                            Document = DocumentController.GetDocument(payload.PacketDocument.DocumentId),
+                            DocumentId = payload.PacketDocument.DocumentId,
+                            FileId = payload.PacketDocument.FileId
+                        };
                         packet.Documents.Add(doc);
                     }
                     doc.SortOrder = index;
@@ -1246,7 +1312,11 @@ namespace Gafware.Modules.DMS
                     PacketTag tag = packet.Tags.Find(t => t.TagId == payload.PacketTag.TagId);
                     if (tag == null)
                     {
-                        tag = payload.PacketTag;
+                        tag = new PacketTag()
+                        {
+                            Tag = DocumentController.GetTag(payload.PacketTag.TagId),
+                            TagId = payload.PacketTag.TagId
+                        };
                         packet.Tags.Add(tag);
                     }
                     tag.SortOrder = index;
@@ -1327,10 +1397,11 @@ namespace Gafware.Modules.DMS
         protected void btnAddTag_Click(object sender, EventArgs e)
         {
             Components.Tag tag = Components.DocumentController.GetTag(Convert.ToInt32(ddTags.SelectedValue));
-            if (tag.TagId > 0 && SelectedDocuments.Find(p => p.PayloadType == PayloadType.Tag && p.PacketTag.TagId == tag.TagId) == null)
+            List<PacketPayload> docs = SelectedDocuments;
+            if (tag.TagId > 0 && docs.Find(p => p.PayloadType == PayloadType.Tag && p.PacketTag.TagId == tag.TagId) == null)
             {
-                SelectedDocuments.Add(new PacketPayload(tag, PacketID, SelectedDocuments.Count + 1));
-                gvPackets.DataSource = SelectedDocuments;
+                docs.Add(new PacketPayload(tag, docs.Count + 1));
+                gvPackets.DataSource = SelectedDocuments = docs;
                 gvPackets.DataBind();
                 SetLinkUrl();
             }
@@ -1378,6 +1449,12 @@ namespace Gafware.Modules.DMS
             {
                 ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(UserId.ToString()));
             }
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            letterFilter.Filter = "All";
+            CreateDataTable(true);
         }
     }
 }

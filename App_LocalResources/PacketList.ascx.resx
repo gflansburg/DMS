@@ -303,4 +303,7 @@
   <data name="CurrentGroup.Text" xml:space="preserve">
     <value>-- Current Group --</value>
   </data>
+  <data name="btnSearch.Text" xml:space="preserve">
+    <value>Go!</value>
+  </data>
 </root>

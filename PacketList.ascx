@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PacketList.ascx.cs" Inherits="Gafware.Modules.DMS.PacketList" %>
 <%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
-<%@ Register Src="~/desktopmodules/Gafware/DMS/LetterFilter.ascx" TagPrefix="uc1" TagName="LetterFilter" %>
-<%@ Register Src="~/desktopmodules/Gafware/DMS/DocumentSearchResults.ascx" TagPrefix="uc1" TagName="DocumentSearchResults" %>
+<%@ Register Src="~/desktopmodules/OUHR/DMS/LetterFilter.ascx" TagPrefix="uc1" TagName="LetterFilter" %>
+<%@ Register Src="~/desktopmodules/OUHR/DMS/DocumentSearchResults.ascx" TagPrefix="uc1" TagName="DocumentSearchResults" %>
 <style type="text/css">
     .se-pre-con {
 	    position: fixed;
@@ -36,7 +36,7 @@
             <fieldset>
                 <div class="dnnFormItem">
                     <dnn:Label ID="lblName" runat="server" ControlName="tbName" Suffix=":" /> 
-                    <asp:TextBox ID="tbName" runat="server" MaxLength="50" autofocus ValidationGroup="PacketEditor" style="width: calc(100% - 305px);"></asp:TextBox>
+                    <asp:TextBox ID="tbName" runat="server" MaxLength="50" autofocus ValidationGroup="PacketEditor" style="width: calc(100% - 310px);"></asp:TextBox>
                     <asp:LinkButton ID="btnEditName" CssClass="dnnSecondaryAction" runat="server" CausesValidation="false" Text="Edit Name" OnClick="btnEditName_Click" style="line-height: 20px;" />
                     <asp:HiddenField ID="hidCancelRename" runat="server" />
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="tbName" Display="Dynamic" ErrorMessage="<br />Name is required." CssClass="FormInstructions" Font-Bold="true" ForeColor="Red" ValidationGroup="PacketEditor"></asp:RequiredFieldValidator>
@@ -99,6 +99,7 @@
                 </div>
             </fieldset>
             <span style="font-weight: bold"><%= LocalizeString("DocumentsSelected") %></span><br />
+            <asp:HiddenField ID="selectedDocuments" runat="server" />
             <div style="background-color: #EEEEEE; border: 1px solid #999; text-align: left; margin: 5px 1px 5px 0px; width: 100%; overflow: auto;">
                 <asp:GridView ID="gvPackets" runat="server" BorderWidth="1px" AutoGenerateColumns="False" AllowPaging="False" AllowSorting="False" 
                     RowStyle-BackColor="#eeeeee" RowStyle-Height="18" Width="100%" GridLines="None" ShowHeader="false"
@@ -119,7 +120,7 @@
                                 <asp:HiddenField ID="payloadType" runat="server" Value='<%# Eval("PayloadType").ToString()  %>' />
                                 <asp:HiddenField ID="itemID" runat="server" Value='<%# (PayloadType)Eval("PayloadType") == PayloadType.Document ? Eval("PacketDocument.PacketDocId") : Eval("PacketTag.PacketTagId")  %>' />
                                 <asp:HiddenField ID="subItemID" runat="server" Value='<%# (PayloadType)Eval("PayloadType") == PayloadType.Document ? Eval("PacketDocument.DocumentId") : Eval("PacketTag.TagId")  %>' />
-                                <%# (PayloadType)Eval("PayloadType") == PayloadType.Document ? Eval("PacketDocument.Document.DocumentName") : Eval("PacketTag.Tag.TagName")  %>
+                                <%# (PayloadType)Eval("PayloadType") == PayloadType.Document ? Eval("PacketDocument.DocumentName") : Eval("PacketTag.TagName")  %>
                             </ItemTemplate> 
                         </asp:TemplateField> 
                         <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="150px" ItemStyle-VerticalAlign="Middle"> 
@@ -130,12 +131,12 @@
                         </asp:TemplateField> 
                         <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="24px" ItemStyle-VerticalAlign="Middle"> 
                             <ItemTemplate>
-                                <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete" CommandName="Delete" CausesValidation="false" OnClientClick='<%# GetConfirmDeletePayload((PayloadType)Eval("PayloadType")) %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete" ToolTip="Delete" onMouseOut="MM_swapImgRestore()" /></asp:LinkButton>
+                                <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete" CommandName="Delete" CausesValidation="false" OnClientClick='<%# GetConfirmDeletePayload((PayloadType)Eval("PayloadType")) %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/OUHR/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete" ToolTip="Delete" onMouseOut="MM_swapImgRestore()" /></asp:LinkButton>
                             </ItemTemplate> 
                         </asp:TemplateField> 
                         <asp:TemplateField ItemStyle-CssClass="dragHandle" ItemStyle-Width="20px" ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Middle"> 
                             <ItemTemplate> 
-                                <asp:Image ID="imgAnchor" runat="server" ImageUrl="~/DesktopModules/Gafware/DMS/Images/row-anchor.png" AlternateText="Row Anchor" ToolTip="Drag Me" Visible='<%# GetDocCount() > 1 %>' /> 
+                                <asp:Image ID="imgAnchor" runat="server" ImageUrl="~/DesktopModules/OUHR/DMS/Images/row-anchor.png" AlternateText="Row Anchor" ToolTip="Drag Me" Visible='<%# GetDocCount() > 1 %>' /> 
                             </ItemTemplate> 
                         </asp:TemplateField> 
                     </Columns>
@@ -159,6 +160,19 @@
         </asp:Panel>
     </asp:Panel>
     <asp:Panel ID="pnlGrid" runat="server" style="display: none">
+        <div class="searchBox" id="searchBox" runat="server">
+            <div style="text-align: left; display: inline-block; width: calc(100% - 200px); min-width: 295px;">
+    	        <strong>Enter search term(s): </strong><br style="clear: none" />
+                <div style="width: 100%; padding: 1px 0">
+                    <asp:TextBox ID="tbKeywords" style="min-width: 220px; width: calc(100% - 105px)" runat="server" autofocus placeholder="Search Terms ..."></asp:TextBox>
+					<asp:LinkButton ID="btnSearch" Width="100px" runat="server" Text="Go!" OnClick="btnSearch_Click" CssClass="dnnPrimaryAction" />
+                </div>
+                <asp:Label ID="lblInstructions" runat="server" Text='To view all packets, click "Go!" without typing a keyword.' CssClass="SearchText"></asp:Label>
+            </div>
+            <br style="clear: both" />
+       	    <br />
+        </div>
+        <br />
         <h3><%=LocalizeString("BasicSettings")%></h3>
         <div style="float: left; text-align: left; margin: 0px 0px 5px 1px;">
             <uc1:LetterFilter runat="server" OnClick="letterFilter_Click" ID="letterFilter" />
@@ -180,22 +194,22 @@
 				<Columns>
                         <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="50px" HeaderText="Actions" HeaderStyle-Wrap="false" ItemStyle-Wrap="false"> 
 						<ItemTemplate>
-                            <asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Packet" CommandName="Edit"><asp:Image runat="server" ID="editImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/EditIcon1_16px.gif" AlternateText="Edit Packet" ToolTip="Edit Packet" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/Gafware/DMS/Images/icons/EditIcon2_16px.gif',1)" /></asp:LinkButton>
+                            <asp:LinkButton ID="editButton" runat="server" ToolTip="Edit Packet" CommandName="Edit"><asp:Image runat="server" ID="editImage" ImageUrl="~/DesktopModules/OUHR/DMS/Images/icons/EditIcon1_16px.gif" AlternateText="Edit Packet" ToolTip="Edit Packet" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/OUHR/DMS/Images/icons/EditIcon2_16px.gif',1)" /></asp:LinkButton>
                             &nbsp;
-                            <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Packet" CommandName="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("Name").ToString()) + "\");  return false;" %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete Packet" ToolTip="Delete Packet" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/Gafware/DMS/Images/icons/DeleteIcon2_16px.gif',1)" /></asp:LinkButton>
+                            <asp:LinkButton ID="deleteButton" runat="server" ToolTip="Delete Packet" CommandName="Delete" OnClientClick='<%# "confirmDelete(this, \"" + JSEncode(Eval("Name").ToString()) + "\");  return false;" %>'><asp:Image runat="server" ID="deleteImage" ImageUrl="~/DesktopModules/OUHR/DMS/Images/icons/DeleteIcon1_16px.gif" AlternateText="Delete Packet" ToolTip="Delete Packet" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage(this.id,'','/DesktopModules/OUHR/DMS/Images/icons/DeleteIcon2_16px.gif',1)" /></asp:LinkButton>
 						</ItemTemplate> 
 					</asp:TemplateField> 
-					<asp:TemplateField HeaderText="ID <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="PacketId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
+					<asp:TemplateField HeaderText="ID <img src='/desktopmodules/OUHR/DMS/Images/sortneutral.png' border='0' alt='Sort by ID' />" HeaderStyle-Wrap="false" SortExpression="PacketId" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px">
 						<ItemTemplate>
 							<%# Eval("PacketId") %>
 						</ItemTemplate>
 					</asp:TemplateField>
-					<asp:TemplateField HeaderText="Packet Name <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Packet Name' />" HeaderStyle-Wrap="false" SortExpression="Name">
+					<asp:TemplateField HeaderText="Packet Name <img src='/desktopmodules/OUHR/DMS/Images/sortneutral.png' border='0' alt='Sort by Packet Name' />" HeaderStyle-Wrap="false" SortExpression="Name">
 						<ItemTemplate>
 							<asp:LinkButton ID="lnkPreview" runat="server" CommandName="Preview" CommandArgument='<%# Eval("PacketId") %>' OnCommand="lnkPreview_Command"><%# Eval("Name") %></asp:LinkButton>
 						</ItemTemplate>
 					</asp:TemplateField>
-					<asp:TemplateField HeaderText="Comments <img src='/desktopmodules/Gafware/DMS/Images/sortneutral.png' border='0' alt='Sort by Comments' />" HeaderStyle-Wrap="false" SortExpression="AdminComments" ItemStyle-Width="300px">
+					<asp:TemplateField HeaderText="Comments <img src='/desktopmodules/OUHR/DMS/Images/sortneutral.png' border='0' alt='Sort by Comments' />" HeaderStyle-Wrap="false" SortExpression="AdminComments" ItemStyle-Width="300px">
 						<ItemTemplate>
 							<%# GetComments(Eval("AdminComments").ToString()) %>
 						</ItemTemplate>
