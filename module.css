@@ -31,8 +31,8 @@
     min-height: 25px;
     line-height: 25px;
     padding: 5px;
-	width: calc(100% - 220px);
-    max-width: calc(100% - 220px);
+	width: calc(100% - 240px);
+    max-width: calc(100% - 240px);
     min-width: 320px;
 }
 
@@ -47,12 +47,13 @@
 .dms .dnnFormItem input[type="password"],
 .dms .dnnFormItem input[type="email"],
 .dms .dnnFormItem input[type="tel"],
+.dms .dnnFormItem input[type="date"],
 .dms .dnnFormItem select,
 .dms .dnnFormItem textarea,
 .dms .dnnFormItem a {
     margin-top: 5px !important;
-	max-width: calc(100% - 220px);
-	width: calc(100% - 220px);
+	max-width: calc(100% - 250px);
+	width: calc(100% - 250px);
     min-width: 320px;
 }
 
@@ -715,7 +716,7 @@
     font-size: 12px;
 }
 
-.dms input[type="text"], .dms select, .dms textarea, .dms input[type="email"], .dms input[type="search"], .dms input[type="password"], .dms .riTextBox[type="text"] {
+.dms input[type="text"], .dms select, .dms textarea, .dms input[type="email"], .dms input[type="search"], .dms input[type="password"], .dms .riTextBox[type="text"], .dms input[type="date"], .dms input[type="tel"] {
     padding: 8px !important;
     margin-bottom: 10px !important;
     background: #f3f3f3 !important;
@@ -730,7 +731,12 @@
     vertical-align: top;
 }
 
-.dms input[type="text"], .dms select, .dms input[type="email"], .dms input[type="search"], .dms input[type="password"], .dms .riTextBox[type="text"] {
+.dms input[type="date"] {
+    min-width: 100px !important;
+    width: 100px;
+}
+
+.dms input[type="text"], .dms select, .dms input[type="email"], .dms input[type="search"], .dms input[type="password"], .dms .riTextBox[type="text"], .dms input[type="date"], .dms input[type="tel"] {
     max-height: 35px;
 }
 

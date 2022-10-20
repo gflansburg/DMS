@@ -325,7 +325,18 @@ namespace Gafware.Modules.DMS
                             }
                         }
                     }
-                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, dtActivation.SelectedDate, dtExpiration.SelectedDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), cbReplacePDFTitle.Checked, cbIsPublic.Checked, PortalId, TabModuleId, PortalWideRepository);
+                    DateTime? activationDate = null;
+                    DateTime? expirationDate = null;
+                    DateTime dateTime;
+                    if(DateTime.TryParse(dtActivation.Text, out dateTime))
+                    {
+                        activationDate = dateTime;
+                    }
+                    if(DateTime.TryParse(dtExpiration.Text, out dateTime))
+                    {
+                        expirationDate = dateTime;
+                    }
+                    hidProcessName.Value = DMSController.ImportFiles(ControlPath, tbFilePath.Text, cbSubFolderIsDocumentName.Checked, cbSubFolderIsTag.Checked, cbPrependSubFolderName.Checked, lstSeperator.SelectedValue, lstLevel.SelectedIndex, activationDate, expirationDate, Convert.ToInt32(ddOwner.SelectedValue), cbIsSearchable.Checked, cbUseCategorySecurityRoles.Checked, Convert.ToInt32(ddlSecurityRole.SelectedValue), categories.ToArray(), cbReplacePDFTitle.Checked, cbIsPublic.Checked, PortalId, TabModuleId, PortalWideRepository);
                     bulkInsertWindow.VisibleOnPageLoad = true;
                     hidFileImportStatus.Value = "Started";
                 }

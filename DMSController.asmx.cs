@@ -469,7 +469,7 @@ namespace Gafware.Modules.DMS
             sb.AppendLine(String.Format("    <File_Type>{0}</File_Type>", fileType));
             sb.AppendLine(String.Format("    <Search_Terms>{0}</Search_Terms>", HttpUtility.HtmlEncode(searchTerms)));
             sb.AppendLine("  </datum>");
-            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "OUHR_DMS_" + portalId + "_");
+            string strNewFileName = GetNewLogFilename(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), DateTime.Now, "Gafware_DMS_" + portalId + "_");
             WriteToDocLog(HttpContext.Current.Request.MapPath("~/Portals/_default/Logs"), strNewFileName, sb.ToString());
         }
 

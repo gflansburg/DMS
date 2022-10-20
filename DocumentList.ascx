@@ -133,13 +133,14 @@
                 <asp:Panel ID="pnlActivationDateEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblActivationDate3" runat="server" ResourceKey="lblActivationDate2" ControlName="dtActivation" Suffix=":" /> 
-                        <telerik:RadDatePicker ID="dtActivation" runat="server" DateInput-EmptyMessage="Activation Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="DocumentControl">
+                        <asp:TextBox textmode="Date" id="dtActivation" runat="server" ValidationGroup="DocumentControl" />
+<%--                        <telerik:RadDatePicker ID="dtActivation" runat="server" DateInput-EmptyMessage="Activation Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="DocumentControl">
                             <Calendar ID="Calendar1" runat="server">
                                 <SpecialDays>
                                     <telerik:RadCalendarDay Repeatable="Today" ItemStyle-CssClass="rcToday" />
                                 </SpecialDays>
                             </Calendar>
-                        </telerik:RadDatePicker>
+                        </telerik:RadDatePicker>--%>
                     </div>
                 </asp:Panel>
                 <asp:Panel ID="pnlExpirationDateDetails" runat="server">
@@ -151,13 +152,14 @@
                 <asp:Panel ID="pnlExpirationDateEdit" runat="server" Visible="false">
                     <div class="dnnFormItem">
                         <dnn:Label ID="lblExpirationDate3" runat="server" ResourceKey="lblExpirationDate2" ControlName="dtExpiration" Suffix=":" /> 
-                        <telerik:RadDatePicker ID="dtExpiration" runat="server" Width="140px" DateInput-EmptyMessage="Expiration Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="DocumentControl">
+                        <asp:TextBox textmode="Date" id="dtExpiration" runat="server" ValidationGroup="DocumentControl" />
+<%--                        <telerik:RadDatePicker ID="dtExpiration" runat="server" Width="140px" DateInput-EmptyMessage="Expiration Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="DocumentControl">
                             <Calendar ID="Calendar2" runat="server">
                                 <SpecialDays>
                                     <telerik:RadCalendarDay Repeatable="Today" ItemStyle-CssClass="rcToday" />
                                 </SpecialDays>
                             </Calendar>
-                        </telerik:RadDatePicker>
+                        </telerik:RadDatePicker>--%>
                         <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" CssClass="red-text" ErrorMessage="<br />Expiration Date must be greater than Activation Date." ValidationGroup="DocumentControl" ControlToCompare="dtActivation" ControlToValidate="dtExpiration" Operator="GreaterThanEqual"></asp:CompareValidator>
                     </div>
                 </asp:Panel>
@@ -406,7 +408,7 @@
         <div id="newFileDialog" class="nocontent dms">
             <div id="newFile-content" class="dialog-content">
                 <div class="body_padding">
-                    <div class="RecordDisplay" style="overflow: hidden">
+                    <div class="RecordDisplay" style="overflow: hidden; width: 100%;">
                         <span class="FieldNamePopup"><%= LocalizeString("File") %></span>
                         <span class="FieldValuePopup">
                             <asp:FileUpload ID="upDocument" runat="server" CssClass="inputfile" />

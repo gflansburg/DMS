@@ -39,7 +39,7 @@ namespace Gafware.Modules.DMS
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadDatePicker dtFrom;
+        protected global::System.Web.UI.WebControls.TextBox dtFrom;
 
         /// <summary>
         /// dtTo control.
@@ -48,7 +48,7 @@ namespace Gafware.Modules.DMS
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadDatePicker dtTo;
+        protected global::System.Web.UI.WebControls.TextBox dtTo;
 
         /// <summary>
         /// btnGo control.

@@ -588,7 +588,7 @@ namespace Gafware.Modules.DMS
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadDatePicker dtActivation;
+        protected global::System.Web.UI.WebControls.TextBox dtActivation;
 
         /// <summary>
         /// pnlExpirationDateDetails control.
@@ -642,7 +642,7 @@ namespace Gafware.Modules.DMS
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadDatePicker dtExpiration;
+        protected global::System.Web.UI.WebControls.TextBox dtExpiration;
 
         /// <summary>
         /// CompareValidator1 control.

@@ -92,23 +92,25 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblActivation" runat="server" ControlName="dtActivation" Suffix=":" /> 
-            <telerik:RadDatePicker ID="dtActivation" runat="server" DateInput-EmptyMessage="Activation Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="BulkImport">
+                <asp:TextBox textmode="Date" id="dtActivation" runat="server" ValidationGroup="BulkImport" />
+<%--            <telerik:RadDatePicker ID="dtActivation" runat="server" DateInput-EmptyMessage="Activation Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="BulkImport">
                 <Calendar ID="Calendar1" runat="server">
                     <SpecialDays>
                         <telerik:RadCalendarDay Repeatable="Today" ItemStyle-CssClass="rcToday" />
                     </SpecialDays>
                 </Calendar>
-            </telerik:RadDatePicker>
+            </telerik:RadDatePicker>--%>
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="lblExpiration" runat="server" ControlName="dtExpiration" Suffix=":" /> 
-            <telerik:RadDatePicker ID="dtExpiration" runat="server" DateInput-EmptyMessage="Expiration Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="BulkImport">
+                <asp:TextBox textmode="Date" id="dtExpiration" runat="server" ValidationGroup="BulkImport" />
+<%--            <telerik:RadDatePicker ID="dtExpiration" runat="server" DateInput-EmptyMessage="Expiration Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="BulkImport">
                 <Calendar ID="Calendar2" runat="server">
                     <SpecialDays>
                         <telerik:RadCalendarDay Repeatable="Today" ItemStyle-CssClass="rcToday" />
                     </SpecialDays>
                 </Calendar>
-            </telerik:RadDatePicker>
+            </telerik:RadDatePicker>--%>
             <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" CssClass="red-text" ErrorMessage="<br />Expiration Date must be greater than Activation Date." ValidationGroup="BulkImport" ControlToCompare="dtActivation" ControlToValidate="dtExpiration" Operator="GreaterThanEqual"></asp:CompareValidator>
         </div>
         <div class="dnnFormItem">

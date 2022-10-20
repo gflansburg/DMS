@@ -160,8 +160,8 @@ namespace Gafware.Modules.DMS
                     {
                         ReportUserId = Convert.ToInt32(Request.QueryString["uid"]);
                     }
-                    dtTo.SelectedDate = DateTime.Now;
-                    dtFrom.SelectedDate = DateTime.Now.AddDays(-30);
+                    dtTo.Text = DateTime.Now.ToShortDateString();
+                    dtFrom.Text = DateTime.Now.AddDays(-30).ToShortDateString();
                     LoadReport();
                 }
             }
@@ -305,12 +305,12 @@ namespace Gafware.Modules.DMS
 
         private void LoadReport()
         {
-            DateTime fromDate = dtFrom.SelectedDate.Value;
-            DateTime toDate = dtTo.SelectedDate.Value;
-            if (dtTo.SelectedDate.Value.Date < dtFrom.SelectedDate.Value.Date)
+            DateTime fromDate = DateTime.Parse(dtFrom.Text);
+            DateTime toDate = DateTime.Parse(dtTo.Text);
+            if (fromDate < toDate)
             {
-                toDate = dtFrom.SelectedDate.Value;
-                fromDate = dtTo.SelectedDate.Value;
+                toDate = DateTime.Parse(dtFrom.Text);
+                fromDate = DateTime.Parse(dtTo.Text);
             }
             DateTime date = fromDate;
             List<Components.DocumentActivity> docs = new List<DocumentActivity>();

@@ -26,25 +26,27 @@
         <div style="float: left; text-align: left;">
             <div style="display: inline-block">
                 <span style="vertical-align: middle; font-weight: bold;"><%= LocalizeString("FromDate") %></span>
-                <telerik:RadDatePicker ID="dtFrom" runat="server" DateInput-EmptyMessage="From Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="Report" Width="213px">
+                <asp:TextBox textmode="Date" id="dtFrom" runat="server" ValidationGroup="Report" />
+<%--                <telerik:RadDatePicker ID="dtFrom" runat="server" DateInput-EmptyMessage="From Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="Report" Width="213px">
                     <Calendar ID="Calendar1" runat="server">
                         <SpecialDays>
                             <telerik:RadCalendarDay Repeatable="Today" ItemStyle-CssClass="rcToday" />
                         </SpecialDays>
                     </Calendar>
-                </telerik:RadDatePicker>
+                </telerik:RadDatePicker>--%>
             </div>
             <div style="display: inline-block">
                 <span style="vertical-align: middle; font-weight: bold;"><%= LocalizeString("ToDate") %></span>
-                <telerik:RadDatePicker ID="dtTo" runat="server" DateInput-EmptyMessage="To Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="Report" Width="213px">
+                <asp:TextBox textmode="Date" id="dtTo" runat="server" ValidationGroup="Report" />
+<%--                <telerik:RadDatePicker ID="dtTo" runat="server" DateInput-EmptyMessage="To Date" MinDate="01/01/1000" MaxDate="01/01/3000" ValidationGroup="Report" Width="213px">
                     <Calendar ID="Calendar2" runat="server">
                         <SpecialDays>
                             <telerik:RadCalendarDay Repeatable="Today" ItemStyle-CssClass="rcToday" />
                         </SpecialDays>
                     </Calendar>
-                </telerik:RadDatePicker>
+                </telerik:RadDatePicker>--%>
             </div>
-            <div style="display: inline-block">
+            <div style="display: inline-block; top: 7px; position: relative;">
                 <asp:LinkButton ID="btnGo" runat="server" Text="Go" CssClass="dnnSecondaryAction" CausesValidation="true" ValidationGroup="Report" OnClick="btnGo_Click" />
             </div>
         </div>

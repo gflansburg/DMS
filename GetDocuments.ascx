@@ -4,5 +4,5 @@
 <asp:Literal ID="litCSS" runat="server"></asp:Literal>
 <div class="dms">
     <h3><%=LocalizeString("BasicSettings")%></h3>
-    <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" />
+    <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" TargetNew="false" />
 </div>

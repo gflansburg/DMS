@@ -454,8 +454,8 @@ namespace Gafware.Modules.DMS
             sb.AppendLine("     autoOpen: false,");
             sb.AppendLine("     bgiframe: true,");
             sb.AppendLine("     modal: true,");
-            sb.AppendLine("     width: 600,");
-            sb.AppendLine("     height: 250,");
+            sb.AppendLine("     width: 610,");
+            sb.AppendLine("     height: 260,");
             sb.AppendLine("     appendTo: 'form',");
             sb.AppendLine("     dialogClass: 'dialog',");
             sb.AppendLine("     resizable: false,");
@@ -1439,8 +1439,8 @@ namespace Gafware.Modules.DMS
                     ddOwner2.SelectedIndex = ddOwner2.Items.IndexOf(ddOwner2.Items.FindByValue(doc.CreatedByUserID.ToString()));
                     ddGroup.SelectedIndex = 0;
                 }
-                dtActivation.SelectedDate = doc.ActivationDate;
-                dtExpiration.SelectedDate = doc.ExpirationDate;
+                dtActivation.Text = doc.ActivationDate.HasValue ? doc.ActivationDate.Value.ToShortDateString() : string.Empty;
+                dtExpiration.Text = doc.ExpirationDate.HasValue ? doc.ExpirationDate.Value.ToShortDateString() : string.Empty;
                 if (doc.DocumentId > 0)
                 {
                     cbIsGroupOwner.Checked = doc.IsGroupOwner;
@@ -1558,12 +1558,21 @@ namespace Gafware.Modules.DMS
                     doc.PortalId = PortalId;
                     doc.TabModuleId = TabModuleId;
                 }
-                doc.ActivationDate = dtActivation.SelectedDate;
+                DateTime dateTime;
+                doc.ActivationDate = null;
+                if (DateTime.TryParse(dtActivation.Text, out dateTime))
+                {
+                    doc.ActivationDate = dateTime;
+                }
+                doc.ExpirationDate = null;
+                if(DateTime.TryParse(dtExpiration.Text, out dateTime))
+                {
+                    doc.ExpirationDate = dateTime;
+                }
                 doc.AdminComments = tbAdminComments.Text;
                 doc.IsGroupOwner = cbIsGroupOwner.Checked;
                 doc.CreatedByUserID = Convert.ToInt32(cbIsGroupOwner.Checked ? ddGroup.SelectedValue : ddOwner2.SelectedValue);
                 doc.DocumentDetails = tbDocumentDetails.Text;
-                doc.ExpirationDate = dtExpiration.SelectedDate;
                 doc.IsSearchable = cbIsSearchable.Checked;
                 doc.UseCategorySecurityRoles = cbUseCategorySecurityRoles.Checked;
                 doc.SecurityRoleId = Convert.ToInt32(ddlSecurityRole.SelectedValue);

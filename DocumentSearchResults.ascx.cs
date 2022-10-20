@@ -53,6 +53,18 @@ namespace Gafware.Modules.DMS
             }
         }
 
+        public bool TargetNew
+        {
+            get
+            {
+                return (ViewState["TargetNew"] != null ? (bool)ViewState["TargetNew"] : false);
+            }
+            set
+            {
+                ViewState["TargetNew"] = value;
+            }
+        }
+
         public bool IsAdmin
         {
             get
@@ -530,24 +542,30 @@ namespace Gafware.Modules.DMS
                 {
                     pnlDocumentFound.Visible = true;
                     lnkFileLocation.NavigateUrl = lnkFileLocation.Text = file.WebPageUrl;
-                    /*System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
-                    if (literal == null)
+                    if (!TargetNew)
                     {
-                        literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
+                        System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
+                        if (literal == null)
                         {
-                            ID = "MetaDocumentControl"
-                        };
-                        literal.Attributes.Add("http-equiv", "refresh");
-                        literal.Attributes.Add("content", string.Format("2; URL={0}", file.WebPageUrl));
-                        this.Page.Header.Controls.Add(literal);
+                            literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
+                            {
+                                ID = "MetaDocumentControl"
+                            };
+                            literal.Attributes.Add("http-equiv", "refresh");
+                            literal.Attributes.Add("content", string.Format("2; URL={0}", file.WebPageUrl));
+                            this.Page.Header.Controls.Add(literal);
+                        }
+                        else
+                        {
+                            literal.Attributes["content"] = string.Format("2; URL={0}", file.WebPageUrl);
+                        }
                     }
                     else
                     {
-                        literal.Attributes["content"] = string.Format("2; URL={0}", file.WebPageUrl);
-                    }*/
-                    if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
-                    {
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
+                        if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
+                        }
                     }
                     Title = file.WebPageUrl;
                 }
@@ -555,24 +573,30 @@ namespace Gafware.Modules.DMS
                 {
                     pnlDocumentFound.Visible = true;
                     lnkFileLocation.NavigateUrl = lnkFileLocation.Text = string.Format("{0}{1}/{2}", portal.HomeDirectory, file.UploadDirectory.Replace("\\", "/"), file.Filename);
-                    /*System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
-                    if (literal == null)
+                    System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
+                    if (!TargetNew)
                     {
-                        literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
+                        if (literal == null)
                         {
-                            ID = "MetaDocumentControl"
-                        };
-                        literal.Attributes.Add("http-equiv", "refresh");
-                        literal.Attributes.Add("content", String.Format("2; URL={0}", lnkFileLocation.NavigateUrl));
-                        this.Page.Header.Controls.Add(literal);
+                            literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
+                            {
+                                ID = "MetaDocumentControl"
+                            };
+                            literal.Attributes.Add("http-equiv", "refresh");
+                            literal.Attributes.Add("content", String.Format("2; URL={0}", lnkFileLocation.NavigateUrl));
+                            this.Page.Header.Controls.Add(literal);
+                        }
+                        else
+                        {
+                            literal.Attributes["content"] = String.Format("2; URL={0}", lnkFileLocation.NavigateUrl);
+                        }
                     }
                     else
                     {
-                        literal.Attributes["content"] = String.Format("2; URL={0}", lnkFileLocation.NavigateUrl);
-                    }*/
-                    if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
-                    {
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
+                        if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
+                        }
                     }
                     Title = file.Filename;
                 }
@@ -580,24 +604,30 @@ namespace Gafware.Modules.DMS
                 {
                     pnlDocumentFound.Visible = true;
                     lnkFileLocation.NavigateUrl = lnkFileLocation.Text = string.Format("{0}?id={1}", ResolveUrl("~/DesktopModules/Gafware/DMS/GetFile.ashx"), Generic.StringToHex(Generic.UrlEncode(Gafware.Modules.DMS.Cryptography.CryptographyUtil.Encrypt(String.Format("{0}", file.FileId)))));
-                    /*System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
-                    if (literal == null)
+                    System.Web.UI.HtmlControls.HtmlGenericControl literal = (System.Web.UI.HtmlControls.HtmlGenericControl)Page.Header.FindControl("MetaDocumentControl");
+                    if (!TargetNew)
                     {
-                        literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
+                        if (literal == null)
                         {
-                            ID = "MetaDocumentControl"
-                        };
-                        literal.Attributes.Add("http-equiv", "refresh");
-                        literal.Attributes.Add("content", string.Format("2; URL={0}", lnkFileLocation.NavigateUrl));
-                        this.Page.Header.Controls.Add(literal);
+                            literal = new System.Web.UI.HtmlControls.HtmlGenericControl("meta")
+                            {
+                                ID = "MetaDocumentControl"
+                            };
+                            literal.Attributes.Add("http-equiv", "refresh");
+                            literal.Attributes.Add("content", string.Format("2; URL={0}", lnkFileLocation.NavigateUrl));
+                            this.Page.Header.Controls.Add(literal);
+                        }
+                        else
+                        {
+                            literal.Attributes["content"] = string.Format("2; URL={0}", lnkFileLocation.NavigateUrl);
+                        }
                     }
                     else
                     {
-                        literal.Attributes["content"] = string.Format("2; URL={0}", lnkFileLocation.NavigateUrl);
-                    }*/
-                    if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
-                    {
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
+                        if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "ScriptDocumentControl"))
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "ScriptDocumentControl", string.Format("setTimeout(function(){{ window.open(\"{0}\", \"_blank\"); }}, 2000);", lnkFileLocation.NavigateUrl), true);
+                        }
                     }
                     Title = file.Filename;
                 }

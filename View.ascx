@@ -77,7 +77,7 @@
             <div style="text-align: center"><br /><asp:Literal ID="litSearch" runat="server"></asp:Literal></div><br />
             <p id="addBookmarkContainer"></p>
         </asp:Panel>
-        <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" />
+        <uc1:DocumentSearchResults runat="server" id="documentSearchResults" Search="true" TargetNew="true" />
     </asp:Panel>
 </div>
 <script language="javascript">
